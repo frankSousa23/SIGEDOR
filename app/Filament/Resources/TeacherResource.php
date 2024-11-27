@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+
 class TeacherResource extends Resource
 {
     protected static ?string $model = Teacher::class;
@@ -23,7 +24,42 @@ class TeacherResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('cdi')
+                    ->label('Cédula')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('name')
+                    ->label('Nombres')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('surName')
+                    ->label('Apellidos')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('genre')
+                    ->label('Género')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('phone')
+                    ->label('Teléfono')
+                    ->tel()
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('email')
+                    ->label('Correo')
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\DatePicker::make('birthDate')
+                    ->label('Fecha de Nacimiento')
+                    ->required(),
+                Forms\Components\DatePicker::make('datePromotion')
+                    ->label('Fecha de Ingreso')
+                    ->required(),
+                Forms\Components\TextInput::make('asignaturePromotion')
+                    ->label('Asignatura de Promoción')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -31,13 +67,54 @@ class TeacherResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('cdi')
+                    ->label('Cédula')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nombres')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('surName')
+                    ->label('Apellidos')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('genre')
+                    ->label('Género')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('phone')
+                    ->label('Teléfono')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->label('Correo')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('birthDate')
+                    ->label('Fecha de Nacimiento')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('datePromotion')
+                    ->label('Fecha de Ingreso')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('asignaturePromotion')
+                    ->label('Asignatura de Promoción')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Creado')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Actualizado')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

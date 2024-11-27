@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('teacher_id');
+            $table->foreignId('teacher_id')->constrained()->onDelete('cascade');
             $table->string('category');
-            $table->date('instructor');
-            $table->date('asistente');
-            $table->date('agregado');
-            $table->date('asociado');
-            $table->date('titular');
-            $table->string('info')->nullable;
+            $table->date('instructor')->nullable();
+            $table->date('asistente')->nullable();
+            $table->date('agregado')->nullable();
+            $table->date('asociado')->nullable();
+            $table->date('titular')->nullable();
+            $table->string('info')->nullable();
             $table->timestamps();
         });
     }

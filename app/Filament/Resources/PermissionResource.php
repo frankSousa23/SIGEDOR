@@ -23,7 +23,23 @@ class PermissionResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Select::make('teacher_id')
+                    ->relationship(name: 'teacher', titleAttribute: 'cdi')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('permission')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('memoNumber')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('typePermission')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\DatePicker::make('date')
+                    ->required(),
+                Forms\Components\Toggle::make('rnr')
+                    ->required(),
             ]);
     }
 
@@ -31,13 +47,35 @@ class PermissionResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('teacher_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('permission')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('memoNumber')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('typePermission')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('date')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\IconColumn::make('rnr')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

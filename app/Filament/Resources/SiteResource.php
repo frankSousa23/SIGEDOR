@@ -23,7 +23,39 @@ class SiteResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Select::make('teacher_id')
+                    ->relationship(name: 'teacher', titleAttribute: 'cdi')
+                    ->label('Cédula de Identidad')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('site')
+                    ->label('Sede')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('area')
+                    ->label('Área Académica')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('program')
+                    ->label('Programa')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('uc')
+                    ->label('Unidad Curricular')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('weekHours')
+                    ->label('Horas/Semana')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('sections')
+                    ->label('Secciones')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('info')
+                    ->label('Observaciones')
+                    ->maxLength(255)
+                    ->default(null),
             ]);
     }
 
@@ -31,13 +63,48 @@ class SiteResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('teacher_id')
+                    ->label('Cédula de Identidad')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('site')
+                    ->label('Sede')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('area')
+                    ->label('Área Académica')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('program')
+                    ->label('Programa')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('uc')
+                    ->label('Unidad Curricular')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('weekHours')
+                    ->label('Horas/Semana')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('sections')
+                    ->label('Secciones')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('info')
+                    ->label('Observaciones')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

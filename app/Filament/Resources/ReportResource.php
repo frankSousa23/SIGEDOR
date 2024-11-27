@@ -23,7 +23,38 @@ class ReportResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Select::make('teacher_id')
+                    ->relationship(name: 'teacher', titleAttribute: 'cdi')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('category_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('dedication_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('permission_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('site_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('report')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('memoNumber')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('typeReport')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->maxLength(255)
+                    ->default(null),
+                Forms\Components\TextInput::make('info')
+                    ->maxLength(255)
+                    ->default(null),
             ]);
     }
 
@@ -31,13 +62,46 @@ class ReportResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('teacher_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('category_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('dedication_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('permission_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('site_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('report')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('memoNumber')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('typeReport')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('info')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

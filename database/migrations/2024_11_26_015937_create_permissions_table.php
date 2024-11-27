@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('permissions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('teacher_id');
+            $table->foreignId('teacher_id')->constrained()->onDelete('cascade');
             $table->string('permission');
             $table->string('memoNumber');
             $table->string('typePermission');
-            $table->date('date');
+            $table->date('date')->nullable();
             $table->boolean('rnr')->default('0');
             $table->timestamps();
         });
