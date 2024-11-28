@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Select;
 
 class ReportResource extends Resource
 {
@@ -25,8 +26,8 @@ class ReportResource extends Resource
             ->schema([
                 Forms\Components\Select::make('teacher_id')
                     ->relationship(name: 'teacher', titleAttribute: 'cdi')
-                    ->required()
-                    ->numeric(),
+                    ->required(),
+                    //->numeric(),
                 Forms\Components\TextInput::make('category_id')
                     ->required()
                     ->numeric(),

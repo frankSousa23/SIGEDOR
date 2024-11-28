@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Select;
 
 class SiteResource extends Resource
 {
@@ -26,8 +27,8 @@ class SiteResource extends Resource
                 Forms\Components\Select::make('teacher_id')
                     ->relationship(name: 'teacher', titleAttribute: 'cdi')
                     ->label('Cédula de Identidad')
-                    ->required()
-                    ->numeric(),
+                    ->required(),
+                    //->numeric(),
                 Forms\Components\TextInput::make('site')
                     ->label('Sede')
                     ->required()

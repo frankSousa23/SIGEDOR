@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('teacher_id')->constrained()->onDelete('cascade');
             $table->string('category');
-            $table->date('instructor')->nullable();
+            $table->date('instructor');
             $table->date('asistente')->nullable();
             $table->date('agregado')->nullable();
             $table->date('asociado')->nullable();

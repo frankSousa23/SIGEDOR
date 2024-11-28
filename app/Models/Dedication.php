@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Dedication extends Model
 {
     //
-    protected $fillable = ['dedication', 'tcv', 'mt', 'tc', 'exclusive', 'info'];
+    protected $fillable = ['teacher_id', 'dedication', 'tcv', 'mt', 'tc', 'exclusive', 'info'];
 
 
 

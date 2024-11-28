@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Site extends Model
 {
     //
-    protected $fillable = ['site', 'area', 'program', 'uc', 'weekHours', 'sections', 'info'];
+    protected $fillable = ['teacher_id', 'site', 'area', 'program', 'uc', 'weekHours', 'sections', 'info'];
 
 
 

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Permission extends Model
 {
     //
-    protected $fillable = ['permission', 'memoNumber', 'typePermission', 'date', 'rnr'];
+    protected $fillable = ['teacher_id', 'permission', 'memoNumber', 'typePermission', 'date', 'rnr'];
 
 
 

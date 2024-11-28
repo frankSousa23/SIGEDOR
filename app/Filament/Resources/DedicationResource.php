@@ -12,6 +12,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\Relationship;
 
 class DedicationResource extends Resource
 {
@@ -24,26 +27,26 @@ class DedicationResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('teacher_id')
-                    ->relationship(name: 'teacher', titleAttribute: 'cdi')
-                    ->required()
-                    ->numeric(),
+                    ->relationship(name: 'teacher', titleAttribute: 'cdi'),
+                    //->required(),
+                    //->numeric(),
                 Forms\Components\TextInput::make('dedication')
-                    ->required()
+                    //->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('tcv')
-                    ->required()
+                    //->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('mt')
-                    ->required()
+                    //->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('tc')
-                    ->required()
+                    //->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('exclusive')
-                    ->required()
+                Forms\Components\TextInput::make('ex')
+                    //->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('info')
-                    ->required()
+                    //->required()
                     ->maxLength(255),
             ]);
     }
@@ -52,9 +55,9 @@ class DedicationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('teacher_id')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('teacher_id'),
+                    //->numeric()
+                    //->sortable(),
                 Tables\Columns\TextColumn::make('dedication')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tcv')

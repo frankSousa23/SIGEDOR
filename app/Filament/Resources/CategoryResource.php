@@ -26,14 +26,15 @@ class CategoryResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('teacher_id')
-                    ->relationship('teacher', 'cdi')
-                    ->required(),
+                    ->relationship(name: 'teacher', titleAttribute: 'cdi'),
+                    //->required(),
+                    //->sortable(),
                     //->numeric(),
                 Forms\Components\TextInput::make('category')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DatePicker::make('instructor'),
-                    //->required(),
+                Forms\Components\DatePicker::make('instructor')
+                    ->required(),
                 Forms\Components\DatePicker::make('asistente'),
                     //->required(),
                 Forms\Components\DatePicker::make('agregado'),
@@ -52,11 +53,12 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('teacher.cdi')
+                Tables\Columns\TextColumn::make('teacher_id')
                     //->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('teacher.name')->label('Nombres'),
                 Tables\Columns\TextColumn::make('teacher.surName')->label('Apellidos'),
+
                 Tables\Columns\TextColumn::make('category')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('instructor')
