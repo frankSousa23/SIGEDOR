@@ -26,8 +26,7 @@ class TeacherResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('cdi')
                     ->label('Cédula')
-                    ->required()
-                    ->numeric(),
+                    ->required(),
                 Forms\Components\TextInput::make('name')
                     ->label('Nombres')
                     ->required()
@@ -70,19 +69,24 @@ class TeacherResource extends Resource
                 Tables\Columns\TextColumn::make('cdi')
                     ->label('Cédula')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombres')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('surName')
                     ->label('Apellidos')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('genre')
                     ->label('Género')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('Teléfono')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('email')
                     ->label('Correo')
@@ -90,14 +94,17 @@ class TeacherResource extends Resource
                 Tables\Columns\TextColumn::make('birthDate')
                     ->label('Fecha de Nacimiento')
                     ->date()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('datePromotion')
                     ->label('Fecha de Ingreso')
                     ->date()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('asignaturePromotion')
                     ->label('Asignatura de Promoción')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Creado')
                     ->dateTime()

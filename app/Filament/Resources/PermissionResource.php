@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select;
+use App\Models\Teacher;
 
 class PermissionResource extends Resource
 {
@@ -26,8 +27,11 @@ class PermissionResource extends Resource
             ->schema([
                 Forms\Components\Select::make('teacher_id')
                     ->relationship(name: 'teacher', titleAttribute: 'cdi')
+                    ->label('Cdi Docente')
+                    ->options(function () {
+                        return Teacher::whereDoesntHave('permission')->pluck('cdi', 'id');
+                    })
                     ->required(),
-                    //->numeric(),
                 Forms\Components\TextInput::make('permission')
                     ->required()
                     ->maxLength(255),
@@ -50,13 +54,23 @@ class PermissionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('teacher_id')
                     ->numeric()
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('teacher.name')->label('Nombres')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('teacher.surName')->label('Apellidos')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('permission')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('memoNumber')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('typePermission')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('date')
                     ->date()
                     ->sortable(),

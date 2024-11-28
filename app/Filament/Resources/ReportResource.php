@@ -19,7 +19,7 @@ class ReportResource extends Resource
     protected static ?string $model = Report::class;
     protected static ?string $navigationLabel = 'Reportes';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $navigationGroup = 'Generar Reporte';
     public static function form(Form $form): Form
     {
         return $form
@@ -27,7 +27,6 @@ class ReportResource extends Resource
                 Forms\Components\Select::make('teacher_id')
                     ->relationship(name: 'teacher', titleAttribute: 'cdi')
                     ->required(),
-                    //->numeric(),
                 Forms\Components\TextInput::make('category_id')
                     ->required()
                     ->numeric(),
@@ -65,27 +64,42 @@ class ReportResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('teacher_id')
                     ->numeric()
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('teacher.name')->label('Nombres')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('teacher.surName')->label('Apellidos')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('category_id')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dedication_id')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('permission_id')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('site_id')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('report')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('memoNumber')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('typeReport')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('info')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')

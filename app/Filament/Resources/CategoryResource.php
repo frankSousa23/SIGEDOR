@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
+use App\Models\Teacher;
 
 class CategoryResource extends Resource
 {
@@ -26,10 +27,12 @@ class CategoryResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('teacher_id')
-                    ->relationship(name: 'teacher', titleAttribute: 'cdi'),
-                    //->required(),
-                    //->sortable(),
-                    //->numeric(),
+                    ->relationship(name: 'teacher', titleAttribute: 'cdi')
+                    ->label('Cdi Docente')
+                    ->options(function () {
+                        return Teacher::whereDoesntHave('category')->pluck('cdi', 'id');
+                    })
+                    ->required(),
                 Forms\Components\TextInput::make('category')
                     ->required()
                     ->maxLength(255),
@@ -54,27 +57,37 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('teacher_id')
-                    //->numeric()
+                    ->numeric()
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('teacher.name')->label('Nombres'),
-                Tables\Columns\TextColumn::make('teacher.surName')->label('Apellidos'),
-
+                Tables\Columns\TextColumn::make('teacher.name')->label('Nombres')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('teacher.surName')->label('Apellidos')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('category')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('instructor')
                     ->date()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('asistente')
                     ->date()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('agregado')
                     ->date()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('asociado')
                     ->date()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('titular')
                     ->date()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('info')
                     ->searchable(),

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\Relationship;
+use App\Models\Teacher;
 
 class DedicationResource extends Resource
 {
@@ -27,9 +28,12 @@ class DedicationResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('teacher_id')
-                    ->relationship(name: 'teacher', titleAttribute: 'cdi'),
-                    //->required(),
-                    //->numeric(),
+                    ->relationship(name: 'teacher', titleAttribute: 'cdi')
+                    ->label('Cdi Docente')
+                    ->options(function () {
+                        return Teacher::whereDoesntHave('dedication')->pluck('cdi', 'id');
+                    })
+                    ->required(),
                 Forms\Components\TextInput::make('dedication')
                     //->required()
                     ->maxLength(255),
@@ -55,19 +59,31 @@ class DedicationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('teacher_id'),
-                    //->numeric()
-                    //->sortable(),
+                Tables\Columns\TextColumn::make('teacher_id')
+                    ->numeric()
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('teacher.name')->label('Nombres')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('teacher.surName')->label('Apellidos')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('dedication')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('tcv')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('mt')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('tc')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('exclusive')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('info')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')

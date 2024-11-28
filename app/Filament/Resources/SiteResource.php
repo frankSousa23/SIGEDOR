@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select;
+use App\Models\Teacher;
 
 class SiteResource extends Resource
 {
@@ -26,9 +27,12 @@ class SiteResource extends Resource
             ->schema([
                 Forms\Components\Select::make('teacher_id')
                     ->relationship(name: 'teacher', titleAttribute: 'cdi')
+                    ->label('Cdi Docente')
+                    ->options(function () {
+                        return Teacher::whereDoesntHave('site')->pluck('cdi', 'id');
+                    })
                     ->label('Cédula de Identidad')
                     ->required(),
-                    //->numeric(),
                 Forms\Components\TextInput::make('site')
                     ->label('Sede')
                     ->required()
@@ -67,26 +71,39 @@ class SiteResource extends Resource
                 Tables\Columns\TextColumn::make('teacher_id')
                     ->label('Cédula de Identidad')
                     ->numeric()
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('teacher.name')->label('Nombres')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('teacher.surName')->label('Apellidos')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('site')
                     ->label('Sede')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('area')
                     ->label('Área Académica')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('program')
                     ->label('Programa')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('uc')
                     ->label('Unidad Curricular')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('weekHours')
                     ->label('Horas/Semana')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('sections')
                     ->label('Secciones')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('info')
                     ->label('Observaciones')
