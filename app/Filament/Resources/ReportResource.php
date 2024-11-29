@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select;
+use App\Models\Teacher;
 
 class ReportResource extends Resource
 {
@@ -25,21 +26,37 @@ class ReportResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('teacher_id')
-                    ->relationship(name: 'teacher', titleAttribute: 'cdi')
+                    ->relationship('teacher', 'cdi')
                     ->label('Docente')
-                    ->required(),
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                        if ($state) {
+                            $teacher = \App\Models\Teacher::with(['category', 'dedication', 'permission', 'site'])->find($state);
+                            if ($teacher) {
+                                $set('category_id', $teacher->category_id);
+                                $set('dedication_id', $teacher->dedication_id);
+                                $set('permission_id', $teacher->permission_id);
+                                $set('site_id', $teacher->site_id);
+                            }
+                        }
+                    }),
                 Forms\Components\TextInput::make('category_id')
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->readonly(),
                 Forms\Components\TextInput::make('dedication_id')
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->readonly(),
                 Forms\Components\TextInput::make('permission_id')
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->readonly(),
                 Forms\Components\TextInput::make('site_id')
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->readonly(),
                 Forms\Components\TextInput::make('report')
                     ->required()
                     ->maxLength(255),

@@ -12,8 +12,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use App\Models\Teacher;
+use App\Filament\Forms\Components\Select2;
 
 class SiteResource extends Resource
 {
@@ -25,39 +26,53 @@ class SiteResource extends Resource
     {
         return $form
             ->schema([
+                // Selección de docente
                 Forms\Components\Select::make('teacher_id')
-                    ->relationship(name: 'teacher', titleAttribute: 'cdi')
+                    ->relationship('teacher', 'cdi')
                     ->label('Docente')
                     ->options(function () {
                         return Teacher::whereDoesntHave('site')->pluck('cdi', 'id');
                     })
-                    ->label('Docente')
                     ->required(),
-                Forms\Components\TextInput::make('site')
+
+                // Sede (Input Text)
+                TextInput::make('site')
                     ->label('Sede')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('area')
+                    ->placeholder('Ingrese la sede'),
+
+                // Área Académica (Input Text)
+                TextInput::make('area')
                     ->label('Área Académica')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('program')
+                    ->placeholder('Ingrese el área académica'),
+
+                // Programa (Input Text)
+                TextInput::make('program')
                     ->label('Programa')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('uc')
+                    ->placeholder('Ingrese el programa'),
+
+                // Unidad Curricular (Input Text)
+                TextInput::make('uc') // Cambia 'uc' para reflejar múltiples
                     ->label('Unidad Curricular')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('weekHours')
+                    ->placeholder('Ingrese la unidad curricular'),
+
+                // Horas/Semana
+                TextInput::make('weekHours')
                     ->label('Horas/Semana')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('sections')
+
+                // Secciones
+                TextInput::make('sections')
                     ->label('Secciones')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('info')
+
+                // Observaciones
+                TextInput::make('info')
                     ->label('Observaciones')
                     ->maxLength(255)
                     ->default(null),
@@ -91,7 +106,7 @@ class SiteResource extends Resource
                     ->label('Programa')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('uc')
+                Tables\Columns\TextColumn::make('uc') // Mostrar las unidades curriculares seleccionadas
                     ->label('Unidad Curricular')
                     ->searchable()
                     ->sortable(),
@@ -105,9 +120,6 @@ class SiteResource extends Resource
                     ->numeric()
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('info')
-                    ->label('Observaciones')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

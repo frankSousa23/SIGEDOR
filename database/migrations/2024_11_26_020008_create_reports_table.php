@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('memoNumber');
             $table->string('typeReport');
             $table->string('email')->nullable();
-            $table->string('info')->nullable();
+            $table->json('uc')->nullable();
             $table->timestamps();
         });
     }
