@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('dedications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('teacher_id')->constrained()->onDelete('cascade');
-            $table->string('dedication');
+            $table->string('dedication')->nullable();
             $table->string('tcv')->nullable();
             $table->string('mt')->nullable();
             $table->string('tc')->nullable();
-            $table->string('exclusive')->nullable();
+            $table->string('ex')->nullable();
+            $table->string('hours');
             $table->string('info')->nullable();
             $table->timestamps();
         });

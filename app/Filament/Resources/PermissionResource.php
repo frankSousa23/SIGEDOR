@@ -27,7 +27,7 @@ class PermissionResource extends Resource
             ->schema([
                 Forms\Components\Select::make('teacher_id')
                     ->relationship(name: 'teacher', titleAttribute: 'cdi')
-                    ->label('Cdi Docente')
+                    ->label('Docente')
                     ->options(function () {
                         return Teacher::whereDoesntHave('permission')->pluck('cdi', 'id');
                     })
@@ -52,7 +52,8 @@ class PermissionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('teacher_id')
+                Tables\Columns\TextColumn::make('teacher.cdi')
+                    ->label('Docente')
                     ->numeric()
                     ->searchable()
                     ->sortable(),

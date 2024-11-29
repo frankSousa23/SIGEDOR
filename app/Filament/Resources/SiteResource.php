@@ -27,11 +27,11 @@ class SiteResource extends Resource
             ->schema([
                 Forms\Components\Select::make('teacher_id')
                     ->relationship(name: 'teacher', titleAttribute: 'cdi')
-                    ->label('Cdi Docente')
+                    ->label('Docente')
                     ->options(function () {
                         return Teacher::whereDoesntHave('site')->pluck('cdi', 'id');
                     })
-                    ->label('Cédula de Identidad')
+                    ->label('Docente')
                     ->required(),
                 Forms\Components\TextInput::make('site')
                     ->label('Sede')
@@ -68,8 +68,8 @@ class SiteResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('teacher_id')
-                    ->label('Cédula de Identidad')
+                Tables\Columns\TextColumn::make('teacher.cdi')
+                    ->label('Docente')
                     ->numeric()
                     ->searchable()
                     ->sortable(),

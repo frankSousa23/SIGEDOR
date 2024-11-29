@@ -26,6 +26,7 @@ class ReportResource extends Resource
             ->schema([
                 Forms\Components\Select::make('teacher_id')
                     ->relationship(name: 'teacher', titleAttribute: 'cdi')
+                    ->label('Docente')
                     ->required(),
                 Forms\Components\TextInput::make('category_id')
                     ->required()
@@ -62,7 +63,8 @@ class ReportResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('teacher_id')
+                Tables\Columns\TextColumn::make('teacher.cdi')
+                    ->label('Docente')
                     ->numeric()
                     ->searchable()
                     ->sortable(),

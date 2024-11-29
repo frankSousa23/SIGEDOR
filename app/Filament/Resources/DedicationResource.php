@@ -29,28 +29,59 @@ class DedicationResource extends Resource
             ->schema([
                 Forms\Components\Select::make('teacher_id')
                     ->relationship(name: 'teacher', titleAttribute: 'cdi')
-                    ->label('Cdi Docente')
+                    ->label('Docente')
                     ->options(function () {
                         return Teacher::whereDoesntHave('dedication')->pluck('cdi', 'id');
                     })
                     ->required(),
-                Forms\Components\TextInput::make('dedication')
-                    //->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('tcv')
-                    //->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('mt')
-                    //->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('tc')
-                    //->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('ex')
-                    //->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('dedication')
+                    ->label('Dedicación')
+                    ->options([
+                        'tcv' => 'TCV',
+                        'mt' => 'MT',
+                        'tc' => 'TC',
+                        'ex' => 'EX',
+                    ])
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        $set('hours', null);
+                    }),
+                Forms\Components\Select::make('hours')
+                    ->label('Horas')
+                    ->options(function (callable $get) {
+                        $selectedOption = $get('dedication');
+                        switch ($selectedOption) {
+                            case 'tcv':
+                                return [
+                                    1 => '1',
+                                    2 => '2',
+                                    3 => '3',
+                                    4 => '4',
+                                    5 => '5',
+                                    6 => '6',
+                                    7 => '7',
+                                ];
+                            case 'mt':
+                                return [
+                                    18 => '18',
+                                ];
+                            case 'tc':
+                                return [
+                                    30 => '30',
+                                ];
+                            case 'ex':
+                                return [
+                                    35 => '35',
+                                    36 => '36',
+                                ];
+                            default:
+                                return [];
+                        }
+                    })
+                    ->required()
+                    ->rules(['in:1,2,3,4,5,6,7,18,30,35,36']),
                 Forms\Components\TextInput::make('info')
-                    //->required()
                     ->maxLength(255),
             ]);
     }
@@ -59,7 +90,8 @@ class DedicationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('teacher_id')
+                Tables\Columns\TextColumn::make('teacher.cdi')
+                    ->label('Docente')
                     ->numeric()
                     ->searchable()
                     ->sortable(),
@@ -70,22 +102,13 @@ class DedicationResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dedication')
+                    ->label('Dedicación')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('tcv')
+                Tables\Columns\TextColumn::make('hours')
+                    ->label('Horas')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('mt')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('tc')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('exclusive')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('info')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
