@@ -42,19 +42,19 @@ class ReportResource extends Resource
                         }
                     }),
                 Forms\Components\TextInput::make('category_id')
-                    ->required()
+                    //->required()
                     ->numeric()
                     ->readonly(),
                 Forms\Components\TextInput::make('dedication_id')
-                    ->required()
+                    //->required()
                     ->numeric()
                     ->readonly(),
                 Forms\Components\TextInput::make('permission_id')
-                    ->required()
+                    //->required()
                     ->numeric()
                     ->readonly(),
                 Forms\Components\TextInput::make('site_id')
-                    ->required()
+                    //->required()
                     ->numeric()
                     ->readonly(),
                 Forms\Components\TextInput::make('report')
@@ -64,7 +64,7 @@ class ReportResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('typeReport')
-                    ->required()
+                    //->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->email()
@@ -119,8 +119,8 @@ class ReportResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('info')
-                    ->searchable(),
+                //Tables\Columns\TextColumn::make('info')
+                  //  ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
