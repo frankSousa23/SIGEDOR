@@ -21,6 +21,7 @@ class ReportResource extends Resource
     protected static ?string $navigationLabel = 'Reportes';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Generar Reporte';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -29,8 +30,8 @@ class ReportResource extends Resource
                     ->relationship('teacher', 'cdi')
                     ->label('Docente')
                     ->required()
-                    ->reactive()
-                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                    ->live()
+                    ->afterStateUpdated(function ($state, callable $set) {
                         if ($state) {
                             $teacher = \App\Models\Teacher::with(['category', 'dedication', 'permission', 'site'])->find($state);
                             if ($teacher) {
@@ -38,41 +39,58 @@ class ReportResource extends Resource
                                 $set('dedication_id', $teacher->dedication_id);
                                 $set('permission_id', $teacher->permission_id);
                                 $set('site_id', $teacher->site_id);
+                                
+                                // También establecemos los valores para mostrar
+                                $set('category_name', $teacher->category?->name ?? 'N/A');
+                                $set('dedication_name', $teacher->dedication?->name ?? 'N/A');
+                                $set('permission_name', $teacher->permission?->name ?? 'N/A');
+                                $set('site_name', $teacher->site?->name ?? 'N/A');
                             }
                         }
                     }),
-                Forms\Components\TextInput::make('category_id')
-                    //->required()
-                    ->numeric()
-                    ->readonly(),
-                Forms\Components\TextInput::make('dedication_id')
-                    //->required()
-                    ->numeric()
-                    ->readonly(),
-                Forms\Components\TextInput::make('permission_id')
-                    //->required()
-                    ->numeric()
-                    ->readonly(),
-                Forms\Components\TextInput::make('site_id')
-                    //->required()
-                    ->numeric()
-                    ->readonly(),
+                Forms\Components\TextInput::make('category_name')
+                    ->label('Categoría')
+                    ->disabled()
+                    ->dehydrated(false),
+                Forms\Components\Hidden::make('category_id'),
+                
+                Forms\Components\TextInput::make('dedication_name')
+                    ->label('Dedicación')
+                    ->disabled()
+                    ->dehydrated(false),
+                Forms\Components\Hidden::make('dedication_id'),
+                
+                Forms\Components\TextInput::make('permission_name')
+                    ->label('Permiso')
+                    ->disabled()
+                    ->dehydrated(false),
+                Forms\Components\Hidden::make('permission_id'),
+                
+                Forms\Components\TextInput::make('site_name')
+                    ->label('Sede')
+                    ->disabled()
+                    ->dehydrated(false),
+                Forms\Components\Hidden::make('site_id'),
+                
                 Forms\Components\TextInput::make('report')
+                    ->label('Reporte')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('memoNumber')
+                    ->label('Número de Memo')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('typeReport')
-                    //->required()
+                    ->label('Tipo de Reporte')
+                    ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->email()
-                    ->maxLength(255)
-                    ->default(null),
+                    ->label('Correo Electrónico')
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('info')
-                    ->maxLength(255)
-                    ->default(null),
+                    ->label('Información Adicional')
+                    ->maxLength(255),
             ]);
     }
 
@@ -91,56 +109,58 @@ class ReportResource extends Resource
                 Tables\Columns\TextColumn::make('teacher.surName')->label('Apellidos')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('category_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Categoría')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('dedication_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('dedication.name')
+                    ->label('Dedicación')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('permission_id')
-                    ->numeric()
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('site_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('site.name')
+                    ->label('Sede')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('report')
+                    ->label('Reporte')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('memoNumber')
+                    ->label('Número de Memo')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('typeReport')
+                    ->label('Tipo de Reporte')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable()
-                    ->sortable(),
-                //Tables\Columns\TextColumn::make('info')
-                  //  ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                \Filament\Tables\Actions\Action::make('export')
+                    ->label('Exportar PDF')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->action(function ($livewire) {
+                        // Aquí implementaremos la lógica de exportación
+                        $reports = Report::with(['teacher', 'category', 'dedication', 'site'])->get();
+                        
+                        return response()->streamDownload(function () use ($reports) {
+                            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('reports.export', [
+                                'reports' => $reports,
+                            ]);
+                            echo $pdf->output();
+                        }, 'reporte-docentes.pdf');
+                    })
             ]);
     }
 
