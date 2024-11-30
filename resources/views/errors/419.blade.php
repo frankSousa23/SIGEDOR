@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>404 - Página no encontrada | SIGEDOR</title>
+        <title>419 - Sesión Expirada | SIGEDOR</title>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="antialiased min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('images/FondoUnerg.jpg') }}');">
@@ -28,16 +28,16 @@
                         <img src="{{ asset('images/LogoUnerg.png') }}" 
                              alt="Logo UNERG" 
                              class="w-32 h-auto mx-auto mb-6">
-                        <h1 class="text-6xl font-bold text-white mb-4">404</h1>
-                        <h2 class="text-2xl font-semibold text-blue-400 mb-4">Página no encontrada</h2>
+                        <h1 class="text-6xl font-bold text-white mb-4">419</h1>
+                        <h2 class="text-2xl font-semibold text-blue-400 mb-4">Sesión Expirada</h2>
                         <p class="text-slate-300 text-lg mb-8">
-                            Lo sentimos, la página que estás buscando no existe o ha sido movida.
-                            Por favor, verifica la URL o regresa al inicio.
+                            Tu sesión ha expirado por inactividad. Por favor, vuelve a iniciar sesión
+                            para continuar trabajando en el sistema.
                         </p>
-                        <a href="{{ url('/') }}" 
+                        <a href="{{ url('/login') }}" 
                            class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg 
                                   font-medium transition-all shadow-lg hover:shadow-blue-500/25">
-                            Volver al Inicio
+                            Iniciar Sesión
                         </a>
                     </div>
                 </div>

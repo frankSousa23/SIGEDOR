@@ -1,163 +1,150 @@
-<html><head><base href="/" />
-    <meta charset="UTF-8">
-    <title>SIGEDOR - Sistema de Gestión para Docentes Universitarios</title>
-    <!-- Agregando Livewire -->
-    <script src="https://cdn.jsdelivr.net/gh/livewire/livewire@v2.x.x/dist/livewire.js"></script>
-    <link href="https://cdn.jsdelivr.net/gh/livewire/livewire@v2.x.x/dist/livewire.css" rel="stylesheet" />
-
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SIGEDOR - Sistema de Gestión Docente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      :root {
-        --primary: #1a1a1a;
-        --accent: #3498db;
-        --light: #f8f9fa;
-        --dark: #121212;
-        --text: #e0e0e0;
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: var(--dark);
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        color: var(--text);
-      }
-
-      .hero {
-        background: var(--primary);
-        color: var(--text);
-        width: 100%;
-        padding: 4rem 2rem;
-        text-align: center;
-      }
-
-      .hero h1 {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-      }
-
-      .hero p {
-        font-size: 1.2rem;
-        max-width: 800px;
-        margin: 0 auto;
-        line-height: 1.6;
-      }
-
-      .dashboard-link {
-        display: inline-block;
-        margin-top: 2rem;
-        padding: 1rem 2rem;
-        background: var(--accent);
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        font-weight: bold;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      .dashboard-link:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-      }
-
-      .image-placeholder {
-        width: 100%;
-        height: 300px;
-        background: var(--primary);
-        margin: 2rem 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--text);
-        font-style: italic;
-      }
-
-      .features {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-        padding: 4rem 2rem;
-        max-width: 800px;
-        width: 100%;
-      }
-
-      .feature {
-        padding: 2rem;
-        background: var(--primary);
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        transition: transform 0.3s ease;
-      }
-
-      .feature:hover {
-        transform: translateX(10px);
-      }
-
-      .feature svg {
-        width: 50px;
-        height: 50px;
-        margin-bottom: 1rem;
-        fill: var(--accent);
-      }
-
-      .feature h3 {
-        color: var(--text);
-        margin-bottom: 1rem;
-      }
-
-      .feature p {
-        color: var(--text);
-        line-height: 1.6;
-        opacity: 0.8;
-      }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            background-image: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)), url('{{ asset('images/FondoUnerg.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .image-container img {
+            transition: transform 0.3s ease;
+        }
+        .image-container:hover img {
+            transform: scale(1.05);
+        }
+        .hero-section {
+            background-image: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.9)), url('{{ asset('images/FondoUnerg2.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
     </style>
-    </head>
-    <body>
-      <div>
-        <section class="hero">
-          <h1>SIGEDOR</h1>
-          <h2>Sistema de Gestión para Docentes Universitarios</h2>
-          <p>Su plataforma integral para la gestión de carrera docente, enfocada en los procesos de ascenso y permanencia en la institución.</p>
-          <a href="/dashboard" class="dashboard-link">Ir al Escritorio</a>
-        </section>
+</head>
+<body class="antialiased">
+    <div class="relative min-h-screen">
+        <!-- Navbar -->
+        <nav class="bg-slate-900/80 backdrop-blur-sm border-b border-slate-800 fixed w-full z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <span class="text-xl font-bold gradient-text">SIGEDOR</span>
+                    </div>
+                    <div class="flex items-center">
+                        @if (Route::has('login'))
+                            <div class="space-x-4">
+                                @auth
+                                    <a href="{{ url('/dashboard') }}" 
+                                       class="text-sm text-slate-300 hover:text-white transition">Escritorio</a>
+                                @else
+                                    <a href="{{ route('login') }}" 
+                                       class="text-sm text-slate-300 hover:text-white transition">Iniciar Sesión</a>
+                                @endauth
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </nav>
 
-        <div class="features">
-          <div class="feature">
-            <svg viewBox="0 0 24 24">
-              <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
-            </svg>
-            <h3>Ascensos Universitarios</h3>
-            <p>Gestione su proceso de ascenso académico de manera eficiente. Consulte requisitos, cargue documentación y realice seguimiento a sus solicitudes en tiempo real.</p>
-          </div>
+        <!-- Hero Section -->
+        <div class="pt-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="hero-section">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <h1 class="text-4xl sm:text-5xl font-bold mb-6 leading-tight">
+                                Sistema de Gestión para
+                                <span class="gradient-text">Docentes Ordinarios de la UNERG</span>
+                            </h1>
+                            <p class="text-slate-300 text-lg mb-8">
+                                Sistema integral diseñado para gestionar el proceso de ascenso del personal docente ordinario
+                                de la Universidad Nacional Experimental Rómulo Gallegos. Facilitando el seguimiento de categorías
+                                académicas y el desarrollo profesional de nuestros docentes.
+                            </p>
+                            <div class="flex space-x-4">
+                                @auth
+                                    <a href="{{ url('/dashboard') }}" 
+                                       class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg 
+                                              font-medium transition-all shadow-lg hover:shadow-blue-500/25">
+                                        Escritorio
+                                    </a>
+                                @else
+                                    <a href="{{ route('login') }}" 
+                                       class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg 
+                                              font-medium transition-all shadow-lg hover:shadow-blue-500/25">
+                                        Comenzar
+                                    </a>
+                                @endauth
+                            </div>
+                        </div>
+                        <div class="flex justify-center">
+                            <div class="image-container bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 shadow-xl max-w-md">
+                                <img src="{{ asset('images/LogoUnerg.png') }}" 
+                                     alt="Logo UNERG" 
+                                     class="w-full h-auto rounded-lg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-          <div class="feature">
-            <svg viewBox="0 0 24 24">
-              <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-8-2h4v2h-4V4zm0 12H8v-2h4v2zm6 0h-4v-2h4v2zm0-4H8v-2h10v2z"/>
-            </svg>
-            <h3>Docentes Fijos</h3>
-            <p>Información detallada sobre beneficios, responsabilidades y oportunidades disponibles para docentes con cargo fijo en la institución.</p>
-          </div>
-
-          <div class="feature">
-            <svg viewBox="0 0 24 24">
-              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-7-2h2V7h-4v2h2z"/>
-            </svg>
-            <h3>Reportes y Estadísticas</h3>
-            <p>Acceda a informes detallados sobre su trayectoria académica, publicaciones y logros profesionales dentro de la institución.</p>
-          </div>
+                <!-- Features Section -->
+                <div class="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="p-6 bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-lg 
+                                hover:bg-slate-800 transition-all duration-300">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-400">Control de Categorías</h3>
+                        <p class="text-slate-300">
+                            Gestión eficiente de las categorías académicas del personal docente ordinario,
+                            desde Instructor hasta Titular. Seguimiento detallado de los tiempos de permanencia
+                            y requisitos para cada ascenso.
+                        </p>
+                    </div>
+                    <div class="p-6 bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-lg 
+                                hover:bg-slate-800 transition-all duration-300">
+                        <h3 class="text-xl font-semibold mb-4 text-purple-400">Validación Académica</h3>
+                        <p class="text-slate-300">
+                            Proceso automatizado para la validación de títulos académicos y credenciales.
+                            Verificación de requisitos específicos para cada categoría y control de 
+                            documentación requerida.
+                        </p>
+                    </div>
+                    <div class="p-6 bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-lg 
+                                hover:bg-slate-800 transition-all duration-300">
+                        <h3 class="text-xl font-semibold mb-4 text-indigo-400">Seguimiento de Ascensos</h3>
+                        <p class="text-slate-300">
+                            Monitoreo preciso de los períodos de ascenso, notificaciones oportunas
+                            y control de los procesos administrativos relacionados con la promoción
+                            del personal docente.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <script>
-        // Inicialización de Livewire
-        window.livewire = new Livewire();
-      </script>
-    </body>
-    </html>
+        <!-- Footer -->
+        <footer class="bg-slate-900/80 backdrop-blur-sm border-t border-slate-800 mt-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="text-center text-slate-400">
+                    <p>&copy; {{ date('Y') }} SIGEDOR. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

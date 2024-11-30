@@ -13,52 +13,75 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-
 class TeacherResource extends Resource
 {
     protected static ?string $model = Teacher::class;
     protected static ?string $navigationLabel = 'Docentes';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Manejo de Usuarios';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('cdi')
-                    ->label('Cédula')
-                    ->required(),
+                    ->label('CDI')
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(10)
+                    ->helperText('Ingrese la Cédula de Identidad del docente sin puntos ni espacios'),
+
                 Forms\Components\TextInput::make('name')
-                    ->label('Nombres')
+                    ->label('Nombre')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->helperText('Ingrese el primer nombre del docente'),
+
                 Forms\Components\TextInput::make('surName')
-                    ->label('Apellidos')
+                    ->label('Apellido')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('genre')
+                    ->maxLength(255)
+                    ->helperText('Ingrese el primer apellido del docente'),
+
+                Forms\Components\Select::make('genre')
                     ->label('Género')
+                    ->options([
+                        'F' => 'Femenino',
+                        'M' => 'Masculino'
+                    ])
                     ->required()
-                    ->maxLength(255),
+                    ->helperText('Seleccione el género del docente'),
+
                 Forms\Components\TextInput::make('phone')
                     ->label('Teléfono')
                     ->tel()
                     ->required()
-                    ->numeric(),
+                    ->maxLength(11)
+                    ->helperText('Ingrese el número de teléfono en formato: 04141234567'),
+
                 Forms\Components\TextInput::make('email')
-                    ->label('Correo')
+                    ->label('Correo Electrónico')
                     ->email()
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->helperText('Ingrese un correo electrónico válido'),
+
                 Forms\Components\DatePicker::make('birthDate')
                     ->label('Fecha de Nacimiento')
-                    ->required(),
+                    ->required()
+                    ->maxDate(now()->subYears(18))
+                    ->helperText('Seleccione la fecha de nacimiento (debe ser mayor de 18 años)'),
+
                 Forms\Components\DatePicker::make('datePromotion')
-                    ->label('Fecha de Ingreso')
-                    ->required(),
+                    ->label('Fecha de Promoción')
+                    ->required()
+                    ->helperText('Seleccione la fecha de la última promoción del docente'),
+
                 Forms\Components\TextInput::make('asignaturePromotion')
                     ->label('Asignatura de Promoción')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->helperText('Ingrese la asignatura o área en la que se promovió el docente'),
             ]);
     }
 

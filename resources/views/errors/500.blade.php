@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>404 - Página no encontrada | SIGEDOR</title>
+        <title>500 - Error del Servidor | SIGEDOR</title>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="antialiased min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('images/FondoUnerg.jpg') }}');">
@@ -28,11 +28,11 @@
                         <img src="{{ asset('images/LogoUnerg.png') }}" 
                              alt="Logo UNERG" 
                              class="w-32 h-auto mx-auto mb-6">
-                        <h1 class="text-6xl font-bold text-white mb-4">404</h1>
-                        <h2 class="text-2xl font-semibold text-blue-400 mb-4">Página no encontrada</h2>
+                        <h1 class="text-6xl font-bold text-white mb-4">500</h1>
+                        <h2 class="text-2xl font-semibold text-blue-400 mb-4">Error del Servidor</h2>
                         <p class="text-slate-300 text-lg mb-8">
-                            Lo sentimos, la página que estás buscando no existe o ha sido movida.
-                            Por favor, verifica la URL o regresa al inicio.
+                            Lo sentimos, ha ocurrido un error interno en el servidor. 
+                            Nuestro equipo técnico ha sido notificado y está trabajando en la solución.
                         </p>
                         <a href="{{ url('/') }}" 
                            class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg 
