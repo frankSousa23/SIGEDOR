@@ -10,8 +10,12 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\BulkAction;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 
 class TeacherResource extends Resource
 {
@@ -57,7 +61,9 @@ class TeacherResource extends Resource
                     ->tel()
                     ->required()
                     ->maxLength(11)
-                    ->helperText('Ingrese el número de teléfono en formato: 04141234567'),
+                    ->helperText('Ingrese el número de teléfono en formato: 0414xxxxxxx')
+                    ->mask('0000-0000000')
+                    ->placeholder('0414-1234567'),
 
                 Forms\Components\TextInput::make('email')
                     ->label('Correo Electrónico')
@@ -85,6 +91,23 @@ class TeacherResource extends Resource
             ]);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user = auth()->user();
+
+        if ($user->isAreaManager()) {
+            $query->whereHas('site', function ($query) use ($user) {
+                $query->where('id', $user->getSiteId())
+                      ->where('area', $user->getArea());
+            });
+        } elseif ($user->isTeacher()) {
+            $query->where('user_id', $user->id);
+        }
+
+        return $query->with(['site']);
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -108,7 +131,9 @@ class TeacherResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('Teléfono')
-                    ->numeric()
+                    ->formatStateUsing(function ($state) {
+                        return substr($state, 0, 4) . '-' . substr($state, 4);
+                    })
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('email')
@@ -143,23 +168,55 @@ class TeacherResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('export_pdf')
+                    ->label('Exportar PDF')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->action(function (Teacher $record) {
+                        $user = auth()->user();
+                        
+                        if (!$user->can('view', $record)) {
+                            return;
+                        }
+
+                        $pdf = Pdf::loadView('pdf.teacher-details', [
+                            'teacher' => $record,
+                            'user' => $user,
+                        ]);
+
+                        return response()->streamDownload(function () use ($pdf) {
+                            echo $pdf->output();
+                        }, "teacher_{$record->id}.pdf");
+                    })
+                    ->visible(fn (Teacher $record) => auth()->user()->can('view', $record)),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\BulkAction::make('export_selected')
+                    ->label('Exportar Seleccionados')
+                    ->action(function (Collection $records) {
+                        $user = auth()->user();
+                        $records = $records->filter(fn ($record) => $user->can('view', $record));
+                        
+                        $pdf = Pdf::loadView('pdf.teachers-list', [
+                            'teachers' => $records,
+                            'user' => $user,
+                        ]);
+
+                        return response()->streamDownload(function () use ($pdf) {
+                            echo $pdf->output();
+                        }, 'teachers_export.pdf');
+                    })
             ]);
     }
-
+    
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-
+    
     public static function getPages(): array
     {
         return [
@@ -167,5 +224,5 @@ class TeacherResource extends Resource
             'create' => Pages\CreateTeacher::route('/create'),
             'edit' => Pages\EditTeacher::route('/{record}/edit'),
         ];
-    }
+    }    
 }

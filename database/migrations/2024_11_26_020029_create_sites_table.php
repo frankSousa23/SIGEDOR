@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('teacher_id');
+            $table->foreignId('teacher_id')->constrained()->onDelete('cascade');
             $table->string('site');
             $table->string('area');
             $table->string('program');

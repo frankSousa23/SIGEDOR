@@ -53,7 +53,7 @@
                                     <a href="{{ url('/dashboard') }}" 
                                        class="text-sm text-slate-300 hover:text-white transition">Escritorio</a>
                                 @else
-                                    <a href="{{ route('login') }}" 
+                                    <a href="{{ url('/dashboard/login') }}" 
                                        class="text-sm text-slate-300 hover:text-white transition">Iniciar Sesión</a>
                                 @endauth
                             </div>
@@ -86,7 +86,7 @@
                                         Escritorio
                                     </a>
                                 @else
-                                    <a href="{{ route('login') }}" 
+                                    <a href="{{ url('/dashboard/login') }}" 
                                        class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg 
                                               font-medium transition-all shadow-lg hover:shadow-blue-500/25">
                                         Comenzar

@@ -23,66 +23,73 @@ class DedicationResource extends Resource
     protected static ?string $navigationLabel = 'Dedicación';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Asesoría Académica';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('teacher_id')
-                    ->relationship(name: 'teacher', titleAttribute: 'cdi')
+                    ->relationship('teacher', 'name')
+                    ->required()
                     ->label('Docente')
-                    ->options(function () {
-                        return Teacher::whereDoesntHave('dedication')->pluck('cdi', 'id');
-                    })
-                    ->required(),
+                    ->searchable()
+                    ->preload(),
+                
                 Forms\Components\Select::make('dedication')
-                    ->label('Dedicación')
                     ->options([
-                        'tcv' => 'TCV',
-                        'mt' => 'MT',
-                        'tc' => 'TC',
-                        'ex' => 'EX',
+                        'TCV' => 'Tiempo Convencional',
+                        'MT' => 'Medio Tiempo',
+                        'TC' => 'Tiempo Completo',
+                        'EX' => 'Exclusiva'
                     ])
                     ->required()
+                    ->label('Dedicación')
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set) {
                         $set('hours', null);
                     }),
+
                 Forms\Components\Select::make('hours')
                     ->label('Horas')
                     ->options(function (callable $get) {
-                        $selectedOption = $get('dedication');
-                        switch ($selectedOption) {
-                            case 'tcv':
+                        $dedication = $get('dedication');
+                        
+                        switch ($dedication) {
+                            case 'TCV':
+                                return array_combine(range(1, 17), range(1, 17));
+                            case 'MT':
+                                return ['18' => '18'];
+                            case 'TC':
+                                return ['30' => '30'];
+                            case 'EX':
                                 return [
-                                    1 => '1',
-                                    2 => '2',
-                                    3 => '3',
-                                    4 => '4',
-                                    5 => '5',
-                                    6 => '6',
-                                    7 => '7',
-                                ];
-                            case 'mt':
-                                return [
-                                    18 => '18',
-                                ];
-                            case 'tc':
-                                return [
-                                    30 => '30',
-                                ];
-                            case 'ex':
-                                return [
-                                    35 => '35',
-                                    36 => '36',
+                                    '35' => '35',
+                                    '36' => '36'
                                 ];
                             default:
                                 return [];
                         }
                     })
-                    ->required()
-                    ->rules(['in:1,2,3,4,5,6,7,18,30,35,36']),
-                Forms\Components\TextInput::make('info')
-                    ->maxLength(255),
+                    ->required(),
+
+                Forms\Components\Select::make('director')
+                    ->options([
+                        '' => 'Sin Cargo Directivo',
+                        'Coordinador' => 'Coordinador',
+                        'Jefe de Departamento' => 'Jefe de Departamento',
+                        'Decano' => 'Decano'
+                    ])
+                    ->label('Cargo Directivo')
+                    ->nullable()
+                    ->helperText('Seleccione si tiene algún cargo directivo'),
+
+                Forms\Components\TextInput::make('studentNumber')
+                    ->numeric()
+                    ->label('Asesorías')
+                    ->helperText('Número de estudiantes en asesoría (1-100)')
+                    ->minValue(1)
+                    ->maxValue(100)
+                    ->nullable(),
             ]);
     }
 
@@ -90,33 +97,35 @@ class DedicationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('teacher.cdi')
+                Tables\Columns\TextColumn::make('teacher.name')
                     ->label('Docente')
-                    ->numeric()
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('teacher.name')->label('Nombres')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('teacher.surName')->label('Apellidos')
-                    ->searchable()
-                    ->sortable(),
+                
                 Tables\Columns\TextColumn::make('dedication')
                     ->label('Dedicación')
-                    ->searchable()
-                    ->sortable(),
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'TCV' => 'Tiempo Convencional',
+                        'MT' => 'Medio Tiempo',
+                        'TC' => 'Tiempo Completo',
+                        'EX' => 'Exclusiva',
+                        default => $state,
+                    })
+                    ->searchable(),
+                
                 Tables\Columns\TextColumn::make('hours')
                     ->label('Horas')
-                    ->searchable()
+                    ->searchable(),
+                
+                Tables\Columns\TextColumn::make('director')
+                    ->label('Cargo Directivo')
+                    ->default('Sin Cargo')
+                    ->searchable(),
+                
+                Tables\Columns\TextColumn::make('studentNumber')
+                    ->label('Asesorías')
+                    ->default('0')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

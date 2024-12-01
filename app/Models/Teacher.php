@@ -3,15 +3,28 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Teacher extends Model
 {
     //
-    protected $fillable = ['cdi', 'name', 'surName', 'genre', 'phone', 'email', 'birthDate', 'datePromotion', 'asignaturePromotion'];
+    protected $fillable = [
+        'user_id',
+        'cdi', 
+        'name', 
+        'surName', 
+        'genre', 
+        'phone', 
+        'email', 
+        'birthDate', 
+        'datePromotion', 
+        'asignaturePromotion'
+    ];
 
-
-
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function category(){
         return $this->hasOne(Category::class);
