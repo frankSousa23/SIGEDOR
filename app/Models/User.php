@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Site;
 use App\Models\Teacher;
 
 class User extends Authenticatable
@@ -21,6 +23,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'cdi',
+        'site_id',
+        'is_active',
+        'is_approved'
     ];
 
     /**
@@ -41,11 +47,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'is_active' => 'boolean',
+        'is_approved' => 'boolean'
     ];
+
+    public function site(): BelongsTo
+    {
+        return $this->belongsTo(Site::class);
+    }
 
     public function teacher()
     {
-        return $this->hasOne(Teacher::class);
+        return $this->hasOne(Teacher::class, 'cdi', 'cdi');
     }
 
     public function isAdmin(): bool
@@ -65,11 +78,33 @@ class User extends Authenticatable
 
     public function getSiteId()
     {
-        return $this->teacher?->site?->id;
+        return $this->site_id;
     }
 
     public function getArea()
     {
-        return $this->teacher?->site?->area;
+        return $this->site?->area;
+    }
+
+    public function canAccessPanel(): bool
+    {
+        return $this->is_approved && $this->is_active;
+    }
+
+    public function canManageTeacher(Teacher $teacher): bool
+    {
+        if ($this->hasRole('admin')) {
+            return true;
+        }
+
+        if ($this->hasRole('area_manager')) {
+            return $this->site_id === $teacher->site_id;
+        }
+
+        if ($this->hasRole('teacher')) {
+            return $this->cdi === $teacher->cdi;
+        }
+
+        return false;
     }
 }

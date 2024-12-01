@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -12,32 +11,64 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-users';
+    
+    protected static ?string $navigationGroup = 'Manejo de Usuario';
+
     protected static ?string $navigationLabel = 'Usuarios';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Manejo de Usuarios';
+
+    protected static ?string $modelLabel = 'Usuario';
+
+    protected static ?string $pluralModelLabel = 'Usuarios';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Usuario')
+                TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->label('Correo')
+                    ->maxLength(255)
+                    ->label('Nombre'),
+                TextInput::make('email')
                     ->email()
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
-                    ->label('Contraseña')
+                    ->maxLength(255)
+                    ->unique(ignoreRecord: true),
+                TextInput::make('password')
                     ->password()
-                    ->required()
+                    ->required(fn ($context) => $context === 'create')
+                    ->maxLength(255)
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->label('Contraseña'),
+                TextInput::make('cdi')
+                    ->label('CDI')
+                    ->nullable()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
+                Select::make('site_id')
+                    ->relationship('site', 'name')
+                    ->nullable()
+                    ->label('Sede'),
+                Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->preload()
+                    ->required()
+                    ->label('Rol')
+                    ->options([
+                        'area_manager' => 'Jefe de Área',
+                        'teacher' => 'Profesor'
+                    ])
+                    ->default('teacher'),
             ]);
     }
 
@@ -45,36 +76,72 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Usuario')
+                TextColumn::make('name')
                     ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->label('Correo')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->label('Verificado')
-                    ->dateTime()
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Creado')
-                    ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Actualizado')
-                    ->dateTime()
+                    ->label('Nombre'),
+                TextColumn::make('email')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('cdi')
+                    ->searchable()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('CDI'),
+                TextColumn::make('site.name')
+                    ->searchable()
+                    ->sortable()
+                    ->label('Sede'),
+                TextColumn::make('roles.name')
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'admin' => 'Administrador',
+                        'area_manager' => 'Jefe de Área',
+                        'teacher' => 'Profesor',
+                        default => $state,
+                    })
+                    ->label('Rol'),
+                TextColumn::make('is_approved')
+                    ->badge()
+                    ->color(fn (bool $state): string => match ($state) {
+                        true => 'success',
+                        false => 'danger',
+                    })
+                    ->formatStateUsing(fn (bool $state): string => match ($state) {
+                        true => 'Aprobado',
+                        false => 'Pendiente',
+                    })
+                    ->label('Estado'),
             ])
             ->filters([
-                //
+                SelectFilter::make('roles')
+                    ->relationship('roles', 'name')
+                    ->options([
+                        'area_manager' => 'Jefe de Área',
+                        'teacher' => 'Profesor'
+                    ])
+                    ->label('Rol'),
+                SelectFilter::make('site')
+                    ->relationship('site', 'name')
+                    ->label('Sede'),
+                SelectFilter::make('is_approved')
+                    ->options([
+                        '1' => 'Aprobado',
+                        '0' => 'Pendiente'
+                    ])
+                    ->label('Estado'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('approve')
+                    ->label('Aprobar')
+                    ->icon('heroicon-o-check')
+                    ->visible(fn (User $record) => 
+                        auth()->user()->hasRole('admin') && 
+                        !$record->is_approved && 
+                        !$record->hasRole('admin') &&
+                        auth()->id() !== $record->id
+                    )
+                    ->action(fn (User $record) => $record->update(['is_approved' => true])),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -82,14 +149,14 @@ class UserResource extends Resource
                 ]),
             ]);
     }
-
+    
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-
+    
     public static function getPages(): array
     {
         return [
@@ -97,5 +164,22 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        if (auth()->user()->hasRole('admin')) {
+            return $query;
+        }
+
+        if (auth()->user()->hasRole('area_manager')) {
+            return $query->whereHas('roles', function ($query) {
+                $query->where('name', 'teacher');
+            })->where('site_id', auth()->user()->site_id);
+        }
+
+        return $query->where('id', auth()->id());
     }
 }

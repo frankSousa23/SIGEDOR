@@ -20,9 +20,11 @@ use Illuminate\Support\Collection;
 class TeacherResource extends Resource
 {
     protected static ?string $model = Teacher::class;
+    protected static ?string $modelLabel = 'Docente';
+    protected static ?string $pluralModelLabel = 'Docentes';
     protected static ?string $navigationLabel = 'Docentes';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Manejo de Usuarios';
+    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    protected static ?string $navigationGroup = 'Gestión docente';
 
     public static function form(Form $form): Form
     {
