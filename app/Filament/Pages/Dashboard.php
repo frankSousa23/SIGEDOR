@@ -3,25 +3,29 @@
 namespace App\Filament\Pages;
 
 use Filament\Pages\Dashboard as BaseDashboard;
+use Illuminate\Support\Facades\Auth;
 
 class Dashboard extends BaseDashboard
 {
     protected static ?string $navigationIcon = 'heroicon-o-home';
-    protected static ?string $navigationLabel = 'Escritorio';
-    protected static ?string $title = 'Panel de Control';
-
-    public function getHeaderWidgets(): array
+    
+    public static function getNavigationLabel(): string
     {
-        return [
-            \App\Filament\Widgets\TeacherStatsOverview::class,
-        ];
+        return 'Dashboard';
     }
 
-    public function getWidgets(): array
+    public function getTitle(): string
     {
-        return [
-            \App\Filament\Widgets\TeacherDedicationChart::class,
-            \App\Filament\Widgets\TeachersPerCategoryChart::class,
-        ];
+        return 'Panel de Control';
+    }
+
+    public static function getSlug(): string
+    {
+        return 'dashboard';
+    }
+
+    public static function shouldRegister(): bool
+    {
+        return true; // Todos los usuarios autenticados pueden ver el dashboard base
     }
 }

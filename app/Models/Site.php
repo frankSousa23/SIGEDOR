@@ -3,16 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Site extends Model
 {
-    //
-    protected $fillable = ['teacher_id', 'site', 'area', 'program', 'uc', 'weekHours', 'sections', 'info'];
+    protected $fillable = [
+        'name',
+        'area',
+        'program',
+        'uc',
+        'weekHours',
+        'sections',
+        'info'
+    ];
 
+    protected $casts = [
+        'weekHours' => 'integer',
+        'sections' => 'integer',
+    ];
 
-
-
-    public function teacher(){
-        return $this->belongsTo(Teacher::class);
+    public function teachers(): HasMany
+    {
+        return $this->hasMany(Teacher::class);
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\DedicationResource\Pages;
-use App\Filament\Resources\DedicationResource\RelationManagers;
 use App\Models\Dedication;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,18 +10,13 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\Select;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\Relationship;
-use App\Models\Teacher;
 
 class DedicationResource extends Resource
 {
     protected static ?string $model = Dedication::class;
     protected static ?string $navigationLabel = 'Dedicación';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Asesoría Académica';
+    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    protected static ?string $navigationGroup = 'Gestión Docente';
 
     public static function form(Form $form): Form
     {
@@ -33,7 +27,29 @@ class DedicationResource extends Resource
                     ->required()
                     ->label('Docente')
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->label('Nombre'),
+                        Forms\Components\TextInput::make('ci')
+                            ->required()
+                            ->label('Cédula')
+                            ->unique('teachers', 'ci'),
+                        Forms\Components\TextInput::make('phone')
+                            ->required()
+                            ->label('Teléfono')
+                            ->tel(),
+                        Forms\Components\Textarea::make('address')
+                            ->required()
+                            ->label('Dirección'),
+                    ])
+                    ->createOptionAction(function (Forms\Components\Actions\Action $action) {
+                        return $action
+                            ->modalHeading('Crear nuevo docente')
+                            ->modalButton('Crear docente')
+                            ->modalWidth('lg');
+                    }),
                 
                 Forms\Components\Select::make('dedication')
                     ->options([
@@ -47,49 +63,54 @@ class DedicationResource extends Resource
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set) {
                         $set('hours', null);
-                    }),
+                    })
+                    ->searchable(),
 
                 Forms\Components\Select::make('hours')
                     ->label('Horas')
                     ->options(function (callable $get) {
-                        $dedication = $get('dedication');
-                        
-                        switch ($dedication) {
-                            case 'TCV':
-                                return array_combine(range(1, 17), range(1, 17));
-                            case 'MT':
-                                return ['18' => '18'];
-                            case 'TC':
-                                return ['30' => '30'];
-                            case 'EX':
-                                return [
-                                    '35' => '35',
-                                    '36' => '36'
-                                ];
-                            default:
-                                return [];
-                        }
+                        return Dedication::getValidHours($get('dedication'));
                     })
-                    ->required(),
+                    ->required()
+                    ->searchable(),
 
                 Forms\Components\Select::make('director')
                     ->options([
-                        '' => 'Sin Cargo Directivo',
-                        'Coordinador' => 'Coordinador',
-                        'Jefe de Departamento' => 'Jefe de Departamento',
-                        'Decano' => 'Decano'
+                        Dedication::DIRECTOR_COORDINATOR => 'Coordinador',
+                        Dedication::DIRECTOR_DEPARTMENT_HEAD => 'Jefe de Departamento',
+                        Dedication::DIRECTOR_DEAN => 'Decano'
                     ])
                     ->label('Cargo Directivo')
                     ->nullable()
+                    ->searchable()
                     ->helperText('Seleccione si tiene algún cargo directivo'),
 
                 Forms\Components\TextInput::make('studentNumber')
                     ->numeric()
-                    ->label('Asesorías')
+                    ->label('Número de Estudiantes')
                     ->helperText('Número de estudiantes en asesoría (1-100)')
                     ->minValue(1)
                     ->maxValue(100)
-                    ->nullable(),
+                    ->nullable()
+                    ->reactive()
+                    ->afterStateUpdated(fn ($state, callable $set) => 
+                        $set('studentHours', $state ? null : null)
+                    ),
+
+                Forms\Components\TextInput::make('studentHours')
+                    ->numeric()
+                    ->label('Horas de Asesoría')
+                    ->helperText('Número de horas dedicadas a asesorías (1-100)')
+                    ->minValue(1)
+                    ->maxValue(100)
+                    ->nullable()
+                    ->hidden(fn (callable $get) => !$get('studentNumber')),
+
+                Forms\Components\Textarea::make('info')
+                    ->label('Observaciones')
+                    ->nullable()
+                    ->maxLength(500)
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -101,7 +122,7 @@ class DedicationResource extends Resource
                     ->label('Docente')
                     ->searchable()
                     ->sortable(),
-                
+
                 Tables\Columns\TextColumn::make('dedication')
                     ->label('Dedicación')
                     ->formatStateUsing(fn (string $state): string => match ($state) {
@@ -110,22 +131,22 @@ class DedicationResource extends Resource
                         'TC' => 'Tiempo Completo',
                         'EX' => 'Exclusiva',
                         default => $state,
-                    })
-                    ->searchable(),
-                
+                    }),
+
                 Tables\Columns\TextColumn::make('hours')
-                    ->label('Horas')
-                    ->searchable(),
-                
+                    ->label('Horas'),
+
                 Tables\Columns\TextColumn::make('director')
                     ->label('Cargo Directivo')
-                    ->default('Sin Cargo')
-                    ->searchable(),
-                
+                    ->default('Sin Cargo'),
+
                 Tables\Columns\TextColumn::make('studentNumber')
-                    ->label('Asesorías')
-                    ->default('0')
-                    ->sortable(),
+                    ->label('Estudiantes')
+                    ->numeric(),
+
+                Tables\Columns\TextColumn::make('studentHours')
+                    ->label('Horas Asesoría')
+                    ->numeric(),
             ])
             ->filters([
                 //
@@ -140,14 +161,14 @@ class DedicationResource extends Resource
                 ]),
             ]);
     }
-
+    
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-
+    
     public static function getPages(): array
     {
         return [
@@ -155,5 +176,5 @@ class DedicationResource extends Resource
             'create' => Pages\CreateDedication::route('/create'),
             'edit' => Pages\EditDedication::route('/{record}/edit'),
         ];
-    }
+    }    
 }

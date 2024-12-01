@@ -3,250 +3,86 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
-use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Grid;
-use Filament\Tables\Columns\TextColumn;
-use App\Models\Teacher;
-use Illuminate\Support\Carbon;
-use Filament\Notifications\Notification;
 
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
-    protected static ?string $navigationLabel = 'Categoría';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Asesoría Académica';
-
-    protected static function shouldEnableAutoAssistant($preTitle, $lastTitle): bool 
-    {
-        if (empty($preTitle) || empty($lastTitle)) {
-            return false;
-        }
-
-        $preTitle = mb_strtolower($preTitle);
-        $lastTitle = mb_strtolower($lastTitle);
-
-        $keywords = [
-            'doctorado' => 4,
-            'doctor' => 4,
-            'phd' => 4,
-            'ph.d' => 4,
-            'maestria' => 3,
-            'maestría' => 3,
-            'magister' => 3,
-            'magíster' => 3,
-            'master' => 3,
-            'especialista' => 2,
-            'especialización' => 2,
-            'especializacion' => 2
-        ];
-
-        $preLevel = 1;
-        $lastLevel = 1;
-
-        foreach ($keywords as $keyword => $level) {
-            if (str_contains($preTitle, $keyword)) {
-                $preLevel = max($preLevel, $level);
-            }
-            if (str_contains($lastTitle, $keyword)) {
-                $lastLevel = max($lastLevel, $level);
-            }
-        }
-
-        return $lastLevel > $preLevel;
-    }
+    protected static ?string $navigationIcon = 'heroicon-o-tag';
+    protected static ?string $navigationLabel = 'Categorías';
+    protected static ?string $navigationGroup = 'Gestión Docente';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Información del Docente')
-                    ->description('Seleccione el docente e ingrese sus títulos académicos')
-                    ->collapsible()
-                    ->schema([
-                        Forms\Components\Select::make('teacher_id')
-                            ->relationship('teacher', 'cdi')
-                            ->label('Docente')
-                            ->options(function () {
-                                return Teacher::whereDoesntHave('category')->pluck('cdi', 'id');
-                            })
+                Forms\Components\Select::make('teacher_id')
+                    ->relationship('teacher', 'name')
+                    ->required()
+                    ->searchable()
+                    ->preload()
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('name')
                             ->required()
-                            ->reactive()
-                            ->columnSpan('full'),
+                            ->label('Nombre'),
+                        Forms\Components\TextInput::make('ci')
+                            ->required()
+                            ->label('Cédula')
+                            ->unique('teachers', 'ci'),
+                        Forms\Components\TextInput::make('phone')
+                            ->required()
+                            ->label('Teléfono')
+                            ->tel(),
+                        Forms\Components\Textarea::make('address')
+                            ->required()
+                            ->label('Dirección'),
+                    ])
+                    ->createOptionAction(function (Forms\Components\Actions\Action $action) {
+                        return $action
+                            ->modalHeading('Crear nuevo docente')
+                            ->modalButton('Crear docente')
+                            ->modalWidth('lg');
+                    })
+                    ->label('Docente'),
 
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\TextInput::make('preTitle')
-                                    ->label('Título de Pregrado')
-                                    ->placeholder('Ej: Licenciado en Matemáticas')
-                                    ->helperText('Ingrese el título de pregrado completo')
-                                    ->live(debounce: 2000)
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->reactive()
-                                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                        if (!$get('lastTitle')) {
-                                            $set('lastTitle', $state);
-                                        }
-                                    }),
+                Forms\Components\Select::make('category')
+                    ->options([
+                        'Instructor' => 'Instructor',
+                        'Asistente' => 'Asistente',
+                        'Agregado' => 'Agregado',
+                        'Asociado' => 'Asociado',
+                        'Titular' => 'Titular'
+                    ])
+                    ->required()
+                    ->searchable()
+                    ->label('Categoría'),
 
-                                Forms\Components\TextInput::make('lastTitle')
-                                    ->label('Título Actual')
-                                    ->placeholder('Ej: Doctor en Educación')
-                                    ->helperText('Ingrese el título más alto obtenido')
-                                    ->live(debounce: 2000)
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->reactive()
-                                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                        if ($state && $get('preTitle')) {
-                                            $shouldEnable = static::shouldEnableAutoAssistant($get('preTitle'), $state);
-                                            if ($shouldEnable) {
-                                                $set('disable_assistant_rule', true);
-                                            }
-                                        }
-                                    }),
-                            ]),
+                Forms\Components\Select::make('title')
+                    ->options([
+                        'TSU' => 'TSU',
+                        'Licenciado' => 'Licenciado',
+                        'Especialista' => 'Especialista',
+                        'Magister' => 'Magister',
+                        'Doctor' => 'Doctor'
+                    ])
+                    ->required()
+                    ->searchable()
+                    ->label('Título'),
 
-                        Forms\Components\Toggle::make('disable_assistant_rule')
-                            ->label('Promoción Inmediata')
-                            ->helperText('Active para habilitar la promoción inmediata a Asistente')
-                            ->live(),
-                    ]),
+                Forms\Components\DatePicker::make('start_date')
+                    ->required()
+                    ->label('Fecha de Inicio')
+                    ->format('Y-m-d'),
 
-                Forms\Components\Section::make('Fechas de Categorías')
-                    ->description('Ingrese las fechas de cada categoría docente')
-                    ->collapsible()
-                    ->schema([
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\DatePicker::make('instructor')
-                                    ->label('Fecha de Instructor')
-                                    ->required()
-                                    ->live(debounce: 2000)
-                                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                        if ($state) {
-                                            $set('current_category', 'Instructor');
-                                            if ($get('disable_assistant_rule')) {
-                                                $set('asistente', $state);
-                                                $set('current_category', 'Asistente');
-                                            }
-                                        }
-                                    }),
-
-                                Forms\Components\DatePicker::make('asistente')
-                                    ->label('Fecha de Asistente')
-                                    ->live(debounce: 2000)
-                                    ->disabled(fn ($get) => !$get('instructor'))
-                                    ->dehydrated()
-                                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                        if ($state && !$get('disable_assistant_rule')) {
-                                            $instructorDate = $get('instructor');
-                                            if ($instructorDate) {
-                                                $minDate = Carbon::parse($instructorDate)->addYears(2)->startOfDay();
-                                                if (Carbon::parse($state)->startOfDay()->lessThan($minDate)) {
-                                                    Notification::make()
-                                                        ->warning()
-                                                        ->title('Aviso')
-                                                        ->body('Se recomienda que la fecha sea al menos 2 años después de la fecha del instructor.')
-                                                        ->duration(10000)
-                                                        ->send();
-                                                }
-                                                $set('current_category', 'Asistente');
-                                            }
-                                        }
-                                    }),
-
-                                Forms\Components\DatePicker::make('agregado')
-                                    ->label('Fecha de Agregado')
-                                    ->live(debounce: 2000)
-                                    ->disabled(fn ($get) => !$get('asistente'))
-                                    ->dehydrated()
-                                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                        if ($state) {
-                                            $asistenteDate = $get('asistente');
-                                            if ($asistenteDate) {
-                                                $minDate = Carbon::parse($asistenteDate)->addYears(4)->startOfDay();
-                                                if (Carbon::parse($state)->startOfDay()->lessThan($minDate)) {
-                                                    Notification::make()
-                                                        ->warning()
-                                                        ->title('Aviso')
-                                                        ->body('Se recomienda que la fecha sea al menos 4 años después de la fecha de asistente.')
-                                                        ->duration(10000)
-                                                        ->send();
-                                                }
-                                                $set('current_category', 'Agregado');
-                                            }
-                                        }
-                                    }),
-
-                                Forms\Components\DatePicker::make('asociado')
-                                    ->label('Fecha de Asociado')
-                                    ->live(debounce: 2000)
-                                    ->disabled(fn ($get) => !$get('agregado'))
-                                    ->dehydrated()
-                                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                        if ($state) {
-                                            $agregadoDate = $get('agregado');
-                                            if ($agregadoDate) {
-                                                $minDate = Carbon::parse($agregadoDate)->addYears(4)->startOfDay();
-                                                if (Carbon::parse($state)->startOfDay()->lessThan($minDate)) {
-                                                    Notification::make()
-                                                        ->warning()
-                                                        ->title('Aviso')
-                                                        ->body('Se recomienda que la fecha sea al menos 4 años después de la fecha de agregado.')
-                                                        ->duration(10000)
-                                                        ->send();
-                                                }
-                                                $set('current_category', 'Asociado');
-                                            }
-                                        }
-                                    }),
-
-                                Forms\Components\DatePicker::make('titular')
-                                    ->label('Fecha de Titular')
-                                    ->live(debounce: 2000)
-                                    ->disabled(fn ($get) => !$get('asociado'))
-                                    ->dehydrated()
-                                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                        if ($state) {
-                                            $asociadoDate = $get('asociado');
-                                            if ($asociadoDate) {
-                                                $minDate = Carbon::parse($asociadoDate)->addYears(5)->startOfDay();
-                                                if (Carbon::parse($state)->startOfDay()->lessThan($minDate)) {
-                                                    Notification::make()
-                                                        ->warning()
-                                                        ->title('Aviso')
-                                                        ->body('Se recomienda que la fecha sea al menos 5 años después de la fecha de asociado.')
-                                                        ->duration(10000)
-                                                        ->send();
-                                                }
-                                                $set('current_category', 'Titular');
-                                            }
-                                        }
-                                    }),
-                            ]),
-                    ]),
-
-                Forms\Components\Section::make('Información Adicional')
-                    ->schema([
-                        Forms\Components\TextInput::make('info')
-                            ->label('Observaciones')
-                            ->maxLength(255),
-
-                        Forms\Components\Hidden::make('current_category')
-                            ->default('Instructor'),
-                    ]),
+                Forms\Components\Textarea::make('info')
+                    ->label('Observaciones')
+                    ->maxLength(500)
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -254,55 +90,29 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('teacher.cdi')
+                Tables\Columns\TextColumn::make('teacher.name')
                     ->label('Docente')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('teacher.name')
-                    ->label('Nombres')
+
+                Tables\Columns\TextColumn::make('category')
+                    ->label('Categoría')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('teacher.surName')
-                    ->label('Apellidos')
+
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Título')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('current_category')
-                    ->label('Categoría Actual')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('preTitle')
-                    ->label('Título de Pregrado')
-                    ->searchable()
-                    ->sortable()
-                    ->wrap(),
-                Tables\Columns\TextColumn::make('lastTitle')
-                    ->label('Título Actual')
-                    ->searchable()
-                    ->sortable()
-                    ->wrap(),
-                Tables\Columns\IconColumn::make('disable_assistant_rule')
-                    ->label('Ascenso Inmediato')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('instructor')
-                    ->label('Instructor')
+
+                Tables\Columns\TextColumn::make('start_date')
+                    ->label('Fecha de Inicio')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('asistente')
-                    ->label('Asistente')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('agregado')
-                    ->label('Agregado')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('asociado')
-                    ->label('Asociado')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('titular')
-                    ->label('Titular')
-                    ->date()
-                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('info')
+                    ->label('Observaciones')
+                    ->limit(50),
             ])
             ->filters([
                 //
@@ -317,14 +127,14 @@ class CategoryResource extends Resource
                 ]),
             ]);
     }
-
+    
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-
+    
     public static function getPages(): array
     {
         return [
@@ -332,5 +142,5 @@ class CategoryResource extends Resource
             'create' => Pages\CreateCategory::route('/create'),
             'edit' => Pages\EditCategory::route('/{record}/edit'),
         ];
-    }
+    }    
 }

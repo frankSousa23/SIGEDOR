@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Role; // Added this line to import the Role model
+use Spatie\Permission\Traits\HasRoles;
+use App\Models\Teacher;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -44,40 +43,33 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function roles()
+    public function teacher()
     {
-        return $this->belongsToMany(Role::class)
-            ->withPivot(['site_id', 'area'])
-            ->withTimestamps();
+        return $this->hasOne(Teacher::class);
     }
 
-    public function hasRole($role)
-    {
-        return $this->roles()->where('slug', $role)->exists();
-    }
-
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->hasRole('admin');
     }
 
-    public function isAreaManager()
+    public function isAreaManager(): bool
     {
-        return $this->hasRole('area-manager');
+        return $this->hasRole('area_manager');
     }
 
-    public function isTeacher()
+    public function isTeacher(): bool
     {
         return $this->hasRole('teacher');
     }
 
     public function getSiteId()
     {
-        return $this->roles()->first()?->pivot->site_id;
+        return $this->teacher?->site?->id;
     }
 
     public function getArea()
     {
-        return $this->roles()->first()?->pivot->area;
+        return $this->teacher?->site?->area;
     }
 }

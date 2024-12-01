@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('permissions', function (Blueprint $table) {
+        Schema::create('permissionsteachers', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->datetime('start_date');
+            $table->datetime('end_date')->nullable();
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->foreignId('teacher_id')->constrained()->onDelete('cascade');
-            $table->string('permission');
-            $table->string('memoNumber');
-            $table->string('typePermission');
-            $table->date('date')->nullable();
-            $table->boolean('rnr')->default('0');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('permissions');
+        Schema::dropIfExists('permissionsteachers');
     }
 };

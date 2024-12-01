@@ -3,46 +3,51 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\User;
+use App\Models\PermissionTeacher;
 
 class Teacher extends Model
 {
     //
     protected $fillable = [
         'user_id',
-        'cdi', 
-        'name', 
-        'surName', 
-        'genre', 
-        'phone', 
-        'email', 
-        'birthDate', 
-        'datePromotion', 
-        'asignaturePromotion'
+        'site_id',
+        'name',
+        'ci',
+        'phone',
+        'address',
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function category(){
+    public function site(): BelongsTo
+    {
+        return $this->belongsTo(Site::class);
+    }
+
+    public function category(): HasOne
+    {
         return $this->hasOne(Category::class);
     }
 
-    public function dedication(){
+    public function dedication(): HasOne
+    {
         return $this->hasOne(Dedication::class);
     }
 
-    public function permission(){
-        return $this->hasOne(Permission::class);
+    public function permissionTeachers(): HasMany
+    {
+        return $this->hasMany(PermissionTeacher::class);
     }
 
-    public function site(){
-        return $this->hasOne(Site::class);
-    }
-
-    public function report(){
+    public function reports(): HasMany
+    {
         return $this->hasMany(Report::class);
     }
 }

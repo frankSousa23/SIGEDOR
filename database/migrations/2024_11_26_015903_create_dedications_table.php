@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('dedications', function (Blueprint $table) {
             $table->id();
-            $table->string('dedication');
-            $table->string('hours');
-            $table->string('director')->nullable()->default(null);
-            $table->integer('studentNumber')->nullable()->default(null);
+            $table->enum('dedication', ['TCV', 'MT', 'TC', 'EX'])->comment('TCV: Tiempo Convencional, MT: Medio Tiempo, TC: Tiempo Completo, EX: Exclusiva');
+            $table->integer('hours')->comment('Horas semanales de dedicación');
+            $table->enum('director', ['Coordinador', 'Jefe de Departamento', 'Decano'])->nullable();
+            $table->integer('studentNumber')->nullable()->unsigned()->comment('Número de estudiantes en asesoría');
+            $table->integer('studentHours')->nullable()->unsigned()->comment('Horas dedicadas a asesorías');
+            $table->text('info')->nullable()->comment('Observaciones adicionales');
             $table->foreignId('teacher_id')->constrained()->onDelete('cascade');
+            $table->unique('teacher_id', 'teacher_single_dedication');
             $table->timestamps();
         });
     }

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('categories', function (Blueprint $table) {
-            $table->string('preTitle')->nullable()->after('category');
+            $table->string('preTitle')->nullable()->after('title');
             $table->string('lastTitle')->nullable()->after('preTitle');
             $table->boolean('disable_assistant_rule')->default(false)->after('lastTitle');
             $table->string('current_category')->nullable()->after('disable_assistant_rule');
