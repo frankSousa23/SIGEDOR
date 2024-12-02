@@ -4,12 +4,18 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DedicationResource\Pages;
 use App\Models\Dedication;
+use App\Models\Teacher;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Grid;
+use Filament\Tables\Columns\TextColumn;
 
 class DedicationResource extends Resource
 {
@@ -23,36 +29,22 @@ class DedicationResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('teacher_id')
-                    ->relationship('teacher', 'name')
-                    ->required()
-                    ->label('Docente')
-                    ->searchable()
-                    ->preload()
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
+                Forms\Components\Section::make('Información del Docente')
+                    ->description('Seleccione el docente e ingrese sus dedicaciones')
+                    ->collapsible()
+                    ->schema([
+                        Forms\Components\Select::make('teacher_id')
+                            ->relationship('teacher', 'cdi')
+                            ->label('Docente')
+                            ->options(function () {
+                                return Teacher::whereDoesntHave('dedication')->pluck('cdi', 'id');
+                            })
                             ->required()
-                            ->label('Nombre'),
-                        Forms\Components\TextInput::make('ci')
-                            ->required()
-                            ->label('Cédula')
-                            ->unique('teachers', 'ci'),
-                        Forms\Components\TextInput::make('phone')
-                            ->required()
-                            ->label('Teléfono')
-                            ->tel(),
-                        Forms\Components\Textarea::make('address')
-                            ->required()
-                            ->label('Dirección'),
-                    ])
-                    ->createOptionAction(function (Forms\Components\Actions\Action $action) {
-                        return $action
-                            ->modalHeading('Crear nuevo docente')
-                            ->modalButton('Crear docente')
-                            ->modalWidth('lg');
-                    }),
+                            ->reactive()
+                            ->columnSpan('full'),
+                    ]),
                 
-                Forms\Components\Select::make('dedication')
+                Forms\Components\Select::make('name')
                     ->options([
                         'TCV' => 'Tiempo Convencional',
                         'MT' => 'Medio Tiempo',
@@ -65,25 +57,28 @@ class DedicationResource extends Resource
                     ->afterStateUpdated(function ($state, callable $set) {
                         $set('hours', null);
                     })
-                    ->searchable(),
+                    ->searchable()
+                    ->preload(),
 
                 Forms\Components\Select::make('hours')
                     ->label('Horas')
                     ->options(function (callable $get) {
-                        return Dedication::getValidHours($get('dedication'));
+                        return Dedication::getValidHours($get('name'));
                     })
                     ->required()
-                    ->searchable(),
+                    ->searchable()
+                    ->preload(),
 
                 Forms\Components\Select::make('director')
                     ->options([
-                        Dedication::DIRECTOR_COORDINATOR => 'Coordinador',
-                        Dedication::DIRECTOR_DEPARTMENT_HEAD => 'Jefe de Departamento',
-                        Dedication::DIRECTOR_DEAN => 'Decano'
+                        'Coordinador' => 'Coordinador',
+                        'Jefe de Departamento' => 'Jefe de Departamento',
+                        'Decano' => 'Decano'
                     ])
                     ->label('Cargo Directivo')
                     ->nullable()
                     ->searchable()
+                    ->preload()
                     ->helperText('Seleccione si tiene algún cargo directivo'),
 
                 Forms\Components\TextInput::make('studentNumber')
@@ -124,7 +119,7 @@ class DedicationResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('dedication')
+                Tables\Columns\TextColumn::make('name')
                     ->label('Dedicación')
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'TCV' => 'Tiempo Convencional',
@@ -132,7 +127,8 @@ class DedicationResource extends Resource
                         'TC' => 'Tiempo Completo',
                         'EX' => 'Exclusiva',
                         default => $state,
-                    }),
+                    })
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('hours')
                     ->label('Horas'),

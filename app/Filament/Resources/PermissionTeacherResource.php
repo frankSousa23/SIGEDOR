@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PermissionTeacherResource\Pages;
 use App\Models\PermissionTeacher;
+use App\Models\Teacher;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -29,34 +30,20 @@ class PermissionTeacherResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('teacher_id')
-                    ->relationship('teacher', 'name')
-                    ->required()
-                    ->searchable()
-                    ->preload()
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
+                Forms\Components\Section::make('Información del Docente')
+                    ->description('Seleccione el docente e ingrese sus permisos')
+                    ->collapsible()
+                    ->schema([
+                        Forms\Components\Select::make('teacher_id')
+                            ->relationship('teacher', 'cdi')
+                            ->label('Docente')
+                            ->options(function () {
+                                return Teacher::whereDoesntHave('permissionTeacher')->pluck('cdi', 'id');
+                            })
                             ->required()
-                            ->label('Nombre'),
-                        Forms\Components\TextInput::make('ci')
-                            ->required()
-                            ->label('Cédula')
-                            ->unique('teachers', 'ci'),
-                        Forms\Components\TextInput::make('phone')
-                            ->required()
-                            ->label('Teléfono')
-                            ->tel(),
-                        Forms\Components\Textarea::make('address')
-                            ->required()
-                            ->label('Dirección'),
-                    ])
-                    ->createOptionAction(function (Forms\Components\Actions\Action $action) {
-                        return $action
-                            ->modalHeading('Crear nuevo docente')
-                            ->modalButton('Crear docente')
-                            ->modalWidth('lg');
-                    })
-                    ->label('Docente'),
+                            ->reactive()
+                            ->columnSpan('full'),
+                    ]),
 
                 Forms\Components\TextInput::make('name')
                     ->required()
@@ -69,9 +56,10 @@ class PermissionTeacherResource extends Resource
                         'approved' => 'Aprobado',
                         'rejected' => 'Rechazado'
                     ])
+                    ->default('pending')
                     ->required()
-                    ->searchable()
-                    ->label('Estado'),
+                    ->label('Estado')
+                    ->native(false),
 
                 Forms\Components\DatePicker::make('start_date')
                     ->required()

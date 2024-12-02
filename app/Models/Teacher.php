@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\User;
 use App\Models\Site;
 use App\Models\Category;
 use App\Models\Dedication;
 use App\Models\PermissionTeacher;
+use App\Models\Report;
+use App\Models\User;
 
 class Teacher extends Model
 {
@@ -34,6 +34,7 @@ class Teacher extends Model
         'has_site',
         'has_category',
         'has_dedication',
+        'has_permission',
         'is_completed'
     ];
 
@@ -43,6 +44,7 @@ class Teacher extends Model
         'has_site' => 'boolean',
         'has_category' => 'boolean',
         'has_dedication' => 'boolean',
+        'has_permission' => 'boolean',
         'is_completed' => 'boolean'
     ];
 
@@ -66,14 +68,14 @@ class Teacher extends Model
         return $this->belongsTo(Dedication::class);
     }
 
-    public function permissionTeachers(): HasMany
-    {
-        return $this->hasMany(PermissionTeacher::class);
-    }
-
     public function reports(): HasMany
     {
         return $this->hasMany(Report::class);
+    }
+
+    public function permissionTeacher(): HasMany
+    {
+        return $this->hasMany(PermissionTeacher::class);
     }
 
     public function getFullNameAttribute(): string
@@ -84,22 +86,5 @@ class Teacher extends Model
     public function scopeCompleted($query)
     {
         return $query->where('is_completed', true);
-    }
-
-    public function scopePendingSite($query)
-    {
-        return $query->where('has_site', false);
-    }
-
-    public function scopePendingCategory($query)
-    {
-        return $query->where('has_site', true)
-                    ->where('has_category', false);
-    }
-
-    public function scopePendingDedication($query)
-    {
-        return $query->where('has_category', true)
-                    ->where('has_dedication', false);
     }
 }

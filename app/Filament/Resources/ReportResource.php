@@ -2,13 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ReportResource\Pages;
 use App\Models\Report;
+use App\Models\Teacher;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use App\Filament\Resources\ReportResource\Pages;
+use Filament\Actions\Exports\Models\Export;
 
 class ReportResource extends Resource
 {
@@ -18,38 +20,93 @@ class ReportResource extends Resource
     protected static ?string $navigationGroup = 'Reportes';
     protected static ?int $navigationSort = 3;
 
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('teacher.cdi')
+                    ->label('Docente')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('type')
+                    ->label('Tipo')
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'academic' => 'Académico',
+                        'administrative' => 'Administrativo',
+                        'research' => 'Investigación',
+                        'extension' => 'Extensión',
+                        default => $state,
+                    })
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Título')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('report_date')
+                    ->label('Fecha')
+                    ->date()
+                    ->sortable(),
+
+                Tables\Columns\BadgeColumn::make('status')
+                    ->label('Estado')
+                    ->colors([
+                        'warning' => 'draft',
+                        'primary' => 'submitted',
+                        'success' => 'approved',
+                        'danger' => 'rejected',
+                    ])
+                    ->searchable()
+                    ->sortable(),
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ExportBulkAction::make()
+                        ->formats([
+                            'pdf'
+                        ])
+                ]),
+            ]);
+    }
+    
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListReports::route('/'),
+            'create' => Pages\CreateReport::route('/create'),
+            'edit' => Pages\EditReport::route('/{record}/edit'),
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('teacher_id')
-                    ->relationship('teacher', 'name')
-                    ->required()
-                    ->searchable()
-                    ->preload()
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
+                Forms\Components\Section::make('Información del Docente')
+                    ->description('Seleccione el docente para generar el reporte')
+                    ->collapsible()
+                    ->schema([
+                        Forms\Components\Select::make('teacher_id')
+                            ->relationship('teacher', 'cdi')
+                            ->label('Docente')
+                            ->options(function () {
+                                return Teacher::whereDoesntHave('report')->pluck('cdi', 'id');
+                            })
                             ->required()
-                            ->label('Nombre'),
-                        Forms\Components\TextInput::make('ci')
-                            ->required()
-                            ->label('Cédula')
-                            ->unique('teachers', 'ci'),
-                        Forms\Components\TextInput::make('phone')
-                            ->required()
-                            ->label('Teléfono')
-                            ->tel(),
-                        Forms\Components\Textarea::make('address')
-                            ->required()
-                            ->label('Dirección'),
-                    ])
-                    ->createOptionAction(function (Forms\Components\Actions\Action $action) {
-                        return $action
-                            ->modalHeading('Crear nuevo docente')
-                            ->modalButton('Crear docente')
-                            ->modalWidth('lg');
-                    })
-                    ->label('Docente'),
+                            ->reactive()
+                            ->columnSpan('full'),
+                    ]),
 
                 Forms\Components\Select::make('type')
                     ->options([
@@ -105,75 +162,10 @@ class ReportResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('teacher.name')
-                    ->label('Docente')
-                    ->searchable()
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('type')
-                    ->label('Tipo')
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'academic' => 'Académico',
-                        'administrative' => 'Administrativo',
-                        'research' => 'Investigación',
-                        'extension' => 'Extensión',
-                        default => $state,
-                    })
-                    ->searchable()
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('title')
-                    ->label('Título')
-                    ->searchable()
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('report_date')
-                    ->label('Fecha')
-                    ->date()
-                    ->sortable(),
-
-                Tables\Columns\BadgeColumn::make('status')
-                    ->label('Estado')
-                    ->colors([
-                        'warning' => 'draft',
-                        'primary' => 'submitted',
-                        'success' => 'approved',
-                        'danger' => 'rejected',
-                    ])
-                    ->searchable()
-                    ->sortable(),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
-    }
-    
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListReports::route('/'),
-            'create' => Pages\CreateReport::route('/create'),
-            'edit' => Pages\EditReport::route('/{record}/edit'),
-        ];
-    }    
 }

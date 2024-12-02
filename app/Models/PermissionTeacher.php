@@ -21,7 +21,12 @@ class PermissionTeacher extends Model
     protected $casts = [
         'start_date' => 'datetime',
         'end_date' => 'datetime',
+        'status' => 'string'
     ];
+
+    const STATUS_PENDING = 'pending';
+    const STATUS_APPROVED = 'approved';
+    const STATUS_REJECTED = 'rejected';
 
     public function teacher(): BelongsTo
     {

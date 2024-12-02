@@ -118,50 +118,10 @@ class TeacherResource extends Resource
                 Forms\Components\Select::make('site_id')
                     ->relationship('site', 'name')
                     ->label('Sede')
-                    ->searchable()
+                    ->required()
                     ->preload()
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->label('Nombre de la Sede')
-                            ->maxLength(255),
-                        Forms\Components\Select::make('area')
-                            ->required()
-                            ->options([
-                                'Administración' => 'Administración',
-                                'Ingeniería' => 'Ingeniería',
-                                'Humanidades' => 'Humanidades',
-                                'Ciencias' => 'Ciencias',
-                                'Educación' => 'Educación',
-                            ])
-                            ->searchable()
-                            ->allowHtml()
-                            ->createOptionForm([
-                                Forms\Components\TextInput::make('name')
-                                    ->required()
-                                    ->label('Nueva Área')
-                                    ->maxLength(255),
-                            ])
-                            ->createOptionUsing(function (array $data) {
-                                return $data['name'];
-                            })
-                            ->createOptionAction(function (Forms\Components\Actions\Action $action) {
-                                return $action
-                                    ->modalHeading('Crear nueva área')
-                                    ->modalButton('Agregar área');
-                            }),
-                    ])
-                    ->createOptionUsing(function (array $data) {
-                        return \App\Models\Site::create([
-                            'name' => $data['name'],
-                            'area' => $data['area'],
-                        ])->id;
-                    })
-                    ->createOptionAction(function (Forms\Components\Actions\Action $action) {
-                        return $action
-                            ->modalHeading('Crear nueva sede')
-                            ->modalButton('Agregar sede');
-                    }),
+                    ->searchable()
+                    ->helperText('Puede seleccionar cualquier sede, incluso si ya tiene profesores asignados'),
 
                 Forms\Components\Select::make('category_id')
                     ->relationship('category', 'current_category')

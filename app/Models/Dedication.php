@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Dedication extends Model
 {
     protected $fillable = [
-        'dedication',
+        'name',
         'hours',
         'director',
         'studentNumber',
@@ -29,10 +29,12 @@ class Dedication extends Model
     const DEDICATION_TC = 'TC';
     const DEDICATION_EX = 'EX';
 
-    // Constantes para cargos directivos
+    // Constantes para tipos de director
     const DIRECTOR_COORDINATOR = 'Coordinador';
     const DIRECTOR_DEPARTMENT_HEAD = 'Jefe de Departamento';
     const DIRECTOR_DEAN = 'Decano';
+    const DIRECTOR_DIRECTOR = 'Director';
+    const DIRECTOR_SUB_DIRECTOR = 'Sub-Director';
 
     // Horas por tipo de dedicación
     const HOURS_RANGES = [
@@ -51,20 +53,14 @@ class Dedication extends Model
         return $this->hasMany(Report::class);
     }
 
-    public static function getValidHours(?string $dedicationType): array
+    public static function getValidHours($name)
     {
-        if (!$dedicationType || !isset(self::HOURS_RANGES[$dedicationType])) {
-            return [];
-        }
-
-        $range = self::HOURS_RANGES[$dedicationType];
-        if ($range[0] === $range[1]) {
-            return [$range[0] => $range[0]];
-        }
-
-        return array_combine(
-            range($range[0], $range[1]),
-            range($range[0], $range[1])
-        );
+        return match ($name) {
+            self::DEDICATION_TCV => array_combine(range(1, 17), range(1, 17)),
+            self::DEDICATION_MT => [18 => 18],
+            self::DEDICATION_TC => [30 => 30],
+            self::DEDICATION_EX => [35 => 35, 36 => 36],
+            default => [],
+        };
     }
 }

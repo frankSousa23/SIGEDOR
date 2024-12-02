@@ -2,14 +2,16 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SiteResource\Pages;
 use App\Models\Site;
 use App\Models\Teacher;
+use App\Filament\Resources\SiteResource\Pages;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SiteResource extends Resource
 {
@@ -23,112 +25,70 @@ class SiteResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('teacher_id')
-                    ->relationship(
-                        name: 'teachers',
-                        titleAttribute: 'cdi',
-                        modifyQueryUsing: fn ($query) => $query
-                            ->whereNull('site_id')
-                            ->where('has_site', false)
-                            ->where('is_completed', true)
-                            ->orderBy('cdi')
-                    )
-                    ->label('Docente (C.I.)')
-                    ->required()
-                    ->searchable(['cdi', 'name', 'surName'])
-                    ->getSearchResultsUsing(
-                        fn (string $search) => Teacher::query()
-                            ->whereNull('site_id')
-                            ->where('has_site', false)
-                            ->where('is_completed', true)
-                            ->where(function ($query) use ($search) {
-                                $query->where('cdi', 'like', "%{$search}%")
-                                    ->orWhere('name', 'like', "%{$search}%")
-                                    ->orWhere('surName', 'like', "%{$search}%");
+                Forms\Components\Section::make('Información del Docente')
+                    ->description('Seleccione el docente para asignar el site')
+                    ->collapsible()
+                    ->schema([
+                        Forms\Components\Select::make('teacher_id')
+                            ->relationship('teachers', 'cdi')
+                            ->label('Docente')
+                            ->options(function () {
+                                return Teacher::whereDoesntHave('site')->pluck('cdi', 'id');
                             })
-                            ->limit(50)
-                            ->get()
-                            ->mapWithKeys(fn ($teacher) => [$teacher->id => $teacher->cdi])
-                            ->toArray()
-                    )
-                    ->getOptionLabelUsing(fn ($value): ?string => Teacher::find($value)?->cdi)
-                    ->preload()
-                    ->live()
-                    ->afterStateUpdated(function ($state, Forms\Set $set) {
-                        if ($state) {
-                            $teacher = Teacher::find($state);
-                            if ($teacher) {
-                                $teacher->update(['has_site' => true]);
-                            }
-                        }
-                    }),
+                            ->required()
+                            ->reactive()
+                            ->columnSpan('full'),
+                    ]),
 
                 Forms\Components\Select::make('name')
                     ->label('Site')
-                    ->required()
                     ->options([
-                        'Álgebra Lineal' => 'Álgebra Lineal',
-                        'Cálculo I' => 'Cálculo I',
-                        'Cálculo II' => 'Cálculo II',
-                        'Física I' => 'Física I',
-                        'Física II' => 'Física II',
+                        'Central' => 'Central',
+                        'Cagua' => 'Cagua',
+                        'La Victoria' => 'La Victoria',
+                        'Maracay' => 'Maracay',
+                        'San Juan' => 'San Juan',
+                        'Turmero' => 'Turmero'
                     ])
+                    ->required()
                     ->searchable()
-                    ->allowHtml()
+                    ->preload()
+                    ->live()
+                    ->native(false)
                     ->createOptionForm([
                         Forms\Components\TextInput::make('name')
                             ->required()
-                            ->label('Nuevo Site')
-                            ->maxLength(255),
-                    ])
-                    ->createOptionUsing(function (array $data) {
-                        return $data['name'];
-                    }),
+                            ->maxLength(255)
+                            ->unique('sites', 'name')
+                    ]),
 
                 Forms\Components\Select::make('area')
                     ->label('Área')
-                    ->required()
                     ->options([
-                        'Administración' => 'Administración',
                         'Ingeniería' => 'Ingeniería',
-                        'Humanidades' => 'Humanidades',
-                        'Ciencias' => 'Ciencias',
-                        'Educación' => 'Educación',
+                        'Ciencias Básicas' => 'Ciencias Básicas',
+                        'Humanidades' => 'Humanidades'
                     ])
+                    ->required()
                     ->searchable()
-                    ->allowHtml()
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->label('Nueva Área')
-                            ->maxLength(255),
-                    ])
-                    ->createOptionUsing(function (array $data) {
-                        return $data['name'];
-                    }),
+                    ->preload()
+                    ->live()
+                    ->native(false),
 
                 Forms\Components\Select::make('program')
                     ->label('Programa')
-                    ->required()
                     ->options([
-                        'Administración' => 'Administración',
-                        'Contaduría' => 'Contaduría',
                         'Ingeniería Civil' => 'Ingeniería Civil',
                         'Ingeniería de Sistemas' => 'Ingeniería de Sistemas',
-                        'Derecho' => 'Derecho',
-                        'Educación' => 'Educación',
+                        'Ingeniería Eléctrica' => 'Ingeniería Eléctrica',
+                        'Ingeniería Industrial' => 'Ingeniería Industrial',
+                        'Ingeniería Mecánica' => 'Ingeniería Mecánica'
                     ])
+                    ->required()
                     ->searchable()
-                    ->allowHtml()
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->label('Nuevo Programa')
-                            ->maxLength(255),
-                    ])
-                    ->createOptionUsing(function (array $data) {
-                        return $data['name'];
-                    }),
+                    ->preload()
+                    ->live()
+                    ->native(false),
 
                 Forms\Components\TextInput::make('uc')
                     ->label('Unidad Curricular')
@@ -166,29 +126,30 @@ class SiteResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('teachers.cdi')
-                    ->label('Docente (C.I.)')
-                    ->searchable()
-                    ->sortable(),
-
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Site')
+                    ->label('Sede')
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('area')
                     ->label('Área')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('program')
                     ->label('Programa')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('uc')
                     ->label('Unidad Curricular')
                     ->searchable(),
+
+                Tables\Columns\TextColumn::make('weekHours')
+                    ->label('Horas Semanales')
+                    ->numeric(),
+
+                Tables\Columns\TextColumn::make('sections')
+                    ->label('Secciones')
+                    ->numeric(),
 
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Activo')
@@ -198,26 +159,16 @@ class SiteResource extends Resource
                     ->label('Disponible')
                     ->boolean(),
 
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Creado')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Actualizado')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('teachers_count')
+                    ->label('Profesores')
+                    ->counts('teachers'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('area')
                     ->options([
-                        'Administración' => 'Administración',
                         'Ingeniería' => 'Ingeniería',
-                        'Humanidades' => 'Humanidades',
-                        'Ciencias' => 'Ciencias',
-                        'Educación' => 'Educación',
+                        'Ciencias Básicas' => 'Ciencias Básicas',
+                        'Humanidades' => 'Humanidades'
                     ])
                     ->label('Área'),
                 
