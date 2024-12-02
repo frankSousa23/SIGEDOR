@@ -14,6 +14,9 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Pages\Dashboard;
+use App\Filament\Pages\Navigation;
+use Spatie\Permission\Middleware\RoleMiddleware;
+use Spatie\Permission\Middleware\PermissionMiddleware;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -21,9 +24,10 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->id('dashboard')
-            ->path('dashboard')
+            ->id('admin')
+            ->path('admin')
             ->login()
+            ->brandName('SIGEDOR')
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -32,6 +36,13 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
+            ->navigationGroups([
+                'Configuración',
+                'Gestión Docente',
+                'Asignaciones',
+                'Gestión de Reportes'
+            ])
+            ->maxContentWidth('full')
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -42,11 +53,11 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                RoleMiddleware::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->brandName('SIGEDOR')
-            ->maxContentWidth('full');
+            ->navigation(fn () => Navigation::build());
     }
 }

@@ -13,12 +13,29 @@ return new class extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('cdi')->unique()->comment('Cédula de Identidad');
             $table->string('name');
-            $table->string('ci')->unique();
+            $table->string('surName');
+            $table->enum('genre', ['F', 'M']);
             $table->string('phone');
-            $table->text('address');
+            $table->string('email')->unique();
+            $table->date('birthDate');
+            $table->date('datePromotion');
+            $table->string('asignaturePromotion')->nullable();
+            
+            // Referencias a otras tablas (sin restricciones por ahora)
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('site_id')->nullable();
+            $table->unsignedBigInteger('category_id')->nullable();
+            $table->unsignedBigInteger('dedication_id')->nullable();
+            
+            // Control de estado
+            $table->boolean('has_site')->default(false)->comment('Indica si ya tiene sede asignada');
+            $table->boolean('has_category')->default(false)->comment('Indica si ya tiene categoría asignada');
+            $table->boolean('has_dedication')->default(false)->comment('Indica si ya tiene dedicación asignada');
+            $table->boolean('is_completed')->default(false)->comment('Indica si todas las relaciones requeridas están completas');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

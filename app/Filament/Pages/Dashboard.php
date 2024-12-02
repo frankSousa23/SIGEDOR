@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use Filament\Pages\Dashboard as BaseDashboard;
-use Illuminate\Support\Facades\Auth;
 
 class Dashboard extends BaseDashboard
 {
@@ -11,21 +10,18 @@ class Dashboard extends BaseDashboard
     
     public static function getNavigationLabel(): string
     {
-        return 'Dashboard';
+        return 'Escritorio';
     }
 
     public function getTitle(): string
     {
-        return 'Panel de Control';
+        return 'Escritorio';
     }
 
-    public static function getSlug(): string
-    {
-        return 'dashboard';
-    }
+    protected static ?string $slug = 'dashboard';
 
     public static function shouldRegister(): bool
     {
-        return true; // Todos los usuarios autenticados pueden ver el dashboard base
+        return true;
     }
 }

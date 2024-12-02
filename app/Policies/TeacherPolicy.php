@@ -4,43 +4,59 @@ namespace App\Policies;
 
 use App\Models\Teacher;
 use App\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TeacherPolicy
 {
+    use HandlesAuthorization;
+
     public function viewAny(User $user): bool
     {
-        return true; // All authenticated users can view the list, but it will be filtered
+        return true;
     }
 
     public function view(User $user, Teacher $teacher): bool
     {
-        if ($user->isAdmin()) {
+        if ($user->hasRole('admin')) {
             return true;
         }
 
-        if ($user->isAreaManager()) {
-            // Double validation: check site and area from site table
-            return $teacher->site_id === $user->getSiteId() &&
-                   $teacher->site->area === $user->getArea();
+        if ($user->hasRole('area_manager')) {
+            return $teacher->site_id === $user->site_id;
         }
 
-        // Teachers can only view their own information
-        return $user->isTeacher() && $teacher->user_id === $user->id;
+        if ($user->hasRole('teacher')) {
+            return $teacher->cdi === $user->cdi;
+        }
+
+        return false;
     }
 
     public function create(User $user): bool
     {
-        return $user->isAdmin(); // Only admin can create
+        return $user->hasRole('admin');
     }
 
     public function update(User $user, Teacher $teacher): bool
     {
-        return $user->isAdmin(); // Only admin can update
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+
+        if ($user->hasRole('area_manager')) {
+            return $teacher->site_id === $user->site_id;
+        }
+
+        if ($user->hasRole('teacher')) {
+            return $teacher->cdi === $user->cdi;
+        }
+
+        return false;
     }
 
     public function delete(User $user, Teacher $teacher): bool
     {
-        return $user->isAdmin(); // Only admin can delete
+        return $user->hasRole('admin');
     }
 
     public function export(User $user): bool

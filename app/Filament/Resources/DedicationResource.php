@@ -14,9 +14,10 @@ use Illuminate\Database\Eloquent\Builder;
 class DedicationResource extends Resource
 {
     protected static ?string $model = Dedication::class;
-    protected static ?string $navigationLabel = 'Dedicación';
-    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
-    protected static ?string $navigationGroup = 'Gestión Docente';
+    protected static ?string $navigationIcon = 'heroicon-o-clock';
+    protected static ?string $navigationLabel = 'Dedicaciones';
+    protected static ?string $navigationGroup = 'Asignaciones';
+    protected static ?int $navigationSort = 22;
 
     public static function form(Form $form): Form
     {

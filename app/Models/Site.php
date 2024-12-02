@@ -14,12 +14,20 @@ class Site extends Model
         'uc',
         'weekHours',
         'sections',
-        'info'
+        'info',
+        'is_active',
+        'is_available',
+        'teachers_count',
+        'last_assignment'
     ];
 
     protected $casts = [
         'weekHours' => 'integer',
         'sections' => 'integer',
+        'is_active' => 'boolean',
+        'is_available' => 'boolean',
+        'teachers_count' => 'integer',
+        'last_assignment' => 'datetime'
     ];
 
     public function teachers(): HasMany
