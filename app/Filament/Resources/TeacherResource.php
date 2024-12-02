@@ -26,19 +26,11 @@ class TeacherResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
     protected static ?string $navigationLabel = 'Docentes';
     protected static ?string $navigationGroup = 'Gestión Docente';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = -1;
 
     public static function getNavigationGroup(): ?string
     {
-        if (auth()->user()->hasRole('admin')) {
-            return 'Gestión Docente';
-        }
-
-        if (auth()->user()->hasRole('area_manager')) {
-            return 'Gestión de Área';
-        }
-
-        return 'Mi Perfil';
+        return 'Gestión Docente';
     }
 
     public static function getNavigationBadge(): ?string
@@ -143,18 +135,28 @@ class TeacherResource extends Resource
                                 'Educación' => 'Educación',
                             ])
                             ->searchable()
+                            ->allowHtml()
                             ->createOptionForm([
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->label('Nueva Área')
                                     ->maxLength(255),
                             ])
+                            ->createOptionUsing(function (array $data) {
+                                return $data['name'];
+                            })
                             ->createOptionAction(function (Forms\Components\Actions\Action $action) {
                                 return $action
                                     ->modalHeading('Crear nueva área')
                                     ->modalButton('Agregar área');
                             }),
                     ])
+                    ->createOptionUsing(function (array $data) {
+                        return \App\Models\Site::create([
+                            'name' => $data['name'],
+                            'area' => $data['area'],
+                        ])->id;
+                    })
                     ->createOptionAction(function (Forms\Components\Actions\Action $action) {
                         return $action
                             ->modalHeading('Crear nueva sede')
@@ -179,19 +181,61 @@ class TeacherResource extends Resource
                     ->searchable()
                     ->preload()
                     ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->label('Nombre de la Dedicación')
-                            ->maxLength(255),
                         Forms\Components\Select::make('type')
                             ->required()
+                            ->label('Tipo')
                             ->options([
                                 'TCV' => 'Tiempo Convencional',
                                 'MT' => 'Medio Tiempo',
                                 'TC' => 'Tiempo Completo',
                                 'EX' => 'Exclusiva'
-                            ]),
-                    ]),
+                            ])
+                            ->searchable()
+                            ->live()
+                            ->afterStateUpdated(fn ($state, callable $set) => 
+                                $set('name', match ($state) {
+                                    'TCV' => 'Tiempo Convencional',
+                                    'MT' => 'Medio Tiempo',
+                                    'TC' => 'Tiempo Completo',
+                                    'EX' => 'Exclusiva',
+                                    default => null,
+                                })
+                            ),
+                        Forms\Components\Hidden::make('name'),
+                        Forms\Components\Select::make('hours')
+                            ->required()
+                            ->label('Horas')
+                            ->options(function (callable $get) {
+                                $type = $get('type');
+                                
+                                return match ($type) {
+                                    'TCV' => array_combine(
+                                        range(1, 17),
+                                        array_map(fn ($hour) => "{$hour} Horas", range(1, 17))
+                                    ),
+                                    'MT' => ['18' => '18 Horas'],
+                                    'TC' => ['30' => '30 Horas'],
+                                    'EX' => [
+                                        '35' => '35 Horas',
+                                        '36' => '36 Horas'
+                                    ],
+                                    default => [],
+                                };
+                            })
+                            ->searchable(),
+                    ])
+                    ->createOptionUsing(function (array $data) {
+                        return \App\Models\Dedication::create([
+                            'name' => $data['name'],
+                            'type' => $data['type'],
+                            'hours' => $data['hours'],
+                        ])->id;
+                    })
+                    ->createOptionAction(function (Forms\Components\Actions\Action $action) {
+                        return $action
+                            ->modalHeading('Crear nueva dedicación')
+                            ->modalButton('Agregar dedicación');
+                    }),
             ])
             ->columns(2);
     }

@@ -17,7 +17,7 @@ class DedicationResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-clock';
     protected static ?string $navigationLabel = 'Dedicaciones';
     protected static ?string $navigationGroup = 'Asignaciones';
-    protected static ?int $navigationSort = 22;
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {

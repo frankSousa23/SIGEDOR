@@ -23,10 +23,10 @@ use Filament\Notifications\Notification;
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
-    protected static ?string $navigationLabel = 'Categorías';
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    protected static ?string $navigationLabel = 'Categorías';
     protected static ?string $navigationGroup = 'Asignaciones';
-    protected static ?int $navigationSort = 21;
+    protected static ?int $navigationSort = 2;
 
     protected static function shouldEnableAutoAssistant($preTitle, $lastTitle): bool 
     {

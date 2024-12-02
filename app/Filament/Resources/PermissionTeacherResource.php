@@ -15,10 +15,10 @@ class PermissionTeacherResource extends Resource
     protected static ?string $model = PermissionTeacher::class;
     protected static ?string $modelLabel = 'Permiso Docente';
     protected static ?string $pluralModelLabel = 'Permisos Docentes';
-    protected static ?string $navigationIcon = 'heroicon-o-key';
+    protected static ?string $navigationIcon = 'heroicon-o-document-check';
     protected static ?string $navigationLabel = 'Permisos Docentes';
     protected static ?string $navigationGroup = 'Asignaciones';
-    protected static ?int $navigationSort = 23;
+    protected static ?int $navigationSort = 4;
 
     public static function getNavigationBadge(): ?string
     {

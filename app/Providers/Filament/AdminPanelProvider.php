@@ -6,6 +6,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Navigation\NavigationGroup;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -31,16 +32,36 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label('Gestión Docente')
+                    ->icon('heroicon-o-academic-cap')
+                    ->collapsed()
+                    ->collapsible()
+                    ->sort(-1),
+                NavigationGroup::make()
+                    ->label('Asignaciones')
+                    ->icon('heroicon-o-clipboard-document-list')
+                    ->collapsed()
+                    ->collapsible()
+                    ->sort(0),
+                NavigationGroup::make()
+                    ->label('Gestión de Reportes')
+                    ->icon('heroicon-o-document-chart-bar')
+                    ->collapsed()
+                    ->collapsible()
+                    ->sort(1),
+                NavigationGroup::make()
+                    ->label('Configuración')
+                    ->icon('heroicon-o-cog-6-tooth')
+                    ->collapsed()
+                    ->collapsible()
+                    ->sort(2),
+            ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
-            ])
-            ->navigationGroups([
-                'Configuración',
-                'Gestión Docente',
-                'Asignaciones',
-                'Gestión de Reportes'
             ])
             ->maxContentWidth('full')
             ->middleware([
