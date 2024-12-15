@@ -1,29 +1,17 @@
-# SIGEDOR - Sistema de Gestión Docente
-## Documentación Técnica y Funcional
-
-Este directorio contiene la documentación técnica completa del sistema SIGEDOR.
-
-## Estructura de la Documentación
+## Documentación Pública
 
 1. [Arquitectura del Sistema](./architecture.md)
-2. [Estructura de Base de Datos](./database.md)
-3. [Modelos y Relaciones](./private/models.md)
-4. [Recursos de Filament](./private/filament-resources.md)
-5. [Flujo del Sistema](./private/system-flow.md)
-6. [Seguridad](./private/security.md)
-7. [Características Técnicas](./technical-features.md)
-8. [Interfaz de Usuario](./ui.md)
-9. [Mantenimiento y Escalabilidad](./maintenance.md)
-10. [Requisitos del Sistema](./requirements.md)
-11. [Desarrollo Futuro](./roadmap.md)
+2. [Mantenimiento y Escalabilidad](./maintenance.md)
+3. [Requisitos del Sistema](./requirements.md)
+4. [Desarrollo Futuro](./roadmap.md)
 
-## Versión Actual
+## Documentación Privada (Solo accesible dentro del sistema)
 
-- Laravel: 11.x
-- PHP: 8.2.12
-- Filament: 3.x
-- MariaDB
+> Nota: La siguiente documentación solo está disponible dentro del sistema:
 
-## Mantenimiento
-
-Esta documentación debe mantenerse actualizada con cada cambio significativo en el sistema.
+1. [Modelos y Relaciones](./private/models.md)
+2. [Recursos de Filament](./private/filament-resources.md)
+3. [Flujo del Sistema](./private/system-flow.md)
+4. [Seguridad](./private/security.md)
+5. [Base de Datos](./private/database.md)
+6. [Interfaz de Usuario](./private/ui.md)
