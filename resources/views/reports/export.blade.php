@@ -35,29 +35,31 @@
     <table>
         <thead>
             <tr>
-                <th>CDI</th>
-                <th>Nombres</th>
-                <th>Apellidos</th>
+                <th>Docente</th>
                 <th>Categoría</th>
                 <th>Dedicación</th>
+                <th>Permiso</th>
                 <th>Sede</th>
                 <th>Reporte</th>
                 <th>Número de Memo</th>
                 <th>Tipo de Reporte</th>
+                <th>Correo Electrónico</th>
+                <th>Información Adicional</th>
             </tr>
         </thead>
         <tbody>
             @foreach($reports as $report)
                 <tr>
-                    <td>{{ $report->teacher->cdi }}</td>
                     <td>{{ $report->teacher->name }}</td>
-                    <td>{{ $report->teacher->surName }}</td>
                     <td>{{ $report->category->name ?? 'N/A' }}</td>
                     <td>{{ $report->dedication->name ?? 'N/A' }}</td>
+                    <td>{{ $report->permission->name ?? 'N/A' }}</td>
                     <td>{{ $report->site->name ?? 'N/A' }}</td>
                     <td>{{ $report->report }}</td>
                     <td>{{ $report->memoNumber }}</td>
                     <td>{{ $report->typeReport }}</td>
+                    <td>{{ $report->email ?? 'N/A' }}</td>
+                    <td>{{ $report->info ?? 'N/A' }}</td>
                 </tr>
             @endforeach
         </tbody>

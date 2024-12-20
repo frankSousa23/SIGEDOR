@@ -12,6 +12,7 @@ use App\Models\Dedication;
 use App\Models\PermissionTeacher;
 use App\Models\Report;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Teacher extends Model
 {
@@ -73,7 +74,7 @@ class Teacher extends Model
         return $this->hasMany(Report::class);
     }
 
-    public function permissionTeacher(): HasMany
+    public function permissionTeachers(): HasMany
     {
         return $this->hasMany(PermissionTeacher::class);
     }
