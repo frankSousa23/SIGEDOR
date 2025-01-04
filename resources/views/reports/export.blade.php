@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
     <title>Reporte de Docentes</title>
     <style>
         body {
@@ -39,7 +38,6 @@
                 <th>Categoría</th>
                 <th>Dedicación</th>
                 <th>Permiso</th>
-                <th>Sede</th>
                 <th>Reporte</th>
                 <th>Número de Memo</th>
                 <th>Tipo de Reporte</th>
@@ -48,20 +46,17 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($reports as $report)
-                <tr>
-                    <td>{{ $report->teacher->name }}</td>
-                    <td>{{ $report->category->name ?? 'N/A' }}</td>
-                    <td>{{ $report->dedication->name ?? 'N/A' }}</td>
-                    <td>{{ $report->permission->name ?? 'N/A' }}</td>
-                    <td>{{ $report->site->name ?? 'N/A' }}</td>
-                    <td>{{ $report->report }}</td>
-                    <td>{{ $report->memoNumber }}</td>
-                    <td>{{ $report->typeReport }}</td>
-                    <td>{{ $report->email ?? 'N/A' }}</td>
-                    <td>{{ $report->info ?? 'N/A' }}</td>
-                </tr>
-            @endforeach
+            <tr>
+                <td>{{ $report->teacher->name }}</td>
+                <td>{{ $report->teacher->category->current_category }}</td>
+                <td>{{ $report->teacher->dedication->name }}</td>
+                <td>{{ implode(', ', $report->teacher->permissionTeachers->pluck('name')->toArray()) }}</td>
+                <td>{{ $report->report }}</td>
+                <td>{{ $report->memoNumber }}</td>
+                <td>{{ $report->typeReport }}</td>
+                <td>{{ $report->email }}</td>
+                <td>{{ $report->info }}</td>
+            </tr>
         </tbody>
     </table>
 </body>
