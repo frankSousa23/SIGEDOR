@@ -101,7 +101,8 @@ class ReportResource extends Resource
                             ->label('Correo Electrónico')
                             ->email()
                             ->maxLength(255),
-
+                            
+                            
                         Forms\Components\Textarea::make('info')
                             ->label('Información Adicional')
                             ->maxLength(500)

@@ -15,13 +15,14 @@ class ListReports extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
-            Actions\ExportAction::make()
-                ->label('Exportar a PDF')
-                ->color('success')
-                ->icon('heroicon-o-document-arrow-down')
-                ->formats([
-                    'pdf',
-                ]),
+            // Eliminar el botón de exportar a PDF
+            // Actions\ExportAction::make()
+            //     ->label('Exportar a PDF')
+            //     ->color('success')
+            //     ->icon('heroicon-o-document-arrow-down')
+            //     ->formats([
+            //         'pdf',
+            //     ]),
         ];
     }
 

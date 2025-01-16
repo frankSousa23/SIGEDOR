@@ -1,3 +1,5 @@
+<?php
+
 namespace App\Providers\Filament;
 
 use Filament\Http\Middleware\Authenticate;
@@ -14,10 +16,11 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use App\Filament\Pages\Dashboard;
+use App\Filament\Pages\Dashboard as PagesDashboard;
 use App\Filament\Pages\Navigation;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Middleware\PermissionMiddleware;
+use App\Filament\Widgets;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -61,7 +64,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                PagesDashboard::class,
             ])
             ->maxContentWidth('full')
             ->middleware([

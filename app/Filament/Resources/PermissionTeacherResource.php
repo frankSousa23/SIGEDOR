@@ -38,7 +38,7 @@ class PermissionTeacherResource extends Resource
                             ->relationship('teacher', 'cdi')
                             ->label('Docente')
                             ->options(function () {
-                                return Teacher::whereDoesntHave('permissionTeacher')->pluck('cdi', 'id');
+                                return Teacher::whereDoesntHave('permissionTeachers')->pluck('cdi', 'id');
                             })
                             ->required()
                             ->reactive()
