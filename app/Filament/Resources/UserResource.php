@@ -45,14 +45,14 @@ class UserResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->disabled(fn () => !$isAdmin && $record?->hasRole('admin')),
-                        
+
                         TextInput::make('email')
                             ->label('Correo')
                             ->email()
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->disabled(fn () => !$isAdmin && $record?->hasRole('admin')),
-                            
+
                         TextInput::make('cdi')
                             ->label('Cédula de Identidad')
                             ->required()
@@ -60,7 +60,7 @@ class UserResource extends Resource
                             ->maxLength(10)
                             ->helperText('Sin puntos ni espacios')
                             ->disabled(fn () => !$isAdmin && $record?->hasRole('admin')),
-                            
+
                         TextInput::make('password')
                             ->label('Contraseña')
                             ->password()
@@ -69,7 +69,7 @@ class UserResource extends Resource
                             ->visible(fn () => $isCreate || $isAdmin || auth()->id() === $record?->id),
                     ]),
                 ]),
-                
+
             Section::make('Asignación y Permisos')
                 ->description('Configuración de rol y sede')
                 ->visible(fn () => $isAdmin || auth()->user()->hasRole('area_manager'))
@@ -82,7 +82,7 @@ class UserResource extends Resource
                             ->preload()
                             ->required(fn () => !$isCreate || $isAdmin)
                             ->visible(fn () => $isAdmin || (auth()->user()->hasRole('area_manager') && !$record?->hasRole('admin'))),
-                            
+
                         Select::make('roles')
                             ->label('Rol')
                             ->multiple(false)
@@ -97,13 +97,13 @@ class UserResource extends Resource
                             ->default('teacher')
                             ->disabled(fn () => !$isAdmin || $record?->hasRole('admin'))
                             ->visible(fn () => $isAdmin),
-                            
+
                         Forms\Components\Toggle::make('is_approved')
                             ->label('Aprobado')
                             ->default(false)
                             ->disabled(fn () => !$isAdmin || $record?->hasRole('admin'))
                             ->visible(fn () => $isAdmin),
-                            
+
                         Forms\Components\Toggle::make('is_active')
                             ->label('Activo')
                             ->default(true)
@@ -122,28 +122,28 @@ class UserResource extends Resource
                     ->label('Nombre')
                     ->searchable()
                     ->sortable(),
-                    
+
                 TextColumn::make('email')
                     ->label('Correo')
                     ->searchable()
                     ->sortable(),
-                    
+
                 TextColumn::make('cdi')
                     ->label('Cédula')
                     ->searchable()
                     ->sortable(),
-                    
+
                 TextColumn::make('site.name')
                     ->label('Sede')
                     ->searchable()
                     ->sortable(),
-                    
+
                 TextColumn::make('roles.name')
                     ->label('Rol')
                     ->formatStateUsing(fn (User $record) => $record->getFullRoleName())
                     ->searchable()
                     ->sortable(),
-                    
+
                 TextColumn::make('is_approved')
                     ->label('Estado')
                     ->badge()
@@ -157,7 +157,7 @@ class UserResource extends Resource
                         false, 0, '0', null => 'Pendiente',
                         default => 'Pendiente',
                     }),
-                    
+
                 TextColumn::make('is_active')
                     ->label('Activo')
                     ->badge()
@@ -172,19 +172,19 @@ class UserResource extends Resource
                         'teacher' => 'Profesor'
                     ])
                     ->label('Rol'),
-                    
+
                 SelectFilter::make('site')
                     ->relationship('site', 'name')
                     ->label('Sede')
                     ->searchable()
                     ->preload(),
-                    
+
                 Tables\Filters\TernaryFilter::make('is_approved')
                     ->label('Aprobado')
                     ->placeholder('Todos')
                     ->trueLabel('Aprobados')
                     ->falseLabel('Pendientes'),
-                    
+
                 Tables\Filters\TernaryFilter::make('is_active')
                     ->label('Estado')
                     ->placeholder('Todos')
@@ -193,37 +193,37 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->visible(fn (User $record) => 
-                        auth()->user()->hasRole('admin') || 
+                    ->visible(fn (User $record) =>
+                        auth()->user()->hasRole('admin') ||
                         auth()->id() === $record->id
                     ),
-                    
+
                 Tables\Actions\DeleteAction::make()
-                    ->visible(fn (User $record) => 
-                        auth()->user()->hasRole('admin') && 
+                    ->visible(fn (User $record) =>
+                        auth()->user()->hasRole('admin') &&
                         !$record->hasRole('admin') &&
                         auth()->id() !== $record->id
                     ),
-                    
+
                 Action::make('approve')
                     ->label('Aprobar')
                     ->icon('heroicon-o-check')
                     ->color('success')
-                    ->visible(fn (User $record) => 
-                        auth()->user()->hasRole('admin') && 
-                        !$record->is_approved && 
+                    ->visible(fn (User $record) =>
+                        auth()->user()->hasRole('admin') &&
+                        !$record->is_approved &&
                         !$record->hasRole('admin') &&
                         auth()->id() !== $record->id
                     )
                     ->action(fn (User $record) => $record->update(['is_approved' => true])),
-                    
+
                 Action::make('deactivate')
                     ->label('Desactivar')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
-                    ->visible(fn (User $record) => 
-                        auth()->user()->hasRole('admin') && 
-                        $record->is_active && 
+                    ->visible(fn (User $record) =>
+                        auth()->user()->hasRole('admin') &&
+                        $record->is_active &&
                         !$record->hasRole('admin') &&
                         auth()->id() !== $record->id
                     )

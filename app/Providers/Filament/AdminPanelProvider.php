@@ -21,6 +21,8 @@ use App\Filament\Pages\Navigation;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use App\Filament\Widgets;
+use App\Filament\Widgets\StatsOverview;
+use App\Filament\Widgets\TasksOverview;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -67,6 +69,10 @@ class AdminPanelProvider extends PanelProvider
                 PagesDashboard::class,
             ])
             ->maxContentWidth('full')
+            ->widgets([
+                StatsOverview::class,
+                TasksOverview::class,
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
