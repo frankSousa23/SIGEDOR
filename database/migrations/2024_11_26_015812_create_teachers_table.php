@@ -22,13 +22,13 @@ return new class extends Migration
             $table->date('birthDate');
             $table->date('datePromotion');
             $table->string('asignaturePromotion')->nullable();
-            
-            // Referencias a otras tablas (sin restricciones por ahora)
+
+            // Relaciones (DEFINIDAS INICIALMENTE SIN CLAVES FORÁNEAS DENTRO DE SCHEMA::CREATE)
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('site_id')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('dedication_id')->nullable();
-            
+
             // Control de estado
             $table->boolean('has_site')->default(false)->comment('Indica si ya tiene sede asignada');
             $table->boolean('has_category')->default(false)->comment('Indica si ya tiene categoría asignada');

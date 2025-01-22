@@ -9,10 +9,8 @@ class SiteSeeder extends Seeder
 {
     public function run(): void
     {
-        Site::create([
-            'name' => 'Sede Principal',
-            'area' => 'Área General',
-            'is_active' => true,
-        ]);
+        Site::factory()
+            ->count(20)
+            ->create();
     }
 }

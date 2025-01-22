@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Select;
 
 class SiteResource extends Resource
 {
@@ -29,15 +30,13 @@ class SiteResource extends Resource
                     ->description('Seleccione el docente para asignar el site')
                     ->collapsible()
                     ->schema([
-                        Forms\Components\Select::make('teacher_id')
-                            ->relationship('teachers', 'cdi')
+                        Select::make('teacher_id')
                             ->label('Docente')
                             ->options(function () {
-                                return Teacher::whereDoesntHave('site')->pluck('cdi', 'id');
+                                return Teacher::whereDoesntHave('sites')->pluck('cdi', 'id');
                             })
-                            ->required()
-                            ->reactive()
-                            ->columnSpan('full'),
+                            ->searchable()
+                            ->required(),
                     ]),
 
                 Forms\Components\Select::make('name')
@@ -171,10 +170,10 @@ class SiteResource extends Resource
                         'Humanidades' => 'Humanidades'
                     ])
                     ->label('Área'),
-                
+
                 Tables\Filters\TernaryFilter::make('is_active')
                     ->label('Activo'),
-                
+
                 Tables\Filters\TernaryFilter::make('is_available')
                     ->label('Disponible'),
             ])
@@ -187,14 +186,14 @@ class SiteResource extends Resource
                 ]),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -202,5 +201,10 @@ class SiteResource extends Resource
             'create' => Pages\CreateSite::route('/create'),
             'edit' => Pages\EditSite::route('/{record}/edit'),
         ];
-    }    
+    }
+
+    public static function getModelLabel(): string
+    {
+        return 'Sedes';
+    }
 }

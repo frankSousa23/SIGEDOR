@@ -183,4 +183,19 @@ return [
 
         'store' => 'default',
     ],
+
+    'roles' => [
+        'admin' => [
+            'name' => 'admin',
+            'guard_name' => 'web',
+        ],
+        'area_manager' => [
+            'name' => 'area_manager',
+            'guard_name' => 'web',
+        ],
+        'teacher' => [
+            'name' => 'teacher',
+            'guard_name' => 'web',
+        ],
+    ],
 ];

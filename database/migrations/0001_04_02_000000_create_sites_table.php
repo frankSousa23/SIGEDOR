@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('uc')->nullable();
             $table->integer('weekHours')->nullable();
             $table->integer('sections')->nullable();
-            $table->string('info')->nullable();
+            $table->text('info')->nullable();
             // Control de estado
             $table->boolean('is_active')->default(true);
             $table->integer('teachers_count')->default(0);

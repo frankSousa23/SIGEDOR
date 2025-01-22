@@ -35,7 +35,31 @@ class Site extends Model
         'last_assignment' => 'datetime'
     ];
 
-    public function teachers(): HasMany
+    const SITES = [
+        'Sede Central/San Juan de los Morros',
+        'Calabozo/Guárico',
+        'Valle de la Pascua/Guárico',
+        'Zaraza/Guárico'
+    ];
+
+    const AREAS = [
+        'Ciencias Económicas y Sociales',
+        'Ciencias para la Salud',
+        'Ingeniería en Sistemas',
+        'Ciencias Odontológicas'
+    ];
+
+    const PROGRAMAS = [
+        'Administración Comercial',
+        'Contaduría Pública',
+        'Enfermería',
+        'Medicina',
+        'Informática',
+        'Electrónica',
+        'Odontología'
+    ];
+
+    public function teachers()
     {
         return $this->hasMany(Teacher::class);
     }

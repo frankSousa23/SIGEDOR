@@ -7,56 +7,79 @@ use App\Models\User;
 use App\Models\Site;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\DB;
 
 class UserSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
-        // Obtener el ID del primer sitio
-        $siteId = Site::first()->id;
+        // Disable foreign key checks! (necesario para truncar roles y usuarios)
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        // Primero, limpiamos los roles existentes
-        Role::query()->delete();
+        // Limpiar roles y usuarios existentes para evitar duplicados en cada seed
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        Role::truncate();
+        User::truncate();
 
         // Crear roles
-        $adminRole = Role::create(['name' => 'admin', 'guard_name' => 'web']);
-        $areaManagerRole = Role::create(['name' => 'area_manager', 'guard_name' => 'web']);
-        $teacherRole = Role::create(['name' => 'teacher', 'guard_name' => 'web']);
+        $adminRole = Role::create(['name' => 'admin']);
+        $areaManagerRole = Role::create(['name' => 'area-manager']);
+        $teacherRole = Role::create(['name' => 'teacher']);
 
-        // Usuario Administrador
-        $admin = User::create([
+        // Crear permisos (ejemplos - ajusta según tus necesidades)
+        $manageTeachers = Permission::create(['name' => 'manage teachers']);
+        $manageSites = Permission::create(['name' => 'manage sites']);
+        $manageCategories = Permission::create(['name' => 'manage categories']);
+        $manageDedications = Permission::create(['name' => 'manage dedications']);
+
+        // Asignar permisos a roles (ejemplos - ajusta según tus necesidades)
+        $adminRole->givePermissionTo(Permission::all()); // Admin tiene todos los permisos
+        $areaManagerRole->givePermissionTo([$manageTeachers, $manageSites, $manageCategories, $manageDedications]);
+        $teacherRole->givePermissionTo([$manageCategories]); // Ejemplo: Teacher solo manage categories
+
+        // Obtener sedes existentes para asignar a usuarios
+        $sites = Site::all();
+
+        // Crear usuario Admin
+        $adminUser = User::create([
             'name' => 'Admin',
             'email' => 'admin@example.com',
-            'cdi' => '12345678',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password'), // Cambia 'password' por una contraseña segura en producción
             'is_active' => true,
             'is_approved' => true,
-            'site_id' => $siteId,
+            'site_id' => $sites->random()->id ?? null, // Asignar un site_id aleatorio o null si no hay sedes
         ]);
-        $admin->assignRole($adminRole);
+        $adminUser->assignRole($adminRole);
 
-        // Usuario Area Manager
-        $areaManager = User::create([
+        // Crear usuario Area Manager
+        $areaManagerUser = User::create([
             'name' => 'Area Manager',
-            'email' => 'area@example.com',
-            'cdi' => '87654321',
-            'password' => Hash::make('password'),
+            'email' => 'areamanager@example.com',
+            'password' => bcrypt('password'), // Cambia 'password' por una contraseña segura en producción
             'is_active' => true,
             'is_approved' => true,
-            'site_id' => $siteId,
+            'site_id' => $sites->random()->id ?? null, // Asignar un site_id aleatorio o null si no hay sedes
         ]);
-        $areaManager->assignRole($areaManagerRole);
+        $areaManagerUser->assignRole($areaManagerRole);
 
-        // Usuario Teacher
-        $teacher = User::create([
-            'name' => 'Teacher',
+        // Crear usuario Teacher
+        $teacherUser = User::create([
+            'name' => 'Teacher User',
             'email' => 'teacher@example.com',
-            'cdi' => '11223344',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password'), // Cambia 'password' por una contraseña segura en producción
             'is_active' => true,
             'is_approved' => true,
-            'site_id' => $siteId,
+            'site_id' => $sites->random()->id ?? null, // Asignar un site_id aleatorio o null si no hay sedes
         ]);
-        $teacher->assignRole($teacherRole);
+        $teacherUser->assignRole($teacherRole);
+
+        // Puedes crear más usuarios o factories aquí si es necesario
+
+        // Re-enable foreign key checks!
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

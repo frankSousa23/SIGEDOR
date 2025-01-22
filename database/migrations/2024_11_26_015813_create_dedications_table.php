@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('max_students')->nullable()->unsigned()->comment('Número máximo de estudiantes en asesoría');
             $table->integer('min_advisory_hours')->nullable()->unsigned()->comment('Horas mínimas dedicadas a asesorías');
             $table->text('description')->nullable()->comment('Descripción y requisitos');
-            
+
             // Control de estado
             $table->boolean('is_active')->default(true);
             $table->integer('teachers_count')->default(0);
@@ -25,6 +25,8 @@ return new class extends Migration
             $table->timestamp('last_assignment')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreignId('teacher_id')->nullable()->constrained('teachers')->onDelete('cascade');
         });
     }
 

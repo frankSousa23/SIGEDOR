@@ -13,9 +13,11 @@ use App\Models\PermissionTeacher;
 use App\Models\Report;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Teacher extends Model
 {
+    use HasFactory;
     use SoftDeletes;
 
     protected $fillable = [
@@ -49,12 +51,12 @@ class Teacher extends Model
         'is_completed' => 'boolean'
     ];
 
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function site(): BelongsTo
+    public function site()
     {
         return $this->belongsTo(Site::class);
     }

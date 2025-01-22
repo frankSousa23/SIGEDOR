@@ -17,19 +17,7 @@ class TeacherPolicy
 
     public function view(User $user, Teacher $teacher): bool
     {
-        if ($user->hasRole('admin')) {
-            return true;
-        }
-
-        if ($user->hasRole('area_manager')) {
-            return $teacher->site_id === $user->site_id;
-        }
-
-        if ($user->hasRole('teacher')) {
-            return $teacher->cdi === $user->cdi;
-        }
-
-        return false;
+        return $user->id === $teacher->user_id;
     }
 
     public function create(User $user): bool
