@@ -90,4 +90,9 @@ class Teacher extends Model
     {
         return $query->where('is_completed', true);
     }
+
+    public function sites()
+    {
+        return $this->belongsToMany(Site::class);
+    }
 }

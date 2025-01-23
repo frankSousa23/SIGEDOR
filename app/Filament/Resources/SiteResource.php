@@ -41,14 +41,7 @@ class SiteResource extends Resource
 
                 Forms\Components\Select::make('name')
                     ->label('Site')
-                    ->options([
-                        'Central' => 'Central',
-                        'Cagua' => 'Cagua',
-                        'La Victoria' => 'La Victoria',
-                        'Maracay' => 'Maracay',
-                        'San Juan' => 'San Juan',
-                        'Turmero' => 'Turmero'
-                    ])
+                    ->options(Site::SITES)
                     ->required()
                     ->searchable()
                     ->preload()
@@ -63,11 +56,7 @@ class SiteResource extends Resource
 
                 Forms\Components\Select::make('area')
                     ->label('Área')
-                    ->options([
-                        'Ingeniería' => 'Ingeniería',
-                        'Ciencias Básicas' => 'Ciencias Básicas',
-                        'Humanidades' => 'Humanidades'
-                    ])
+                    ->options(Site::AREAS)
                     ->required()
                     ->searchable()
                     ->preload()
@@ -76,13 +65,7 @@ class SiteResource extends Resource
 
                 Forms\Components\Select::make('program')
                     ->label('Programa')
-                    ->options([
-                        'Ingeniería Civil' => 'Ingeniería Civil',
-                        'Ingeniería de Sistemas' => 'Ingeniería de Sistemas',
-                        'Ingeniería Eléctrica' => 'Ingeniería Eléctrica',
-                        'Ingeniería Industrial' => 'Ingeniería Industrial',
-                        'Ingeniería Mecánica' => 'Ingeniería Mecánica'
-                    ])
+                    ->options(Site::PROGRAMAS)
                     ->required()
                     ->searchable()
                     ->preload()
@@ -129,6 +112,12 @@ class SiteResource extends Resource
                     ->label('Sede')
                     ->searchable()
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('teachers.cdi')
+                    ->label('Docentes Asignados')
+                    ->listWithLineBreaks()
+                    ->limitList(3)
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('area')
                     ->label('Área')

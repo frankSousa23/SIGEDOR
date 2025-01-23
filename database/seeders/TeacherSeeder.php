@@ -13,7 +13,7 @@ class TeacherSeeder extends Seeder
     public function run(): void
     {
         Teacher::factory()
-            ->count(50) // Puedes ajustar el número
+            ->count(5) // Solo 5 profesores para pruebas
             ->create();
     }
 }

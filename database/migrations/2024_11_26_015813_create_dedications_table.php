@@ -16,7 +16,7 @@ return new class extends Migration
             $table->enum('director_role', ['Coordinador', 'Jefe de Departamento', 'Decano'])->nullable();
             $table->integer('max_students')->nullable()->unsigned()->comment('Número máximo de estudiantes en asesoría');
             $table->integer('min_advisory_hours')->nullable()->unsigned()->comment('Horas mínimas dedicadas a asesorías');
-            $table->text('description')->nullable()->comment('Descripción y requisitos');
+            $table->text('description')->nullable();
 
             // Control de estado
             $table->boolean('is_active')->default(true);

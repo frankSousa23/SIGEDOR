@@ -14,7 +14,7 @@ class CategorySeeder extends Seeder
         $teachers = Teacher::all();
 
         Category::factory()
-            ->count(20) // Crear 20 categorías
+            ->count(5) // Solo 5 categorías para pruebas
             ->create()
             ->each(function ($category) use ($teachers) {
                 // Asignar una categoría a un profesor aleatorio (opcional, si las categorías pueden estar relacionadas a profesores)

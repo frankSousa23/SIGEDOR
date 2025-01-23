@@ -25,7 +25,7 @@ return new class extends Migration
 
             // Relaciones (DEFINIDAS INICIALMENTE SIN CLAVES FORÁNEAS DENTRO DE SCHEMA::CREATE)
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('site_id')->nullable();
+            $table->foreignId('site_id')->nullable()->constrained()->onDelete('set null');
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('dedication_id')->nullable();
 

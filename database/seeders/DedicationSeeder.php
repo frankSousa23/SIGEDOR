@@ -10,7 +10,7 @@ class DedicationSeeder extends Seeder
     public function run(): void
     {
         Dedication::factory()
-            ->count(5) // Crear 5 tipos de dedicación
+            ->count(3) // Solo 3 tipos de dedicación para pruebas
             ->create();
     }
 }

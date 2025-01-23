@@ -2,14 +2,8 @@
 
 namespace Database\Seeders;
 
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\User;
-use App\Models\Site;
-use App\Models\Teacher;
-use App\Models\Category;
-use App\Models\Dedication;
-use Faker\Factory as Faker;
-use Illuminate\Support\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,14 +12,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // \App\Models\User::factory(10)->create();
+
+        // \App\Models\User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
+
         $this->call([
-            SiteSeeder::class,       // 1. Sedes primero
-            DedicationSeeder::class,  // 2. Dedicaciones
-            RoleSeeder::class,       // 3. Roles
-            UserSeeder::class,       // 4. Usuarios
-            CategorySeeder::class,    // 5. Categorías
-            TeacherSeeder::class,     // 6. Profesores
-            // ... (otros seeders que tengas) ...
+            // SiteSeeder::class,
+            // TeacherSeeder::class,
+            // CategorySeeder::class,
+            // DedicationSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

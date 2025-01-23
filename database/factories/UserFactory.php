@@ -19,14 +19,14 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
+            'name' => 'Test User', // $this->faker->name(),
+            'email' => 'test@example.com', // $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => bcrypt('password'), // password
             'remember_token' => Str::random(10),
-            'is_active' => $this->faker->boolean(),
-            'is_approved' => $this->faker->boolean(),
-            'site_id' => Site::factory(),
+            'is_active' => true, // Mantener true para pruebas
+            'is_approved' => true, // Mantener true para pruebas
+            'site_id' => null,
             // 'cdi' => $this->faker->unique()->randomNumber(8, true),
         ];
     }

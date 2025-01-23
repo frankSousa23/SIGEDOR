@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Teacher;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Dedication>
@@ -18,9 +19,14 @@ class DedicationFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->word(), // Nombre único para la dedicación
-            'description' => $this->faker->optional()->paragraph(), // Descripción opcional
-            'is_active' => $this->faker->boolean(), // Estado activo aleatorio
-            'hours' => $this->faker->numberBetween(1, 40), // Añadimos la columna 'hours' con un valor aleatorio entre 1 y 40
+            'description' => $this->faker->optional()->sentence(),
+            'is_active' => true, // Siempre activo para pruebas
+            'hours' => $this->faker->numberBetween(1, 20), // Reducir el rango
+            'director' => $this->faker->optional()->name(),
+            'studentNumber' => $this->faker->optional()->numberBetween(1, 10),
+            'studentHours' => $this->faker->optional()->numberBetween(1, 20),
+            'info' => $this->faker->optional()->sentence(),
+            'teacher_id' => Teacher::inRandomOrder()->first()->id ?? null,
         ];
     }
 }

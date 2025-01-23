@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Site;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Site>
@@ -17,17 +18,17 @@ class SiteFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->unique()->sentence(2), // Genera frases únicas para el nombre
-            'area' => $this->faker->word(), // Palabra aleatoria para el área
-            'program' => $this->faker->optional()->sentence(3), // Frase opcional para el programa
-            'uc' => $this->faker->optional()->word(), // Palabra opcional para uc
-            'weekHours' => $this->faker->numberBetween(10, 40), // Horas semanales aleatorias
-            'sections' => $this->faker->numberBetween(1, 10), // Secciones aleatorias
-            'info' => $this->faker->optional()->paragraph(), // Párrafo opcional para información
-            'is_active' => $this->faker->boolean(), // Booleano aleatorio para activo
-            'teachers_count' => $this->faker->numberBetween(0, 50), // Contador de profesores aleatorio
-            'is_available' => $this->faker->boolean(), // Booleano aleatorio para disponible
-            'last_assignment' => $this->faker->optional()->dateTime(), // Fecha y hora opcional para última asignación
+            'name' => $this->faker->unique()->city(),
+            'area' => $this->faker->randomElement(['Área 1', 'Área 2']),
+            'program' => $this->faker->optional()->randomElement(['Programa 1', 'Programa 2']),
+            'uc' => $this->faker->optional()->word(),
+            'weekHours' => $this->faker->numberBetween(10, 20),
+            'sections' => $this->faker->numberBetween(1, 5),
+            'info' => $this->faker->optional()->sentence(),
+            'is_active' => true,
+            'teachers_count' => 0,
+            'is_available' => true,
+            'last_assignment' => $this->faker->optional()->dateTime(),
         ];
     }
 }

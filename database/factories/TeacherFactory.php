@@ -24,22 +24,22 @@ class TeacherFactory extends Factory
 
         return [
             'user_id' => $user->id,
-            'site_id' => Site::factory(), // Crear un Site relacionado
-            'category_id' => Category::factory(), // Crear una Category relacionada
-            'dedication_id' => Dedication::factory(), // Crear una Dedication relacionada
+            'site_id' => Site::inRandomOrder()->first()->id ?? Site::factory()->create()->id,
+            'category_id' => Category::inRandomOrder()->first()->id ?? Category::factory()->create()->id,
+            'dedication_id' => Dedication::inRandomOrder()->first()->id ?? Dedication::factory()->create()->id,
             'name' => $this->faker->firstName(),
             'surName' => $this->faker->lastName(),
-            'cdi' => $this->faker->unique()->randomNumber(8, true), // Generar cdi único y no nulo
+            'cdi' => $this->faker->unique()->randomNumber(5, true), // Reducir a 5 dígitos
             'genre' => $this->faker->randomElement(['F', 'M']),
             'phone' => $this->faker->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
             'birthDate' => $this->faker->date(),
             'datePromotion' => $this->faker->date(),
             'asignaturePromotion' => $this->faker->optional()->word(),
-            'has_site' => $this->faker->boolean(),
-            'has_category' => $this->faker->boolean(),
-            'has_dedication' => $this->faker->boolean(),
-            'is_completed' => $this->faker->boolean(),
+            'has_site' => true, // Siempre tiene sede para pruebas
+            'has_category' => true, // Siempre tiene categoría para pruebas
+            'has_dedication' => true, // Siempre tiene dedicación para pruebas
+            'is_completed' => true, // Siempre completado para pruebas
         ];
     }
 }
