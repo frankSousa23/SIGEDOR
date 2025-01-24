@@ -36,6 +36,11 @@ return new class extends Migration
             $table->boolean('is_completed')->default(false)->comment('Indica si todas las relaciones requeridas están completas');
             $table->timestamps();
             $table->softDeletes();
+
+            // Índices
+            $table->index('user_id');
+            $table->index('category_id');
+            $table->index('dedication_id');
         });
     }
 

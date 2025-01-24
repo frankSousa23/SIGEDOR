@@ -47,6 +47,13 @@ class Dedication extends Model
         self::DEDICATION_EX => [35, 36]
     ];
 
+    const DEDICATIONS = [
+        'Tiempo Convencional' => 'Tiempo Convencional',
+        'Medio Tiempo' => 'Medio Tiempo',
+        'Tiempo Completo' => 'Tiempo Completo',
+        'Exclusiva' => 'Exclusiva',
+    ];
+
     public function teacher(): BelongsTo
     {
         return $this->belongsTo(Teacher::class);

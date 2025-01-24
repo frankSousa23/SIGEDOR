@@ -38,6 +38,9 @@ return new class extends Migration
                   ->references('id')
                   ->on('teachers')
                   ->onDelete('cascade');
+
+            // Índices
+            $table->index('teacher_id');
         });
     }
 

@@ -1,34 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Lista de Docentes</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
+        @page { size: landscape; margin: 20px; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .footer { text-align: center; margin-top: 20px; font-size: 12px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
     </style>
 </head>
 <body>
-    <h1>Lista de Docentes</h1>
-    
+    <div class="header">
+        <h2>Institución Educativa</h2>
+        <p>Reporte de Docentes - {{ now()->format('d/m/Y H:i') }}</p>
+    </div>
+
     <table>
         <thead>
             <tr>
@@ -37,6 +24,8 @@
                 <th>Apellidos</th>
                 <th>Correo</th>
                 <th>Teléfono</th>
+                <th>Fecha Nac.</th>
+                <th>Fecha Prom.</th>
                 <th>Sede</th>
                 <th>Categoría</th>
                 <th>Dedicación</th>
@@ -50,12 +39,19 @@
                 <td>{{ $teacher->surName }}</td>
                 <td>{{ $teacher->email }}</td>
                 <td>{{ $teacher->phone }}</td>
-                <td>{{ $teacher->site?->name ?? 'N/A' }}</td>
-                <td>{{ $teacher->category?->name ?? 'N/A' }}</td>
-                <td>{{ $teacher->dedication?->name ?? 'N/A' }}</td>
+                <td>{{ $teacher->birthDate->format('d/m/Y') }}</td>
+                <td>{{ $teacher->datePromotion->format('d/m/Y') }}</td>
+                <td>{{ $teacher->site->name }}</td>
+                <td>{{ $teacher->category->current_category }}</td>
+                <td>{{ $teacher->dedication->name }}</td>
             </tr>
             @endforeach
         </tbody>
     </table>
+
+    <div class="footer">
+        <p>Total de docentes: {{ $teachers->count() }}</p>
+        <p>Generado automáticamente por el sistema</p>
+    </div>
 </body>
 </html>

@@ -27,6 +27,9 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->foreignId('teacher_id')->nullable()->constrained('teachers')->onDelete('cascade');
+
+            // Índices
+            $table->index('teacher_id');
         });
     }
 

@@ -16,6 +16,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Carbon\Carbon;
 
 class TeacherResource extends Resource
@@ -35,7 +37,7 @@ class TeacherResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        if (auth()->user()->hasRole(['admin', 'area_manager'])) {
+        if (Auth::check() && (Auth::user()->hasRole('admin') || Auth::user()->hasRole('area_manager'))) {
             return static::getEloquentQuery()->count();
         }
         return null;
@@ -44,20 +46,19 @@ class TeacherResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
-        
-        if (auth()->user()->hasRole('admin')) {
+
+        if (Auth::check() && Auth::user()->hasRole('admin')) {
             return $query;
         }
 
-        if (auth()->user()->hasRole('area_manager')) {
-            return $query->where('site_id', auth()->user()->site_id);
+        if (Auth::user()->hasRole('area_manager')) {
+            return $query->where('site_id', Auth::user()->site_id);
+        }
+        if (Auth::user()->hasRole('teacher')) {
+            return $query->where('cdi', Auth::user()->cdi);
         }
 
-        if (auth()->user()->hasRole('teacher')) {
-            return $query->where('cdi', auth()->user()->cdi);
-        }
-
-        return $query->where('id', null); // No ver nada si no tiene rol
+        return $query->where('id', null);
     }
 
     public static function form(Form $form): Form
@@ -121,13 +122,20 @@ class TeacherResource extends Resource
                     ->required()
                     ->preload()
                     ->searchable()
-                    ->helperText('Puede seleccionar cualquier sede, incluso si ya tiene profesores asignados'),
+                    ->options(\App\Models\Site::SITES)
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255)
+                            ->unique('sites', 'name')
+                    ]),
 
                 Forms\Components\Select::make('category_id')
                     ->relationship('category', 'current_category')
                     ->label('Categoría')
                     ->searchable()
                     ->preload()
+                    ->options(\App\Models\Category::CATEGORIES)
                     ->createOptionForm([
                         Forms\Components\TextInput::make('current_category')
                             ->required()
@@ -140,6 +148,7 @@ class TeacherResource extends Resource
                     ->label('Dedicación')
                     ->searchable()
                     ->preload()
+                    ->options(\App\Models\Dedication::DEDICATIONS)
                     ->createOptionForm([
                         Forms\Components\Select::make('type')
                             ->required()
@@ -152,7 +161,7 @@ class TeacherResource extends Resource
                             ])
                             ->searchable()
                             ->live()
-                            ->afterStateUpdated(fn ($state, callable $set) => 
+                            ->afterStateUpdated(fn ($state, callable $set) =>
                                 $set('name', match ($state) {
                                     'TCV' => 'Tiempo Convencional',
                                     'MT' => 'Medio Tiempo',
@@ -167,7 +176,7 @@ class TeacherResource extends Resource
                             ->label('Horas')
                             ->options(function (callable $get) {
                                 $type = $get('type');
-                                
+
                                 return match ($type) {
                                     'TCV' => array_combine(
                                         range(1, 17),
@@ -274,26 +283,25 @@ class TeacherResource extends Resource
                         ->label('Exportar a PDF')
                         ->icon('heroicon-o-document-arrow-down')
                         ->action(function (Collection $records) {
-                            // Aquí implementaremos la exportación a PDF
-                            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.teachers', [
+                            $pdf = Pdf::loadView('pdf.teachers', [
                                 'teachers' => $records
-                            ]);
-                            
+                            ])->setPaper('a4', 'landscape');
+
                             return response()->streamDownload(function () use ($pdf) {
                                 echo $pdf->output();
-                            }, 'docentes.pdf');
+                            }, 'docentes_'.now()->format('Ymd_His').'.pdf');
                         })
                 ]),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -301,5 +309,5 @@ class TeacherResource extends Resource
             'create' => Pages\CreateTeacher::route('/create'),
             'edit' => Pages\EditTeacher::route('/{record}/edit'),
         ];
-    }    
+    }
 }

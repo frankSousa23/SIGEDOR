@@ -25,15 +25,20 @@ class RoleSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
         }
 
-        // Rol Admin
-        $adminRole = Role::create(['name' => 'admin']);
+        // Crear roles si no existen
+        $roles = ['admin', 'teacher', 'area_manager'];
+        foreach ($roles as $role) {
+            Role::firstOrCreate(['name' => $role, 'guard_name' => 'web']);
+        }
+
+        // Asignar permisos a roles
+        $adminRole = Role::where('name', 'admin')->first();
         $adminRole->givePermissionTo(Permission::all());
 
-        // Rol Area Manager
-        $areaManagerRole = Role::create(['name' => 'areamanager']);
+        $areaManagerRole = Role::where('name', 'area_manager')->first();
         $areaManagerRole->givePermissionTo([
             'view_teachers',
             'edit_teachers',
@@ -41,10 +46,7 @@ class RoleSeeder extends Seeder
             'create_reports'
         ]);
 
-        // Rol Teacher
-        $teacherRole = Role::create(['name' => 'teacher']);
-        $teacherRole->givePermissionTo([
-            'view_teachers' // Solo podrá ver su propia información
-        ]);
+        $teacherRole = Role::where('name', 'teacher')->first();
+        $teacherRole->givePermissionTo(['view_teachers']);
     }
 }

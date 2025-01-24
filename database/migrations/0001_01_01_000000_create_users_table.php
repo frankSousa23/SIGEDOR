@@ -25,6 +25,7 @@ return new class extends Migration
 
             // site_id se añadirá en una migración posterior
             $table->unsignedBigInteger('site_id')->nullable();
+            $table->index('site_id');
         });
     }
 

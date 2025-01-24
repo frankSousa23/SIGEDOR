@@ -24,6 +24,12 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('info')->nullable();
             $table->timestamps();
+
+            // Índices
+            $table->index('category_id');
+            $table->index('dedication_id');
+            $table->index('permission_id');
+            $table->index('site_id');
         });
     }
 

@@ -20,6 +20,9 @@ return new class extends Migration
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->foreignId('teacher_id')->constrained()->onDelete('cascade');
             $table->timestamps();
+
+            // Índices
+            $table->index('teacher_id');
         });
     }
 

@@ -34,6 +34,14 @@ class Category extends Model
         'titular' => 'date',
     ];
 
+    const CATEGORIES = [
+        'Instructor' => 'Instructor',
+        'Asistente' => 'Asistente',
+        'Agregado' => 'Agregado',
+        'Asociado' => 'Asociado',
+        'Titular' => 'Titular',
+    ];
+
     public function teacher()
     {
         return $this->belongsTo(Teacher::class);
