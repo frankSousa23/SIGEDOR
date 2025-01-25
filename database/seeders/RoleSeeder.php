@@ -28,10 +28,13 @@ class RoleSeeder extends Seeder
             Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
         }
 
-        // Crear roles si no existen
-        $roles = ['admin', 'teacher', 'area_manager'];
+        // Crear roles solo si no existen
+        $roles = ['admin', 'area_manager', 'teacher'];
         foreach ($roles as $role) {
-            Role::firstOrCreate(['name' => $role, 'guard_name' => 'web']);
+            Role::firstOrCreate([
+                'name' => $role,
+                'guard_name' => 'web'
+            ]);
         }
 
         // Asignar permisos a roles

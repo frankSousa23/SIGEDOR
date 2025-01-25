@@ -18,6 +18,13 @@ use Illuminate\Support\Facades\Hash;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Grid;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\EndsWith;
+use App\Models\Site;
+use App\Filament\Resources\SiteResource;
+use Spatie\Permission\Models\Role;
+use Filament\Forms\Components\Toggle;
+use Filament\Tables\Columns\ToggleColumn;
 
 class UserResource extends Resource
 {
@@ -31,87 +38,62 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $isAdmin = auth()->user()->hasRole('admin');
-        $isCreate = $form->getOperation() === 'create';
-        $record = $form->getRecord();
-
-        return $form->schema([
-            Section::make('Información del Usuario')
-                ->description('Información básica del usuario')
-                ->schema([
-                    Grid::make(2)->schema([
+        return $form
+            ->schema([
+                Section::make('Información del Usuario')
+                    ->schema([
                         TextInput::make('name')
                             ->label('Nombre')
                             ->required()
-                            ->maxLength(255)
-                            ->disabled(fn () => !$isAdmin && $record?->hasRole('admin')),
-
+                            ->maxLength(255),
                         TextInput::make('email')
-                            ->label('Correo')
+                            ->label('Correo Electrónico')
+                            ->required()
                             ->email()
-                            ->required()
-                            ->unique(ignoreRecord: true)
-                            ->disabled(fn () => !$isAdmin && $record?->hasRole('admin')),
-
-                        TextInput::make('cdi')
-                            ->label('Cédula de Identidad')
-                            ->required()
-                            ->unique(ignoreRecord: true)
-                            ->maxLength(10)
-                            ->helperText('Sin puntos ni espacios')
-                            ->disabled(fn () => !$isAdmin && $record?->hasRole('admin')),
-
+                            ->unique('users', 'email')
+                            ->rules([
+                                'regex:/@sigedor\.com$/',
+                            ])
+                            ->autocomplete('email')
+                            ->helperText('El correo debe terminar en @sigedor.com'),
                         TextInput::make('password')
                             ->label('Contraseña')
                             ->password()
-                            ->required(fn ($context) => $context === 'create')
-                            ->dehydrateStateUsing(fn ($state) => filled($state) ? Hash::make($state) : null)
-                            ->visible(fn () => $isCreate || $isAdmin || auth()->id() === $record?->id),
+                            ->required()
+                            ->minLength(8),
                     ]),
-                ]),
-
-            Section::make('Asignación y Permisos')
-                ->description('Configuración de rol y sede')
-                ->visible(fn () => $isAdmin || auth()->user()->hasRole('area_manager'))
-                ->schema([
-                    Grid::make(2)->schema([
+                Section::make('Asignación de Sede')
+                    ->schema([
                         Select::make('site_id')
                             ->label('Sede')
-                            ->relationship('site', 'name')
+                            ->options(Site::SITES)
                             ->searchable()
-                            ->preload()
-                            ->required(fn () => !$isCreate || $isAdmin)
-                            ->visible(fn () => $isAdmin || (auth()->user()->hasRole('area_manager') && !$record?->hasRole('admin'))),
-
+                            ->createOptionForm([
+                                TextInput::make('name')
+                                    ->label('Nombre de la Sede')
+                                    ->required()
+                                    ->maxLength(255),
+                            ])
+                            ->required(),
+                    ]),
+                Section::make('Asignación de Rol')
+                    ->schema([
                         Select::make('roles')
                             ->label('Rol')
-                            ->multiple(false)
                             ->relationship('roles', 'name')
-                            ->preload()
-                            ->required()
-                            ->options([
-                                'admin' => 'Administrador',
-                                'area_manager' => 'Jefe de Área',
-                                'teacher' => 'Profesor'
-                            ])
-                            ->default('teacher')
-                            ->disabled(fn () => !$isAdmin || $record?->hasRole('admin'))
-                            ->visible(fn () => $isAdmin),
-
-                        Forms\Components\Toggle::make('is_approved')
-                            ->label('Aprobado')
-                            ->default(false)
-                            ->disabled(fn () => !$isAdmin || $record?->hasRole('admin'))
-                            ->visible(fn () => $isAdmin),
-
-                        Forms\Components\Toggle::make('is_active')
-                            ->label('Activo')
-                            ->default(true)
-                            ->disabled(fn () => !$isAdmin || $record?->hasRole('admin'))
-                            ->visible(fn () => $isAdmin),
+                            ->options(Role::all()->pluck('name', 'id'))
+                            ->required(),
                     ]),
-                ]),
-        ]);
+                Section::make('Estado del Usuario')
+                    ->schema([
+                        Toggle::make('is_active')
+                            ->label('Activo')
+                            ->default(true),
+                        Toggle::make('is_approved')
+                            ->label('Aprobado')
+                            ->default(false),
+                    ]),
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -120,49 +102,21 @@ class UserResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label('Nombre')
-                    ->searchable()
-                    ->sortable(),
-
+                    ->searchable(),
                 TextColumn::make('email')
-                    ->label('Correo')
-                    ->searchable()
-                    ->sortable(),
-
-                TextColumn::make('cdi')
-                    ->label('Cédula')
-                    ->searchable()
-                    ->sortable(),
-
+                    ->label('Correo Electrónico')
+                    ->searchable(),
                 TextColumn::make('site.name')
                     ->label('Sede')
-                    ->searchable()
-                    ->sortable(),
-
+                    ->searchable(),
                 TextColumn::make('roles.name')
                     ->label('Rol')
-                    ->formatStateUsing(fn (User $record) => $record->getFullRoleName())
-                    ->searchable()
-                    ->sortable(),
-
-                TextColumn::make('is_approved')
-                    ->label('Estado')
-                    ->badge()
-                    ->color(fn ($state): string => match ($state) {
-                        true, 1, '1' => 'success',
-                        false, 0, '0', null => 'danger',
-                        default => 'danger',
-                    })
-                    ->formatStateUsing(fn ($state): string => match ($state) {
-                        true, 1, '1' => 'Aprobado',
-                        false, 0, '0', null => 'Pendiente',
-                        default => 'Pendiente',
-                    }),
-
-                TextColumn::make('is_active')
-                    ->label('Activo')
-                    ->badge()
-                    ->color(fn ($state): string => $state ? 'success' : 'danger')
-                    ->formatStateUsing(fn ($state): string => $state ? 'Sí' : 'No'),
+                    ->badge(),
+                ToggleColumn::make('is_active')
+                    ->label('Activo'),
+                ToggleColumn::make('is_approved')
+                    ->label('Aprobado'),
+                TextColumn::make('activities.description'),
             ])
             ->filters([
                 SelectFilter::make('roles')

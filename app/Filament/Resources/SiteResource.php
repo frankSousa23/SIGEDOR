@@ -36,11 +36,14 @@ class SiteResource extends Resource
                                 return Teacher::whereDoesntHave('sites')->pluck('cdi', 'id');
                             })
                             ->searchable()
-                            ->required(),
+                            ->required()
+                            ->validationMessages([
+                                'required' => 'Debe seleccionar un docente',
+                            ]),
                     ]),
 
                 Forms\Components\Select::make('name')
-                    ->label('Site')
+                    ->label('Nombre de la Sede')
                     ->options(Site::SITES)
                     ->required()
                     ->searchable()
@@ -54,14 +57,15 @@ class SiteResource extends Resource
                             ->unique('sites', 'name')
                     ]),
 
-                Forms\Components\Select::make('area')
+                    Forms\Components\Select::make('area')
                     ->label('Área')
                     ->options(Site::AREAS)
                     ->required()
                     ->searchable()
                     ->preload()
                     ->live()
-                    ->native(false),
+                    ->native(false)
+                    ->maxLength(255),
 
                 Forms\Components\Select::make('program')
                     ->label('Programa')

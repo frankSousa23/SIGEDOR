@@ -19,6 +19,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Carbon\Carbon;
+use Spatie\Permission\Traits\HasRoles;
 
 class TeacherResource extends Resource
 {
@@ -52,10 +53,12 @@ class TeacherResource extends Resource
         }
 
         if (Auth::user()->hasRole('area_manager')) {
-            return $query->where('site_id', Auth::user()->site_id);
+            return $query->where('site_id', Auth::user()->site_id)
+                        ->where('area', Auth::user()->area);
         }
+
         if (Auth::user()->hasRole('teacher')) {
-            return $query->where('cdi', Auth::user()->cdi);
+            return $query->where('id', Auth::user()->teacher_id);
         }
 
         return $query->where('id', null);
@@ -69,7 +72,11 @@ class TeacherResource extends Resource
                     ->label('Cédula de Identidad')
                     ->required()
                     ->unique(ignoreRecord: true)
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->validationMessages([
+                        'required' => 'La cédula es obligatoria',
+                        'unique' => 'La cédula ya está registrada',
+                    ]),
 
                 Forms\Components\TextInput::make('name')
                     ->label('Nombres')
@@ -128,7 +135,20 @@ class TeacherResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->unique('sites', 'name')
-                    ]),
+                            ->validationMessages([
+                                'required' => 'Debe seleccionar una sede',
+                            ]),
+                    ])
+                    ->createOptionUsing(function (array $data) {
+                        return \App\Models\Site::create([
+                            'name' => $data['name'],
+                        ])->id;
+                    })
+                    ->createOptionAction(function (Forms\Components\Actions\Action $action) {
+                        return $action
+                            ->modalHeading('Crear nueva sede')
+                            ->modalButton('Agregar sede');
+                    }),
 
                 Forms\Components\Select::make('category_id')
                     ->relationship('category', 'current_category')
@@ -291,6 +311,7 @@ class TeacherResource extends Resource
                                 echo $pdf->output();
                             }, 'docentes_'.now()->format('Ymd_His').'.pdf');
                         })
+                        ->requiresConfirmation()
                 ]),
             ]);
     }
@@ -309,5 +330,15 @@ class TeacherResource extends Resource
             'create' => Pages\CreateTeacher::route('/create'),
             'edit' => Pages\EditTeacher::route('/{record}/edit'),
         ];
+    }
+
+    public function isAdmin()
+    {
+        return $this->user->hasRole('admin');
+    }
+
+    public function isAreaManager()
+    {
+        return $this->user->hasRole('area_manager');
     }
 }

@@ -198,4 +198,11 @@ return [
             'guard_name' => 'web',
         ],
     ],
+
+    'permissions' => [
+        'view_dashboard' => ['admin', 'area_manager'],
+        'manage_users' => ['admin'],
+        'manage_reports' => ['admin', 'area_manager', 'teacher'],
+        // Agregar todos los permisos necesarios
+    ],
 ];

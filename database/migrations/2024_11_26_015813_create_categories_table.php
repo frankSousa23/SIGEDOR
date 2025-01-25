@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('preTitle')->nullable()->comment('Título de pregrado del docente');
             $table->string('lastTitle')->nullable()->comment('Título más alto obtenido');
             $table->boolean('disable_assistant_rule')->default(false)->comment('Habilita promoción inmediata a Asistente');
-            $table->string('current_category')->nullable()->comment('Categoría actual del docente');
+            $table->string('current_category')->nullable()->comment('Categoría actual del docente')->index();
 
             // Fechas de categorías
             $table->date('instructor')->nullable()->comment('Fecha de categoría Instructor');

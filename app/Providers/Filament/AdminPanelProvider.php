@@ -29,10 +29,11 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
+            ->authGuard('web')
+            ->authPasswordBroker('users')
+            ->login()
             ->id('admin')
             ->path('admin')
-            ->login()
             ->brandName('SIGEDOR')
             ->colors([
                 'primary' => Color::Amber,
@@ -85,9 +86,7 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
                 RoleMiddleware::class,
             ])
-            ->authMiddleware([
-                Authenticate::class,
-            ])
+            ->authMiddleware(['auth'])
             ->navigation(fn () => Navigation::build());
     }
 }

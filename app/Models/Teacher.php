@@ -61,22 +61,22 @@ class Teacher extends Model
         return $this->belongsTo(Site::class);
     }
 
-    public function category(): BelongsTo
+    public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function dedication(): BelongsTo
+    public function dedication()
     {
         return $this->belongsTo(Dedication::class);
     }
 
-    public function reports(): HasMany
+    public function reports()
     {
         return $this->hasMany(Report::class);
     }
 
-    public function permissionTeachers(): HasMany
+    public function permissionTeachers()
     {
         return $this->hasMany(PermissionTeacher::class);
     }

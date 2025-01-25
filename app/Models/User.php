@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Site;
 use App\Models\Teacher;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -24,11 +25,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'cdi',
-        'site_id',
         'is_active',
         'is_approved',
-        'email_verified_at'
+        'site_id',
     ];
 
     /**
@@ -48,13 +47,12 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
         'is_active' => 'boolean',
-        'is_approved' => 'boolean'
+        'is_approved' => 'boolean',
     ];
 
     // Relationships
-    public function site(): BelongsTo
+    public function site()
     {
         return $this->belongsTo(Site::class);
     }
@@ -151,5 +149,13 @@ class User extends Authenticatable
         }
 
         return false;
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($user) {
+            $user->password = Hash::make($user->password);
+        });
     }
 }

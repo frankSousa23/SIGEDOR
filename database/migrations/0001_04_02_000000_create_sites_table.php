@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('area');
+            $table->string('name')->unique()->index();
+            $table->string('area')->index();
             $table->string('program')->nullable();
             $table->string('uc')->nullable();
             $table->integer('weekHours')->nullable();

@@ -17,23 +17,32 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Crear el usuario administrador
-        $admin = User::create([
-            'name' => 'Administrador',
-            'email' => 'admin@example.com',
+        // Crear roles si no existen
+        Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        Role::firstOrCreate(['name' => 'area_manager', 'guard_name' => 'web']);
+        Role::firstOrCreate(['name' => 'teacher', 'guard_name' => 'web']);
+
+        // Crear usuario admin si no existe
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@sigedor.com',
             'password' => bcrypt('password'),
             'is_active' => true,
-            'is_approved' => true,
-        ]);
+            'is_approved' => true
+        ])->assignRole('admin');
 
-        // Crear roles y permisos
-        $role = Role::create(['name' => 'admin']);
-        $permission = Permission::create(['name' => 'manage everything']);
+        // Crear usuario area_manager si no existe
+        User::factory()->create([
+            'name' => 'Gestor Área',
+            'email' => 'gestor@sigedor.com',
+            'password' => bcrypt('password'),
+        ])->assignRole('area_manager');
 
-        // Asignar permisos al rol
-        $role->givePermissionTo($permission);
-
-        // Asignar rol al usuario administrador
-        $admin->assignRole($role);
+        // Crear usuario teacher si no existe
+        User::factory()->create([
+            'name' => 'Docente',
+            'email' => 'docente@sigedor.com',
+            'password' => bcrypt('password'),
+        ])->assignRole('teacher');
     }
 }

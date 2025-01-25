@@ -13,12 +13,13 @@ use App\Filament\Resources\DedicationResource;
 use App\Filament\Resources\PermissionTeacherResource;
 use App\Filament\Resources\ReportResource;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Traits\HasRoles;
 
 class Navigation
 {
     public static function build(): NavigationBuilder
     {
-        $navigation = NavigationBuilder::make();
+        $navigation = new NavigationBuilder();
         $user = Auth::user();
 
         if ($user->hasRole('admin')) {

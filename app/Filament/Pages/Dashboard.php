@@ -5,6 +5,10 @@ namespace App\Filament\Pages;
 use Filament\Pages\Dashboard as BaseDashboard;
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\TasksOverview;
+use App\Models\PermissionTeacher;
+use App\Models\Teacher;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class Dashboard extends BaseDashboard
 {
@@ -29,7 +33,7 @@ class Dashboard extends BaseDashboard
 
     public function render(): \Illuminate\Contracts\View\View
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $totalTeachers = Teacher::count(); // Total de docentes
         $approvedPermissions = PermissionTeacher::where('status', 'approved')->count(); // Permisos aprobados
         $activeUsers = User::where('is_active', true)->count(); // Usuarios activos
@@ -60,7 +64,7 @@ class Dashboard extends BaseDashboard
 
     public function getWidgets(): array
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->hasRole('admin')) {
             return [

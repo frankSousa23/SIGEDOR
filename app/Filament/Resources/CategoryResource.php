@@ -28,7 +28,7 @@ class CategoryResource extends Resource
     protected static ?string $navigationGroup = 'Asignaciones';
     protected static ?int $navigationSort = 2;
 
-    protected static function shouldEnableAutoAssistant($preTitle, $lastTitle): bool 
+    protected static function shouldEnableAutoAssistant($preTitle, $lastTitle): bool
     {
         if (empty($preTitle) || empty($lastTitle)) {
             return false;
@@ -82,6 +82,9 @@ class CategoryResource extends Resource
                                 return Teacher::whereDoesntHave('category')->pluck('cdi', 'id');
                             })
                             ->required()
+                            ->validationMessages([
+                                'required' => 'Debe seleccionar un docente',
+                            ])
                             ->reactive()
                             ->columnSpan('full'),
 
@@ -245,8 +248,10 @@ class CategoryResource extends Resource
                             ->label('Observaciones')
                             ->maxLength(255),
 
-                        Forms\Components\Hidden::make('current_category')
-                            ->default('Instructor'),
+                        Forms\Components\TextInput::make('current_category')
+                            ->label('Nombre de la Categoría')
+                            ->required()
+                            ->maxLength(255),
                     ]),
             ]);
     }

@@ -17,14 +17,15 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active')->default(false);
             $table->boolean('is_approved')->default(false);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
+            $table->boolean('is_example')->default(false);  // Añadir campo is_example
 
             // site_id se añadirá en una migración posterior
-            $table->unsignedBigInteger('site_id')->nullable();
+            $table->foreignId('site_id')->nullable()->constrained()->onDelete('set null');
             $table->index('site_id');
         });
     }
