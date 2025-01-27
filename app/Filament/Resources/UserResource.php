@@ -40,48 +40,44 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Section::make('Información del Usuario')
-                    ->schema([
-                        TextInput::make('name')
-                            ->label('Nombre')
-                            ->required()
-                            ->maxLength(255),
-                        TextInput::make('email')
-                            ->label('Correo Electrónico')
-                            ->required()
-                            ->email()
-                            ->unique('users', 'email')
-                            ->rules([
-                                'regex:/@sigedor\.com$/',
-                            ])
-                            ->autocomplete('email')
-                            ->helperText('El correo debe terminar en @sigedor.com'),
-                        TextInput::make('password')
-                            ->label('Contraseña')
-                            ->password()
-                            ->required()
-                            ->minLength(8),
-                    ]),
-                Section::make('Asignación de Sede')
+                TextInput::make('email')
+                    ->label('Correo Electrónico')
+                    ->required()
+                    ->email()
+                    ->rules(['regex:/@sigedor\.com$/'])
+                    ->autocomplete('email')
+                    ->helperText('El correo debe terminar en @sigedor.com'),
+                TextInput::make('name')
+                    ->label('Nombre')
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('password')
+                    ->label('Contraseña')
+                    ->password()
+                    ->required()
+                    ->minLength(8),
+                Section::make('Asignación de Sede y Área')
                     ->schema([
                         Select::make('site_id')
                             ->label('Sede')
-                            ->options(Site::SITES)
+                            ->options(Site::pluck('name', 'id'))
                             ->searchable()
-                            ->createOptionForm([
-                                TextInput::make('name')
-                                    ->label('Nombre de la Sede')
-                                    ->required()
-                                    ->maxLength(255),
-                            ])
+                            ->required(),
+                        Select::make('area')
+                            ->label('Área')
+                            ->options(Site::pluck('area', 'id'))
+                            ->searchable()
                             ->required(),
                     ]),
                 Section::make('Asignación de Rol')
                     ->schema([
-                        Select::make('roles')
+                        Select::make('role')
                             ->label('Rol')
-                            ->relationship('roles', 'name')
-                            ->options(Role::all()->pluck('name', 'id'))
+                            ->options([
+                                'admin' => 'Administrador',
+                                'area_manager' => 'Gerente de Área',
+                                'teacher' => 'Docente',
+                            ])
                             ->required(),
                     ]),
                 Section::make('Estado del Usuario')
@@ -111,6 +107,12 @@ class UserResource extends Resource
                     ->searchable(),
                 TextColumn::make('roles.name')
                     ->label('Rol')
+                    ->formatStateUsing(fn ($state) => match ($state) {
+                        'admin' => 'Administrador',
+                        'area_manager' => 'Gerente de Área',
+                        'teacher' => 'Docente',
+                        default => $state,
+                    })
                     ->badge(),
                 ToggleColumn::make('is_active')
                     ->label('Activo'),

@@ -86,7 +86,9 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
                 RoleMiddleware::class,
             ])
-            ->authMiddleware(['auth'])
+            ->authMiddleware([
+                // Authenticate::class, ← Comentar temporalmente
+            ])
             ->navigation(fn () => Navigation::build());
     }
 }

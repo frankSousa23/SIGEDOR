@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Site;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class User extends Authenticatable
 {
@@ -22,12 +23,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'is_active',
-        'is_approved',
-        'site_id',
+        'name', 'email', 'password', 'role',
+        'is_active', 'is_approved', 'email_verified_at'
     ];
 
     /**
@@ -35,10 +32,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast.
@@ -157,5 +151,10 @@ class User extends Authenticatable
         static::creating(function ($user) {
             $user->password = Hash::make($user->password);
         });
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->attributes['password'];
     }
 }

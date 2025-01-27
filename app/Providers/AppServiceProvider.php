@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Hash;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,5 +34,13 @@ class AppServiceProvider extends ServiceProvider
                 'Configuración',
             ]);
         });
+
+        Hash::extend('force_bcrypt', function () {
+            return new \Illuminate\Hashing\BcryptHasher([
+                'rounds' => 12,
+            ]);
+        });
+
+        config(['hashing.driver' => 'force_bcrypt']);
     }
 }

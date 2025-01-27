@@ -20,12 +20,9 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            RoleSeeder::class,       // 1. Roles primero
-            SiteSeeder::class,       // 2. Sites (usar constantes)
-            UserSeeder::class,       // 3. Usuarios con roles
-            TeacherSeeder::class,    // 4. Teachers (requiere users)
-            CategorySeeder::class,   // 5. Categories
-            DedicationSeeder::class, // 6. Dedications
+            RoleSeeder::class,
+            SiteSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

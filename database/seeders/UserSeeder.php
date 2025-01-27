@@ -4,11 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
-use App\Models\Site;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -17,32 +15,81 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Crear roles si no existen
-        Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
-        Role::firstOrCreate(['name' => 'area_manager', 'guard_name' => 'web']);
-        Role::firstOrCreate(['name' => 'teacher', 'guard_name' => 'web']);
+        // 1. Crear roles primero
+        $roles = ['admin', 'area_manager', 'teacher'];
+        foreach ($roles as $role) {
+            Role::firstOrCreate([
+                'name' => $role,
+                'guard_name' => 'web'
+            ]);
+        }
 
-        // Crear usuario admin si no existe
+        // 2. Crear usuarios base sin factory
+        $users = [
+            [
+                'name' => 'Admin',
+                'email' => 'admin@sigedor.com',
+                'password' => Hash::make('password'),
+                'is_active' => true,
+                'is_approved' => true,
+                'role' => 'admin'
+            ],
+            [
+                'name' => 'Gestor Área',
+                'email' => 'gestor@sigedor.com',
+                'password' => Hash::make('password'),
+                'is_active' => true,
+                'is_approved' => true,
+                'role' => 'area_manager'
+            ],
+            [
+                'name' => 'Docente',
+                'email' => 'docente@sigedor.com',
+                'password' => Hash::make('password'),
+                'is_active' => true,
+                'is_approved' => true,
+                'role' => 'teacher'
+            ]
+        ];
+
+        foreach ($users as $userData) {
+            $user = User::create([
+                'name' => $userData['name'],
+                'email' => $userData['email'],
+                'password' => $userData['password'],
+                'is_active' => $userData['is_active'],
+                'is_approved' => $userData['is_approved'],
+                'email_verified_at' => now(),
+                'role' => $userData['role']
+            ]);
+
+            $user->assignRole($userData['role']);
+        }
+
+
+        // Crear usuario admin funcional
         User::create([
-            'name' => 'Admin',
-            'email' => 'admin@sigedor.com',
-            'password' => bcrypt('password'),
+            'name' => 'Admin Final',
+            'email' => 'admin@final.com',
+            'password' => Hash::make('password'),
             'is_active' => true,
-            'is_approved' => true
-        ])->assignRole('admin');
+            'is_approved' => true,
+            'email_verified_at' => now(),
+            'role' => 'admin'
+        ]);
 
-        // Crear usuario area_manager si no existe
-        User::factory()->create([
-            'name' => 'Gestor Área',
-            'email' => 'gestor@sigedor.com',
-            'password' => bcrypt('password'),
-        ])->assignRole('area_manager');
+        // Eliminar todos los usuarios existentes
+        User::truncate();
 
-        // Crear usuario teacher si no existe
-        User::factory()->create([
-            'name' => 'Docente',
-            'email' => 'docente@sigedor.com',
-            'password' => bcrypt('password'),
-        ])->assignRole('teacher');
+        // Crear usuario temporal
+        User::create([
+            'name' => 'Admin Temporal',
+            'email' => 'admin@temporal.com',
+            'password' => 'password123', // ← Texto plano temporal
+            'is_active' => true,
+            'is_approved' => true,
+            'email_verified_at' => now(),
+            'role' => 'admin' // ← Asegurar que el rol sea 'admin'
+        ]);
     }
 }
