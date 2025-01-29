@@ -10,46 +10,63 @@ class RoleSeeder extends Seeder
 {
     public function run(): void
     {
-        // Crear permisos básicos
+        // Crear permisos (USAR ESPACIOS)
         $permissions = [
-            'view_teachers',
-            'create_teachers',
-            'edit_teachers',
-            'delete_teachers',
-            'manage_sites',
-            'manage_categories',
-            'manage_dedications',
-            'manage_permissions',
-            'view_reports',
-            'create_reports'
+            'view users',
+            'create users',
+            'edit users',
+            'delete users',
+            'view teachers',
+            'create teachers',
+            'edit teachers',
+            'delete teachers',
+            'manage sites',
+            'manage categories',
+            'manage dedications',
+            'manage permissions',
+            'view reports',
+            'create reports'
         ];
 
         foreach ($permissions as $permission) {
             Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
         }
 
+        // Crear rol admin y asignar todos los permisos
+        $role = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        $role->givePermissionTo($permissions);
+
         // Crear roles solo si no existen
-        $roles = ['admin', 'area_manager', 'teacher'];
-        foreach ($roles as $role) {
+        $roles = ['area_manager', 'teacher'];
+        foreach ($roles as $roleName) {
             Role::firstOrCreate([
-                'name' => $role,
+                'name' => $roleName,
                 'guard_name' => 'web'
             ]);
         }
 
         // Asignar permisos a roles
-        $adminRole = Role::where('name', 'admin')->first();
-        $adminRole->givePermissionTo(Permission::all());
-
         $areaManagerRole = Role::where('name', 'area_manager')->first();
         $areaManagerRole->givePermissionTo([
-            'view_teachers',
-            'edit_teachers',
-            'view_reports',
-            'create_reports'
+            'view teachers',
+            'edit teachers',
+            'view reports',
+            'create reports'
         ]);
 
         $teacherRole = Role::where('name', 'teacher')->first();
-        $teacherRole->givePermissionTo(['view_teachers']);
+        $teacherRole->givePermissionTo(['view teachers']);
+
+        $roles = [
+            'admin',
+            'gerente',
+            'docente',
+        ];
+
+        foreach ($roles as $role) {
+            if (!Role::where('name', $role)->exists()) {
+                Role::create(['name' => $role]);
+            }
+        }
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Site extends Model
 {
@@ -14,7 +15,8 @@ class Site extends Model
 
     protected $fillable = [
         'name',
-        'area',
+        'site_option_id',
+        'area_id',
         'program',
         'uc',
         'weekHours',
@@ -23,7 +25,8 @@ class Site extends Model
         'is_active',
         'is_available',
         'teachers_count',
-        'last_assignment'
+        'last_assignment',
+        'area_option_id'
     ];
 
     protected $casts = [
@@ -35,7 +38,73 @@ class Site extends Model
         'last_assignment' => 'datetime'
     ];
 
-    const SITES = [
+
+    const PROGRAMAS = [
+        'Administración comercial',
+        'Comunicación social',
+        'Contaduría pública',
+        'Desarrollo comunitario',
+        'Doctorado ciencias de la educación',
+        'Doctorado en ciencias administrativas',
+        'Economía',
+        'Educación continua',
+        'Educación integral',
+        'Educación mención computación',
+        'Enfermería',
+        'Enfermería mención salud comunitaria',
+        'Especialización derecho administrativo',
+        'Especialización en ciencias electorales',
+        'Especialización en ciencias penales y criminología',
+        'Especialización en derecho laboral',
+        'Especialización en derecho mercantil',
+        'Especialización en derecho procesal civil',
+        'Especialización en dermatología',
+        'Especialización en docencia universitaria',
+        'Especialización en ecosonografía diagnóstica',
+        'Especialización en gestión pública',
+        'Especialización en medicina legal',
+        'Estudios comunes',
+        'Fisioterapia',
+        'Hidrocarburos mención gas y mención petróleo',
+        'Histocitotecnología',
+        'Historia',
+        'Ingeniería agronómica producción animal',
+        'Ingeniería agronómica producción vegetal',
+        'Ingeniería civil',
+        'Ingeniería electrónica',
+        'Ingeniería en informática',
+        'Ingeniería industrial',
+        'Licenciatura en historia',
+        'Maestría en desarrollo de sistemas de producción animal',
+        'Maestría en educación',
+        'Maestría en educación enseñanza a la matemática',
+        'Maestría en educación mención desarrollo comunitario',
+        'Maestría en educación mención investigación educativa',
+        'Maestría en educación mención orientación',
+        'Maestría en educación mención salud comunitaria',
+        'Maestría en enfermería materno infantil mención obstetricia',
+        'Maestría en enfermería mención salud comunitaria',
+        'Maestría en gerencia administrativa',
+        'Maestría en gerencia de la construcción',
+        'Maestría en gerencia de la salud pública',
+        'Maestría en historia de Venezuela',
+        'Maestría en salud pública',
+        'Medicina',
+        'Medicina veterinaria',
+        'Municipalizado de formación en derecho',
+        'Municipalizado de formación en derecho/misión Sucre',
+        'Nutrición y dietética',
+        'Odontología',
+        'Optometría y óptica',
+        'Profesionalización de enfermería',
+        'Profesionalización de optometría',
+        'Profesionalización en radioimagenología',
+        'Radiodiagnóstico',
+        'Radioimagenología',
+        'Terapia ocupacional'
+    ];
+
+    public const SITE_OPTIONS = [
         'Acarigua/Portuguesa',
         'Achaguas/Apure',
         'Altagracia de Orituco/Guárico',
@@ -112,7 +181,7 @@ class Site extends Model
         'Zaraza/Guárico'
     ];
 
-    const AREAS = [
+    public const AREA_OPTIONS = [
         'Ciencias de la educación',
         'Ciencias de la salud',
         'Ciencias económicas y sociales',
@@ -128,73 +197,23 @@ class Site extends Model
         'Programa nacional de formación'
     ];
 
-    const PROGRAMAS = [
-        'Administración comercial',
-        'Comunicación social',
-        'Contaduría pública',
-        'Desarrollo comunitario',
-        'Doctorado ciencias de la educación',
-        'Doctorado en ciencias administrativas',
-        'Economía',
-        'Educación continua',
-        'Educación integral',
-        'Educación mención computación',
-        'Enfermería',
-        'Enfermería mención salud comunitaria',
-        'Especialización derecho administrativo',
-        'Especialización en ciencias electorales',
-        'Especialización en ciencias penales y criminología',
-        'Especialización en derecho laboral',
-        'Especialización en derecho mercantil',
-        'Especialización en derecho procesal civil',
-        'Especialización en dermatología',
-        'Especialización en docencia universitaria',
-        'Especialización en ecosonografía diagnóstica',
-        'Especialización en gestión pública',
-        'Especialización en medicina legal',
-        'Estudios comunes',
-        'Fisioterapia',
-        'Hidrocarburos mención gas y mención petróleo',
-        'Histocitotecnología',
-        'Historia',
-        'Ingeniería agronómica producción animal',
-        'Ingeniería agronómica producción vegetal',
-        'Ingeniería civil',
-        'Ingeniería electrónica',
-        'Ingeniería en informática',
-        'Ingeniería industrial',
-        'Licenciatura en historia',
-        'Maestría en desarrollo de sistemas de producción animal',
-        'Maestría en educación',
-        'Maestría en educación enseñanza a la matemática',
-        'Maestría en educación mención desarrollo comunitario',
-        'Maestría en educación mención investigación educativa',
-        'Maestría en educación mención orientación',
-        'Maestría en educación mención salud comunitaria',
-        'Maestría en enfermería materno infantil mención obstetricia',
-        'Maestría en enfermería mención salud comunitaria',
-        'Maestría en gerencia administrativa',
-        'Maestría en gerencia de la construcción',
-        'Maestría en gerencia de la salud pública',
-        'Maestría en historia de Venezuela',
-        'Maestría en salud pública',
-        'Medicina',
-        'Medicina veterinaria',
-        'Municipalizado de formación en derecho',
-        'Municipalizado de formación en derecho/misión Sucre',
-        'Nutrición y dietética',
-        'Odontología',
-        'Optometría y óptica',
-        'Profesionalización de enfermería',
-        'Profesionalización de optometría',
-        'Profesionalización en radioimagenología',
-        'Radiodiagnóstico',
-        'Radioimagenología',
-        'Terapia ocupacional'
-    ];
+    public function siteOption()
+    {
+        return $this->belongsTo(SiteOption::class);
+    }
+
+    public function areaOption()
+    {
+        return $this->belongsTo(AreaOption::class, 'area_option_id');
+    }
 
     public function teachers()
     {
-        return $this->belongsToMany(Teacher::class);
+        return $this->hasMany(Teacher::class);
+    }
+
+    public function teacher(): BelongsTo
+    {
+        return $this->belongsTo(Teacher::class);
     }
 }

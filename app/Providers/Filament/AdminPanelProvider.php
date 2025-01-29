@@ -23,6 +23,7 @@ use Spatie\Permission\Middleware\PermissionMiddleware;
 use App\Filament\Widgets;
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\TasksOverview;
+use Filament\Tables\Enums\Relations;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -87,8 +88,13 @@ class AdminPanelProvider extends PanelProvider
                 RoleMiddleware::class,
             ])
             ->authMiddleware([
-                // Authenticate::class, ← Comentar temporalmente
+                Authenticate::class,
             ])
-            ->navigation(fn () => Navigation::build());
+            ->navigation(fn () => Navigation::build())
+            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->databaseTransactions()
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s')
+            ->defaultRelationsHandler(Relations::EagerLoad);
     }
 }

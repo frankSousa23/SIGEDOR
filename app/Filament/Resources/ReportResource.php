@@ -15,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use App\Filament\Resources\ReportResource\Pages;
 use Filament\Actions\Exports\Models\Export;
+use Illuminate\Database\Eloquent\Builder;
 
 class ReportResource extends Resource
 {
@@ -101,8 +102,8 @@ class ReportResource extends Resource
                             ->label('Correo Electrónico')
                             ->email()
                             ->maxLength(255),
-                            
-                            
+
+
                         Forms\Components\Textarea::make('info')
                             ->label('Información Adicional')
                             ->maxLength(500)
@@ -183,5 +184,13 @@ class ReportResource extends Resource
             'create' => Pages\CreateReport::route('/create'),
             'edit' => Pages\EditReport::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->whereHas('teacher', function($query) {
+                $query->where('user_id', auth()->id());
+            });
     }
 }

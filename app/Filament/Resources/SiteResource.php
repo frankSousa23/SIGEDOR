@@ -13,6 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use App\Models\SiteOption;
+use App\Models\AreaOption;
 
 class SiteResource extends Resource
 {
@@ -32,40 +35,24 @@ class SiteResource extends Resource
                     ->schema([
                         Select::make('teacher_id')
                             ->label('Docente')
-                            ->options(function () {
-                                return Teacher::whereDoesntHave('sites')->pluck('cdi', 'id');
-                            })
-                            ->searchable()
-                            ->required()
-                            ->validationMessages([
-                                'required' => 'Debe seleccionar un docente',
-                            ]),
+                            ->options(
+                                Teacher::with('user')->get()->mapWithKeys(fn ($teacher) => [
+                                    $teacher->id => $teacher->user->name
+                                ])
+                            )
+                            ->required(),
                     ]),
 
-                Forms\Components\Select::make('name')
-                    ->label('Nombre de la Sede')
-                    ->options(Site::SITES)
+                Select::make('site_option_id')
+                    ->label('Sede')
+                    ->options(SiteOption::all()->pluck('name', 'id'))
                     ->required()
-                    ->searchable()
-                    ->preload()
-                    ->live()
-                    ->native(false)
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255)
-                            ->unique('sites', 'name')
-                    ]),
+                    ->columnSpanFull(),
 
-                    Forms\Components\Select::make('area')
+                Select::make('area_id')
                     ->label('Área')
-                    ->options(Site::AREAS)
-                    ->required()
-                    ->searchable()
-                    ->preload()
-                    ->live()
-                    ->native(false)
-                    ->maxLength(255),
+                    ->relationship('area', 'name')
+                    ->required(),
 
                 Forms\Components\Select::make('program')
                     ->label('Programa')
@@ -112,7 +99,7 @@ class SiteResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('siteOption.name')
                     ->label('Sede')
                     ->searchable()
                     ->sortable(),
@@ -151,9 +138,7 @@ class SiteResource extends Resource
                     ->label('Disponible')
                     ->boolean(),
 
-                Tables\Columns\TextColumn::make('teachers_count')
-                    ->label('Profesores')
-                    ->counts('teachers'),
+                // Tables\Columns\TextColumn::make('teachers_count')->counts('teachers'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('area')
@@ -199,5 +184,22 @@ class SiteResource extends Resource
     public static function getModelLabel(): string
     {
         return 'Sedes';
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->with(['teacher', 'area', 'siteOption'])
+            ->where('site_option_id', auth()->user()->site_option_id);
+    }
+
+    public static function canCreate(): bool
+    {
+        return true;
+    }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->hasRole('admin');
     }
 }

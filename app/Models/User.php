@@ -12,6 +12,10 @@ use App\Models\Site;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\SiteOption;
+use App\Models\AreaOption;
+use App\Models\Role;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
@@ -24,7 +28,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'password', 'role',
-        'is_active', 'is_approved', 'email_verified_at'
+        'is_active', 'is_approved', 'email_verified_at',
+        'site_option_id',
+        'area_option_id'
     ];
 
     /**
@@ -43,17 +49,34 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'is_active' => 'boolean',
         'is_approved' => 'boolean',
+        'role.name' => 'string',
+        'site.name' => 'string',
     ];
 
     // Relationships
-    public function site()
+    public function site(): BelongsTo
     {
         return $this->belongsTo(Site::class);
     }
 
-    public function teacher()
+    public function teacher(): HasOne
     {
         return $this->hasOne(Teacher::class);
+    }
+
+    public function siteOption()
+    {
+        return $this->belongsTo(SiteOption::class);
+    }
+
+    public function areaOption()
+    {
+        return $this->belongsTo(AreaOption::class, 'area_option_id');
+    }
+
+    public function sites()
+    {
+        return $this->hasMany(Site::class);
     }
 
     // Scopes
@@ -145,6 +168,11 @@ class User extends Authenticatable
         return false;
     }
 
+    protected static function booted(): void
+    {
+        // Eliminar cualquier scope que filtre usuarios
+    }
+
     protected static function boot()
     {
         parent::boot();
@@ -155,6 +183,6 @@ class User extends Authenticatable
 
     public function getAuthPassword()
     {
-        return $this->attributes['password'];
+        return $this->password;
     }
 }

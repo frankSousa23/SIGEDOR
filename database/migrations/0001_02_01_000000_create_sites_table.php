@@ -10,8 +10,9 @@ return new class extends Migration
     {
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique()->index();
-            $table->string('area')->index();
+            $table->foreignId('site_option_id')->constrained();
+            $table->foreignId('area_option_id')->constrained('area_options')->nullable(false);
+            $table->string('name')->nullable()->unique()->index();
             $table->string('program')->nullable();
             $table->string('uc')->nullable();
             $table->integer('weekHours')->nullable();

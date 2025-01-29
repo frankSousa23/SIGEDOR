@@ -5,6 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\Site;
+use App\Models\Role;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -26,7 +27,8 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'is_active' => true,
             'is_approved' => true,
-            'site_id' => Site::factory(),
+            'site_id' => Site::inRandomOrder()->first()?->id ?? null,
+            'role_id' => Role::inRandomOrder()->first()?->id ?? null,
             // 'cdi' => $this->faker->unique()->randomNumber(8, true),
         ];
     }

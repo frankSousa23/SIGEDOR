@@ -339,4 +339,13 @@ class CategoryResource extends Resource
             'edit' => Pages\EditCategory::route('/{record}/edit'),
         ];
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->whereHas('teacher', function($query) {
+                $query->where('site_option_id', auth()->user()->site_option_id)
+                      ->where('area_option_id', auth()->user()->area_option_id);
+            });
+    }
 }

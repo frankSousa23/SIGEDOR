@@ -12,12 +12,32 @@ class TeacherPolicy
 
     public function viewAny(User $user): bool
     {
-        return true;
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+
+        if ($user->hasRole('area_manager')) {
+            return true; // Puede ver todos los teachers de su área
+        }
+
+        return false;
     }
 
     public function view(User $user, Teacher $teacher): bool
     {
-        return $user->id === $teacher->user_id;
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+
+        if ($user->hasRole('area_manager')) {
+            return $teacher->site_id === $user->site_id && $teacher->area_id === $user->area_id;
+        }
+
+        if ($user->hasRole('teacher')) {
+            return $teacher->user_id === $user->id;
+        }
+
+        return false;
     }
 
     public function create(User $user): bool
@@ -32,11 +52,11 @@ class TeacherPolicy
         }
 
         if ($user->hasRole('area_manager')) {
-            return $teacher->site_id === $user->site_id;
+            return $teacher->site_id === $user->site_id && $teacher->area_id === $user->area_id;
         }
 
         if ($user->hasRole('teacher')) {
-            return $teacher->cdi === $user->cdi;
+            return $teacher->user_id === $user->id;
         }
 
         return false;

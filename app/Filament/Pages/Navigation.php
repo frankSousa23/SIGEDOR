@@ -25,7 +25,7 @@ class Navigation
         if ($user->hasRole('admin')) {
             $navigation
                 ->groups([
-                    NavigationGroup::make('Aprobar')
+                    NavigationGroup::make('Configuración')
                         ->items([
                             ...UserResource::getNavigationItems(),
                         ]),

@@ -35,7 +35,7 @@ class StatsOverview extends BaseWidget
                 ->descriptionIcon('heroicon-m-users')
                 ->color('primary'),
 
-            Stat::make('Profesores', User::role('teacher')->count())
+            Stat::make('Profesores', User::whereHas('roles', fn($q) => $q->where('name', 'teacher'))->count())
                 ->description('Profesores activos')
                 ->descriptionIcon('heroicon-m-academic-cap')
                 ->color('success'),
@@ -54,7 +54,7 @@ class StatsOverview extends BaseWidget
 
         return [
             Stat::make('Profesores en mi Sede',
-                User::role('teacher')
+                User::whereHas('roles', fn($q) => $q->where('name', 'teacher'))
                     ->where('site_id', $siteId)
                     ->count())
                 ->description('Profesores asignados')

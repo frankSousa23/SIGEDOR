@@ -20,7 +20,8 @@ class TeacherFactory extends Factory
      */
     public function definition(): array
     {
-        $user = User::factory()->teacher()->create(); // Crear un User relacionado (teacher)
+        $user = User::factory()->teacher()->make();
+        $user->save();
 
         return [
             'user_id' => $user->id,

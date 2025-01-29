@@ -17,13 +17,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('backup:run')
-            ->weekdays()
-            ->timezone('America/Bogota')
-            ->between('8:00', '13:00')
-            ->skip(function() {
-                return now()->isWeekend();
-            });
+        $schedule->command('backup:run')->daily();
+        $schedule->command('model:prune')->daily();
     }
 
     /**

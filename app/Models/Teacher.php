@@ -14,6 +14,8 @@ use App\Models\Report;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\SiteOption;
+use App\Models\AreaOption;
 
 class Teacher extends Model
 {
@@ -31,7 +33,7 @@ class Teacher extends Model
         'datePromotion',
         'asignaturePromotion',
         'user_id',
-        'site_id',
+        'site_option_id',
         'category_id',
         'dedication_id',
         'has_site',
@@ -56,9 +58,9 @@ class Teacher extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function site()
+    public function siteOption()
     {
-        return $this->belongsTo(Site::class);
+        return $this->belongsTo(SiteOption::class);
     }
 
     public function category()
@@ -81,6 +83,11 @@ class Teacher extends Model
         return $this->hasMany(PermissionTeacher::class);
     }
 
+    public function areaOption()
+    {
+        return $this->belongsTo(AreaOption::class);
+    }
+
     public function getFullNameAttribute(): string
     {
         return "{$this->name} {$this->surName}";
@@ -89,10 +96,5 @@ class Teacher extends Model
     public function scopeCompleted($query)
     {
         return $query->where('is_completed', true);
-    }
-
-    public function sites()
-    {
-        return $this->belongsToMany(Site::class);
     }
 }

@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->name('teachers_user_id_foreign');
+            $table->foreignId('site_option_id')
+                ->constrained('site_options')
+                ->name('teachers_site_option_id_foreign');
             $table->string('cdi')->unique()->comment('Cédula de Identidad');
             $table->string('name');
             $table->string('surName');
@@ -24,10 +30,9 @@ return new class extends Migration
             $table->string('asignaturePromotion')->nullable();
 
             // Relaciones (DEFINIDAS INICIALMENTE SIN CLAVES FORÁNEAS DENTRO DE SCHEMA::CREATE)
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreignId('site_id')->nullable()->constrained()->onDelete('set null');
-            $table->unsignedBigInteger('category_id')->nullable();
-            $table->unsignedBigInteger('dedication_id')->nullable();
+            $table->foreignId('area_id')->constrained('area_options');
+            $table->foreignId('category_id')->nullable()->index();
+            $table->foreignId('dedication_id')->nullable()->index();
 
             // Control de estado
             $table->boolean('has_site')->default(false)->comment('Indica si ya tiene sede asignada');
@@ -36,11 +41,6 @@ return new class extends Migration
             $table->boolean('is_completed')->default(false)->comment('Indica si todas las relaciones requeridas están completas');
             $table->timestamps();
             $table->softDeletes();
-
-            // Índices
-            $table->index('user_id');
-            $table->index('category_id');
-            $table->index('dedication_id');
         });
     }
 

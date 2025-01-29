@@ -25,6 +25,12 @@ use App\Filament\Resources\SiteResource;
 use Spatie\Permission\Models\Role;
 use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\Filter;
+use App\Models\AreaOption;
+use App\Models\SiteOption;
+use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Columns\BadgeColumn;
+use App\Models\Teacher;
 
 class UserResource extends Resource
 {
@@ -55,19 +61,19 @@ class UserResource extends Resource
                     ->label('Contraseña')
                     ->password()
                     ->required()
-                    ->minLength(8),
+                    ->minLength(8)
+                    ->visibleOn('create'),
                 Section::make('Asignación de Sede y Área')
                     ->schema([
-                        Select::make('site_id')
+                        Select::make('site_option_id')
                             ->label('Sede')
-                            ->options(Site::pluck('name', 'id'))
-                            ->searchable()
+                            ->options(SiteOption::all()->pluck('name', 'id'))
                             ->required(),
-                        Select::make('area')
+                        Select::make('area_option_id')
                             ->label('Área')
-                            ->options(Site::pluck('area', 'id'))
-                            ->searchable()
-                            ->required(),
+                            ->options(AreaOption::all()->pluck('name', 'id'))
+                            ->required()
+                            ->columnSpanFull(),
                     ]),
                 Section::make('Asignación de Rol')
                     ->schema([
@@ -102,18 +108,21 @@ class UserResource extends Resource
                 TextColumn::make('email')
                     ->label('Correo Electrónico')
                     ->searchable(),
-                TextColumn::make('site.name')
-                    ->label('Sede')
-                    ->searchable(),
                 TextColumn::make('roles.name')
                     ->label('Rol')
-                    ->formatStateUsing(fn ($state) => match ($state) {
-                        'admin' => 'Administrador',
-                        'area_manager' => 'Gerente de Área',
-                        'teacher' => 'Docente',
-                        default => $state,
-                    })
-                    ->badge(),
+                    ->formatStateUsing(fn ($state) => $state ?? 'Sin asignar')
+                    ->searchable()
+                    ->formatStateUsing(fn ($state) => $state ?? 'Sin asignar')
+                    ->searchable(query: fn (Builder $query, string $search) =>
+                        $query->whereHas('roles', fn ($q) => $q->where('name', 'like', "%{$search}%"))
+                    ),
+                TextColumn::make('siteOption.name')
+                    ->label('Sede')
+                    ->colors(['success' => 'Sin Sede'])
+                    ->formatStateUsing(fn ($state) => $state ?? 'Sin asignar'),
+                TextColumn::make('areaOption.name')
+                    ->label('Área')
+                    ->formatStateUsing(fn ($state) => $state ?? 'Sin asignar'),
                 ToggleColumn::make('is_active')
                     ->label('Activo'),
                 ToggleColumn::make('is_approved')
@@ -121,19 +130,24 @@ class UserResource extends Resource
                 TextColumn::make('activities.description'),
             ])
             ->filters([
-                SelectFilter::make('roles')
+                SelectFilter::make('role_id')
                     ->relationship('roles', 'name')
-                    ->options([
-                        'area_manager' => 'Jefe de Área',
-                        'teacher' => 'Profesor'
-                    ])
-                    ->label('Rol'),
-
-                SelectFilter::make('site')
-                    ->relationship('site', 'name')
-                    ->label('Sede')
                     ->searchable()
                     ->preload(),
+
+                Filter::make('site')
+                    ->form([
+                        Select::make('site_option_id')
+                            ->options(SiteOption::pluck('name', 'id'))
+                    ])
+                    ->query(fn (Builder $query, array $data) => $query->where('site_option_id', $data['site_option_id'])),
+
+                Filter::make('area')
+                    ->form([
+                        Select::make('area_option_id')
+                            ->options(AreaOption::pluck('name', 'id'))
+                    ])
+                    ->query(fn (Builder $query, array $data) => $query->where('area_option_id', $data['area_option_id'])),
 
                 Tables\Filters\TernaryFilter::make('is_approved')
                     ->label('Aprobado')
@@ -184,6 +198,14 @@ class UserResource extends Resource
                         auth()->id() !== $record->id
                     )
                     ->action(fn (User $record) => $record->update(['is_active' => false])),
+
+                Tables\Actions\CreateAction::make()
+                    ->after(function (User $user) {
+                        Teacher::create([
+                            'user_id' => $user->id,
+                            'site_option_id' => $user->site_option_id
+                        ]);
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -204,18 +226,47 @@ class UserResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $query = parent::getEloquentQuery();
+        return parent::getEloquentQuery()
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'admin');
+            });
+    }
 
-        if (auth()->user()->hasRole('admin')) {
-            return $query;
-        }
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->hasRole('admin');
+    }
 
-        if (auth()->user()->hasRole('area_manager')) {
-            return $query->whereHas('roles', function ($query) {
-                $query->where('name', 'teacher');
-            })->where('site_id', auth()->user()->site_id);
-        }
+    public static function canCreate(): bool
+    {
+        return auth()->user()->hasRole('admin');
+    }
 
-        return $query->where('id', auth()->id());
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->hasRole('admin');
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->hasRole('admin');
+    }
+
+    protected function handleRecordCreation(array $data): User
+    {
+        $user = parent::handleRecordCreation($data);
+
+        // Post-creación con ID existente
+        $user->sites()->updateOrCreate([
+            'site_option_id' => $data['site_option_id'],
+            'area_option_id' => $data['area_option_id']
+        ], ['user_id' => $user->id]);
+
+        return $user;
+    }
+
+    public static function query(): Builder
+    {
+        return parent::query()->where('id', '!=', auth()->id()); // Excluye al usuario actual si es necesario
     }
 }

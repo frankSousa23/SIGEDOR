@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Carbon\Carbon;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Site;
+use App\Models\SiteOption;
 
 class TeacherResource extends Resource
 {
@@ -123,32 +125,15 @@ class TeacherResource extends Resource
                     ->maxLength(255),
 
                 // Relaciones principales
-                Forms\Components\Select::make('site_id')
-                    ->relationship('site', 'name')
+                Forms\Components\Select::make('user_id')
+                    ->label('Usuario')
+                    ->relationship('user', 'name', fn($query) => $query->where('site_option_id', auth()->user()->site_option_id))
+                    ->required(),
+
+                Forms\Components\Select::make('site_option_id')
                     ->label('Sede')
-                    ->required()
-                    ->preload()
-                    ->searchable()
-                    ->options(\App\Models\Site::SITES)
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255)
-                            ->unique('sites', 'name')
-                            ->validationMessages([
-                                'required' => 'Debe seleccionar una sede',
-                            ]),
-                    ])
-                    ->createOptionUsing(function (array $data) {
-                        return \App\Models\Site::create([
-                            'name' => $data['name'],
-                        ])->id;
-                    })
-                    ->createOptionAction(function (Forms\Components\Actions\Action $action) {
-                        return $action
-                            ->modalHeading('Crear nueva sede')
-                            ->modalButton('Agregar sede');
-                    }),
+                    ->options(SiteOption::all()->pluck('name', 'id'))
+                    ->required(),
 
                 Forms\Components\Select::make('category_id')
                     ->relationship('category', 'current_category')
@@ -225,6 +210,20 @@ class TeacherResource extends Resource
                             ->modalHeading('Crear nueva dedicación')
                             ->modalButton('Agregar dedicación');
                     }),
+
+                Forms\Components\Select::make('area_option_id')
+                    ->relationship('areaOption', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->columnSpan(1),
+
+                Forms\Components\Select::make('site_option_id')
+                    ->relationship('siteOption', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->columnSpan(1),
             ])
             ->columns(2);
     }
@@ -270,6 +269,9 @@ class TeacherResource extends Resource
                 Tables\Columns\IconColumn::make('is_completed')
                     ->label('Completado')
                     ->boolean(),
+                Tables\Columns\TextColumn::make('user.siteOption.name')
+                    ->label('Sede')
+                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('site')
@@ -340,5 +342,10 @@ class TeacherResource extends Resource
     public function isAreaManager()
     {
         return $this->user->hasRole('area_manager');
+    }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view teachers');
     }
 }
