@@ -16,8 +16,13 @@ use App\Models\SiteOption;
 use App\Models\AreaOption;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Filament\Panel;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasTenants;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser, HasTenants
 {
     use HasFactory, Notifiable, HasRoles, SoftDeletes;
 
@@ -146,9 +151,9 @@ class User extends Authenticatable
         return $this->site?->area;
     }
 
-    public function canAccessPanel(): bool
+    public function canAccessPanel(Panel $panel): bool
     {
-        return $this->is_approved && $this->is_active;
+        return true; // Permite acceso al panel a todos los usuarios (puedes refinar esto con roles/permisos)
     }
 
     public function canManageTeacher(Teacher $teacher): bool
@@ -184,5 +189,20 @@ class User extends Authenticatable
     public function getAuthPassword()
     {
         return $this->password;
+    }
+
+    public function siteOptions(): BelongsToMany
+    {
+        return $this->belongsToMany(SiteOption::class);
+    }
+
+    public function getTenants(Panel $panel): array
+    {
+        return $this->siteOptions()->get()->toArray();
+    }
+
+    public function canAccessTenant(Model $tenant): bool
+    {
+        return $this->siteOptions->contains($tenant);
     }
 }

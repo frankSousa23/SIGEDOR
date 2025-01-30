@@ -189,8 +189,10 @@ class ReportResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->whereHas('teacher', function($query) {
-                $query->where('user_id', auth()->id());
+            ->when(! auth()->user()->hasRole('admin') && ! auth()->user()->hasRole('area_manager'), function ($query) {
+                $query->whereHas('teacher.user', function ($query) {
+                    $query->where('id', auth()->id());
+                });
             });
     }
 }

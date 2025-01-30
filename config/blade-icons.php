@@ -1,5 +1,10 @@
 <?php
 
 return [
-    'sets' => [], // ← Deshabilitar todos los icon sets
+    'sets' => [
+        'default' => [
+            'path' => 'resources/svg',
+            'prefix' => 'icon',
+        ],
+    ],
 ];
