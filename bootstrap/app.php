@@ -23,6 +23,14 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+$app->singleton('config', function ($app) {
+    return new \Illuminate\Config\Repository([]);
+});
+
+$app->singleton('config.loader', function ($app) {
+    return new \Illuminate\Config\FileLoader($app['files'], $app->configPath());
+});
+
 require_once __DIR__.'/../vendor/laravel/framework/src/Illuminate/Foundation/Application.php';
 require __DIR__.'/../vendor/laravel/framework/src/Illuminate/Foundation/helpers.php';
 

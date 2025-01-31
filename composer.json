@@ -8,20 +8,22 @@
     "require": {
         "php": "^8.1",
         "barryvdh/laravel-dompdf": "^2.0",
-        "filament/filament": "^3.2",
+        "filament/filament": "3.2.76",
         "filament/forms": "^3.2",
         "filament/tables": "^3.2",
-        "laravel/framework": "^11.0",
+        "laravel/framework": "11.41.3",
         "laravel/telescope": "^5.3",
         "laravel/tinker": "^2.9",
-        "spatie/laravel-activitylog": "^4.9",
-        "spatie/laravel-permission": "^6.4"
+        "spatie/laravel-activitylog": "^4.7.2",
+        "spatie/laravel-permission": "6.4.2",
+        "spatie/laravel-backup": "^8.4.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",
+        "filament/support": "^3.2",
         "filament/widgets": "^3.0",
         "nunomaduro/collision": "^8.1",
         "pestphp/pest": "^3.5",
@@ -56,7 +58,10 @@
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
         ],
-        "dev": "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'"
+        "dev": "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'",
+        "post-install-cmd": [
+            "@php artisan package:discover --ansi"
+        ]
     },
     "extra": {
         "laravel": {
@@ -72,8 +77,24 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "http-basic": {
+            "repo.packagist.org": {
+                "username": "token",
+                "password": "tu-token-github-composer"
+            }
+        },
+        "secure-http": false,
+        "github-oauth": {
+            "github.com": "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"
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "github",
+            "url": "https://github.com/filamentphp/filament"
+        }
+    ]
 }

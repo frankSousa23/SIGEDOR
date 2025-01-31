@@ -119,19 +119,31 @@ return [
     */
 
     'maintenance' => [
-        'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
-        'store' => env('APP_MAINTENANCE_STORE', 'database'),
+        'driver' => 'cache',
+        'store' => 'database',
     ],
 
-    'providers' => [
-        Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
+    'providers' => array_filter([
+        Illuminate\Foundation\Providers\FoundationServiceProvider::class,
+        Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Cache\CacheServiceProvider::class,
-        Illuminate\Filesystem\FilesystemServiceProvider::class,
+        Illuminate\Database\DatabaseServiceProvider::class,
+        Illuminate\Session\SessionServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        // ... proveedores base de Laravel ...
+
+        /* Verificar integración crítica */
         Filament\FilamentServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
-        Illuminate\Database\DatabaseServiceProvider::class,
+        Spatie\Activitylog\ActivitylogServiceProvider::class,
 
-    ],
+        /* Proveedores de aplicación */
+        App\Providers\AppServiceProvider::class,
+        App\Providers\AuthServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
+
+        /* Proveedores críticos */
+        Illuminate\Filesystem\FilesystemServiceProvider::class,
+    ]),
 
 ];
