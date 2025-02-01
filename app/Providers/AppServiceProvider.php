@@ -10,6 +10,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,7 +19,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // El constructor de BcryptHasher espera un arreglo como primer parámetro,
+        // no un entero. Por ello, hay que pasar el valor de las rondas como un arreglo.
+        $this->app->singleton('hash', function ($app) {
+            return new \Illuminate\Hashing\BcryptHasher([
+                'rounds' => (int) $app['config']['hashing.bcrypt.rounds'], // Convertimos a entero para mayor seguridad
+            ]);
+        });
     }
 
     /**
@@ -39,22 +46,18 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
-        Hash::extend('force_bcrypt', function () {
-            return new \Illuminate\Hashing\BcryptHasher([
-                'rounds' => 12,
-            ]);
-        });
-
-        config(['hashing.driver' => 'force_bcrypt']);
-
         Role::preventLazyLoading(!app()->isProduction());
         User::preventAccessingMissingAttributes();
 
-        Schema::defaultStringLength(191); // Para compatibilidad con MySQL antiguo
-
-        // Añadir esta verificación
-        if (config('app.debug')) {
-            Auth::login(User::first());
+        // Desactivar temporalmente autenticación automática
+        if (app()->environment('local') && !app()->runningInConsole()) {
+            try {
+                if(User::exists()) {
+                    Auth::login(User::with('roles')->first());
+                }
+            } catch (\Throwable $th) {
+                // Ignorar errores durante migraciones
+            }
         }
     }
 }

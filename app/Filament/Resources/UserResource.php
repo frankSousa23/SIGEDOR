@@ -77,14 +77,12 @@ class UserResource extends Resource
                     ]),
                 Section::make('Asignación de Rol')
                     ->schema([
-                        Select::make('role')
+                        Select::make('roles')
                             ->label('Rol')
-                            ->options([
-                                'admin' => 'Administrador',
-                                'area_manager' => 'Gerente de Área',
-                                'teacher' => 'Docente',
-                            ])
-                            ->required(),
+                            ->relationship('roles', 'name')
+                            ->required()
+                            ->preload()
+                            ->searchable(),
                     ]),
                 Section::make('Estado del Usuario')
                     ->schema([
@@ -110,6 +108,7 @@ class UserResource extends Resource
                     ->searchable(),
                 TextColumn::make('roles.name')
                     ->label('Rol')
+                    ->badge()
                     ->formatStateUsing(fn ($state) => $state ?? 'Sin asignar')
                     ->searchable()
                     ->formatStateUsing(fn ($state) => $state ?? 'Sin asignar')
@@ -201,10 +200,14 @@ class UserResource extends Resource
 
                 Tables\Actions\CreateAction::make()
                     ->after(function (User $user) {
-                        Teacher::create([
-                            'user_id' => $user->id,
-                            'site_option_id' => $user->site_option_id
-                        ]);
+                        try {
+                            Teacher::firstOrCreate(
+                                ['user_id' => $user->id],
+                                ['site_option_id' => $user->site_option_id]
+                            );
+                        } catch (\Throwable $th) {
+                            logger()->error("Error creando Teacher: " . $th->getMessage());
+                        }
                     }),
             ])
             ->bulkActions([
@@ -227,8 +230,9 @@ class UserResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'admin');
+            ->with(['roles', 'siteOption', 'areaOption'])
+            ->when(!auth()->user()->hasRole('admin'), function($query) {
+                $query->where('site_option_id', auth()->user()->site_option_id);
             });
     }
 

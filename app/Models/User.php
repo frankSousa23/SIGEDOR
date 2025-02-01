@@ -71,7 +71,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
 
     public function siteOption()
     {
-        return $this->belongsTo(SiteOption::class);
+        return $this->belongsTo(SiteOption::class, 'site_option_id');
     }
 
     public function areaOption()

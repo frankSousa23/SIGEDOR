@@ -23,8 +23,8 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->boolean('is_example')->default(false);  // Añadir campo is_example
-            $table->foreignId('site_option_id')->nullable()->constrained('site_options');
-            $table->foreignId('area_option_id')->nullable()->constrained('area_options');
+            $table->foreignId('site_option_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('area_option_id')->nullable()->constrained()->onDelete('set null');
         });
     }
 

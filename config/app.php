@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://127.0.0.1:8000'),
+    'url' => env('APP_URL', 'http://localhost'),
 
     /*
     |--------------------------------------------------------------------------
@@ -119,31 +119,40 @@ return [
     */
 
     'maintenance' => [
-        'driver' => 'cache',
+        'driver' => 'file',
         'store' => 'database',
     ],
 
-    'providers' => array_filter([
+    'providers' => [
+        // ORDEN CRÍTICO (Laravel Core)
         Illuminate\Foundation\Providers\FoundationServiceProvider::class,
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Cache\CacheServiceProvider::class,
         Illuminate\Database\DatabaseServiceProvider::class,
-        Illuminate\Session\SessionServiceProvider::class,
+        Illuminate\Filesystem\FilesystemServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        // ... proveedores base de Laravel ...
+
+        // Spatie/Filament
+        Spatie\Activitylog\ActivitylogServiceProvider::class,
+        Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
+
+        // ... otros proveedores preservados ...
 
         /* Verificar integración crítica */
-        Filament\FilamentServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
-        Spatie\Activitylog\ActivitylogServiceProvider::class,
+        Filament\FilamentServiceProvider::class,
 
         /* Proveedores de aplicación */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        /* Proveedores críticos */
-        Illuminate\Filesystem\FilesystemServiceProvider::class,
-    ]),
+        Spatie\Backup\BackupServiceProvider::class,
+    ],
+
+    'aliases' => [
+        // ... otros aliases ...
+        'Hash' => Illuminate\Support\Facades\Hash::class,
+    ],
 
 ];
