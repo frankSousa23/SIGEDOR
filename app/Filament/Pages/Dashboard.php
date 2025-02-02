@@ -5,86 +5,47 @@ namespace App\Filament\Pages;
 use Filament\Pages\Dashboard as BaseDashboard;
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\TasksOverview;
-use App\Models\PermissionTeacher;
-use App\Models\Teacher;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 
 class Dashboard extends BaseDashboard
 {
     protected static ?string $navigationIcon = 'heroicon-o-home';
-
-    public static function getNavigationLabel(): string
-    {
-        return 'Escritorio';
-    }
-
-    public function getTitle(): string
-    {
-        return 'Escritorio';
-    }
-
-    protected static ?string $slug = 'dashboard';
-
-    public static function shouldRegister(): bool
-    {
-        return true;
-    }
-
-    public function render(): \Illuminate\Contracts\View\View
-    {
-        $user = Auth::user();
-        $totalTeachers = Teacher::count(); // Total de docentes
-        $approvedPermissions = PermissionTeacher::where('status', 'approved')->count(); // Permisos aprobados
-        $activeUsers = User::where('is_active', true)->count(); // Usuarios activos
-
-        return view('filament.pages.dashboard', [
-            'isAdmin' => $user->isAdmin(),
-            'isAreaManager' => $user->isAreaManager(),
-            'isTeacher' => $user->isTeacher(),
-            'totalTeachers' => $totalTeachers,
-            'approvedPermissions' => $approvedPermissions,
-            'activeUsers' => $activeUsers,
-        ]);
-    }
+    protected static ?string $navigationLabel = 'Escritorio';
+    protected static ?string $title = 'Escritorio';
 
     protected function getHeaderWidgets(): array
     {
+        return $this->resolveWidgets();
+    }
+
+    protected function resolveWidgets(): array
+    {
+        $user = auth()->user();
+
+        return match(true) {
+            $user->hasRole('admin') => $this->adminWidgets(),
+            $user->hasRole('area_manager') => $this->areaManagerWidgets(),
+            default => $this->defaultWidgets()
+        };
+    }
+
+    protected function adminWidgets(): array
+    {
         return [
             StatsOverview::class,
+            TasksOverview::class
         ];
     }
 
-    protected function getFooterWidgets(): array
+    protected function areaManagerWidgets(): array
     {
         return [
-            TasksOverview::class,
+            StatsOverview::class,
+            TasksOverview::class
         ];
     }
 
-    public function getWidgets(): array
+    protected function defaultWidgets(): array
     {
-        $user = Auth::user();
-        if (!$user) {
-            return [];
-        }
-
-        if ($user->hasRole('admin')) {
-            return [
-                StatsOverview::class,
-                TasksOverview::class,
-            ];
-        }
-
-        if ($user->hasRole('area_manager')) {
-            return [
-                StatsOverview::class,
-                TasksOverview::class,
-            ];
-        }
-
-        return [
-            StatsOverview::class,
-        ];
+        return [StatsOverview::class];
     }
 }

@@ -124,7 +124,7 @@ return [
     ],
 
     'providers' => [
-        // ORDEN CRÍTICO (Laravel Core)
+
         Illuminate\Foundation\Providers\FoundationServiceProvider::class,
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Cache\CacheServiceProvider::class,
@@ -134,30 +134,26 @@ return [
         Illuminate\Filesystem\FilesystemServiceProvider::class,
         Illuminate\Session\SessionServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
-        // Spatie/Filament
-        Spatie\Activitylog\ActivitylogServiceProvider::class,
+        Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
-
-        // ... otros proveedores preservados ...
-
-        /* Verificar integración crítica */
-        Filament\FilamentServiceProvider::class,
+        Illuminate\Queue\QueueServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
-
-        /* Proveedores de aplicación */
+        Spatie\Activitylog\ActivitylogServiceProvider::class,
+        Filament\FilamentServiceProvider::class,
+        App\Providers\FilamentServiceProvider::class,
         App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        App\Providers\AuthServiceProvider::class,
         Spatie\Backup\BackupServiceProvider::class,
+
     ],
 
     'aliases' => [
         // ... otros aliases ...
         'Hash' => Illuminate\Support\Facades\Hash::class,
         'Cookie' => Illuminate\Support\Facades\Cookie::class,
-        'Session' => Illuminate\Support\Facades\Session::class
+        'Session' => Illuminate\Support\Facades\Session::class,
+        'DB' => Illuminate\Support\Facades\DB::class,
     ],
 
 ];

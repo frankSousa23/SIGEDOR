@@ -2,11 +2,25 @@
 
 namespace App\Filament\Pages\Auth;
 
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
 use Filament\Pages\Auth\Login as BaseLogin;
 
 class Login extends BaseLogin
 {
-    protected static string $view = 'filament-panels::pages.auth.login';
-
-    // Puedes personalizar la vista, validaciones, etc. aquí.
+    public function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                TextInput::make('email')
+                    ->label('Correo Electrónico')
+                    ->email()
+                    ->required()
+                    ->autocomplete(),
+                TextInput::make('password')
+                    ->label('Contraseña')
+                    ->password()
+                    ->required(),
+            ]);
+    }
 }

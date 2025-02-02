@@ -11,6 +11,9 @@ use Filament\Tables\Columns\BadgeColumn;
 
 class TasksOverview extends BaseWidget
 {
+    protected int | string | array $columnSpan = 2; // Definir propiedad de span
+    protected static ?int $sort = 2; // Orden en dashboard
+
     protected function getTableColumns(): array
     {
         return [

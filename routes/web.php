@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\FilamentServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Filament\Facades\Filament;
 
@@ -11,7 +12,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::permanentRedirect('/login', '/dashboard/login');
+//Route::permanentRedirect('/login', '/dashboard/login');
 
 // Asegúrate de NO tener un catch-all que redirija a /dashboard de forma global.
 // Fallback: si ninguna ruta es capturada, mostrar error 404.

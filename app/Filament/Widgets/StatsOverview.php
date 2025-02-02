@@ -8,6 +8,8 @@ use App\Models\User;
 
 class StatsOverview extends BaseWidget
 {
+    protected int | string | array $columnSpan = 'full'; // Nueva propiedad
+
     protected function getStats(): array
     {
         $user = auth()->user();
