@@ -37,7 +37,7 @@ class BackupCommand extends Command
      */
     public function handle()
     {
-        $this->call('backup:run');
-        // Agregar lógica de notificación si es necesario
+        // $this->call('backup:run'); // [Cambio 40] Se elimina la llamada recursiva
+        // Agregar aquí la lógica real de backup o llamar a un servicio especializado
     }
 }

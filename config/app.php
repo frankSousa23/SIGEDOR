@@ -95,7 +95,7 @@ return [
     |
     */
 
-    'cipher' => 'AES-256-CBC',
+    'cipher' => env('APP_CIPHER', 'AES-256-CBC'),
 
     'key' => env('APP_KEY'),
 
@@ -129,7 +129,10 @@ return [
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Cache\CacheServiceProvider::class,
         Illuminate\Database\DatabaseServiceProvider::class,
+        Illuminate\Encryption\EncryptionServiceProvider::class,
+        Illuminate\Cookie\CookieServiceProvider::class,
         Illuminate\Filesystem\FilesystemServiceProvider::class,
+        Illuminate\Session\SessionServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
         // Spatie/Filament
@@ -139,8 +142,8 @@ return [
         // ... otros proveedores preservados ...
 
         /* Verificar integración crítica */
-        Spatie\Permission\PermissionServiceProvider::class,
         Filament\FilamentServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
         /* Proveedores de aplicación */
         App\Providers\AppServiceProvider::class,
@@ -153,6 +156,8 @@ return [
     'aliases' => [
         // ... otros aliases ...
         'Hash' => Illuminate\Support\Facades\Hash::class,
+        'Cookie' => Illuminate\Support\Facades\Cookie::class,
+        'Session' => Illuminate\Support\Facades\Session::class
     ],
 
 ];

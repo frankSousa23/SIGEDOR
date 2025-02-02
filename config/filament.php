@@ -1,14 +1,18 @@
 <?php
 
-use App\Filament\Pages\Auth\Login;
-use Filament\Pages\Auth\Login as FilamentLogin;
-
 return [
+    'default_panel' => 'dashboard',
     'panels' => [
-        'default' => [
+        'dashboard' => [
             'id' => 'dashboard',
             'path' => 'dashboard',
-            'login' => \Filament\Http\Livewire\Auth\Login::class,
+            'login' => \Filament\Pages\Auth\Login::class,
+            'middleware' => [
+                'web',
+                \Filament\Http\Middleware\Authenticate::class,
+            ],
+            'auth_guard' => 'web',
+            'database_connection' => env('DB_CONNECTION', 'mysql'),
         ],
     ],
 ];

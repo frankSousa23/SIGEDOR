@@ -20,6 +20,11 @@ class Navigation
     public static function build(): NavigationBuilder
     {
         $navigation = new NavigationBuilder();
+
+        if (!auth()->check()) {
+            return $navigation->items([]);
+        }
+
         $user = Auth::user();
 
         if ($user->hasRole('admin')) {

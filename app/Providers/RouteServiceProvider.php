@@ -24,7 +24,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->configureRateLimiting();
 
@@ -43,10 +43,25 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function configureRateLimiting()
+    protected function configureRateLimiting(): void
     {
+        // Limiter para las rutas API (default)
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
+            return Limit::perMinute(60)
+                ->by(optional($request->user())->getAuthIdentifier() ?: $request->ip());
+        });
+
+        // Registrar rate limiter con la clave simple "global"
+        RateLimiter::for('global', function (Request $request) {
+            return Limit::perMinute(60)
+                ->by(optional($request->user())->getAuthIdentifier() ?: $request->ip());
+        });
+
+        // Registrar rate limiter para la clave compuesta "App\Models\User::global"
+        $keyComplet = \App\Models\User::class . '::global';
+        RateLimiter::for($keyComplet, function (Request $request) {
+            return Limit::perMinute(60)
+                ->by(optional($request->user())->getAuthIdentifier() ?: $request->ip());
         });
     }
 }

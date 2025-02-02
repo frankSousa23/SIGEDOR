@@ -65,6 +65,9 @@ class Dashboard extends BaseDashboard
     public function getWidgets(): array
     {
         $user = Auth::user();
+        if (!$user) {
+            return [];
+        }
 
         if ($user->hasRole('admin')) {
             return [

@@ -205,4 +205,9 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     {
         return $this->siteOptions->contains($tenant);
     }
+
+    public function getRateLimiterKey(): string
+    {
+        return 'global';
+    }
 }

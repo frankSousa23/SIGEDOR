@@ -15,7 +15,7 @@ class EnvCheck extends Command
     {
         $this->checkLaravelVersion('11.41.3');
         $this->checkPackageVersion('filament/filament', '^3.2');
-        $this->checkDatabaseConnection('sqlite');
+        $this->checkDatabaseConnection('mysql');
     }
 
     private function checkDatabaseConnection($driver)
