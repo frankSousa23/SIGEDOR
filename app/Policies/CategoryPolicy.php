@@ -12,23 +12,26 @@ class CategoryPolicy
 
     public function viewAny(User $user): bool
     {
-        // Lógica para determinar si el usuario puede ver *alguna* categoría
-        if ($user->hasRole('admin')) {
-            return true; // Admin puede ver todas
-        }
-        // Otra lógica basada en roles, site_option, area_option, etc.
-        return false; // Por defecto, no puede ver ninguna
+        return $user->hasRole('admin') || $user->hasRole('area_manager');
     }
 
     public function view(User $user, Category $category): bool
     {
-        // Lógica para determinar si el usuario puede ver *esta* categoría específica
-        if ($user->hasRole('admin')) {
-            return true; // Admin puede ver todas
-        }
-        // Lógica basada en si la categoría pertenece a su site_option y area_option
-        return $category->site_option_id === $user->site_option_id && $category->area_option_id === $user->area_option_id;
+        return true; // Todos pueden ver categorías
     }
 
-    // ... other methods (create, update, delete, etc.) ...
+    public function create(User $user): bool
+    {
+        return $user->hasRole('admin');
+    }
+
+    public function update(User $user, Category $category): bool
+    {
+        return $user->hasRole('admin');
+    }
+
+    public function delete(User $user, Category $category): bool
+    {
+        return $user->hasRole('admin');
+    }
 }

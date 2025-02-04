@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+    'env' => env('APP_ENV', 'local'),
 
     /*
     |--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool) env('APP_DEBUG', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://sigedor.test'),
+
+    'asset_url' => env('ASSET_URL', 'http://sigedor.test'),
 
     /*
     |--------------------------------------------------------------------------
@@ -65,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => env('APP_TIMEZONE', 'UTC'),
+    'timezone' => 'America/Caracas',
 
     /*
     |--------------------------------------------------------------------------
@@ -78,7 +80,7 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'es'),
+    'locale' => 'es',
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'es'),
 
@@ -145,6 +147,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         Spatie\Backup\BackupServiceProvider::class,
+        App\Providers\Filament\AdminPanelProvider::class,
+        App\Providers\Filament\DashboardPanelProvider::class,
 
     ],
 
@@ -152,8 +156,9 @@ return [
         // ... otros aliases ...
         'Hash' => Illuminate\Support\Facades\Hash::class,
         'Cookie' => Illuminate\Support\Facades\Cookie::class,
-        'Session' => Illuminate\Support\Facades\Session::class,
         'DB' => Illuminate\Support\Facades\DB::class,
+        'Validator' => Illuminate\Support\Facades\Validator::class,
+        'Session' => Illuminate\Support\Facades\Session::class,
     ],
 
 ];

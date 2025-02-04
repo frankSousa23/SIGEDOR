@@ -47,13 +47,13 @@
                         <span class="text-xl font-bold gradient-text">SIGEDOR</span>
                     </div>
                     <div class="flex items-center">
-                        @if (Route::has('login'))
+                        @if (\Illuminate\Support\Facades\Route::has('login'))
                             <div class="space-x-4">
                                 @auth
-                                    <a href="{{ url('/dashboard') }}" 
+                                    <a href="{{ url('/dashboard') }}"
                                        class="text-sm text-slate-300 hover:text-white transition">Escritorio</a>
                                 @else
-                                    <a href="{{ url('/dashboard/login') }}" 
+                                    <a href="{{ url('/dashboard/login') }}"
                                        class="text-sm text-slate-300 hover:text-white transition">Iniciar Sesión</a>
                                 @endauth
                             </div>
@@ -80,14 +80,14 @@
                             </p>
                             <div class="flex space-x-4">
                                 @auth
-                                    <a href="{{ url('/dashboard') }}" 
-                                       class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg 
+                                    <a href="{{ url('/dashboard') }}"
+                                       class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg
                                               font-medium transition-all shadow-lg hover:shadow-blue-500/25">
                                         Escritorio
                                     </a>
                                 @else
-                                    <a href="{{ url('/dashboard/login') }}" 
-                                       class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg 
+                                    <a href="{{ url('/dashboard/login') }}"
+                                       class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg
                                               font-medium transition-all shadow-lg hover:shadow-blue-500/25">
                                         Comenzar
                                     </a>
@@ -96,8 +96,8 @@
                         </div>
                         <div class="flex justify-center">
                             <div class="image-container bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 shadow-xl max-w-md">
-                                <img src="{{ asset('images/LogoUnerg.png') }}" 
-                                     alt="Logo UNERG" 
+                                <img src="{{ asset('images/LogoUnerg.png') }}"
+                                     alt="Logo UNERG"
                                      class="w-full h-auto rounded-lg">
                             </div>
                         </div>
@@ -106,7 +106,7 @@
 
                 <!-- Features Section -->
                 <div class="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="p-6 bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-lg 
+                    <div class="p-6 bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-lg
                                 hover:bg-slate-800 transition-all duration-300">
                         <h3 class="text-xl font-semibold mb-4 text-blue-400">Control de Categorías</h3>
                         <p class="text-slate-300">
@@ -115,16 +115,16 @@
                             y requisitos para cada ascenso.
                         </p>
                     </div>
-                    <div class="p-6 bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-lg 
+                    <div class="p-6 bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-lg
                                 hover:bg-slate-800 transition-all duration-300">
                         <h3 class="text-xl font-semibold mb-4 text-purple-400">Validación Académica</h3>
                         <p class="text-slate-300">
                             Proceso automatizado para la validación de títulos académicos y credenciales.
-                            Verificación de requisitos específicos para cada categoría y control de 
+                            Verificación de requisitos específicos para cada categoría y control de
                             documentación requerida.
                         </p>
                     </div>
-                    <div class="p-6 bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-lg 
+                    <div class="p-6 bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-lg
                                 hover:bg-slate-800 transition-all duration-300">
                         <h3 class="text-xl font-semibold mb-4 text-indigo-400">Seguimiento de Ascensos</h3>
                         <p class="text-slate-300">

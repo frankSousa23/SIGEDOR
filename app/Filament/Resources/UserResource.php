@@ -31,6 +31,9 @@ use App\Models\SiteOption;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\BadgeColumn;
 use App\Models\Teacher;
+use App\Enums\Role as RoleEnum;
+use Filament\Resources\Pages\CreateRecord;
+use Filament\Resources\Pages\EditRecord;
 
 class UserResource extends Resource
 {
@@ -50,9 +53,16 @@ class UserResource extends Resource
                     ->label('Correo Electrónico')
                     ->required()
                     ->email()
-                    ->rules(['regex:/@sigedor\.com$/'])
-                    ->autocomplete('email')
-                    ->helperText('El correo debe terminar en @sigedor.com'),
+                    ->rules([
+                        'required',
+                        'email:rfc,dns',
+                        'regex:/@sigedor\.com$/i',
+                        Rule::unique(User::class),
+                    ])
+                    ->validationMessages([
+                        'regex' => 'Dominio @sigedor.com requerido'
+                    ])
+                    ->autocomplete('email'),
                 TextInput::make('name')
                     ->label('Nombre')
                     ->required()
@@ -77,12 +87,14 @@ class UserResource extends Resource
                     ]),
                 Section::make('Asignación de Rol')
                     ->schema([
-                        Select::make('roles')
+                        Select::make('role')
                             ->label('Rol')
-                            ->relationship('roles', 'name')
-                            ->required()
-                            ->preload()
-                            ->searchable(),
+                            ->options([
+                                RoleEnum::ADMIN->value        => 'Administrador',
+                                RoleEnum::AREA_MANAGER->value  => 'Jefe de Área',
+                                RoleEnum::TEACHER->value       => 'Docente',
+                            ])
+                            ->required(),
                     ]),
                 Section::make('Estado del Usuario')
                     ->schema([
@@ -229,11 +241,17 @@ class UserResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()
-            ->with(['roles', 'siteOption', 'areaOption'])
-            ->when(!auth()->user()->hasRole('admin'), function($query) {
-                $query->where('site_option_id', auth()->user()->site_option_id);
-            });
+        $query = parent::getEloquentQuery();
+
+        if (auth()->user()->hasRole('area_manager')) {
+            return $query->where('site_id', auth()->user()->site_id);
+        }
+
+        if (auth()->user()->hasRole('teacher')) {
+            return $query->where('id', auth()->id());
+        }
+
+        return $query;
     }
 
     public static function canViewAny(): bool
@@ -271,6 +289,20 @@ class UserResource extends Resource
 
     public static function query(): Builder
     {
-        return parent::query()->where('id', '!=', auth()->id()); // Excluye al usuario actual si es necesario
+    return parent::getEloquentQuery() // Usar getEloquentQuery() en lugar de query()
+        ->where('id', '!=', auth()->id());
+    }
+
+    protected function getTableQuery(): Builder
+    {
+        return parent::getTableQuery()
+            ->when(
+                auth()->user()->hasRole('area_manager'),
+                fn (Builder $query) => $query->where('site_id', auth()->user()->site_id)
+            )
+            ->when(
+                auth()->user()->hasRole('teacher'),
+                fn (Builder $query) => $query->where('id', auth()->id())
+            );
     }
 }

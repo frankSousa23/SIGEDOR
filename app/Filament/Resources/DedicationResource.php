@@ -43,7 +43,7 @@ class DedicationResource extends Resource
                             ->reactive()
                             ->columnSpan('full'),
                     ]),
-                
+
                 Forms\Components\Select::make('name')
                     ->options([
                         'TCV' => 'Tiempo Convencional',
@@ -89,7 +89,7 @@ class DedicationResource extends Resource
                     ->maxValue(100)
                     ->nullable()
                     ->reactive()
-                    ->afterStateUpdated(fn ($state, callable $set) => 
+                    ->afterStateUpdated(fn ($state, callable $set) =>
                         $set('studentHours', $state ? null : null)
                     ),
 
@@ -158,14 +158,14 @@ class DedicationResource extends Resource
                 ]),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -173,5 +173,5 @@ class DedicationResource extends Resource
             'create' => Pages\CreateDedication::route('/create'),
             'edit' => Pages\EditDedication::route('/{record}/edit'),
         ];
-    }    
+    }
 }

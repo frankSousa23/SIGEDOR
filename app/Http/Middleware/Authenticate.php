@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class Authenticate
 {
@@ -30,5 +32,10 @@ class Authenticate
         }
 
         throw new AuthenticationException('Unauthenticated.', $guards);
+    }
+
+    protected function redirectTo($request): string
+    {
+        return route('filament.admin.auth.login');
     }
 }

@@ -14,29 +14,40 @@ class UserPolicy
         return $user->hasRole('admin');
     }
 
-    public function view(User $auth, User $target): bool
+    public function view(User $user, User $model): bool
     {
-        return $auth->isAdmin() ||
-               ($auth->site_option_id == $target->site_option_id &&
-                $auth->area_option_id == $target->area_option_id &&
-                $auth->hasRole('area_manager')) ||
-               ($auth->id == $target->id && $auth->hasRole('teacher'));
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+
+        if ($user->hasRole('area_manager')) {
+            return $user->site_id === $model->site_id;
+        }
+
+        return $user->id === $model->id;
     }
 
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $user->hasRole('admin');
     }
 
-    public function update(User $auth, User $target): bool
+    public function update(User $user, User $model): bool
     {
-        return $auth->isAdmin() ||
-              ($auth->hasRole('area_manager') && $auth->site_id == $target->site_id);
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+
+        if ($user->hasRole('area_manager')) {
+            return $user->site_id === $model->site_id && !$model->hasRole('admin');
+        }
+
+        return $user->id === $model->id;
     }
 
-    public function delete(User $auth, User $target): bool
+    public function delete(User $user, User $model): bool
     {
-        return $auth->isAdmin();
+        return $user->hasRole('admin');
     }
 
     public function approve(User $user)

@@ -16,7 +16,11 @@ class Login extends BaseLogin
                     ->label('Correo Electrónico')
                     ->email()
                     ->required()
-                    ->autocomplete(),
+                    ->autocomplete()
+                    ->rules(['email:filter', 'exists:users,email'])
+                    ->validationMessages([
+                        'exists' => 'Credenciales no válidas'
+                    ]),
                 TextInput::make('password')
                     ->label('Contraseña')
                     ->password()

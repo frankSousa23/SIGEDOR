@@ -23,50 +23,34 @@ use Spatie\Permission\Middleware\PermissionMiddleware;
 use App\Filament\Widgets;
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\TasksOverview;
-use Filament\Tables\Enums\Relations;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Enums\RecordActions;
+use Filament\Tables\Enums\ActionsPosition;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->authGuard('web')
-            ->authPasswordBroker('users')
-            ->login()
             ->id('admin')
             ->path('admin')
-            ->brandName('SIGEDOR')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Blue,
             ])
             ->navigationGroups([
                 NavigationGroup::make()
                     ->label('Gestión Docente')
-                    ->icon('heroicon-o-academic-cap')
-                    ->collapsed()
-                    ->collapsible()
-                    ->sort(-1),
+                    ->icon('heroicon-o-academic-cap'),
                 NavigationGroup::make()
                     ->label('Asignaciones')
-                    ->icon('heroicon-o-clipboard-document-list')
-                    ->collapsed()
-                    ->collapsible()
-                    ->sort(0),
+                    ->icon('heroicon-o-clipboard-document-list'),
                 NavigationGroup::make()
                     ->label('Gestión de Reportes')
-                    ->icon('heroicon-o-document-chart-bar')
-                    ->collapsed()
-                    ->collapsible()
-                    ->sort(1),
+                    ->icon('heroicon-o-document-chart-bar'),
                 NavigationGroup::make()
                     ->label('Configuración')
                     ->icon('heroicon-o-cog-6-tooth')
-                    ->collapsed()
-                    ->collapsible()
-                    ->sort(2),
             ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 PagesDashboard::class,
             ])
@@ -83,18 +67,15 @@ class AdminPanelProvider extends PanelProvider
                 ShareErrorsFromSession::class,
                 VerifyCsrfToken::class,
                 SubstituteBindings::class,
-                DisableBladeIconComponents::class,
-                DispatchServingFilamentEvent::class,
-                RoleMiddleware::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
             ])
             ->navigation(fn () => Navigation::build())
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->databaseTransactions()
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
-            ->defaultRelationsHandler(Relations::EagerLoad);
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages');
     }
 }

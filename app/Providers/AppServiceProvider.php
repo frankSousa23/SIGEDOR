@@ -11,6 +11,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Pagination\AbstractPaginator;
+use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +29,13 @@ class AppServiceProvider extends ServiceProvider
                 'rounds' => (int) $app['config']['hashing.bcrypt.rounds'], // Convertimos a entero para mayor seguridad
             ]);
         });
+
+        // Agrega este binding si no está definido previamente
+        if (! $this->app->bound('validator')) {
+            $this->app->singleton('validator', function ($app) {
+                return $app->make(\Illuminate\Validation\Factory::class);
+            });
+        }
     }
 
     /**
@@ -59,5 +69,23 @@ class AppServiceProvider extends ServiceProvider
                 // Ignorar errores durante migraciones
             }
         }
+
+        Gate::before(function ($user) {
+            return $user->hasRole('Admin') ? true : null; // Línea clave para validar acceso total a Admin
+        });
+
+        // Agrega este callback para resolver la fábrica de vistas para la paginación
+        AbstractPaginator::viewFactoryResolver(function () {
+            return app('view'); // <-- Retorna la instancia del componente "view" del contenedor
+        });
+
+        // Forzar cierre de sesión al reiniciar
+        if(app()->runningInConsole()) {
+            DB::table('sessions')->truncate();
+        }
+
+        // Eliminar cualquier registro relacionado con el widget eliminado
+        Livewire::component('admin-dashboard-widget', null);
+        Blade::componentNamespace('App\\Filament\\Widgets', 'filament-widgets');
     }
 }

@@ -7,6 +7,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\AccountWidget;
+use Filament\Facades\Filament;
 
 class FilamentServiceProvider extends PanelProvider
 {
@@ -25,5 +26,33 @@ class FilamentServiceProvider extends PanelProvider
             ->widgets([AccountWidget::class])
             ->middleware(['web'])
             ->authMiddleware(['auth']);
+    }
+
+    public function boot(): void
+    {
+        Filament::serving(function () {
+            Filament::registerNavigationGroups([
+                'Administración',
+                'Sistema'
+            ]);
+
+            // Widgets específicos por rol
+            if (auth()->check()) {
+                if (auth()->user()->hasRole('Admin')) {
+                    Filament::registerWidgets([
+                        \App\Filament\Widgets\StatsOverview::class,
+                        // \App\Filament\Widgets\LatestUsers::class, // Comentado como solicitado
+                    ]);
+                } elseif (auth()->user()->hasRole('Area Manager')) {
+                    Filament::registerWidgets([
+                        \App\Filament\Widgets\AreaStats::class,
+                    ]);
+                } elseif (auth()->user()->hasRole('Teacher')) {
+                    Filament::registerWidgets([
+                        \App\Filament\Widgets\TeacherDashboard::class,
+                    ]);
+                }
+            }
+        });
     }
 }

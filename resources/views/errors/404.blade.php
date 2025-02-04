@@ -4,9 +4,9 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>404 - Página no encontrada | SIGEDOR</title>
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     </head>
-    <body class="antialiased min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('images/FondoUnerg.jpg') }}');">
+    <body class="antialiased min-h-screen bg-gray-100">
         <div class="relative min-h-screen bg-gradient-to-br from-slate-900/90 to-blue-900/80">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <!-- Navigation -->

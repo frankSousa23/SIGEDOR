@@ -29,6 +29,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        // Registrar super admin
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('admin') ? true : null;
+        });
+
         // Definir políticas para UserResource
         Gate::define('view users', [UserPolicy::class, 'viewAny']);
         Gate::define('create users', [UserPolicy::class, 'create']);

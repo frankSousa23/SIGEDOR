@@ -342,12 +342,14 @@ class CategoryResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()
-            ->when(! auth()->user()->hasRole('admin'), function ($query) {
-                $query->whereHas('teacher.user', function ($query) {
-                    $query->where('site_option_id', auth()->user()->site_option_id)
-                          ->where('area_option_id', auth()->user()->area_option_id);
-                });
+        $query = parent::getEloquentQuery();
+
+        if (auth()->user()->hasRole('area_manager')) {
+            return $query->whereHas('teacher.user', function ($q) {
+                $q->where('site_option_id', auth()->user()->site_option_id);
             });
+        }
+
+        return $query;
     }
 }

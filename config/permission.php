@@ -205,4 +205,18 @@ return [
         'manage_reports' => ['admin', 'area_manager', 'teacher'],
         // Agregar todos los permisos necesarios
     ],
+
+    'roles_structure' => [
+        'admin' => [
+            'users' => 'c,r,u,d',
+            'profile' => 'r,u'
+        ],
+        'area_manager' => [
+            'teachers' => 'r,u',
+            'dedications' => 'c,r'
+        ],
+        'teacher' => [
+            'profile' => 'r,u'
+        ]
+    ],
 ];

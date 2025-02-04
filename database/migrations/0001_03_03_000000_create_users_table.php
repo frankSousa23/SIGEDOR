@@ -19,10 +19,10 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('is_active')->default(false);
             $table->boolean('is_approved')->default(false);
+            $table->boolean('is_temporary')->default(false);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
-            $table->boolean('is_example')->default(false);  // Añadir campo is_example
             $table->foreignId('site_option_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('area_option_id')->nullable()->constrained()->onDelete('set null');
         });

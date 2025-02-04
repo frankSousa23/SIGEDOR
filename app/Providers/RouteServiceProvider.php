@@ -11,13 +11,9 @@ use Illuminate\Support\Facades\Route;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * The path to your application's "home" route.
-     *
-     * Typically, users are redirected here after authentication.
-     *
-     * @var string
+     * Página de inicio a la que se redirige a los usuarios autenticados.
      */
-    public const HOME = '/home'; // unused
+    public const HOME = '/dashboard';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -36,6 +32,11 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
+
+            Route::post('logout', function () {
+                auth()->logout();
+                return redirect('/');
+        })->name('logout');
     }
 
     /**
@@ -63,5 +64,14 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)
                 ->by(optional($request->user())->getAuthIdentifier() ?: $request->ip());
         });
+    }
+
+    public static function redirectTo(): string
+    {
+        return match(auth()->user()->getRoleNames()->first()) {
+            'Admin' => '/admin',
+            'Area Manager' => '/admin/teachers',
+            default => '/teacher/profile'
+        };
     }
 }

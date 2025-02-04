@@ -21,6 +21,7 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasTenants;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements FilamentUser, HasTenants
 {
@@ -32,10 +33,9 @@ class User extends Authenticatable implements FilamentUser, HasTenants
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role',
-        'is_active', 'is_approved', 'email_verified_at',
-        'site_option_id',
-        'area_option_id'
+        'name', 'email', 'password',
+        'site_option_id', 'area_option_id',
+        'is_active', 'is_approved', 'email_verified_at'
     ];
 
     /**
@@ -43,7 +43,10 @@ class User extends Authenticatable implements FilamentUser, HasTenants
      *
      * @var array<int, string>
      */
-    protected $hidden = [];
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
     /**
      * The attributes that should be cast.
@@ -54,6 +57,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         'email_verified_at' => 'datetime',
         'is_active' => 'boolean',
         'is_approved' => 'boolean',
+        'is_temporary' => 'boolean',
         'role.name' => 'string',
         'site.name' => 'string',
     ];
@@ -175,7 +179,9 @@ class User extends Authenticatable implements FilamentUser, HasTenants
 
     protected static function booted(): void
     {
-        // Eliminar cualquier scope que filtre usuarios
+        static::addGlobalScope('active', function ($query) {
+            $query->where('is_active', true);
+        });
     }
 
     protected static function boot()
