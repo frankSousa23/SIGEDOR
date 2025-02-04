@@ -34,6 +34,8 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->id('admin')
             ->path('admin')
+            ->login()
+            ->databaseTransactions()
             ->colors([
                 'primary' => Color::Blue,
             ])
@@ -71,6 +73,9 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->authGuard('web')
+            ->passwordReset()
+            ->emailVerification()
             ->navigation(fn () => Navigation::build())
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->databaseNotifications()

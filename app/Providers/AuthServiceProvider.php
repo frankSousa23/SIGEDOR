@@ -6,6 +6,8 @@ use App\Models\Teacher;
 use App\Policies\TeacherPolicy;
 use App\Models\User;
 use App\Policies\UserPolicy;
+use App\Models\Site;
+use App\Policies\SitePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -17,7 +19,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
+        User::class => UserPolicy::class,
         Teacher::class => TeacherPolicy::class,
+        Site::class => SitePolicy::class,
         // Comentar temporalmente si hay dependencias
         // 'App\Models\User' => 'App\Policies\UserPolicy',
     ];

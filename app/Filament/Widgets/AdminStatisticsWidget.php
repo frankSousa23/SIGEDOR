@@ -4,6 +4,10 @@ namespace App\Filament\Widgets;
 
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
+use App\Models\User;
+use App\Models\Teacher;
+use App\Models\Site;
+use App\Models\Report;
 
 class AdminStatisticsWidget extends BaseWidget
 {

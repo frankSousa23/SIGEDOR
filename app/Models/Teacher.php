@@ -97,4 +97,14 @@ class Teacher extends Model
     {
         return $query->where('is_completed', true);
     }
+
+    public function sites(): HasMany
+    {
+        return $this->hasMany(Site::class);
+    }
+
+    public function area(): BelongsTo
+    {
+        return $this->belongsTo(AreaOption::class, 'area_id');
+    }
 }

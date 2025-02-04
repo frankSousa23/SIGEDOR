@@ -30,5 +30,13 @@ Route::fallback(function () {
     return response()->view('errors.404', [], 404);
 });
 
+Route::get('/session-check', function() {
+    return [
+        'session_id' => session()->getId(),
+        'user' => auth()->user()?->only('id','name'),
+        'session_data' => session()->all()
+    ];
+});
+
 require __DIR__.'/auth.php';
 

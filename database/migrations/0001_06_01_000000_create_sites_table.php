@@ -10,15 +10,14 @@ return new class extends Migration
     {
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('teacher_id')->nullable()->constrained('teachers')->onDelete('set null');
             $table->foreignId('site_option_id')->constrained();
             $table->foreignId('area_option_id')->constrained('area_options')->nullable(false);
-            $table->string('name')->nullable()->unique()->index();
             $table->string('program')->nullable();
             $table->string('uc')->nullable();
             $table->integer('weekHours')->nullable();
             $table->integer('sections')->nullable();
             $table->text('info')->nullable();
-            // Control de estado
             $table->boolean('is_active')->default(true);
             $table->integer('teachers_count')->default(0);
             $table->boolean('is_available')->default(true);

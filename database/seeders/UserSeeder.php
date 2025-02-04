@@ -33,17 +33,14 @@ class UserSeeder extends Seeder
             throw new \Exception("Se requieren SiteOption y AreaOption para crear el usuario.");
         }
 
-        // Eliminar sesiones por email antes de eliminar usuario
-        $userId = User::withTrashed()->where('email', 'admin@sigedor.com')->value('id');
-        DB::table('sessions')->where('user_id', $userId)->delete();
-
-        User::where('email', 'admin@sigedor.com')->forceDelete();
+        // Eliminar sesiones existentes
+        DB::table('sessions')->delete();
 
         // Creación con password no persistente
         $password = 'tmp_'.Str::uuid().'_'.now()->format('YmdHis');
         $user = User::create([
             'name' => 'Admin Temporal',
-            'email' => 'admin@sigedor.com',
+            'email' => 'admin@temp.com',
             'password' => Hash::make('password'),
             'site_option_id' => $siteOption->id,
             'area_option_id' => $areaOption->id,
@@ -59,6 +56,6 @@ class UserSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Asignación de rol
-        $user->assignRole('Admin');
+        $user->assignRole('admin');
     }
 }

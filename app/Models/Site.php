@@ -14,9 +14,9 @@ class Site extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name',
+        'teacher_id',
         'site_option_id',
-        'area_id',
+        'area_option_id',
         'program',
         'uc',
         'weekHours',
@@ -25,8 +25,8 @@ class Site extends Model
         'is_active',
         'is_available',
         'teachers_count',
-        'last_assignment',
-        'area_option_id'
+        'last_assignment'
+
     ];
 
     protected $casts = [

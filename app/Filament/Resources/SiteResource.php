@@ -35,11 +35,9 @@ class SiteResource extends Resource
                     ->schema([
                         Select::make('teacher_id')
                             ->label('Docente')
-                            ->options(
-                                Teacher::with('user')->get()->mapWithKeys(fn ($teacher) => [
-                                    $teacher->id => $teacher->user->name
-                                ])
-                            )
+                            ->relationship('teacher', 'cdi')
+                            ->searchable()
+                            ->preload()
                             ->required(),
                     ]),
 

@@ -22,6 +22,7 @@ use Carbon\Carbon;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\Site;
 use App\Models\SiteOption;
+use Filament\Forms\Components\Select;
 
 class TeacherResource extends Resource
 {
@@ -224,6 +225,10 @@ class TeacherResource extends Resource
                     ->preload()
                     ->required()
                     ->columnSpan(1),
+
+                Select::make('area_id')
+                    ->relationship('area', 'name')
+                    ->required(),
             ])
             ->columns(2);
     }
