@@ -55,13 +55,13 @@
                                 @else
                                     <a href="{{ url('/dashboard/login') }}"
                                        class="text-sm text-slate-300 hover:text-white transition">Iniciar Sesión</a>
-                                @endauth
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </nav>
+                                   @endauth
+                               </div>
+                           @endif
+                       </div>
+                   </div>
+               </div>
+           </nav>
 
         <!-- Hero Section -->
         <div class="pt-24">

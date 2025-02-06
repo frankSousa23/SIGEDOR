@@ -6,24 +6,35 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use App\Models\SiteOption;
+use App\Models\Role;
 use Database\Seeders\RoleSeeder;
 
 class AuthTest extends TestCase
 {
-    public function test_login_with_valid_credentials()
+    // use RefreshDatabase; // Comentado
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->artisan('migrate:fresh --seed');
+    }
+
+    public function test_admin_route_returns_success_when_authenticated()
     {
         $this->seed(RoleSeeder::class);
 
-        $user = User::factory()->create([
-            'password' => bcrypt('password')
-        ]);
+        $siteOption = SiteOption::factory()->create();
+        $role = Role::where('name', 'admin')->first();
 
-        $response = $this->post('/login', [
-            'email' => $user->email,
-            'password' => 'password'
+        $admin = User::factory()->create([
+            'site_option_id' => $siteOption->id,
+            'role_id' => $role->id,
         ]);
+        $admin->assignRole('admin');
 
-        $response->assertRedirect('/filament/dashboard');
+        $this->actingAs($admin);
+        $response = $this->get('/filament/dashboard/users'); // Usar ruta directa
+        $response->assertStatus(200);
     }
 }

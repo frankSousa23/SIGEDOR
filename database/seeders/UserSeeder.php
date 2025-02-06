@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
         $user = User::create([
             'name' => 'Admin Temporal',
             'email' => 'admin@temp.com',
-            'password' => Hash::make('password'),
+            'password' => 'password',
             'site_option_id' => $siteOption->id,
             'area_option_id' => $areaOption->id,
             'is_active' => true,

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\Site;
 use App\Models\Role;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -23,11 +24,11 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => bcrypt('password'),
+            'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'is_active' => true,
             'is_approved' => true,
-            'site_id' => Site::inRandomOrder()->first()?->id ?? null,
+            'site_option_id' => Site::inRandomOrder()->first()?->id ?? null,
             'role_id' => Role::inRandomOrder()->first()?->id ?? null,
             // 'cdi' => $this->faker->unique()->randomNumber(8, true),
         ];

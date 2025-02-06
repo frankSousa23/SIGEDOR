@@ -44,9 +44,9 @@ return [
     'livewire' => [],
      'auth' => [
         'guard' => 'web',
-        // 'pages' => [
-        //     'login' => \App\Filament\Pages\Auth\Login::class,
-        // ],
+        'pages' => [
+            'login' => \App\Http\Controllers\Auth\AuthenticatedSessionController::class,
+        ],
         'middleware' => [
             'base' => [
                 'auth',

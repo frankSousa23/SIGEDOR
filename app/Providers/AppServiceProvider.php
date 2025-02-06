@@ -60,15 +60,15 @@ class AppServiceProvider extends ServiceProvider
         User::preventAccessingMissingAttributes();
 
         // Desactivar temporalmente autenticación automática
-        if (app()->environment('local') && !app()->runningInConsole()) {
-            try {
-                if(User::exists()) {
-                    Auth::login(User::with('roles')->first());
-                }
-            } catch (\Throwable $th) {
-                // Ignorar errores durante migraciones
-            }
-        }
+        // if (app()->environment('local') && !app()->runningInConsole()) {
+        //     try {
+        //         if(User::exists()) {
+        //             Auth::login(User::with('roles')->first());
+        //         }
+        //     } catch (\Throwable $th) {
+        //         // Ignorar errores durante migraciones
+        //     }
+        // }
 
         Gate::before(function ($user) {
             return $user->hasRole('Admin') ? true : null; // Línea clave para validar acceso total a Admin

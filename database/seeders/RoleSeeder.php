@@ -11,9 +11,9 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         // Roles en minúsculas como debe ser
-        $admin = Role::create(['name' => 'admin']);
-        $areaManager = Role::create(['name' => 'area_manager']);
-        $teacher = Role::create(['name' => 'teacher']);
+        $admin = Role::firstOrCreate(['name' => 'admin']);
+        $areaManager = Role::firstOrCreate(['name' => 'area_manager']);
+        $teacher = Role::firstOrCreate(['name' => 'teacher']);
 
         // Permisos específicos del sistema
         $permissions = [
@@ -35,7 +35,7 @@ class RoleSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::firstOrCreate(['name' => $permission]);
         }
 
         // Asignación jerárquica de permisos

@@ -8,6 +8,7 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\AccountWidget;
 use Filament\Facades\Filament;
+use Filament\Navigation\NavigationGroup;
 
 class FilamentServiceProvider extends PanelProvider
 {
@@ -32,8 +33,8 @@ class FilamentServiceProvider extends PanelProvider
     {
         Filament::serving(function () {
             Filament::registerNavigationGroups([
-                'Administración',
-                'Sistema'
+                NavigationGroup::make('Administración'),
+                NavigationGroup::make('Sistema')
             ]);
 
             // Widgets específicos por rol

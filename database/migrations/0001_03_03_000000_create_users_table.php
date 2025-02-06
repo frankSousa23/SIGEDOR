@@ -25,6 +25,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->foreignId('site_option_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('area_option_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('role_id')->nullable()->constrained()->onDelete('set null'); // Added role_id
         });
     }
 

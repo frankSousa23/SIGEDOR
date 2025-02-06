@@ -6,7 +6,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Site;
+use App\Models\SiteOption;
+use App\Models\Role;
 use Database\Seeders\RoleSeeder;
 
 class AdminTest extends TestCase
@@ -15,7 +16,13 @@ class AdminTest extends TestCase
     {
         $this->seed(RoleSeeder::class);
 
-        $admin = User::factory()->create();
+        $siteOption = SiteOption::factory()->create();
+        $role = Role::where('name', 'admin')->first();
+
+        $admin = User::factory()->create([
+            'site_option_id' => $siteOption->id,
+            'role_id' => $role->id,
+        ]);
         $admin->assignRole('admin');
 
         $this->actingAs($admin);

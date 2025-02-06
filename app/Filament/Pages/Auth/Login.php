@@ -17,9 +17,9 @@ class Login extends BaseLogin
                     ->email()
                     ->required()
                     ->autocomplete()
-                    ->rules(['email:filter', 'exists:users,email'])
+                    ->rules(['email:filter'])
                     ->validationMessages([
-                        'exists' => 'Credenciales no válidas'
+
                     ]),
                 TextInput::make('password')
                     ->label('Contraseña')

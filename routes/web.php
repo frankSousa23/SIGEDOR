@@ -13,7 +13,7 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
     // Ruta del dashboard (usando Filament)
     Route::get('/admin', function () {
-        return redirect()->route('filament.admin.pages.dashboard');
+        return redirect('/dashboard');
     })->name('dashboard');
 });
 
@@ -39,4 +39,3 @@ Route::get('/session-check', function() {
 });
 
 require __DIR__.'/auth.php';
-
