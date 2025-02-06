@@ -8,7 +8,7 @@ return [
         'base' => ['web'],
         'auth' => ['auth'],
     ],
-    'auth' => [
+   'auth' => [
         'guard' => 'web',
     ],
     'layout' => [
@@ -22,31 +22,31 @@ return [
             ],
         ],
     ],
-    'default' => 'dashboard',
-    'panels' => [
-        'dashboard' => [
-            'id' => 'dashboard',
-            'path' => 'admin',
-            'login' => \App\Filament\Pages\Auth\Login::class,
-            'registration' => null,
-            'middleware' => [
-                'web',
-                'auth' => \Filament\Http\Middleware\Authenticate::class,
-                'session' => \Illuminate\Session\Middleware\StartSession::class,
-            ],
-            'auth_guard' => 'web',
-            'database_connection' => env('DB_CONNECTION', 'mysql'),
-        ],
-    ],
+    //'default' => 'dashboard', Comentado para usar la configuración predeterminada
+    // 'panels' => [
+    //     'dashboard' => [
+    //         'id' => 'dashboard',
+    //         'path' => 'admin',
+    //         //'login' => \App\Filament\Pages\Auth\Login::class,
+    //         'registration' => null,
+    //         'middleware' => [
+    //             'web',
+    //             'auth' => \Filament\Http\Middleware\Authenticate::class,
+    //             'session' => \Illuminate\Session\Middleware\StartSession::class,
+    //         ],
+    //         'auth_guard' => 'web',
+    //         'database_connection' => env('DB_CONNECTION', 'mysql'),
+    //     ],
+    // ],
     'widgets' => [
         'namespace' => 'App\\Filament\\Widgets',
     ],
     'livewire' => [],
-    'auth' => [
+     'auth' => [
         'guard' => 'web',
-        'pages' => [
-            'login' => \App\Filament\Pages\Auth\Login::class,
-        ],
+        // 'pages' => [
+        //     'login' => \App\Filament\Pages\Auth\Login::class,
+        // ],
         'middleware' => [
             'base' => [
                 'auth',

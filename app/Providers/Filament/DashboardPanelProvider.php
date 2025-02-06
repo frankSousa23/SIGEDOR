@@ -30,9 +30,17 @@ class DashboardPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->id('admin')
-            ->path('admin')
+            ->default()
+            ->id('dashboard')
+            ->path('dashboard')
             ->login()
+            ->registration()
+            ->passwordReset()
+            ->emailVerification()
+            ->profile()
+            ->pages([
+                Pages\Dashboard::class,
+            ])
             ->colors([
                 'primary' => Color::Blue,
             ])
