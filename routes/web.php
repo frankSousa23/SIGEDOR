@@ -6,6 +6,17 @@ use Illuminate\Support\Facades\Session;
 use Filament\Http\Livewire\Auth\Login as FilamentLogin;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
 // Ruta principal
 Route::get('/', function () {
     return view('welcome');
@@ -14,14 +25,9 @@ Route::get('/', function () {
 // Grupo de rutas autenticadas
 Route::middleware(['auth'])->group(function () {
     // Ruta del dashboard (usando Filament)
-    Route::get('/admin', function () {
-        return redirect('/dashboard');
-    })->name('dashboard');
-
-    // Ruta del dashboard (usando Filament)
-    Route::get('/dashboard', function () {
-        return redirect('/admin');
-    })->name('dashboard');
+    Route::get('/main', function () {
+        return view('filament.main.pages.dashboard');
+    });
 });
 
 // Ruta de logout
@@ -47,29 +53,16 @@ Route::get('/session-check', function() {
 
 // Redirección para /login
 Route::get('/login', function () {
-    return redirect('/admin/login');
+    return redirect('/main/login');
 })->name('login');
 
-// Redirigir /dashboard/login a /admin/login
-Route::get('/dashboard/login', function () {
-    return redirect('/admin/login');
-});
+// Eliminar las rutas de los paneles anteriores
+// Route::get('/dashboard', function () {
+//     return view('filament.dashboard.pages.dashboard');
+// });
 
-Route::get('/admin-only', function () {
-    return 'This page is only for admins!';
-})->middleware('role:admin');
-
-Route::middleware('web')->group(function () {
-    // Rutas del panel dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
-    // Rutas para el panel admin de Filament (Filament asume "web" por defecto)
-    // Además, si rediriges /login hacia /admin/login:
-    Route::get('/login', function () {
-         return redirect('/admin/login');
-    })->name('login');
-});
+// Route::get('/admin', function () {
+//     return view('filament.admin.pages.dashboard');
+// });
 
 require __DIR__.'/auth.php';

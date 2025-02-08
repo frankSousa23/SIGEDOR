@@ -32,70 +32,54 @@ use App\Filament\Pages\Dashboard;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Filament\Support\Colors\Shades;
+use Filament\Navigation\NavigationItem;
+use Illuminate\Foundation\Http\Middleware\ValidatePostSize;
+use Illuminate\Http\Middleware\HandleCors;
+use Filament\Support\Enums\MaxWidth;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        $panel
+        return $panel
             ->default()
-            ->id('admin')
-            ->path('admin')
+            ->id('main')
+            ->path('main')
             ->login()
-            ->registration()
-            ->passwordReset()
-            ->emailVerification()
             ->colors([
-                'primary' => Color::Rose,
-                'secondary' => Color::Gray,
-                'tertiary' => Color::Emerald,
+                'primary' => Color::Green,
+                'secondary' => Color::Blue,
+                'gray' => Color::Gray,
             ])
-            ->navigationGroups([
-                NavigationGroup::make()
-                    ->label('Gestión Docente')
-                    ->icon('heroicon-o-academic-cap'),
-                NavigationGroup::make()
-                    ->label('Asignaciones')
-                    ->icon('heroicon-o-clipboard-document-list'),
-                NavigationGroup::make()
-                    ->label('Gestión de Reportes')
-                    ->icon('heroicon-o-document-chart-bar'),
-                NavigationGroup::make()
-                    ->label('Configuración')
-                    ->icon('heroicon-o-cog-6-tooth')
-            ])
+            ->maxContentWidth(MaxWidth::Full)
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                PagesDashboard::class,
+                \App\Filament\Pages\Dashboard::class,
             ])
-            ->maxContentWidth('full')
+            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                //Widgets\AccountWidget::class,
-                //Widgets\FilamentInfoWidget::class,
+                \App\Filament\Widgets\StatsOverview::class,
             ])
             ->middleware([
+                HandleCors::class,
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
-                AuthenticateSession::class,
                 ShareErrorsFromSession::class,
                 VerifyCsrfToken::class,
                 SubstituteBindings::class,
-                DisableBladeIconComponents::class,
-                DispatchServingFilamentEvent::class,
-                HandlePrecognitiveRequests::class,
+                ValidatePostSize::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->authGuard('web')
-            ->navigation(fn () => Navigation::build())
-            ->databaseNotifications()
-            ->databaseNotificationsPolling('30s')
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->databaseTransactions();
-
-        return $panel;
+            ->navigationItems([
+                NavigationItem::make('Visitar sitio web')
+                    ->url('https://sigedor.com', shouldOpenInNewTab: true)
+                    ->icon('heroicon-o-globe-alt')
+                    ->group('Configuracion'),
+            ]);
     }
 }

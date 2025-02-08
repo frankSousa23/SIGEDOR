@@ -39,36 +39,30 @@ class UserSeeder extends Seeder
         // Eliminar usuarios existentes
         User::whereIn('email', ['admin@example.com', 'area_manager@example.com', 'teacher@example.com'])->delete();
 
-        // Crear un usuario por cada rol
+        // Crear un usuario para cada rol
+        $admin = User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@sigedor.com',
+            'password' => Hash::make('password'),
+        ]);
         $adminRole = Role::where('name', 'admin')->first();
-        if ($adminRole) {
-            $admin = User::create([
-                'name' => 'Admin',
-                'email' => 'admin@example.com',
-                'password' => 'password',
-            ]);
-            $admin->assignRole($adminRole);
-        }
+        $admin->assignRole($adminRole);
 
+        $areaManager = User::create([
+            'name' => 'Area Manager User',
+            'email' => 'area_manager@sigedor.com',
+            'password' => Hash::make('password'),
+        ]);
         $areaManagerRole = Role::where('name', 'area_manager')->first();
-        if ($areaManagerRole) {
-            $area_manager = User::create([
-                'name' => 'Area Manager',
-                'email' => 'area_manager@example.com',
-                'password' => Hash::make('password'),
-            ]);
-            $area_manager->assignRole($areaManagerRole);
-        }
+        $areaManager->assignRole($areaManagerRole);
 
+        $teacher = User::create([
+            'name' => 'Teacher User',
+            'email' => 'teacher@sigedor.com',
+            'password' => Hash::make('password'),
+        ]);
         $teacherRole = Role::where('name', 'teacher')->first();
-        if ($teacherRole) {
-            $teacher = User::create([
-                'name' => 'Teacher',
-                'email' => 'teacher@example.com',
-                'password' => Hash::make('password'),
-            ]);
-            $teacher->assignRole($teacherRole);
-        }
+        $teacher->assignRole($teacherRole);
 
         // Limpieza de cachés Spatie
         Cache::forget('spatie.permission.cache');

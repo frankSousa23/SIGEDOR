@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Filament\Facades\Filament;
+use App\Providers\RouteServiceProvider;
+use Filament\Http\Livewire\Auth\Login;
+use Tests\Feature\FakeLogin;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -55,5 +60,22 @@ abstract class TestCase extends BaseTestCase
                 };
             }
         );
+
+        // Inyectar el stub de FakeLogin en el contenedor
+        $this->app->bind(Login::class, FakeLogin::class);
+    }
+
+    /**
+     * Authenticate a user for testing purposes.
+     *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @param  string|null  $driver
+     * @return static
+     */
+    public function actingAs(Authenticatable $user, string $driver = null): static
+    {
+        Auth::login($user, $driver);
+
+        return $this;
     }
 }

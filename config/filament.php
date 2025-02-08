@@ -1,5 +1,9 @@
 <?php
 
+use App\Filament\Pages\Dashboard as CustomDashboard;
+use Filament\Http\Livewire\Auth\Login as FilamentLogin;
+// use App\Http\Middleware\AuthenticateSession;
+
 return [
     'path' => 'admin',
     'home_url' => '/',
@@ -11,7 +15,7 @@ return [
     'auth' => [
         'guard' => 'web',
         'pages' => [
-            'login' => \Filament\Http\Livewire\Auth\Login::class,
+            'login' => FilamentLogin::class,
         ],
         'middleware' => [
             'base' => [
@@ -31,27 +35,6 @@ return [
             ],
         ],
     ],
-    'panels' => [
-        'dashboard' => [
-            'id' => 'dashboard',
-            'path' => 'dashboard',
-            'login' => \Filament\Http\Livewire\Auth\Login::class,
-            'auth_guard' => 'web',
-            'middleware' => [
-                'web',
-                AuthenticateSession::class,
-            ],
-            'resources' => [
-                // ...
-            ],
-            'pages' => [
-                \Filament\Pages\Dashboard::class,
-            ],
-            'widgets' => [
-                // ...
-            ],
-        ],
-    ],
     'widgets' => [
         'namespace' => 'App\\Filament\\Widgets',
     ],
@@ -61,5 +44,26 @@ return [
     ],
     'resources' => [
         'namespace' => 'App\\Filament\\Resources',
+    ],
+    'panels' => [
+        'main' => [
+            'id' => 'main',
+            'path' => 'main',
+            'login' => FilamentLogin::class,
+            'auth_guard' => 'web',
+            'middleware' => [
+                'web',
+                // AuthenticateSession::class,
+            ],
+            'resources' => [
+                // ...
+            ],
+            'pages' => [
+                CustomDashboard::class,
+            ],
+            'widgets' => [
+                // ...
+            ],
+        ],
     ],
 ];
