@@ -93,6 +93,6 @@ class Teacher extends Model
 
     public function sites()
     {
-        return $this->belongsToMany(Site::class);
+        return $this->belongsToMany(Site::class, 'site_teacher');
     }
 }

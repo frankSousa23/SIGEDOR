@@ -195,6 +195,6 @@ class Site extends Model
 
     public function teachers()
     {
-        return $this->belongsToMany(Teacher::class);
+        return $this->belongsToMany(Teacher::class, 'site_teacher');
     }
 }

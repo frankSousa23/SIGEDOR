@@ -64,8 +64,7 @@ class SiteResource extends Resource
                     ->searchable()
                     ->preload()
                     ->live()
-                    ->native(false)
-                    ->maxLength(255),
+                    ->native(false),
 
                 Forms\Components\Select::make('program')
                     ->label('Programa')

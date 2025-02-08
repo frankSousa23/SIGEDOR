@@ -10,19 +10,22 @@
         "barryvdh/laravel-dompdf": "^2.0",
         "filament/filament": "^3.2",
         "filament/forms": "^3.2",
-        "laravel/framework": "^11.31",
+        "filament/tables": "^3.2",
+        "illuminate/queue": "*",
+        "laravel/framework": "^11.41.3",
         "laravel/telescope": "^5.3",
         "laravel/tinker": "^2.9",
         "spatie/laravel-activitylog": "^4.9",
-        "spatie/laravel-permission": "^6.10"
+        "spatie/laravel-backup": "^8.4",
+        "spatie/laravel-permission": "^6.12.0",
+        "filament/support": "^3.2.41",
+        "filament/widgets": "^3.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
-        "laravel/pail": "^1.1",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",
-        "filament/widgets": "^3.0",
         "nunomaduro/collision": "^8.1",
         "pestphp/pest": "^3.5",
         "pestphp/pest-plugin-laravel": "^3.0"
@@ -41,9 +44,7 @@
     },
     "scripts": {
         "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi",
-            "@php artisan filament:upgrade"
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
@@ -56,11 +57,16 @@
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
         ],
-        "dev": "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'"
+        "dev": "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'",
+        "post-install-cmd": [
+            "@php artisan package:discover --ansi"
+        ]
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "laravel/telescope"
+            ]
         }
     },
     "config": {
@@ -70,7 +76,8 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
-        }
+        },
+        "secure-http": false
     },
     "minimum-stability": "stable",
     "prefer-stable": true
