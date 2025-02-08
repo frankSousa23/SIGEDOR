@@ -14,7 +14,21 @@ return [
     |
     */
 
-    'driver' => env('HASH_DRIVER', 'bcrypt'),
+    'default' => 'bcrypt',
+
+    'drivers' => [
+        'bcrypt' => [
+            'driver' => 'bcrypt',
+            'rounds' => env('BCRYPT_ROUNDS', 10),
+        ],
+
+        'argon' => [
+            'driver' => 'argon',
+            'memory' => 65536,
+            'threads' => 1,
+            'time' => 4,
+        ],
+    ],
 
     /*
     |--------------------------------------------------------------------------

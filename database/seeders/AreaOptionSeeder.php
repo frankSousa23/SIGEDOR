@@ -14,8 +14,6 @@ class AreaOptionSeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (Site::AREA_OPTIONS as $name) {
-            AreaOption::create(['name' => $name]);
-        }
+        AreaOption::create(['name' => 'Area Option 1']);
     }
 }

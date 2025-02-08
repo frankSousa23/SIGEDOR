@@ -36,26 +36,45 @@ class UserSeeder extends Seeder
         // Eliminar sesiones existentes
         DB::table('sessions')->delete();
 
-        // Creación con password no persistente
-        $password = 'tmp_'.Str::uuid().'_'.now()->format('YmdHis');
-        $user = User::create([
-            'name' => 'Admin Temporal',
-            'email' => 'admin@temp.com',
-            'password' => 'password',
-            'site_option_id' => $siteOption->id,
-            'area_option_id' => $areaOption->id,
-            'is_active' => true,
-            'is_approved' => true,
-            'email_verified_at' => now(),
-            'is_temporary' => true,
-            'remember_token' => Str::random(60) // Token inválido
-        ]);
+        // Eliminar usuarios existentes
+        User::whereIn('email', ['admin@example.com', 'area_manager@example.com', 'teacher@example.com'])->delete();
+
+        // Crear un usuario por cada rol
+        $adminRole = Role::where('name', 'admin')->first();
+        if ($adminRole) {
+            $admin = User::create([
+                'name' => 'Admin',
+                'email' => 'admin@example.com',
+                'password' => Hash::make('password'),
+            ]);
+            $admin->assignRole($adminRole);
+        }
+
+        $areaManagerRole = Role::where('name', 'area_manager')->first();
+        if ($areaManagerRole) {
+            $area_manager = User::create([
+                'name' => 'Area Manager',
+                'email' => 'area_manager@example.com',
+                'password' => Hash::make('password'),
+            ]);
+            $area_manager->assignRole($areaManagerRole);
+        }
+
+        $teacherRole = Role::where('name', 'teacher')->first();
+        if ($teacherRole) {
+            $teacher = User::create([
+                'name' => 'Teacher',
+                'email' => 'teacher@example.com',
+                'password' => Hash::make('password'),
+            ]);
+            $teacher->assignRole($teacherRole);
+        }
 
         // Limpieza de cachés Spatie
         Cache::forget('spatie.permission.cache');
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Asignación de rol
-        $user->assignRole('admin');
+        // [Línea comentada] Comentar autenticación automática para evitar sesiones persistentes inesperadas
+        // Auth::login($user);
     }
 }

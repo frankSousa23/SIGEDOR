@@ -3,14 +3,16 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Spatie\Permission\PermissionRegistrar;
+use Illuminate\Support\Facades\Artisan;
 
 abstract class TestCase extends BaseTestCase
 {
-    public function setUp(): void
-    {
-        // parent::setUp();
+    use CreatesApplication;
 
-        $this->app->make(PermissionRegistrar::class)->forgetCachedPermissions();
-    }
+    // public function setUp(): void
+    // {
+    //     parent::setUp();
+    //     // Ejecutar los seeders antes de cada test
+    //     $this->seed();
+    // }
 }

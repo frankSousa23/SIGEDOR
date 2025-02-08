@@ -15,6 +15,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin', function () {
         return redirect('/dashboard');
     })->name('dashboard');
+
+    // Ruta del dashboard (usando Filament)
+    Route::get('/dashboard', function () {
+        // Asegúrese de que 'filament.dashboard' es la ruta o vista configurada en su panel de Filament
+        return redirect()->route('filament.dashboard');
+    });
 });
 
 // Ruta de logout

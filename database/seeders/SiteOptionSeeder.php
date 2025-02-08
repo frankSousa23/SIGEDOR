@@ -15,8 +15,6 @@ class SiteOptionSeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (Site::SITE_OPTIONS as $name) {
-            SiteOption::create(['name' => $name]);
-        }
+        SiteOption::create(['name' => 'Site Option 1']);
     }
 }

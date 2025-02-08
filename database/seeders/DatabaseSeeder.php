@@ -18,24 +18,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Crear roles primero
-        $this->call(RoleSeeder::class);
-
-        // Admin temporal
-        $admin = \App\Models\User::create([
-            'name' => 'Admin Temporal',
-            'email' => 'admin@sigedor.com',
-            'password' => Hash::make('password'),
-            'is_temporary' => true, // Agregar este campo
-        ]);
-
-        $admin->assignRole('Admin');
-
         $this->call([
+            RoleSeeder::class,
             SiteOptionSeeder::class,
-            AreaOptionSeeder::class
+            AreaOptionSeeder::class,
+            UserSeeder::class,
         ]);
-
-        $this->call(UserSeeder::class);
     }
 }

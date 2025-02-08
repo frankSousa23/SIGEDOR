@@ -22,22 +22,30 @@ return [
             ],
         ],
     ],
-    //'default' => 'dashboard', Comentado para usar la configuración predeterminada
-    // 'panels' => [
-    //     'dashboard' => [
-    //         'id' => 'dashboard',
-    //         'path' => 'admin',
-    //         //'login' => \App\Filament\Pages\Auth\Login::class,
-    //         'registration' => null,
-    //         'middleware' => [
-    //             'web',
-    //             'auth' => \Filament\Http\Middleware\Authenticate::class,
-    //             'session' => \Illuminate\Session\Middleware\StartSession::class,
-    //         ],
-    //         'auth_guard' => 'web',
-    //         'database_connection' => env('DB_CONNECTION', 'mysql'),
-    //     ],
-    // ],
+    'panels' => [
+        'dashboard' => [
+            'id' => 'dashboard',
+            'path' => 'dashboard',
+            'middleware' => [
+                'web',
+                \App\Http\Middleware\Authenticate::class,
+                \Illuminate\Session\Middleware\AuthenticateSession::class,
+                \Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance::class,
+                \Illuminate\Pipeline\Pipeline::class,
+                \Illuminate\Routing\Middleware\SubstituteBindings::class,
+                \Illuminate\Auth\Middleware\Authorize::class,
+            ],
+            'resources' => [
+                // ...
+            ],
+            'pages' => [
+                \Filament\Pages\Dashboard::class,
+            ],
+            'widgets' => [
+                // ...
+            ],
+        ],
+    ],
     'widgets' => [
         'namespace' => 'App\\Filament\\Widgets',
     ],

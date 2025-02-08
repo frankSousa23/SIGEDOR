@@ -6,9 +6,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Site;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 class UserCreationTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_crear_usuario_con_site_valido()
     {
         $site = Site::factory()->create();
@@ -22,5 +26,9 @@ class UserCreationTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('users', ['email' => 'test@sigedor.com']);
+
+        // Verificar que el rol se haya asignado correctamente
+        $user = User::where('email', 'test@sigedor.com')->first();
+        $this->assertTrue($user->hasRole('teacher'));
     }
 }

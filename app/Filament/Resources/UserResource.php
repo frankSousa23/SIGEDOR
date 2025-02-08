@@ -49,22 +49,13 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('email')
-                    ->label('Correo Electrónico')
-                    ->required()
-                    ->email()
-                    ->rules([
-                        'required',
-                        'email:rfc,dns',
-                        'regex:/@sigedor\.com$/i',
-                        Rule::unique(User::class),
-                    ])
-                    ->validationMessages([
-                        'regex' => 'Dominio @sigedor.com requerido'
-                    ])
-                    ->autocomplete('email'),
                 TextInput::make('name')
                     ->label('Nombre')
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('email')
+                    ->label('Correo Electrónico')
+                    ->email()
                     ->required()
                     ->maxLength(255),
                 TextInput::make('password')
@@ -111,6 +102,7 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->query(User::query()->with('roles')->limit(50))
             ->columns([
                 TextColumn::make('name')
                     ->label('Nombre')
@@ -227,7 +219,8 @@ class UserResource extends Resource
                     Tables\Actions\DeleteBulkAction::make()
                         ->visible(fn () => auth()->user()->hasRole('admin')),
                 ]),
-            ]);
+            ])
+            ->defaultSort('id', 'desc');
     }
 
     public static function getPages(): array

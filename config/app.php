@@ -149,6 +149,7 @@ return [
         Spatie\Backup\BackupServiceProvider::class,
         App\Providers\Filament\AdminPanelProvider::class,
         App\Providers\Filament\DashboardPanelProvider::class,
+        Illuminate\Hashing\HashServiceProvider::class,
 
     ],
 
