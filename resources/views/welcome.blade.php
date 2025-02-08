@@ -50,10 +50,10 @@
                         @if (\Illuminate\Support\Facades\Route::has('login'))
                             <div class="space-x-4">
                                 @auth
-                                    <a href="{{ url('/dashboard') }}"
+                                    <a href="{{ url('/admin') }}"
                                        class="text-sm text-slate-300 hover:text-white transition">Escritorio</a>
                                 @else
-                                    <a href="{{ url('/dashboard/login') }}"
+                                    <a href="{{ url('/admin/login') }}"
                                        class="text-sm text-slate-300 hover:text-white transition">Iniciar Sesión</a>
                                    @endauth
                                </div>
@@ -80,13 +80,13 @@
                             </p>
                             <div class="flex space-x-4">
                                 @auth
-                                    <a href="{{ url('/dashboard') }}"
+                                    <a href="{{ url('/admin') }}"
                                        class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg
                                               font-medium transition-all shadow-lg hover:shadow-blue-500/25">
                                         Escritorio
                                     </a>
                                 @else
-                                    <a href="{{ url('/dashboard/login') }}"
+                                    <a href="{{ url('/admin/login') }}"
                                        class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg
                                               font-medium transition-all shadow-lg hover:shadow-blue-500/25">
                                         Comenzar

@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\AreaOption;
-use App\Models\Site;
 
 class AreaOptionSeeder extends Seeder
 {
@@ -14,6 +13,8 @@ class AreaOptionSeeder extends Seeder
      */
     public function run(): void
     {
-        AreaOption::create(['name' => 'Area Option 1']);
+        if (! AreaOption::where('name', 'Area Option 1')->exists()) {
+            AreaOption::create(['name' => 'Area Option 1']);
+        }
     }
 }

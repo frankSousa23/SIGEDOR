@@ -34,6 +34,7 @@ use App\Models\Teacher;
 use App\Enums\Role as RoleEnum;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
 
 class UserResource extends Resource
 {
@@ -61,9 +62,17 @@ class UserResource extends Resource
                 TextInput::make('password')
                     ->label('Contraseña')
                     ->password()
-                    ->required()
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->same('passwordConfirmation')
+                    ->required(fn ($livewire) => ($livewire instanceof Pages\CreateUser))
                     ->minLength(8)
-                    ->visibleOn('create'),
+                    ->maxLength(255),
+                TextInput::make('passwordConfirmation')
+                    ->password()
+                    ->label('Confirmar Contraseña')
+                    ->minLength(8)
+                    ->maxLength(255)
+                    ->dehydrated(false),
                 Section::make('Asignación de Sede y Área')
                     ->schema([
                         Select::make('site_option_id')
@@ -78,14 +87,10 @@ class UserResource extends Resource
                     ]),
                 Section::make('Asignación de Rol')
                     ->schema([
-                        Select::make('role')
-                            ->label('Rol')
-                            ->options([
-                                RoleEnum::ADMIN->value        => 'Administrador',
-                                RoleEnum::AREA_MANAGER->value  => 'Jefe de Área',
-                                RoleEnum::TEACHER->value       => 'Docente',
-                            ])
-                            ->required(),
+                        Select::make('roles')
+                            ->multiple()
+                            ->relationship('roles', 'name')
+                            ->options(Role::all()->pluck('name', 'id')),
                     ]),
                 Section::make('Estado del Usuario')
                     ->schema([
@@ -167,15 +172,12 @@ class UserResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->visible(fn (User $record) =>
-                        auth()->user()->hasRole('admin') ||
-                        auth()->id() === $record->id
+                        auth()->user()->can('update', $record)
                     ),
 
                 Tables\Actions\DeleteAction::make()
                     ->visible(fn (User $record) =>
-                        auth()->user()->hasRole('admin') &&
-                        !$record->hasRole('admin') &&
-                        auth()->id() !== $record->id
+                        auth()->user()->can('delete', $record)
                     ),
 
                 Action::make('approve')
@@ -183,7 +185,7 @@ class UserResource extends Resource
                     ->icon('heroicon-o-check')
                     ->color('success')
                     ->visible(fn (User $record) =>
-                        auth()->user()->hasRole('admin') &&
+                        auth()->user()->can('update', $record) &&
                         !$record->is_approved &&
                         !$record->hasRole('admin') &&
                         auth()->id() !== $record->id
@@ -195,7 +197,7 @@ class UserResource extends Resource
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
                     ->visible(fn (User $record) =>
-                        auth()->user()->hasRole('admin') &&
+                        auth()->user()->can('update', $record) &&
                         $record->is_active &&
                         !$record->hasRole('admin') &&
                         auth()->id() !== $record->id
@@ -213,11 +215,18 @@ class UserResource extends Resource
                             logger()->error("Error creando Teacher: " . $th->getMessage());
                         }
                     }),
+
+                Action::make('revokeRole')
+                    ->label('Revoke Role')
+                    ->requiresConfirmation()
+                    ->action(function (User $record) {
+                        $record->roles()->detach();
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->visible(fn () => auth()->user()->hasRole('admin')),
+                        ->visible(fn () => auth()->user()->can('deleteAny', User::class)),
                 ]),
             ])
             ->defaultSort('id', 'desc');
@@ -249,22 +258,22 @@ class UserResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return auth()->user()->hasRole('admin');
+        return auth()->user()->can('viewAny', User::class);
     }
 
     public static function canCreate(): bool
     {
-        return auth()->user()->hasRole('admin');
+        return auth()->user()->can('create', User::class);
     }
 
-    public static function canEdit($record): bool
+    public static function canEdit(Model $record): bool
     {
-        return auth()->user()->hasRole('admin');
+        return auth()->user()->can('update', $record);
     }
 
-    public static function canDelete($record): bool
+    public static function canDelete(Model $record): bool
     {
-        return auth()->user()->hasRole('admin');
+        return auth()->user()->can('delete', $record);
     }
 
     protected function handleRecordCreation(array $data): User

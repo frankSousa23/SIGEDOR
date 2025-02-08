@@ -5,6 +5,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>419 - Sesión Expirada | SIGEDOR</title>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+        <!-- Styles -->
+        <!--  AQUI HARDCODEAMOS LA RUTA DEL CSS -->
+        <link rel="stylesheet" href="/build/assets/app-CKN0GvIp.css">
+        <style>
+            body {
+                font-family: 'figtree', sans-serif;
+            }
+        </style>
     </head>
     <body class="antialiased min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('images/FondoUnerg.jpg') }}');">
         <div class="relative min-h-screen bg-gradient-to-br from-slate-900/90 to-blue-900/80">
@@ -16,7 +29,7 @@
                             SIGEDOR
                         </a>
                     </div>
-                    <a href="{{ url('/') }}" 
+                    <a href="{{ url('/') }}"
                        class="text-sm text-slate-300 hover:text-white transition">
                         Volver al Inicio
                     </a>
@@ -25,8 +38,8 @@
                 <!-- Error Content -->
                 <div class="flex flex-col items-center justify-center min-h-[80vh] text-center">
                     <div class="bg-slate-800/50 backdrop-blur-sm rounded-xl p-8 shadow-xl max-w-2xl">
-                        <img src="{{ asset('images/LogoUnerg.png') }}" 
-                             alt="Logo UNERG" 
+                        <img src="{{ asset('images/LogoUnerg.png') }}"
+                             alt="Logo UNERG"
                              class="w-32 h-auto mx-auto mb-6">
                         <h1 class="text-6xl font-bold text-white mb-4">419</h1>
                         <h2 class="text-2xl font-semibold text-blue-400 mb-4">Sesión Expirada</h2>
@@ -34,8 +47,8 @@
                             Tu sesión ha expirado por inactividad. Por favor, vuelve a iniciar sesión
                             para continuar trabajando en el sistema.
                         </p>
-                        <a href="{{ url('/login') }}" 
-                           class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg 
+                        <a href="{{ url('/login') }}"
+                           class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg
                                   font-medium transition-all shadow-lg hover:shadow-blue-500/25">
                             Iniciar Sesión
                         </a>

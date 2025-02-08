@@ -1,11 +1,11 @@
 <?php
 
-use App\Filament\Pages\Auth\Login;
+use Filament\Pages\Auth\Login;
 
 return [
     'pages' => [
         'auth' => [
-            'login' => \Filament\Pages\Auth\Login::class,
+            'login' => Login::class,
         ],
     ],
     // ... otras configuraciones del panel

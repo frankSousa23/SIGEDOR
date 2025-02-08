@@ -45,7 +45,7 @@ class UserSeeder extends Seeder
             $admin = User::create([
                 'name' => 'Admin',
                 'email' => 'admin@example.com',
-                'password' => Hash::make('password'),
+                'password' => 'password',
             ]);
             $admin->assignRole($adminRole);
         }
@@ -72,7 +72,7 @@ class UserSeeder extends Seeder
 
         // Limpieza de cachés Spatie
         Cache::forget('spatie.permission.cache');
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app('Spatie\Permission\PermissionRegistrar')->forgetCachedPermissions();
 
         // [Línea comentada] Comentar autenticación automática para evitar sesiones persistentes inesperadas
         // Auth::login($user);

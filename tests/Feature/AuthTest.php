@@ -15,6 +15,12 @@ class AuthTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        ini_set('memory_limit', '2048M'); // Aumentar el límite de memoria para las pruebas
+    }
+
     /*public function setUp(): void
     {
         parent::setUp();
@@ -79,6 +85,65 @@ class AuthTest extends TestCase
         $response->assertSessionHasErrors();
 
         // Asegura que el usuario no quedó autenticado
+        $this->assertGuest();
+    }
+
+    public function test_login_redirects_to_filament_login()
+    {
+        $response = $this->get('/login');
+
+        $response->assertRedirect('/admin/login');
+    }
+
+    public function test_admin_can_login()
+    {
+        $user = User::factory()->create([
+            'email' => 'admin@example.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        $response = $this->post('/admin/login', [
+            'email' => 'admin@example.com',
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticatedAs($user);
+        $response->assertRedirect('/dashboard');
+    }
+
+    public function test_login_with_incorrect_credentials()
+    {
+        $response = $this->post('/admin/login', [
+            'email' => 'admin@example.com',
+            'password' => 'wrongpassword',
+        ]);
+
+        $response->assertSessionHasErrors('email');
+    }
+
+    public function test_authenticated_user_can_access_dashboard()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get('/dashboard');
+
+        $response->assertOk(); // O 200 si la vista se carga correctamente
+    }
+
+    public function test_unauthenticated_user_is_redirected_to_login()
+    {
+        $response = $this->get('/dashboard');
+
+        $response->assertRedirect('/admin/login');
+    }
+
+    public function test_logout_redirects_to_home()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post('/logout');
+
+        $response->assertRedirect('/');
         $this->assertGuest();
     }
 }

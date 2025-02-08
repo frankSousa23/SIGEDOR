@@ -74,6 +74,18 @@ class AppServiceProvider extends ServiceProvider
             return $user->hasRole('Admin') ? true : null; // Línea clave para validar acceso total a Admin
         });
 
+        Gate::define('admin-access', function ($user) {
+            return $user->hasRole('admin');
+        });
+
+        Gate::define('area_manager-access', function ($user) {
+            return $user->hasRole('area_manager');
+        });
+
+        Gate::define('teacher-access', function ($user) {
+            return $user->hasRole('teacher');
+        });
+
         // Agrega este callback para resolver la fábrica de vistas para la paginación
         AbstractPaginator::viewFactoryResolver(function () {
             return app('view'); // <-- Retorna la instancia del componente "view" del contenedor

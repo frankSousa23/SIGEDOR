@@ -26,18 +26,29 @@ use App\Filament\Widgets\TasksOverview;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Enums\RecordActions;
 use Filament\Tables\Enums\ActionsPosition;
+use Filament\Pages;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
+use App\Filament\Pages\Dashboard;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        return $panel
+        $panel
+            ->default()
             ->id('admin')
             ->path('admin')
             ->login()
-            ->databaseTransactions()
+            ->registration()
+            ->passwordReset()
+            ->emailVerification()
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => Color::Rose,
+                'secondary' => Color::Gray,
+                'tertiary' => Color::Emerald,
             ])
             ->navigationGroups([
                 NavigationGroup::make()
@@ -58,8 +69,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->maxContentWidth('full')
             ->widgets([
-                StatsOverview::class,
-                TasksOverview::class,
+                //Widgets\AccountWidget::class,
+                //Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -69,18 +80,22 @@ class AdminPanelProvider extends PanelProvider
                 ShareErrorsFromSession::class,
                 VerifyCsrfToken::class,
                 SubstituteBindings::class,
+                DisableBladeIconComponents::class,
+                DispatchServingFilamentEvent::class,
+                HandlePrecognitiveRequests::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
             ])
             ->authGuard('web')
-            ->passwordReset()
-            ->emailVerification()
             ->navigation(fn () => Navigation::build())
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->databaseNotifications()
             ->databaseNotificationsPolling('30s')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages');
+            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->databaseTransactions();
+
+        return $panel;
     }
 }

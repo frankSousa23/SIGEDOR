@@ -150,6 +150,7 @@ return [
         App\Providers\Filament\AdminPanelProvider::class,
         App\Providers\Filament\DashboardPanelProvider::class,
         Illuminate\Hashing\HashServiceProvider::class,
+        // App\Providers\TelescopeServiceProvider::class,
 
     ],
 
@@ -160,6 +161,7 @@ return [
         'DB' => Illuminate\Support\Facades\DB::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'Session' => Illuminate\Support\Facades\Session::class,
+        'Route' => Illuminate\Support\Facades\Route::class,
     ],
 
 ];

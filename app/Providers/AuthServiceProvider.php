@@ -49,5 +49,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('create teachers', [TeacherPolicy::class, 'create']);
         Gate::define('edit teachers', [TeacherPolicy::class, 'update']);
         Gate::define('delete teachers', [TeacherPolicy::class, 'delete']);
+
+        Gate::define('access-admin-panel', function (User $user) {
+            return $user->hasRole('admin');
+        });
     }
 }

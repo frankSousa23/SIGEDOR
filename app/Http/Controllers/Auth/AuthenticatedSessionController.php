@@ -3,40 +3,54 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Http\FormRequest;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\View\View;
+use Filament\Http\Livewire\Auth\Login as FilamentLogin;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
 {
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create()
     {
-        return view('auth.login');
+        return redirect('/admin/login');
     }
 
-    public function store(Request $request)
+    /**
+     * Handle an incoming authentication request.
+     */
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+            'email' => 'required|string|email',
+            'password' => 'required|string',
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/admin');
+            return redirect()->intended(Route::has('admin.home') ? route('admin.home') : '/admin');
         }
 
-        return back()->withErrors([
-            'email' => 'Las credenciales proporcionadas no son correctas.',
-        ])->onlyInput('email');
+        throw ValidationException::withMessages([
+            'email' => __('auth.failed'),
+        ]);
     }
 
-    public function destroy(Request $request)
+    /**
+     * Destroy an authenticated session.
+     */
+    public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
 

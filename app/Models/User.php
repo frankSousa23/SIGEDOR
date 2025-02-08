@@ -21,7 +21,6 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasTenants;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements FilamentUser, HasTenants
 {
@@ -60,6 +59,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         'is_temporary' => 'boolean',
         'role.name' => 'string',
         'site.name' => 'string',
+        'password' => 'hashed',
     ];
 
     // Relationships
@@ -127,7 +127,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
 
     public function canAccessFilament(): bool
     {
-        return $this->is_active && $this->is_approved;
+        return true;
     }
 
     public function isAdmin(): bool
@@ -204,16 +204,21 @@ class User extends Authenticatable implements FilamentUser, HasTenants
 
     public function getTenants(Panel $panel): array
     {
-        return $this->siteOptions()->get()->toArray();
+        return [];
     }
 
-    public function canAccessTenant(Model $tenant): bool
+    public function canAccessTenant(object $tenant): bool
     {
-        return $this->siteOptions->contains($tenant);
+        return true;
     }
 
     public function getRateLimiterKey(): string
     {
         return 'global';
+    }
+
+    public function getRoleNamesAttribute()
+    {
+        return $this->getRoleNames();
     }
 }

@@ -8,8 +8,17 @@ return [
         'base' => ['web'],
         'auth' => ['auth'],
     ],
-   'auth' => [
+    'auth' => [
         'guard' => 'web',
+        'pages' => [
+            'login' => \Filament\Http\Livewire\Auth\Login::class,
+        ],
+        'middleware' => [
+            'base' => [
+                'auth',
+                'filament.auth',
+            ],
+        ],
     ],
     'layout' => [
         'assets' => [
@@ -26,14 +35,11 @@ return [
         'dashboard' => [
             'id' => 'dashboard',
             'path' => 'dashboard',
+            'login' => \Filament\Http\Livewire\Auth\Login::class,
+            'auth_guard' => 'web',
             'middleware' => [
                 'web',
-                \App\Http\Middleware\Authenticate::class,
-                \Illuminate\Session\Middleware\AuthenticateSession::class,
-                \Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance::class,
-                \Illuminate\Pipeline\Pipeline::class,
-                \Illuminate\Routing\Middleware\SubstituteBindings::class,
-                \Illuminate\Auth\Middleware\Authorize::class,
+                AuthenticateSession::class,
             ],
             'resources' => [
                 // ...
@@ -50,18 +56,6 @@ return [
         'namespace' => 'App\\Filament\\Widgets',
     ],
     'livewire' => [],
-     'auth' => [
-        'guard' => 'web',
-        'pages' => [
-            'login' => \App\Http\Controllers\Auth\AuthenticatedSessionController::class,
-        ],
-        'middleware' => [
-            'base' => [
-                'auth',
-                'filament.auth',
-            ],
-        ],
-    ],
     'pages' => [
         'namespace' => 'App\\Filament\\Pages',
     ],
