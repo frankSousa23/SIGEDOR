@@ -5,7 +5,8 @@ namespace App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
-use App\Models\Site;
+use App\Models\Sede;
+use Spatie\Permission\Models\Role;
 
 class CreateUser extends CreateRecord
 {
@@ -13,9 +14,27 @@ class CreateUser extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        if (!Site::where('id', $data['site_id'])->exists()) {
-            throw new \Exception('El site seleccionado no existe');
+        $data['sede_id'] = (int) $data['sede_id']; // Forzar tipo correcto
+
+    // Validación adicional
+        if (!Sede::where('id', $data['sede_id'])->exists()) {
+        throw new \Exception('La sede seleccionada no existe');
         }
-        return $data;
+
+    return $data;
+    }
+
+    protected function afterCreate(): void
+    {
+    // Asignación de rol por nombre usando ID seleccionado
+        if (isset($this->data['roles'])) {
+            $role = Role::findById($this->data['roles']);
+            $this->record->assignRole($role->name);
+        }
+
+    // Sincronización de área única
+        if (isset($this->data['areas'])) {
+            $this->record->areas()->sync([$this->data['areas']]);
+        }
     }
 }

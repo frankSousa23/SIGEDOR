@@ -9,9 +9,9 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(User $user): bool
+    public function viewAny(User $user)
     {
-        return $user->hasRole('admin');
+    return $user->hasAnyRole(['admin', 'area_manager']);
     }
 
     public function view(User $user, User $model): bool
@@ -28,13 +28,13 @@ class UserPolicy
         return $user->hasRole('admin');
     }
 
-    public function update(User $user, User $model): bool
+    public function update(User $user, User $model)
     {
-        if ($user->hasRole('admin')) {
-            return true;
-        }
+        if ($user->isAdmin()) return true;
 
-        return $user->id === $model->id;
+        return $user->isAreaManager() &&
+           $user->sede_id === $model->sede_id &&
+           $user->areas()->whereIn('id', $model->areas->pluck('id'))->exists();
     }
 
     public function delete(User $user, User $model): bool

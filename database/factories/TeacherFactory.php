@@ -24,7 +24,7 @@ class TeacherFactory extends Factory
 
         return [
             'user_id' => $user->id,
-            'site_id' => Site::inRandomOrder()->first()->id ?? Site::factory()->create()->id,
+            'sede_id' => Site::inRandomOrder()->first()->id ?? Site::factory()->create()->id,
             'category_id' => Category::inRandomOrder()->first()->id ?? Category::factory()->create()->id,
             'dedication_id' => Dedication::inRandomOrder()->first()->id ?? Dedication::factory()->create()->id,
             'name' => $this->faker->firstName(),

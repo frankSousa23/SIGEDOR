@@ -5,6 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\Site;
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -19,6 +20,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            'sede_id' => \App\Models\Sede::factory(),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
@@ -26,7 +28,6 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'is_active' => true,
             'is_approved' => true,
-            'site_id' => Site::factory(),
             // 'cdi' => $this->faker->unique()->randomNumber(8, true),
         ];
     }
@@ -51,5 +52,14 @@ class UserFactory extends Factory
                 'role' => 'area_manager',
             ];
         });
+    }
+
+    public function configure()
+    {
+    return $this->afterCreating(function (User $user) {
+        $user->areas()->attach(
+            \App\Models\Area::inRandomOrder()->take(2)->pluck('id')
+        );
+    });
     }
 }

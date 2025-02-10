@@ -21,10 +21,13 @@ use Filament\Forms\Components\Grid;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\EndsWith;
 use App\Models\Site;
+use App\Models\Sede;
+use App\Models\Area;
 use App\Filament\Resources\SiteResource;
 use Spatie\Permission\Models\Role;
 use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\ToggleColumn;
+
 
 class UserResource extends Resource
 {
@@ -62,28 +65,51 @@ class UserResource extends Resource
                             ->required()
                             ->minLength(8),
                     ]),
-                Section::make('Asignación de Sede')
-                    ->schema([
-                        Select::make('site_id')
+                Section::make('Asignación de Sede')->schema([
+                        Select::make('sede_id')
                             ->label('Sede')
-                            ->options(Site::SITES)
+                            ->relationship('sede', 'nombre')
+                            ->required()
+                            ->native(false)
                             ->searchable()
-                            ->createOptionForm([
-                                TextInput::make('name')
-                                    ->label('Nombre de la Sede')
-                                    ->required()
-                                    ->maxLength(255),
-                            ])
-                            ->required(),
+                            ->preload()
+                            ->columnSpanFull(),
                     ]),
+
+                Section::make('Asignación de Área')->schema([
+                        Select::make('areas')
+                            ->relationship('areas', 'nombre')
+                            ->label('Área')
+                            ->required()
+                            ->native(false)
+                            ->searchable()
+                            ->preload()
+                            ->multiple(false) // Selección simple
+                            ->columnSpanFull(),
+                        ]),
+
                 Section::make('Asignación de Rol')
                     ->schema([
                         Select::make('roles')
                             ->label('Rol')
                             ->relationship('roles', 'name')
-                            ->options(Role::all()->pluck('name', 'id'))
-                            ->required(),
-                    ]),
+                            ->options(Role::all()->mapWithKeys(function ($role) {
+                    return [
+                        $role->id => match ($role->name) {
+                            'admin' => 'Administrador',
+                            'area_manager' => 'Jefe de Área',
+                            'teacher' => 'Docente',
+                    default => $role->name
+                            }
+                            ];
+                        }))
+                            ->required()
+                            ->native(false)
+                            ->searchable()
+                            ->preload()
+                            ->columnSpanFull(),
+                        ]),
+
                 Section::make('Estado del Usuario')
                     ->schema([
                         Toggle::make('is_active')
@@ -106,7 +132,7 @@ class UserResource extends Resource
                 TextColumn::make('email')
                     ->label('Correo Electrónico')
                     ->searchable(),
-                TextColumn::make('site.name')
+                TextColumn::make('sede.nombre')
                     ->label('Sede')
                     ->searchable(),
                 TextColumn::make('roles.name')
@@ -127,11 +153,12 @@ class UserResource extends Resource
                     ])
                     ->label('Rol'),
 
-                SelectFilter::make('site')
-                    ->relationship('site', 'name')
+                SelectFilter::make('sede_id')
+                    ->relationship('sede', 'nombre')
                     ->label('Sede')
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->native(false),
 
                 Tables\Filters\TernaryFilter::make('is_approved')
                     ->label('Aprobado')
@@ -209,9 +236,9 @@ class UserResource extends Resource
         }
 
         if (auth()->user()->hasRole('area_manager')) {
-            return $query->whereHas('roles', function ($query) {
-                $query->where('name', 'teacher');
-            })->where('site_id', auth()->user()->site_id);
+            return $query->whereHas('roles', fn($q) => $q->where('name', 'teacher'))
+                        ->where('sede_id', auth()->user()->sede_id)
+                        ->whereHas('areas', fn($q) => $q->whereIn('id', auth()->user()->areas->pluck('id')));
         }
 
         return $query->where('id', auth()->id());

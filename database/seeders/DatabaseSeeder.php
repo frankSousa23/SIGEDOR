@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Sede;
+use App\Models\Area;
+use App\Models\Programa;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,12 +23,11 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            RoleSeeder::class,       // 1. Roles primero
-            SiteSeeder::class,       // 2. Sites (usar constantes)
-            UserSeeder::class,       // 3. Usuarios con roles
-            TeacherSeeder::class,    // 4. Teachers (requiere users)
-            CategorySeeder::class,   // 5. Categories
-            DedicationSeeder::class, // 6. Dedications
+            RoleSeeder::class,
+            SedeSeeder::class,
+            AreaSeeder::class,
+            ProgramaSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

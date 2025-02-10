@@ -24,16 +24,17 @@ return new class extends Migration
             $table->string('asignaturePromotion')->nullable();
 
             // Relaciones (DEFINIDAS INICIALMENTE SIN CLAVES FORÁNEAS DENTRO DE SCHEMA::CREATE)
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreignId('site_id')->nullable()->constrained()->onDelete('set null');
+            $table->unsignedBigInteger('user_id')->nullable()->constrained()->cascadeOnDelete()->unique();
+            $table->foreignId('sede_id')->constrained('sedes')->cascadeOnDelete()->after('email');
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('dedication_id')->nullable();
 
             // Control de estado
-            $table->boolean('has_site')->default(false)->comment('Indica si ya tiene sede asignada');
+            $table->boolean('has_site')->default(false)->comment('Indica si ya tiene sede asignada')->change();
             $table->boolean('has_category')->default(false)->comment('Indica si ya tiene categoría asignada');
             $table->boolean('has_dedication')->default(false)->comment('Indica si ya tiene dedicación asignada');
             $table->boolean('is_completed')->default(false)->comment('Indica si todas las relaciones requeridas están completas');
+            $table->string('especialidad')->nullable(false);
             $table->timestamps();
             $table->softDeletes();
 

@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TeacherResource\Pages;
 use App\Filament\Resources\TeacherResource\RelationManagers;
 use App\Models\Teacher;
+use App\Models\Sede;
+use App\Models\Area;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -20,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Carbon\Carbon;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role;
 
 class TeacherResource extends Resource
 {
@@ -46,22 +49,11 @@ class TeacherResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $query = parent::getEloquentQuery();
-
-        if (Auth::check() && Auth::user()->hasRole('admin')) {
-            return $query;
-        }
-
-        if (Auth::user()->hasRole('area_manager')) {
-            return $query->where('site_id', Auth::user()->site_id)
-                        ->where('area', Auth::user()->area);
-        }
-
-        if (Auth::user()->hasRole('teacher')) {
-            return $query->where('id', Auth::user()->teacher_id);
-        }
-
-        return $query->where('id', null);
+        return parent::getEloquentQuery()
+            ->when(Auth::user()->hasRole('area_manager'), fn ($query) =>
+                $query->whereHas('sede', fn($q) => $q->where('id', Auth::user()->sede_id))
+            )
+            ->with(['sede', 'areas', 'user']);
     }
 
     public static function form(Form $form): Form
@@ -122,33 +114,22 @@ class TeacherResource extends Resource
                     ->label('Asignatura de Promoción')
                     ->maxLength(255),
 
-                // Relaciones principales
-                Forms\Components\Select::make('site_id')
-                    ->relationship('site', 'name')
-                    ->label('Sede')
+                    Forms\Components\Select::make('sede_id')
+                    ->relationship('sede', 'nombre')
                     ->required()
+                    ->searchable(),
+
+                Forms\Components\Select::make('areas')
+                    ->relationship('areas', 'nombre')
+                    ->multiple()
                     ->preload()
-                    ->searchable()
-                    ->options(\App\Models\Site::SITES)
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255)
-                            ->unique('sites', 'name')
-                            ->validationMessages([
-                                'required' => 'Debe seleccionar una sede',
-                            ]),
-                    ])
-                    ->createOptionUsing(function (array $data) {
-                        return \App\Models\Site::create([
-                            'name' => $data['name'],
-                        ])->id;
-                    })
-                    ->createOptionAction(function (Forms\Components\Actions\Action $action) {
-                        return $action
-                            ->modalHeading('Crear nueva sede')
-                            ->modalButton('Agregar sede');
-                    }),
+                    ->required()
+                    ->searchable(),
+
+                Forms\Components\Select::make('user_id')
+                    ->relationship('user', 'name')
+                    ->required()
+                    ->searchable(),
 
                 Forms\Components\Select::make('category_id')
                     ->relationship('category', 'current_category')
@@ -258,15 +239,20 @@ class TeacherResource extends Resource
                     ->label('Fecha de Promoción')
                     ->date('d/m/Y')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('site.name')
+                    Tables\Columns\TextColumn::make('site.name')
                     ->label('Sede')
-                    ->sortable(),
+                    ->sortable()
+                    ->default(fn ($record) => $record->sede->nombre ?? 'N/A'),
+
                 Tables\Columns\TextColumn::make('category.current_category')
                     ->label('Categoría')
-                    ->sortable(),
+                    ->sortable()
+                    ->default('Sin categoría'),
+
                 Tables\Columns\TextColumn::make('dedication.name')
                     ->label('Dedicación')
-                    ->sortable(),
+                    ->sortable()
+                    ->default('Sin dedicación'),
                 Tables\Columns\IconColumn::make('is_completed')
                     ->label('Completado')
                     ->boolean(),
@@ -322,6 +308,7 @@ class TeacherResource extends Resource
             //
         ];
     }
+
 
     public static function getPages(): array
     {

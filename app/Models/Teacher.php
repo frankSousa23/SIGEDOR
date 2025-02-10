@@ -12,6 +12,9 @@ use App\Models\Dedication;
 use App\Models\PermissionTeacher;
 use App\Models\Report;
 use App\Models\User;
+use App\Models\Sede;
+use App\Models\Area;
+use App\Models\Programa;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -31,7 +34,7 @@ class Teacher extends Model
         'datePromotion',
         'asignaturePromotion',
         'user_id',
-        'site_id',
+        'sede_id',
         'category_id',
         'dedication_id',
         'has_site',
@@ -44,6 +47,7 @@ class Teacher extends Model
     protected $casts = [
         'birthDate' => 'date',
         'datePromotion' => 'date',
+        'sede_id' => 'integer',
         'has_site' => 'boolean',
         'has_category' => 'boolean',
         'has_dedication' => 'boolean',
@@ -51,15 +55,31 @@ class Teacher extends Model
         'is_completed' => 'boolean'
     ];
 
-    public function user()
+    // Relación con Sede
+    public function sede(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Sede::class, 'sede_id');
     }
 
-    public function site()
+    // Relación many-to-many con Area
+    public function areas(): BelongsToMany
     {
-        return $this->belongsTo(Site::class);
+        return $this->belongsToMany(Area::class, 'area_teacher')->withTimestamps();
     }
+
+    // Relación con User
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+
+    public function sites()
+    {
+        return $this->belongsToMany(Site::class)
+            ->withTimestamps();
+    }
+
 
     public function category()
     {
@@ -81,6 +101,11 @@ class Teacher extends Model
         return $this->hasMany(PermissionTeacher::class);
     }
 
+    public function programas()
+    {
+        return $this->belongsToMany(Programa::class);
+    }
+
     public function getFullNameAttribute(): string
     {
         return "{$this->name} {$this->surName}";
@@ -91,8 +116,5 @@ class Teacher extends Model
         return $query->where('is_completed', true);
     }
 
-    public function sites()
-    {
-        return $this->belongsToMany(Site::class, 'site_teacher');
-    }
+
 }

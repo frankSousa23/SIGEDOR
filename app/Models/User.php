@@ -8,7 +8,8 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Site;
+use App\Models\Sede;
+use App\Models\Areas;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\Hash;
 
@@ -27,7 +28,7 @@ class User extends Authenticatable
         'password',
         'is_active',
         'is_approved',
-        'site_id',
+        'sede_id',
     ];
 
     /**
@@ -52,9 +53,14 @@ class User extends Authenticatable
     ];
 
     // Relationships
-    public function site()
+    public function sede()
     {
-        return $this->belongsTo(Site::class);
+        return $this->belongsTo(Sede::class);
+    }
+
+    public function areas()
+    {
+        return $this->belongsToMany(Area::class);
     }
 
     public function teacher()
@@ -109,9 +115,11 @@ class User extends Authenticatable
         return $this->hasRole('admin');
     }
 
-    public function isAreaManager(): bool
+    public function isAreaManager()
     {
-        return $this->hasRole('area_manager');
+    return $this->hasRole('area_manager') &&
+           $this->sede_id &&
+           $this->areas()->exists();
     }
 
     public function isTeacher(): bool
@@ -158,4 +166,18 @@ class User extends Authenticatable
             $user->password = Hash::make($user->password);
         });
     }
+
+    public function scopeForAreaManager($query)
+    {
+        return $query->whereHas('roles', function($q) {
+                $q->where('name', 'area_manager');
+            })
+            ->when(auth()->user()->isAreaManager(), function($q) {
+                $q->where('site_id', auth()->user()->site_id)
+                ->whereHas('areas', function($q) {
+                    $q->whereIn('id', auth()->user()->areas->pluck('id'));
+                });
+            });
+    }
+
 }

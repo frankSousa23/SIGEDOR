@@ -10,13 +10,12 @@ return new class extends Migration
     {
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique()->index();
-            $table->string('area')->index();
-            $table->string('program')->nullable();
+            $table->foreignId('sede_id')->constrained('sedes')->onDelete('cascade');
             $table->string('uc')->nullable();
             $table->integer('weekHours')->nullable();
             $table->integer('sections')->nullable();
-            $table->text('info')->nullable();
+            $table->text('info')->nullable(); // Relación con sedes constantes
+            $table->text('metadata'); // Datos adicionales
             // Control de estado
             $table->boolean('is_active')->default(true);
             $table->integer('teachers_count')->default(0);

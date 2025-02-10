@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->foreignId('sede_id')->constrained('sedes')->onDelete('cascade')->nullable(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('is_active')->default(false);
@@ -22,11 +23,8 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
-            $table->boolean('is_example')->default(false);  // Añadir campo is_example
+            $table->boolean('is_example')->default(false);
 
-            // site_id se añadirá en una migración posterior
-            $table->foreignId('site_id')->nullable()->constrained()->onDelete('set null');
-            $table->index('site_id');
         });
     }
 

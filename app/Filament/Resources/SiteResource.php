@@ -33,46 +33,47 @@ class SiteResource extends Resource
                         Select::make('teacher_id')
                             ->label('Docente')
                             ->options(function () {
-                                return Teacher::whereDoesntHave('sites')->pluck('cdi', 'id');
-                            })
+                         return Teacher::whereDoesntHave('sites')->pluck('cdi', 'id');
+                        })
                             ->searchable()
                             ->required()
                             ->validationMessages([
-                                'required' => 'Debe seleccionar un docente',
-                            ]),
+                        'required' => 'Debe seleccionar un docente',
+                        ])
+                            ->afterStateUpdated(function ($state, Forms\Set $set) {
+                                $teacher = Teacher::find($state);
+                            if ($teacher) {
+                                $set('sede_id', $teacher->sede_id);
+                            }
+                        }),
                     ]),
 
-                Forms\Components\Select::make('name')
-                    ->label('Nombre de la Sede')
-                    ->options(Site::SITES)
+                Forms\Components\Select::make('sede_id')
+                    ->label('Sede')
+                    ->relationship('sede', 'nombre')
                     ->required()
-                    ->searchable()
-                    ->preload()
-                    ->live()
                     ->native(false)
                     ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
+                        Forms\Components\TextInput::make('nombre')
                             ->required()
                             ->maxLength(255)
-                            ->unique('sites', 'name')
+                            ->unique('sedes', 'nombre')
                     ]),
 
                     Forms\Components\Select::make('area')
                     ->label('Área')
-                    ->options(Site::AREAS)
+                    ->relationship('areas', 'nombre')
                     ->required()
                     ->searchable()
                     ->preload()
                     ->live()
                     ->native(false),
 
-                Forms\Components\Select::make('program')
-                    ->label('Programa')
-                    ->options(Site::PROGRAMAS)
+                Forms\Components\Select::make('programas')
+                    ->label('Programas')
+                    ->relationship('programas', 'nombre')
+                    ->multiple()
                     ->required()
-                    ->searchable()
-                    ->preload()
-                    ->live()
                     ->native(false),
 
                 Forms\Components\TextInput::make('uc')
@@ -111,10 +112,10 @@ class SiteResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Sede')
-                    ->searchable()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->default('Sin asignar')
+                    ->sortable()
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('teachers.cdi')
                     ->label('Docentes Asignados')
@@ -126,9 +127,11 @@ class SiteResource extends Resource
                     ->label('Área')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('program')
+                Tables\Columns\TextColumn::make('programas.nombre')
                     ->label('Programa')
-                    ->searchable(),
+                    ->searchable()
+                    ->default('Sin programas')
+                    ->listWithLineBreaks(),
 
                 Tables\Columns\TextColumn::make('uc')
                     ->label('Unidad Curricular')
