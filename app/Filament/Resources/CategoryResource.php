@@ -19,6 +19,8 @@ use Filament\Tables\Columns\TextColumn;
 use App\Models\Teacher;
 use Illuminate\Support\Carbon;
 use Filament\Notifications\Notification;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Collection;
 
 class CategoryResource extends Resource
 {
@@ -26,6 +28,8 @@ class CategoryResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
     protected static ?string $navigationLabel = 'Categorías';
     protected static ?string $navigationGroup = 'Asignaciones';
+    protected static ?string $modelLabel = 'Categoría';
+    protected static ?string $pluralModelLabel = 'Categorías';
     protected static ?int $navigationSort = 2;
 
     protected static function shouldEnableAutoAssistant($preTitle, $lastTitle): bool
@@ -318,9 +322,24 @@ class CategoryResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    Tables\Actions\BulkAction::make('export')
+                        ->label('Exportar a PDF')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->action(function (Collection $records) {
+                            $pdf = Pdf::loadView('pdf.teachers', [
+                                'teachers' => $records
+                            ])->setPaper('a4', 'landscape');
+
+                            return response()->streamDownload(function () use ($pdf) {
+                                echo $pdf->output();
+                            }, 'docentes_'.now()->format('Ymd_His').'.pdf');
+                        })
+                        ->requiresConfirmation()
+                    ]),
+
             ]);
     }
 

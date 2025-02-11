@@ -29,6 +29,7 @@ class User extends Authenticatable
         'is_active',
         'is_approved',
         'sede_id',
+        'area_id',
     ];
 
     /**
@@ -55,17 +56,17 @@ class User extends Authenticatable
     // Relationships
     public function sede()
     {
-        return $this->belongsTo(Sede::class);
+        return $this->belongsTo(Sede::class, 'sede_id');
     }
 
-    public function areas()
+    public function area()
     {
-        return $this->belongsToMany(Area::class);
+        return $this->belongsTo(Area::class, 'area_id');
     }
 
     public function teacher()
     {
-        return $this->hasOne(Teacher::class);
+        return $this->hasOne(Teacher::class, 'teacher_id');
     }
 
     // Scopes

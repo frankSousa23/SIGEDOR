@@ -15,6 +15,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use App\Filament\Resources\ReportResource\Pages;
 use Filament\Actions\Exports\Models\Export;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Collection;
 
 class ReportResource extends Resource
 {
@@ -22,6 +24,8 @@ class ReportResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-document-chart-bar';
     protected static ?string $navigationLabel = 'Reportes';
     protected static ?string $navigationGroup = 'Reportes';
+    protected static ?string $modelLabel = 'Reporte';
+    protected static ?string $pluralModelLabel = 'Reportes';
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
@@ -101,8 +105,8 @@ class ReportResource extends Resource
                             ->label('Correo Electrónico')
                             ->email()
                             ->maxLength(255),
-                            
-                            
+
+
                         Forms\Components\Textarea::make('info')
                             ->label('Información Adicional')
                             ->maxLength(500)
@@ -172,7 +176,24 @@ class ReportResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('export')
+                        ->label('Exportar a PDF')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->action(function (Collection $records) {
+                            $pdf = Pdf::loadView('pdf.teachers', [
+                                'teachers' => $records
+                            ])->setPaper('a4', 'landscape');
+
+                            return response()->streamDownload(function () use ($pdf) {
+                                echo $pdf->output();
+                            }, 'docentes_'.now()->format('Ymd_His').'.pdf');
+                        })
+                        ->requiresConfirmation()
+                    ]),
+
             ]);
     }
 

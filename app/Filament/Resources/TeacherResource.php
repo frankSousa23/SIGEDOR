@@ -52,9 +52,9 @@ class TeacherResource extends Resource
         return parent::getEloquentQuery()
             ->when(Auth::user()->hasRole('area_manager'), fn ($query) =>
                 $query->whereHas('sede', fn($q) => $q->where('id', Auth::user()->sede_id))
-            )
-            ->with(['sede', 'areas', 'user']);
-    }
+    );
+            // ->with(['sede', 'areas', 'user']);
+        }
 
     public static function form(Form $form): Form
     {
@@ -114,98 +114,29 @@ class TeacherResource extends Resource
                     ->label('Asignatura de Promoción')
                     ->maxLength(255),
 
-                    Forms\Components\Select::make('sede_id')
-                    ->relationship('sede', 'nombre')
-                    ->required()
-                    ->searchable(),
-
-                Forms\Components\Select::make('areas')
-                    ->relationship('areas', 'nombre')
-                    ->multiple()
-                    ->preload()
-                    ->required()
-                    ->searchable(),
-
                 Forms\Components\Select::make('user_id')
+                    ->label('Usuario')
                     ->relationship('user', 'name')
                     ->required()
-                    ->searchable(),
-
-                Forms\Components\Select::make('category_id')
-                    ->relationship('category', 'current_category')
-                    ->label('Categoría')
                     ->searchable()
                     ->preload()
-                    ->options(\App\Models\Category::CATEGORIES)
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('current_category')
-                            ->required()
-                            ->label('Nombre de la Categoría')
-                            ->maxLength(255),
-                    ]),
-
-                Forms\Components\Select::make('dedication_id')
-                    ->relationship('dedication', 'name')
-                    ->label('Dedicación')
-                    ->searchable()
-                    ->preload()
-                    ->options(\App\Models\Dedication::DEDICATIONS)
-                    ->createOptionForm([
-                        Forms\Components\Select::make('type')
-                            ->required()
-                            ->label('Tipo')
-                            ->options([
-                                'TCV' => 'Tiempo Convencional',
-                                'MT' => 'Medio Tiempo',
-                                'TC' => 'Tiempo Completo',
-                                'EX' => 'Exclusiva'
-                            ])
-                            ->searchable()
-                            ->live()
-                            ->afterStateUpdated(fn ($state, callable $set) =>
-                                $set('name', match ($state) {
-                                    'TCV' => 'Tiempo Convencional',
-                                    'MT' => 'Medio Tiempo',
-                                    'TC' => 'Tiempo Completo',
-                                    'EX' => 'Exclusiva',
-                                    default => null,
-                                })
-                            ),
-                        Forms\Components\Hidden::make('name'),
-                        Forms\Components\Select::make('hours')
-                            ->required()
-                            ->label('Horas')
-                            ->options(function (callable $get) {
-                                $type = $get('type');
-
-                                return match ($type) {
-                                    'TCV' => array_combine(
-                                        range(1, 17),
-                                        array_map(fn ($hour) => "{$hour} Horas", range(1, 17))
-                                    ),
-                                    'MT' => ['18' => '18 Horas'],
-                                    'TC' => ['30' => '30 Horas'],
-                                    'EX' => [
-                                        '35' => '35 Horas',
-                                        '36' => '36 Horas'
-                                    ],
-                                    default => [],
-                                };
-                            })
-                            ->searchable(),
-                    ])
-                    ->createOptionUsing(function (array $data) {
-                        return \App\Models\Dedication::create([
-                            'name' => $data['name'],
-                            'type' => $data['type'],
-                            'hours' => $data['hours'],
-                        ])->id;
-                    })
-                    ->createOptionAction(function (Forms\Components\Actions\Action $action) {
-                        return $action
-                            ->modalHeading('Crear nueva dedicación')
-                            ->modalButton('Agregar dedicación');
+                    ->getSearchResultsUsing(fn (string $search) =>
+                        User::query()
+                            ->where('name', 'like', "%{$search}%")
+                            ->limit(50)
+                            ->pluck('name', 'id')
+                    )
+                    ->afterStateUpdated(function ($state, Forms\Set $set) {
+                        // Obtener la sede del usuario seleccionado
+                        $user = User::find($state);
+                        if ($user) {
+                            $set('sede_id', $user->sede_id);
+                        }
                     }),
+
+                Forms\Components\Hidden::make('sede_id') // Campo oculto para sede_id
+                    ->default(fn () => Auth::user()->sede_id) // Valor por defecto
+                    ->required(),
             ])
             ->columns(2);
     }
@@ -239,34 +170,11 @@ class TeacherResource extends Resource
                     ->label('Fecha de Promoción')
                     ->date('d/m/Y')
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('site.name')
-                    ->label('Sede')
-                    ->sortable()
-                    ->default(fn ($record) => $record->sede->nombre ?? 'N/A'),
-
-                Tables\Columns\TextColumn::make('category.current_category')
-                    ->label('Categoría')
-                    ->sortable()
-                    ->default('Sin categoría'),
-
-                Tables\Columns\TextColumn::make('dedication.name')
-                    ->label('Dedicación')
-                    ->sortable()
-                    ->default('Sin dedicación'),
                 Tables\Columns\IconColumn::make('is_completed')
                     ->label('Completado')
                     ->boolean(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('site')
-                    ->relationship('site', 'name')
-                    ->label('Sede'),
-                Tables\Filters\SelectFilter::make('category')
-                    ->relationship('category', 'current_category')
-                    ->label('Categoría'),
-                Tables\Filters\SelectFilter::make('dedication')
-                    ->relationship('dedication', 'name')
-                    ->label('Dedicación'),
                 Tables\Filters\SelectFilter::make('genre')
                     ->options([
                         'F' => 'Femenino',
@@ -321,11 +229,11 @@ class TeacherResource extends Resource
 
     public function isAdmin()
     {
-        return $this->user->hasRole('admin');
+        return Auth::user()?->hasRole('admin') ?? false;
     }
 
     public function isAreaManager()
     {
-        return $this->user->hasRole('area_manager');
+        return Auth::user()?->hasRole('area_manager') ?? false;
     }
 }

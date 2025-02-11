@@ -13,9 +13,9 @@ class Site extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name',
-        'area',
-        'program',
+        'sede_id',
+        'area_id',
+        'programa_id',
         'uc',
         'weekHours',
         'sections',
@@ -36,25 +36,23 @@ class Site extends Model
     ];
 
 
-    public function teachers()
-    {
-        return $this->belongsToMany(Teacher::class)
-        ->withPivot('created_at')
-        ->using(SiteTeacher::class);
-    }
-
     public function sede()
     {
-        return $this->belongsTo(Sede::class);
+        return $this->belongsTo(Sede::class, 'sede_id');
     }
 
-    public function areas()
+    public function area()
     {
-        return $this->belongsTo(Area::class);
+        return $this->belongsTo(Area::class, 'area_id');
     }
 
-    public function programas()
+    public function programa()
     {
-        return $this->belongsToMany(Programa::class);
+        return $this->belongsTo(Programa::class);
+    }
+
+    public function teachers()
+    {
+        return $this->belongsToMany(Teacher::class, 'site_teacher')->withTimestamps();
     }
 }

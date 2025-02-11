@@ -25,16 +25,15 @@ return new class extends Migration
 
             // Relaciones (DEFINIDAS INICIALMENTE SIN CLAVES FORÁNEAS DENTRO DE SCHEMA::CREATE)
             $table->unsignedBigInteger('user_id')->nullable()->constrained()->cascadeOnDelete()->unique();
-            $table->foreignId('sede_id')->constrained('sedes')->cascadeOnDelete()->after('email');
+            $table->foreignId('sede_id')->constrained('sedes')->cascadeOnDelete()->after('email')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('dedication_id')->nullable();
 
             // Control de estado
-            $table->boolean('has_site')->default(false)->comment('Indica si ya tiene sede asignada')->change();
-            $table->boolean('has_category')->default(false)->comment('Indica si ya tiene categoría asignada');
-            $table->boolean('has_dedication')->default(false)->comment('Indica si ya tiene dedicación asignada');
-            $table->boolean('is_completed')->default(false)->comment('Indica si todas las relaciones requeridas están completas');
-            $table->string('especialidad')->nullable(false);
+            $table->boolean('has_site')->default(false)->comment('Indica si ya tiene sede asignada')->change()->nullable();
+            $table->boolean('has_category')->default(false)->comment('Indica si ya tiene categoría asignada')->nullable();
+            $table->boolean('has_dedication')->default(false)->comment('Indica si ya tiene dedicación asignada')->nullable();
+            $table->boolean('is_completed')->default(false)->comment('Indica si todas las relaciones requeridas están completas')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

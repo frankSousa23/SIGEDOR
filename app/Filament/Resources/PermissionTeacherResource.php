@@ -10,6 +10,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Collection;
 
 class PermissionTeacherResource extends Resource
 {
@@ -156,19 +158,34 @@ class PermissionTeacherResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    Tables\Actions\BulkAction::make('export')
+                        ->label('Exportar a PDF')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->action(function (Collection $records) {
+                            $pdf = Pdf::loadView('pdf.teachers', [
+                                'teachers' => $records
+                            ])->setPaper('a4', 'landscape');
+
+                            return response()->streamDownload(function () use ($pdf) {
+                                echo $pdf->output();
+                            }, 'docentes_'.now()->format('Ymd_His').'.pdf');
+                        })
+                        ->requiresConfirmation()
+                    ]),
+
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -176,5 +193,5 @@ class PermissionTeacherResource extends Resource
             'create' => Pages\CreatePermissionTeacher::route('/create'),
             'edit' => Pages\EditPermissionTeacher::route('/{record}/edit'),
         ];
-    }    
+    }
 }

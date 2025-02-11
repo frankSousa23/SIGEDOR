@@ -3,7 +3,10 @@
 namespace App\Filament\Resources;
 
 use App\Models\Site;
+use App\Models\Area;
+use App\Models\Sede;
 use App\Models\Teacher;
+use App\Models\Programa;
 use App\Filament\Resources\SiteResource\Pages;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -13,6 +16,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Collection;
 
 class SiteResource extends Resource
 {
@@ -20,6 +25,8 @@ class SiteResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
     protected static ?string $navigationLabel = 'Sedes';
     protected static ?string $navigationGroup = 'Asignaciones';
+    protected static ?string $modelLabel = 'Sede';
+    protected static ?string $pluralModelLabel = 'Sedes';
     protected static ?int $navigationSort = 0;
 
     public static function form(Form $form): Form
@@ -27,110 +34,102 @@ class SiteResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make('Información del Docente')
-                    ->description('Seleccione el docente para asignar el site')
-                    ->collapsible()
-                    ->schema([
-                        Select::make('teacher_id')
-                            ->label('Docente')
-                            ->options(function () {
-                         return Teacher::whereDoesntHave('sites')->pluck('cdi', 'id');
-                        })
-                            ->searchable()
-                            ->required()
-                            ->validationMessages([
-                        'required' => 'Debe seleccionar un docente',
-                        ])
-                            ->afterStateUpdated(function ($state, Forms\Set $set) {
-                                $teacher = Teacher::find($state);
-                            if ($teacher) {
-                                $set('sede_id', $teacher->sede_id);
+                ->description('Seleccione el docente para asignar el site')
+                ->collapsible()
+                ->schema([
+                    Select::make('teacher_id')
+                        ->label('Docente')
+                        ->options(Teacher::all()->pluck('name', 'id')) // Cargar todos los docentes
+                        ->required()
+                        ->searchable()
+                        ->preload()
+                        ->live()
+                        ->afterStateUpdated(function ($state, Forms\Set $set) {
+                            $teacher = Teacher::find($state);
+                            if ($teacher && $teacher->user) {
+                                $set('sede_id', $teacher->user->sede_id);
+                                $set('area_id', $teacher->user->area_id); // Actualizar el área del docente
                             }
                         }),
-                    ]),
+                ]),
+
 
                 Forms\Components\Select::make('sede_id')
-                    ->label('Sede')
-                    ->relationship('sede', 'nombre')
-                    ->required()
-                    ->native(false)
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('nombre')
-                            ->required()
-                            ->maxLength(255)
-                            ->unique('sedes', 'nombre')
-                    ]),
+                ->label('Sede')
+                ->options(Sede::all()->pluck('nombre', 'id')) // Cargar todas las sedes
+                ->required()
+                ->disabled(fn ($get) => $get('teacher_id') !== null)
+                ->default(null),
 
-                    Forms\Components\Select::make('area')
-                    ->label('Área')
-                    ->relationship('areas', 'nombre')
-                    ->required()
-                    ->searchable()
-                    ->preload()
-                    ->live()
-                    ->native(false),
+            Forms\Components\Select::make('area_id')
+                ->label('Área')
+                ->options(Area::all()->pluck('nombre', 'id')) // Cargar todas las áreas
+                ->required()
+                ->disabled(fn ($get) => $get('teacher_id') !== null)
+                ->default(null),
 
-                Forms\Components\Select::make('programas')
-                    ->label('Programas')
-                    ->relationship('programas', 'nombre')
-                    ->multiple()
-                    ->required()
-                    ->native(false),
+            Forms\Components\Select::make('programa_id')
+                ->label('Programa')
+                ->options(Programa::all()->pluck('nombre', 'id')) // Cargar todos los programas
+                ->required()
+                ->searchable()
+                ->preload()
+                ->default(null),
 
                 Forms\Components\TextInput::make('uc')
-                    ->label('Unidad Curricular')
-                    ->required()
-                    ->maxLength(255),
+                ->label('Unidad Curricular')
+                ->required()
+                ->maxLength(255),
 
-                Forms\Components\TextInput::make('weekHours')
-                    ->label('Horas Semanales')
-                    ->numeric()
-                    ->minValue(1)
-                    ->maxValue(40),
+            Forms\Components\TextInput::make('weekHours')
+                ->label('Horas Semanales')
+                ->numeric()
+                ->minValue(1)
+                ->maxValue(40),
 
-                Forms\Components\TextInput::make('sections')
-                    ->label('Secciones')
-                    ->numeric()
-                    ->minValue(1)
-                    ->maxValue(10),
+            Forms\Components\TextInput::make('sections')
+                ->label('Secciones')
+                ->numeric()
+                ->minValue(1)
+                ->maxValue(10),
 
-                Forms\Components\Textarea::make('info')
-                    ->label('Información Adicional')
-                    ->maxLength(255)
-                    ->columnSpanFull(),
+            Forms\Components\Textarea::make('info')
+                ->label('Información Adicional')
+                ->maxLength(255)
+                ->columnSpanFull(),
 
-                Forms\Components\Toggle::make('is_active')
-                    ->label('Activo')
-                    ->default(true),
+            Forms\Components\Toggle::make('is_active')
+                ->label('Activo')
+                ->default(true),
 
-                Forms\Components\Toggle::make('is_available')
-                    ->label('Disponible')
-                    ->default(true),
-            ]);
+            Forms\Components\Toggle::make('is_available')
+                ->label('Disponible')
+                ->default(true),
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
-                    ->default('Sin asignar')
-                    ->sortable()
-                    ->searchable(),
 
-                Tables\Columns\TextColumn::make('teachers.cdi')
+                Tables\Columns\TextColumn::make('teacher.cdi')
                     ->label('Docentes Asignados')
                     ->listWithLineBreaks()
                     ->limitList(3)
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('area')
+                Tables\Columns\TextColumn::make('sede.nombre')
+                    ->label('Sede')
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('area.nombre')
                     ->label('Área')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('programas.nombre')
+                Tables\Columns\TextColumn::make('programa.nombre')
                     ->label('Programa')
                     ->searchable()
-                    ->default('Sin programas')
                     ->listWithLineBreaks(),
 
                 Tables\Columns\TextColumn::make('uc')
@@ -154,17 +153,10 @@ class SiteResource extends Resource
                     ->boolean(),
 
                 Tables\Columns\TextColumn::make('teachers_count')
-                    ->label('Profesores')
+                    ->label('Docentes')
                     ->counts('teachers'),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('area')
-                    ->options([
-                        'Ingeniería' => 'Ingeniería',
-                        'Ciencias Básicas' => 'Ciencias Básicas',
-                        'Humanidades' => 'Humanidades'
-                    ])
-                    ->label('Área'),
 
                 Tables\Filters\TernaryFilter::make('is_active')
                     ->label('Activo'),
@@ -176,9 +168,24 @@ class SiteResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
+
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    Tables\Actions\BulkAction::make('export')
+                        ->label('Exportar a PDF')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->action(function (Collection $records) {
+                            $pdf = Pdf::loadView('pdf.teachers', [
+                                'teachers' => $records
+                            ])->setPaper('a4', 'landscape');
+
+                            return response()->streamDownload(function () use ($pdf) {
+                                echo $pdf->output();
+                            }, 'docentes_'.now()->format('Ymd_His').'.pdf');
+                        })
+                        ->requiresConfirmation()
+                    ]),
+
             ]);
     }
 

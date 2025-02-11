@@ -44,81 +44,80 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Section::make('Información del Usuario')
-                    ->schema([
-                        TextInput::make('name')
-                            ->label('Nombre')
-                            ->required()
-                            ->maxLength(255),
-                        TextInput::make('email')
-                            ->label('Correo Electrónico')
-                            ->required()
-                            ->email()
-                            ->unique('users', 'email')
-                            ->rules([
-                                'regex:/@sigedor\.com$/',
-                            ])
-                            ->autocomplete('email')
-                            ->helperText('El correo debe terminar en @sigedor.com'),
-                        TextInput::make('password')
-                            ->label('Contraseña')
-                            ->password()
-                            ->required()
-                            ->minLength(8),
-                    ]),
+                ->schema([
+                    TextInput::make('name')
+                        ->label('Nombre')
+                        ->required()
+                        ->maxLength(255),
+                    TextInput::make('email')
+                        ->label('Correo Electrónico')
+                        ->required()
+                        ->email()
+                        ->unique('users', 'email')
+                        ->rules([
+                            'regex:/@sigedor\.com$/',
+                        ])
+                        ->autocomplete('email')
+                        ->helperText('El correo debe terminar en @sigedor.com'),
+                    TextInput::make('password')
+                        ->label('Contraseña')
+                        ->password()
+                        ->required()
+                        ->minLength(8),
+                ]),
                 Section::make('Asignación de Sede')->schema([
-                        Select::make('sede_id')
-                            ->label('Sede')
-                            ->relationship('sede', 'nombre')
-                            ->required()
-                            ->native(false)
-                            ->searchable()
-                            ->preload()
-                            ->columnSpanFull(),
-                    ]),
+                    Select::make('sede_id')
+                        ->label('Sede')
+                        ->relationship('sede', 'nombre')
+                        ->required()
+                        ->native(false)
+                        ->searchable()
+                        ->preload()
+                        ->columnSpanFull(),
+                ]),
 
                 Section::make('Asignación de Área')->schema([
-                        Select::make('areas')
-                            ->relationship('areas', 'nombre')
-                            ->label('Área')
-                            ->required()
-                            ->native(false)
-                            ->searchable()
-                            ->preload()
-                            ->multiple(false) // Selección simple
-                            ->columnSpanFull(),
-                        ]),
+                    Select::make('area_id')
+                        ->label('Área')
+                        ->relationship('area', 'nombre')
+                        ->required()
+                        ->native(false)
+                        ->searchable()
+                        ->preload()
+                        ->columnSpanFull(),
+                ]),
 
                 Section::make('Asignación de Rol')
-                    ->schema([
-                        Select::make('roles')
-                            ->label('Rol')
-                            ->relationship('roles', 'name')
-                            ->options(Role::all()->mapWithKeys(function ($role) {
-                    return [
-                        $role->id => match ($role->name) {
-                            'admin' => 'Administrador',
-                            'area_manager' => 'Jefe de Área',
-                            'teacher' => 'Docente',
-                    default => $role->name
-                            }
+                ->schema([
+                    Select::make('roles')
+                        ->label('Rol')
+                        ->relationship('roles', 'name')
+                        ->options(Role::all()->mapWithKeys(function ($role) {
+                            return [
+                                $role->id => match ($role->name) {
+                                    'admin' => 'Administrador',
+                                    'area_manager' => 'Jefe de Área',
+                                    'teacher' => 'Docente',
+                                    default => $role->name
+                                }
                             ];
                         }))
-                            ->required()
-                            ->native(false)
-                            ->searchable()
-                            ->preload()
-                            ->columnSpanFull(),
-                        ]),
+                        ->required()
+                        ->native(false)
+                        ->searchable()
+                        ->preload()
+                        ->columnSpanFull(),
+                ]),
 
-                Section::make('Estado del Usuario')
-                    ->schema([
-                        Toggle::make('is_active')
-                            ->label('Activo')
-                            ->default(true),
-                        Toggle::make('is_approved')
-                            ->label('Aprobado')
-                            ->default(false),
-                    ]),
+            Section::make('Estado del Usuario')
+                ->schema([
+                    Toggle::make('is_active')
+                        ->label('Activo')
+                        ->default(true),
+                    Toggle::make('is_approved')
+                        ->label('Aprobado')
+                        ->default(false),
+                ]),
             ]);
     }
 
@@ -134,6 +133,9 @@ class UserResource extends Resource
                     ->searchable(),
                 TextColumn::make('sede.nombre')
                     ->label('Sede')
+                    ->searchable(),
+                TextColumn::make('area.nombre')
+                    ->label('Área')
                     ->searchable(),
                 TextColumn::make('roles.name')
                     ->label('Rol')

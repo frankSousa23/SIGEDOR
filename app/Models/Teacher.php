@@ -62,9 +62,10 @@ class Teacher extends Model
     }
 
     // Relación many-to-many con Area
-    public function areas(): BelongsToMany
+
+    public function area()
     {
-        return $this->belongsToMany(Area::class, 'area_teacher')->withTimestamps();
+    return $this->belongsTo(Area::class, 'area_id');
     }
 
     // Relación con User
@@ -76,8 +77,7 @@ class Teacher extends Model
 
     public function sites()
     {
-        return $this->belongsToMany(Site::class)
-            ->withTimestamps();
+        return $this->belongsToMany(Site::class, 'site_teacher')->withTimestamps();
     }
 
 
@@ -103,7 +103,7 @@ class Teacher extends Model
 
     public function programas()
     {
-        return $this->belongsToMany(Programa::class);
+        return $this->belongsToMany(Programa::class, 'programa_id');
     }
 
     public function getFullNameAttribute(): string

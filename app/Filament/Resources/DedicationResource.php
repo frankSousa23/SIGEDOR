@@ -16,6 +16,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Grid;
 use Filament\Tables\Columns\TextColumn;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Collection;
 
 class DedicationResource extends Resource
 {
@@ -23,6 +25,8 @@ class DedicationResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-clock';
     protected static ?string $navigationLabel = 'Dedicaciones';
     protected static ?string $navigationGroup = 'Asignaciones';
+    protected static ?string $modelLabel = 'Dedicación';
+    protected static ?string $pluralModelLabel = 'Dedicaciones';
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
@@ -43,7 +47,7 @@ class DedicationResource extends Resource
                             ->reactive()
                             ->columnSpan('full'),
                     ]),
-                
+
                 Forms\Components\Select::make('name')
                     ->options([
                         'TCV' => 'Tiempo Convencional',
@@ -89,7 +93,7 @@ class DedicationResource extends Resource
                     ->maxValue(100)
                     ->nullable()
                     ->reactive()
-                    ->afterStateUpdated(fn ($state, callable $set) => 
+                    ->afterStateUpdated(fn ($state, callable $set) =>
                         $set('studentHours', $state ? null : null)
                     ),
 
@@ -153,19 +157,34 @@ class DedicationResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    Tables\Actions\BulkAction::make('export')
+                        ->label('Exportar a PDF')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->action(function (Collection $records) {
+                            $pdf = Pdf::loadView('pdf.teachers', [
+                                'teachers' => $records
+                            ])->setPaper('a4', 'landscape');
+
+                            return response()->streamDownload(function () use ($pdf) {
+                                echo $pdf->output();
+                            }, 'docentes_'.now()->format('Ymd_His').'.pdf');
+                        })
+                        ->requiresConfirmation()
+                    ]),
+
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -173,5 +192,5 @@ class DedicationResource extends Resource
             'create' => Pages\CreateDedication::route('/create'),
             'edit' => Pages\EditDedication::route('/{record}/edit'),
         ];
-    }    
+    }
 }
