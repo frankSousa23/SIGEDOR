@@ -326,19 +326,19 @@ class CategoryResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('export')
-                        ->label('Exportar a PDF')
-                        ->icon('heroicon-o-document-arrow-down')
-                        ->action(function (Collection $records) {
-                            $pdf = Pdf::loadView('pdf.teachers', [
-                                'teachers' => $records
-                            ])->setPaper('a4', 'landscape');
+                    ->label('Exportar a PDF')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->action(function (Collection $records) {
+                        $pdf = Pdf::loadView('pdf.categories', [
+                            'categories' => $records
+                        ])->setPaper('a4', 'landscape');
 
-                            return response()->streamDownload(function () use ($pdf) {
-                                echo $pdf->output();
-                            }, 'docentes_'.now()->format('Ymd_His').'.pdf');
-                        })
-                        ->requiresConfirmation()
-                    ]),
+                        return response()->streamDownload(function () use ($pdf) {
+                            echo $pdf->output();
+                        }, 'categories_'.now()->format('Ymd_His').'.pdf');
+                    })
+                    ->requiresConfirmation()
+            ]),
 
             ]);
     }

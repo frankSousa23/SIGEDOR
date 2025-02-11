@@ -16,10 +16,10 @@ use Illuminate\Support\Collection;
 class PermissionTeacherResource extends Resource
 {
     protected static ?string $model = PermissionTeacher::class;
-    protected static ?string $modelLabel = 'Permiso Docente';
-    protected static ?string $pluralModelLabel = 'Permisos Docentes';
+    protected static ?string $modelLabel = 'Permiso';
+    protected static ?string $pluralModelLabel = 'Permisos';
     protected static ?string $navigationIcon = 'heroicon-o-document-check';
-    protected static ?string $navigationLabel = 'Permisos Docentes';
+    protected static ?string $navigationLabel = 'Permisos';
     protected static ?string $navigationGroup = 'Asignaciones';
     protected static ?int $navigationSort = 4;
 
@@ -86,7 +86,7 @@ class PermissionTeacherResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('teacher.name')
+                Tables\Columns\TextColumn::make('teacher.cdi')
                     ->label('Docente')
                     ->searchable()
                     ->sortable(),
@@ -129,7 +129,7 @@ class PermissionTeacherResource extends Resource
                     ])
                     ->label('Estado'),
                 Tables\Filters\SelectFilter::make('teacher')
-                    ->relationship('teacher', 'name')
+                    ->relationship('teacher', 'cdi')
                     ->searchable()
                     ->preload()
                     ->label('Docente'),
@@ -162,19 +162,19 @@ class PermissionTeacherResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('export')
-                        ->label('Exportar a PDF')
-                        ->icon('heroicon-o-document-arrow-down')
-                        ->action(function (Collection $records) {
-                            $pdf = Pdf::loadView('pdf.teachers', [
-                                'teachers' => $records
-                            ])->setPaper('a4', 'landscape');
+                    ->label('Exportar a PDF')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->action(function (Collection $records) {
+                        $pdf = Pdf::loadView('pdf.permission_teachers', [
+                            'permission_teachers' => $records
+                        ])->setPaper('a4', 'landscape');
 
-                            return response()->streamDownload(function () use ($pdf) {
-                                echo $pdf->output();
-                            }, 'docentes_'.now()->format('Ymd_His').'.pdf');
-                        })
-                        ->requiresConfirmation()
-                    ]),
+                        return response()->streamDownload(function () use ($pdf) {
+                            echo $pdf->output();
+                        }, 'permission_teachers_'.now()->format('Ymd_His').'.pdf');
+                    })
+                    ->requiresConfirmation()
+            ]),
 
             ]);
     }

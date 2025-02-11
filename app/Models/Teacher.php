@@ -58,26 +58,31 @@ class Teacher extends Model
     // Relación con Sede
     public function sede(): BelongsTo
     {
-        return $this->belongsTo(Sede::class, 'sede_id');
+        return $this->belongsTo(Sede::class);
     }
 
     // Relación many-to-many con Area
 
     public function area()
     {
-    return $this->belongsTo(Area::class, 'area_id');
+    return $this->belongsTo(Area::class);
     }
 
     // Relación con User
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
+    }
+
+    public function site()
+    {
+    return $this->belongsTo(Site::class);
     }
 
 
     public function sites()
     {
-        return $this->belongsToMany(Site::class, 'site_teacher')->withTimestamps();
+        return $this->hasMany(Site::class, 'teacher_id');
     }
 
 

@@ -39,11 +39,11 @@
                 <td>{{ $teacher->surName }}</td>
                 <td>{{ $teacher->email }}</td>
                 <td>{{ $teacher->phone }}</td>
-                <td>{{ $teacher->birthDate->format('d/m/Y') }}</td>
-                <td>{{ $teacher->datePromotion->format('d/m/Y') }}</td>
-                <td>{{ $teacher->site->name }}</td>
-                <td>{{ $teacher->category->current_category }}</td>
-                <td>{{ $teacher->dedication->name }}</td>
+                <td>{{ $teacher->birthDate ? $teacher->birthDate->format('d/m/Y') : 'N/A' }}</td>
+                <td>{{ $teacher->datePromotion ? $teacher->datePromotion->format('d/m/Y') : 'N/A' }}</td>
+                <td>{{ $teacher->site->name ?? 'N/A' }}</td>
+                <td>{{ $teacher->category->current_category ?? 'N/A' }}</td>
+                <td>{{ $teacher->dedication->name ?? 'N/A' }}</td>
             </tr>
             @endforeach
         </tbody>

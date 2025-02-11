@@ -34,43 +34,53 @@ class SiteResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make('Información del Docente')
-                ->description('Seleccione el docente para asignar el site')
+                ->description('Seleccione el docente para asignar Sede')
                 ->collapsible()
                 ->schema([
                     Select::make('teacher_id')
                         ->label('Docente')
-                        ->options(Teacher::all()->pluck('name', 'id')) // Cargar todos los docentes
+                        ->options(function ($record) {
+        // Si estamos editando, permitimos el docente actual
+                    if ($record) {
+                            return Teacher::whereDoesntHave('sites')
+                        ->orWhere('id', $record->teacher_id)
+                        ->pluck('cdi', 'id');
+                        }
+
+        // Si estamos creando, solo mostramos docentes sin asignar
+                    return Teacher::whereDoesntHave('sites')->pluck('cdi', 'id');
+                    })
                         ->required()
                         ->searchable()
                         ->preload()
                         ->live()
                         ->afterStateUpdated(function ($state, Forms\Set $set) {
                             $teacher = Teacher::find($state);
-                            if ($teacher && $teacher->user) {
-                                $set('sede_id', $teacher->user->sede_id);
-                                $set('area_id', $teacher->user->area_id); // Actualizar el área del docente
+                        if ($teacher && $teacher->user) {
+                            $set('sede_id', $teacher->user->sede_id);
+                            $set('area_id', $teacher->user->area_id);
                             }
-                        }),
-                ]),
+                    }),
+                    ]),
 
 
                 Forms\Components\Select::make('sede_id')
                 ->label('Sede')
-                ->options(Sede::all()->pluck('nombre', 'id')) // Cargar todas las sedes
-                ->required()
+                ->options(Sede::all()->pluck('nombre', 'id'))
                 ->disabled(fn ($get) => $get('teacher_id') !== null)
-                ->default(null),
+                ->default(fn () => null)
+                ->dehydrated(fn ($state) => filled($state)),
 
             Forms\Components\Select::make('area_id')
                 ->label('Área')
-                ->options(Area::all()->pluck('nombre', 'id')) // Cargar todas las áreas
-                ->required()
+                ->options(Area::all()->pluck('nombre', 'id'))
                 ->disabled(fn ($get) => $get('teacher_id') !== null)
-                ->default(null),
+                ->default(fn () => null)
+                ->dehydrated(fn ($state) => filled($state)),
 
             Forms\Components\Select::make('programa_id')
                 ->label('Programa')
-                ->options(Programa::all()->pluck('nombre', 'id')) // Cargar todos los programas
+                ->options(Programa::all()->pluck('nombre', 'id'))
                 ->required()
                 ->searchable()
                 ->preload()
@@ -114,10 +124,9 @@ class SiteResource extends Resource
             ->columns([
 
                 Tables\Columns\TextColumn::make('teacher.cdi')
-                    ->label('Docentes Asignados')
-                    ->listWithLineBreaks()
-                    ->limitList(3)
-                    ->searchable(),
+                    ->label('Docente')
+                    ->searchable()
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('sede.nombre')
                     ->label('Sede')
@@ -151,10 +160,6 @@ class SiteResource extends Resource
                 Tables\Columns\IconColumn::make('is_available')
                     ->label('Disponible')
                     ->boolean(),
-
-                Tables\Columns\TextColumn::make('teachers_count')
-                    ->label('Docentes')
-                    ->counts('teachers'),
             ])
             ->filters([
 
@@ -172,19 +177,19 @@ class SiteResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('export')
-                        ->label('Exportar a PDF')
-                        ->icon('heroicon-o-document-arrow-down')
-                        ->action(function (Collection $records) {
-                            $pdf = Pdf::loadView('pdf.teachers', [
-                                'teachers' => $records
-                            ])->setPaper('a4', 'landscape');
+                    ->label('Exportar a PDF')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->action(function (Collection $records) {
+                        $pdf = Pdf::loadView('pdf.sites', [
+                            'sites' => $records
+                        ])->setPaper('a4', 'landscape');
 
-                            return response()->streamDownload(function () use ($pdf) {
-                                echo $pdf->output();
-                            }, 'docentes_'.now()->format('Ymd_His').'.pdf');
-                        })
-                        ->requiresConfirmation()
-                    ]),
+                        return response()->streamDownload(function () use ($pdf) {
+                            echo $pdf->output();
+                        }, 'sites_'.now()->format('Ymd_His').'.pdf');
+                    })
+                    ->requiresConfirmation()
+            ]),
 
             ]);
     }

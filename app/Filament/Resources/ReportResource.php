@@ -32,53 +32,50 @@ class ReportResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Información del Docente')
-                    ->description('Seleccione el docente para generar el reporte')
-                    ->collapsible()
-                    ->schema([
-                        Forms\Components\Select::make('teacher_id')
-                            ->relationship('teacher', 'cdi')
-                            ->label('Docente')
-                            ->required()
-                            ->searchable()
-                            ->preload()
-                            ->reactive()
-                            ->afterStateUpdated(function (callable $set, $state) {
-                                $teacher = Teacher::with(['site', 'category', 'dedication', 'permissionTeachers'])->find($state);
-                                if ($teacher) {
-                                    $set('site_name', $teacher->site ? $teacher->site->name : 'Sin Sede');
-                                    $set('category_name', $teacher->category ? $teacher->category->current_category : 'Sin Categoría');
-                                    $set('dedication_name', $teacher->dedication ? $teacher->dedication->name : 'Sin Dedicación');
-                                    $set('permission_teacher_names', $teacher->permissionTeachers->pluck('name')->toArray());
-                                } else {
-                                    $set('site_name', 'Sin Sede');
-                                    $set('category_name', 'Sin Categoría');
-                                    $set('dedication_name', 'Sin Dedicación');
-                                    $set('permission_teacher_names', []);
-                                }
-                            }),
+                Forms\Components\Select::make('teacher_id')
+    ->label('Docente')
+    ->options(Teacher::pluck('cdi', 'id'))
+    ->required()
+    ->searchable()
+    ->preload()
+    ->live()
+    ->afterStateUpdated(function ($state, Forms\Set $set) {
+        $teacher = Teacher::with(['site', 'category', 'dedication', 'permissionTeachers'])->find($state);
+        if ($teacher) {
+            $set('site_name', $teacher->site ? $teacher->site->name : 'Sin Sede');
+            $set('category_name', $teacher->category ? $teacher->category->current_category : 'Sin Categoría');
+            $set('dedication_name', $teacher->dedication ? $teacher->dedication->name : 'Sin Dedicación');
+            $set('permission_teacher_names', $teacher->permissionTeachers->isEmpty() ? [] : $teacher->permissionTeachers->pluck('name')->toArray());
+        } else {
+            $set('site_name', 'Sin Sede');
+            $set('category_name', 'Sin Categoría');
+            $set('dedication_name', 'Sin Dedicación');
+            $set('permission_teacher_names', []);
+        }
+    }),
 
-                        Forms\Components\TextInput::make('site_name')
-                            ->label('Sede')
-                            ->disabled(),
+    Forms\Components\TextInput::make('site_name')
+    ->label('Sede')
+    ->disabled(),
 
-                        Forms\Components\TextInput::make('category_name')
-                            ->label('Categoría')
-                            ->disabled(),
+Forms\Components\TextInput::make('category_name')
+    ->label('Categoría')
+    ->disabled(),
 
-                        Forms\Components\TextInput::make('dedication_name')
-                            ->label('Dedicación')
-                            ->disabled(),
+Forms\Components\TextInput::make('dedication_name')
+    ->label('Dedicación')
+    ->disabled(),
 
-                        Forms\Components\Repeater::make('permission_teacher_names')
-                            ->label('Permisos')
-                            ->disableItemCreation()
-                            ->disableItemDeletion()
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->disabled(),
-                            ])
-                            ->default([]),
+Forms\Components\Repeater::make('permission_teacher_names')
+    ->label('Permisos del Docente')
+    ->schema([
+        Forms\Components\TextInput::make('name')
+            ->label('Nombre del Permiso')
+            ->required(),
+    ])
+    ->default([])
+    ->dehydrated(fn ($state) => filled($state))
+    ->hidden(fn (Forms\Get $get) => empty($get('permission_teacher_names'))),
 
                         Forms\Components\TextInput::make('report')
                             ->label('Reporte')
@@ -111,8 +108,8 @@ class ReportResource extends Resource
                             ->label('Información Adicional')
                             ->maxLength(500)
                             ->columnSpanFull(),
-                    ]),
-            ]);
+                            ]);
+
     }
 
     public static function table(Table $table): Table
@@ -174,25 +171,38 @@ class ReportResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('export')
+                ->label('Exportar a PDF')
+                ->icon('heroicon-o-document-arrow-down')
+                ->action(function (Report $record) {
+                    $pdf = Pdf::loadView('pdf.report', [
+                        'report' => $record
+                    ])->setPaper('a4', 'landscape');
+
+                    return response()->streamDownload(function () use ($pdf) {
+                        echo $pdf->output();
+                    }, 'report_'.$record->id.'_'.now()->format('Ymd_His').'.pdf');
+                })
+                ->requiresConfirmation()
             ])
             ->bulkActions([
 
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('export')
-                        ->label('Exportar a PDF')
-                        ->icon('heroicon-o-document-arrow-down')
-                        ->action(function (Collection $records) {
-                            $pdf = Pdf::loadView('pdf.teachers', [
-                                'teachers' => $records
-                            ])->setPaper('a4', 'landscape');
+                    ->label('Exportar a PDF')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->action(function (Collection $records) {
+                        $pdf = Pdf::loadView('pdf.reports', [
+                            'reports' => $records
+                        ])->setPaper('a4', 'landscape');
 
-                            return response()->streamDownload(function () use ($pdf) {
-                                echo $pdf->output();
-                            }, 'docentes_'.now()->format('Ymd_His').'.pdf');
-                        })
-                        ->requiresConfirmation()
-                    ]),
+                        return response()->streamDownload(function () use ($pdf) {
+                            echo $pdf->output();
+                        }, 'reports_'.now()->format('Ymd_His').'.pdf');
+                    })
+                    ->requiresConfirmation()
+            ]),
 
             ]);
     }

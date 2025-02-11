@@ -13,6 +13,7 @@ class Site extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'teacher_id',
         'sede_id',
         'area_id',
         'programa_id',
@@ -35,6 +36,11 @@ class Site extends Model
         'last_assignment' => 'datetime'
     ];
 
+    protected $attributes = [
+        'sede_id' => null,
+        'area_id' => null,
+    ];
+
 
     public function sede()
     {
@@ -51,8 +57,14 @@ class Site extends Model
         return $this->belongsTo(Programa::class);
     }
 
+
+    public function teacher()
+    {
+    return $this->belongsTo(Teacher::class, 'teacher_id');
+    }
+
     public function teachers()
     {
-        return $this->belongsToMany(Teacher::class, 'site_teacher')->withTimestamps();
+        return $this->hasMany(Teacher::class);
     }
 }
