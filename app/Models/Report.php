@@ -10,44 +10,41 @@ class Report extends Model
 
     protected $fillable = [
         'teacher_id',
-        'category_id',
-        'dedication_id',
         'sede_id',
         'area_id',
+        'category_id',
+        'dedication_id',
+        'typeReport',
         'report',
         'memoNumber',
-        'typeReport',
         'email',
         'info',
     ];
 
     public function teacher()
     {
-        return $this->belongsTo(Teacher::class);
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function dedication()
-    {
-        return $this->belongsTo(Dedication::class);
-    }
-
-    public function permissionTeacher()
-    {
-        return $this->belongsTo(PermissionTeacher::class);
+        return $this->belongsTo(Teacher::class, 'teacher_id');
     }
 
     public function sede()
     {
-        return $this->belongsTo(Sede::class);
+        return $this->belongsTo(Sede::class, 'sede_id');
     }
 
     public function area()
     {
-        return $this->belongsTo(Area::class);
+        return $this->belongsTo(Area::class, 'area_id');
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    public function dedication()
+    {
+        return $this->belongsTo(Dedication::class, 'dedication_id');
+    }
+
+
 }

@@ -40,41 +40,35 @@ class ReportResource extends Resource
                 ->preload()
                 ->live()
                 ->afterStateUpdated(function ($state, Forms\Set $set) {
-                    $teacher = Teacher::with(['sede', 'area', 'category', 'dedication'])->find($state);
+                    $teacher = Teacher::with(['sede', 'area'])->find($state);
                     if ($teacher) {
                         $set('sede_id', $teacher->sede_id);
                         $set('area_id', $teacher->area_id);
-                        $set('category_id', $teacher->category_id);
-                        $set('dedication_id', $teacher->dedication_id);
                         $set('sede_nombre', $teacher->sede ? $teacher->sede->nombre : 'Sin Sede');
                         $set('area_nombre', $teacher->area ? $teacher->area->nombre : 'Sin Área');
-                        $set('category_name', $teacher->category ? $teacher->category->current_category : 'Sin Categoría');
-                        $set('dedication_name', $teacher->dedication ? $teacher->dedication->name : 'Sin Dedicación');
+
+                        // Consultar directamente la tabla categories
+                        $category = Category::where('teacher_id', $state)->first();
+                        $set('category_id', $category ? $category->id : null);
+                        $set('category_name', $category ? $category->current_category : 'Sin Categoría');
+
+                        // Consultar directamente la tabla dedications
+                        $dedication = Dedication::where('teacher_id', $state)->first();
+                        $set('dedication_id', $dedication ? $dedication->id : null);
+                        $set('dedication_name', $dedication ? $dedication->name : 'Sin Dedicación');
                     } else {
                         $set('sede_id', null);
                         $set('area_id', null);
-                        $set('category_id', null);
-                        $set('dedication_id', null);
                         $set('sede_nombre', 'Sin Sede');
                         $set('area_nombre', 'Sin Área');
+                        $set('category_id', null);
                         $set('category_name', 'Sin Categoría');
+                        $set('dedication_id', null);
                         $set('dedication_name', 'Sin Dedicación');
                     }
                 }),
-            Forms\Components\TextInput::make('sede_nombre')
-                ->label('Sede')
-                ->disabled(),
-            Forms\Components\TextInput::make('area_nombre')
-                ->label('Área')
-                ->disabled(),
-            Forms\Components\TextInput::make('category_name')
-                ->label('Categoría')
-                ->disabled(),
-            Forms\Components\TextInput::make('dedication_name')
-                ->label('Dedicación')
-                ->disabled(),
-            Forms\Components\TextInput::make('report')
-                ->label('Reporte')
+            Forms\Components\TextInput::make('memoNumber')
+                ->label('Número de Memo')
                 ->required()
                 ->maxLength(255),
             Forms\Components\Select::make('typeReport')
@@ -87,19 +81,31 @@ class ReportResource extends Resource
                 ])
                 ->required()
                 ->searchable(),
-            Forms\Components\TextInput::make('memoNumber')
-                ->label('Número de Memo')
+            Forms\Components\TextInput::make('report')
+                ->label('Reporte')
                 ->required()
                 ->maxLength(255),
             Forms\Components\TextInput::make('email')
-                ->label('Correo Electrónico')
+                ->label('Correo')
                 ->email()
                 ->maxLength(255),
-
             Forms\Components\Textarea::make('info')
-                ->label('Información Adicional')
+                ->label('Observaciones')
                 ->maxLength(500)
                 ->columnSpanFull(),
+            Forms\Components\TextInput::make('sede_nombre')
+                ->label('Sede')
+                ->disabled(),
+            Forms\Components\TextInput::make('area_nombre')
+                ->label('Área')
+                ->disabled(),
+            Forms\Components\TextInput::make('category_name')
+                ->label('Categoría')
+                ->disabled(),
+            Forms\Components\TextInput::make('dedication_name')
+                ->label('Dedicación')
+                ->disabled(),
+
                             ]);
 
     }
@@ -108,16 +114,16 @@ class ReportResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('memoNumber')
+                    ->label('Número de Memo')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('typeReport')
+                    ->label('Tipo de Reporte')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('teacher.cdi')
                     ->label('Cédula')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('teacher.name')
-                    ->label('Nombres')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('teacher.surName')
-                    ->label('Apellidos')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('sede.nombre')
@@ -136,24 +142,24 @@ class ReportResource extends Resource
                     ->label('Dedicación')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('teacher.name')
+                    ->label('Nombres')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('teacher.surName')
+                    ->label('Apellidos')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('report')
                     ->label('Reporte')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('memoNumber')
-                    ->label('Número de Memo')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('typeReport')
-                    ->label('Tipo de Reporte')
-                    ->searchable()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->label('Correo Electrónico')
+                    ->label('Correo')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('info')
-                    ->label('Información Adicional')
+                    ->label('Observaciones')
                     ->searchable()
                     ->sortable(),
             ])

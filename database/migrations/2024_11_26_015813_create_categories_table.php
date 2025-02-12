@@ -34,12 +34,8 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('teacher_id')
-                  ->references('id')
-                  ->on('teachers')
-                  ->onDelete('cascade');
+            $table->foreign('teacher_id')->references('id')->on('teachers')->onDelete('cascade');
 
-            // Índices
             $table->index('teacher_id');
         });
     }
