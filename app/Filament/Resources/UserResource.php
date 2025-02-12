@@ -46,11 +46,11 @@ class UserResource extends Resource
                 Section::make('Información del Usuario')
                 ->schema([
                     TextInput::make('name')
-                        ->label('Nombre')
+                        ->label('Usuario')
                         ->required()
                         ->maxLength(255),
                     TextInput::make('email')
-                        ->label('Correo Electrónico')
+                        ->label('Correo')
                         ->required()
                         ->email()
                         ->unique('users', 'email')
@@ -126,25 +126,34 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Nombre')
-                    ->searchable(),
+                    ->label('Usuario')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('email')
-                    ->label('Correo Electrónico')
-                    ->searchable(),
+                    ->label('Correo')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('sede.nombre')
                     ->label('Sede')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('area.nombre')
                     ->label('Área')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('roles.name')
                     ->label('Rol')
+                    ->searchable()
+                    ->sortable()
                     ->badge(),
                 ToggleColumn::make('is_active')
-                    ->label('Activo'),
+                    ->label('Activo')
+                    ->sortable(),
                 ToggleColumn::make('is_approved')
-                    ->label('Aprobado'),
-                TextColumn::make('activities.description'),
+                    ->label('Aprobado')
+                    ->sortable(),
+                TextColumn::make('activities.description')
+                    ->sortable(),
             ])
             ->filters([
                 SelectFilter::make('roles')
@@ -158,6 +167,13 @@ class UserResource extends Resource
                 SelectFilter::make('sede_id')
                     ->relationship('sede', 'nombre')
                     ->label('Sede')
+                    ->searchable()
+                    ->preload()
+                    ->native(false),
+
+                SelectFilter::make('area_id')
+                    ->relationship('area', 'nombre')
+                    ->label('Área')
                     ->searchable()
                     ->preload()
                     ->native(false),

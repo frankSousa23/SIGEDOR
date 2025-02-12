@@ -253,7 +253,7 @@ class CategoryResource extends Resource
                             ->maxLength(255),
 
                         Forms\Components\TextInput::make('current_category')
-                            ->label('Nombre de la Categoría')
+                            ->label('Nombre de Categoría')
                             ->required()
                             ->maxLength(255),
                     ]),
@@ -265,7 +265,7 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('teacher.cdi')
-                    ->label('Docente')
+                    ->label('Cédula')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('teacher.name')

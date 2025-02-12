@@ -95,7 +95,7 @@ class TeacherResource extends Resource
                     ->maxLength(255),
 
                 Forms\Components\TextInput::make('email')
-                    ->label('Correo Electrónico')
+                    ->label('Correo')
                     ->email()
                     ->required()
                     ->unique(ignoreRecord: true)
@@ -127,15 +127,17 @@ class TeacherResource extends Resource
                             ->pluck('name', 'id')
                     )
                     ->afterStateUpdated(function ($state, Forms\Set $set) {
-                        // Obtener la sede del usuario seleccionado
                         $user = User::find($state);
                         if ($user) {
                             $set('sede_id', $user->sede_id);
                         }
                     }),
 
-                Forms\Components\Hidden::make('sede_id') // Campo oculto para sede_id
-                    ->default(fn () => Auth::user()->sede_id) // Valor por defecto
+                Forms\Components\Hidden::make('sede_id')
+                    ->default(fn () => Auth::user()->sede_id)
+                    ->required(),
+                Forms\Components\Hidden::make('area_id')
+                    ->default(fn () => Auth::user()->area_id)
                     ->required(),
             ])
             ->columns(2);
@@ -157,11 +159,22 @@ class TeacherResource extends Resource
                     ->label('Apellidos')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('sede.nombre')
+                    ->label('Sede')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('area.nombre')
+                    ->label('Área')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email')
                     ->label('Correo')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('phone')
-                    ->label('Teléfono'),
+                    ->label('Teléfono')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('birthDate')
                     ->label('Fecha de Nacimiento')
                     ->date('d/m/Y')
@@ -170,9 +183,6 @@ class TeacherResource extends Resource
                     ->label('Fecha de Promoción')
                     ->date('d/m/Y')
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_completed')
-                    ->label('Completado')
-                    ->boolean(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('genre')
@@ -181,10 +191,6 @@ class TeacherResource extends Resource
                         'M' => 'Masculino',
                     ])
                     ->label('Género'),
-                Tables\Filters\Filter::make('is_completed')
-                    ->query(fn (Builder $query): Builder => $query->where('is_completed', true))
-                    ->label('Completados')
-                    ->toggle(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

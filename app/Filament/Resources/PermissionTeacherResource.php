@@ -87,15 +87,21 @@ class PermissionTeacherResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('teacher.cdi')
-                    ->label('Docente')
+                    ->label('Cédula')
                     ->searchable()
                     ->sortable(),
-
+                Tables\Columns\TextColumn::make('teacher.name')
+                    ->label('Nombres')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('teacher.surName')
+                    ->label('Apellidos')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre del Permiso')
                     ->searchable()
                     ->sortable(),
-
                 Tables\Columns\BadgeColumn::make('status')
                     ->label('Estado')
                     ->colors([
@@ -105,17 +111,14 @@ class PermissionTeacherResource extends Resource
                     ])
                     ->searchable()
                     ->sortable(),
-
                 Tables\Columns\TextColumn::make('start_date')
                     ->label('Fecha de Inicio')
                     ->date()
                     ->sortable(),
-
                 Tables\Columns\TextColumn::make('end_date')
                     ->label('Fecha de Fin')
                     ->date()
                     ->sortable(),
-
                 Tables\Columns\TextColumn::make('description')
                     ->label('Descripción')
                     ->limit(50),

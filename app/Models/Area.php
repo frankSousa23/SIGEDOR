@@ -10,9 +10,9 @@ class Area extends Model
 {
     protected $fillable = ['nombre'];
 
-    public function users(): BelongsToMany
+    public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->hasMany(User::class);
     }
 
     public function sede(): BelongsTo

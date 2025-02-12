@@ -124,41 +124,55 @@ class SiteResource extends Resource
             ->columns([
 
                 Tables\Columns\TextColumn::make('teacher.cdi')
-                    ->label('Docente')
+                    ->label('Cédula')
                     ->searchable()
                     ->sortable(),
-
+                 Tables\Columns\TextColumn::make('teacher.name')
+                    ->label('Nombres')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('teacher.surName')
+                    ->label('Apellidos')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('sede.nombre')
                     ->label('Sede')
-                    ->searchable(),
-
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('area.nombre')
                     ->label('Área')
-                    ->searchable(),
-
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('programa.nombre')
                     ->label('Programa')
                     ->searchable()
+                    ->sortable()
                     ->listWithLineBreaks(),
-
                 Tables\Columns\TextColumn::make('uc')
                     ->label('Unidad Curricular')
-                    ->searchable(),
-
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('weekHours')
                     ->label('Horas Semanales')
+                    ->searchable()
+                    ->sortable()
                     ->numeric(),
-
                 Tables\Columns\TextColumn::make('sections')
                     ->label('Secciones')
+                    ->searchable()
+                    ->sortable()
                     ->numeric(),
 
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Activo')
+                    ->searchable()
+                    ->sortable()
                     ->boolean(),
 
                 Tables\Columns\IconColumn::make('is_available')
                     ->label('Disponible')
+                    ->searchable()
+                    ->sortable()
                     ->boolean(),
             ])
             ->filters([

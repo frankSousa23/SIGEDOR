@@ -35,40 +35,30 @@ class Teacher extends Model
         'asignaturePromotion',
         'user_id',
         'sede_id',
+        'area_id',
         'category_id',
         'dedication_id',
-        'has_site',
-        'has_category',
-        'has_dedication',
-        'has_permission',
-        'is_completed'
     ];
 
     protected $casts = [
         'birthDate' => 'date',
         'datePromotion' => 'date',
-        'sede_id' => 'integer',
-        'has_site' => 'boolean',
-        'has_category' => 'boolean',
-        'has_dedication' => 'boolean',
-        'has_permission' => 'boolean',
-        'is_completed' => 'boolean'
+        'sede_id' => 'string',
+        'area_id' => 'string',
+        'category_id' => 'string',
+        'dedication_id' => 'string',
     ];
 
-    // Relación con Sede
     public function sede(): BelongsTo
     {
         return $this->belongsTo(Sede::class);
     }
-
-    // Relación many-to-many con Area
 
     public function area()
     {
     return $this->belongsTo(Area::class);
     }
 
-    // Relación con User
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -79,12 +69,10 @@ class Teacher extends Model
     return $this->belongsTo(Site::class);
     }
 
-
     public function sites()
     {
         return $this->hasMany(Site::class, 'teacher_id');
     }
-
 
     public function category()
     {

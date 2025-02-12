@@ -12,8 +12,8 @@ class Report extends Model
         'teacher_id',
         'category_id',
         'dedication_id',
-        'permission_teacher_id',
-        'site_id',
+        'sede_id',
+        'area_id',
         'report',
         'memoNumber',
         'typeReport',
@@ -41,8 +41,13 @@ class Report extends Model
         return $this->belongsTo(PermissionTeacher::class);
     }
 
-    public function site()
+    public function sede()
     {
-        return $this->belongsTo(Site::class);
+        return $this->belongsTo(Sede::class);
+    }
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class);
     }
 }

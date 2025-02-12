@@ -39,7 +39,7 @@ class SedeSeeder extends Seeder
             'Gamaguan/Guárico',
             'Guacara/Carabobo',
             'Guanare/Portuguesa',
-            'Guárico/Lara',
+            'Guarico/Lara',
             'Guasdualito/Apure',
             'Guasipati/Bolívar',
             'Guasipatti/Monagas',

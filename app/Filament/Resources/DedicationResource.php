@@ -119,7 +119,16 @@ class DedicationResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('teacher.cdi')
-                    ->label('Docente')
+                    ->label('Cédula')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('teacher.name')
+                    ->label('Nombres')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('teacher.surName')
+                    ->label('Apellidos')
                     ->searchable()
                     ->sortable(),
 
@@ -132,21 +141,30 @@ class DedicationResource extends Resource
                         'EX' => 'Exclusiva',
                         default => $state,
                     })
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('hours')
-                    ->label('Horas'),
+                    ->label('Horas')
+                    ->searchable()
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('director')
                     ->label('Cargo Directivo')
-                    ->default('Sin Cargo'),
+                    ->default('Sin Cargo')
+                    ->searchable()
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('studentNumber')
-                    ->label('Estudiantes')
+                    ->label('Estudiantes Asesoría')
+                    ->searchable()
+                    ->sortable()
                     ->numeric(),
 
                 Tables\Columns\TextColumn::make('studentHours')
                     ->label('Horas Asesoría')
+                    ->searchable()
+                    ->sortable()
                     ->numeric(),
             ])
             ->filters([
