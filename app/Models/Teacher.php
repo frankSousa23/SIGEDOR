@@ -23,6 +23,8 @@ class Teacher extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $table = 'teachers';
+
     protected $fillable = [
         'cdi',
         'name',
@@ -36,6 +38,8 @@ class Teacher extends Model
         'user_id',
         'sede_id',
         'area_id',
+        'site_id',
+        'programa_id',
         'category_id',
         'dedication_id',
     ];
@@ -45,9 +49,20 @@ class Teacher extends Model
         'datePromotion' => 'date',
         'sede_id' => 'string',
         'area_id' => 'string',
+        'programa_id' => 'string',
         'category_id' => 'string',
         'dedication_id' => 'string',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function teacher(): BelongsTo
+    {
+        return $this->belongsTo(Teacher::class);
+    }
 
     public function sede(): BelongsTo
     {
@@ -56,22 +71,17 @@ class Teacher extends Model
 
     public function area()
     {
-    return $this->belongsTo(Area::class);
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Area::class);
     }
 
     public function site()
     {
-    return $this->belongsTo(Site::class);
+        return $this->belongsTo(Site::class);
     }
 
     public function sites()
     {
-        return $this->hasMany(Site::class, 'teacher_id');
+    return $this->belongsToMany(Site::class, 'site_teacher');
     }
 
     public function category()
@@ -84,19 +94,31 @@ class Teacher extends Model
         return $this->belongsTo(Dedication::class);
     }
 
-    public function reports()
-    {
-        return $this->hasMany(Report::class);
-    }
-
     public function permissionTeachers()
     {
         return $this->hasMany(PermissionTeacher::class);
     }
 
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
+
+    public function programa()
+    {
+    return $this->hasOneThrough(
+        Programa::class,
+        Site::class,
+        'id',         // FK en sites
+        'id',         // FK en programas
+        'site_id',    // Local key en teachers
+        'programa_id' // Local key en sites
+        );
+    }
+
     public function programas()
     {
-        return $this->belongsToMany(Programa::class, 'programa_id');
+        return $this->belongsToMany(Programa::class);
     }
 
     public function getFullNameAttribute(): string

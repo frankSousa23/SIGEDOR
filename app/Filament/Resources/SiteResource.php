@@ -3,9 +3,9 @@
 namespace App\Filament\Resources;
 
 use App\Models\Site;
-use App\Models\Area;
-use App\Models\Sede;
 use App\Models\Teacher;
+use App\Models\Sede;
+use App\Models\Area;
 use App\Models\Programa;
 use App\Filament\Resources\SiteResource\Pages;
 use Filament\Forms;
@@ -40,14 +40,12 @@ class SiteResource extends Resource
                     Select::make('teacher_id')
                         ->label('Docente')
                         ->options(function ($record) {
-        // Si estamos editando, permitimos el docente actual
                     if ($record) {
                             return Teacher::whereDoesntHave('sites')
                         ->orWhere('id', $record->teacher_id)
                         ->pluck('cdi', 'id');
                         }
 
-        // Si estamos creando, solo mostramos docentes sin asignar
                     return Teacher::whereDoesntHave('sites')->pluck('cdi', 'id');
                     })
                         ->required()
@@ -64,7 +62,7 @@ class SiteResource extends Resource
                     ]),
 
 
-                Forms\Components\Select::make('sede_id')
+             Forms\Components\Select::make('sede_id')
                 ->label('Sede')
                 ->options(Sede::all()->pluck('nombre', 'id'))
                 ->disabled(fn ($get) => $get('teacher_id') !== null)

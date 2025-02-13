@@ -13,23 +13,21 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('teacher_id')->constrained()->onDelete('cascade');
-            $table->foreignId('category_id')->nullable();
-            $table->foreignId('dedication_id')->nullable();
-            $table->foreignId('permission_id')->nullable();
-            $table->foreignId('site_id')->nullable();
-            $table->string('report');
+            $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade')->nullable();
+            $table->foreignId('sede_id')->constrained('sedes')->cascadeOnDelete()->nullable();
+            $table->foreignId('area_id')->constrained('areas')->cascadeOnDelete()->nullable();
+            $table->foreignId('programa_id')->nullable()->constrained('programas')->onDelete('set null');
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade')->nullable();
+            $table->foreignId('dedication_id')->constrained('dedications')->onDelete('cascade')->nullable();
+            $table->string('report')->index();
             $table->string('memoNumber');
             $table->string('typeReport');
             $table->string('email')->nullable();
             $table->string('info')->nullable();
             $table->timestamps();
-
-            // Índices
+            $table->index('teacher_id');
             $table->index('category_id');
             $table->index('dedication_id');
-            $table->index('permission_id');
-            $table->index('site_id');
         });
     }
 

@@ -131,6 +131,12 @@ class TeacherResource extends Resource
                         if ($user) {
                             $set('sede_id', $user->sede_id);
                         }
+                    })
+                    ->afterStateUpdated(function ($state, Forms\Set $set) {
+                        $user = User::find($state);
+                        if ($user) {
+                            $set('area_id', $user->area_id);
+                        }
                     }),
 
                 Forms\Components\Hidden::make('sede_id')

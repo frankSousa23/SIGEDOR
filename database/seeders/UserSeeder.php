@@ -30,7 +30,6 @@ class UserSeeder extends Seeder
             'password' => 'password',
             'sede_id' => Sede::inRandomOrder()->first()->id,
             'area_id' => Area::inRandomOrder()->first()->id,
-            'email_verified_at' => now(),
             'is_active' => true,
             'is_approved' => true
         ])->assignRole('admin');

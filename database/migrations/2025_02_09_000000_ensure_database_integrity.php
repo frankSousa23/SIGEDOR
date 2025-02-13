@@ -8,7 +8,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // 1. Verificar y corregir la tabla users
         if (!Schema::hasColumn('users', 'deleted_at')) {
             Schema::table('users', function (Blueprint $table) {
                 $table->softDeletes();
@@ -27,7 +26,6 @@ return new class extends Migration
             });
         }
 
-        // 2. Asegurar que las tablas principales tengan los campos necesarios
         $tables = ['sites', 'categories', 'dedications'];
         foreach ($tables as $tableName) {
             if (Schema::hasTable($tableName) && !Schema::hasColumn($tableName, 'is_active')) {
@@ -44,6 +42,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        // No es necesario revertir estos cambios ya que son de integridad
+
     }
 };

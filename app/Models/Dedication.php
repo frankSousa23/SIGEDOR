@@ -10,14 +10,16 @@ class Dedication extends Model
 {
     use HasFactory;
 
+    protected $table = 'dedications';
+
     protected $fillable = [
+        'teacher_id',
         'name',
         'hours',
         'director',
         'studentNumber',
         'studentHours',
-        'info',
-        'teacher_id'
+        'info'
     ];
 
     protected $casts = [

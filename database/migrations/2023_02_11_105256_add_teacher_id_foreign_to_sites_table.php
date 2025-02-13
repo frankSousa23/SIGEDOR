@@ -21,7 +21,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('sites', function (Blueprint $table) {
-            // Eliminar la clave foránea y la columna
             $table->dropForeign(['teacher_id']);
             $table->dropColumn('teacher_id');
         });

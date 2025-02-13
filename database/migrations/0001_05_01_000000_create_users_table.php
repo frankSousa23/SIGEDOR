@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->foreignId('sede_id')->constrained('sedes')->onDelete('cascade')->nullable(false);
-            $table->timestamp('email_verified_at')->nullable();
+            $table->foreignId('area_id')->constrained('areas')->onDelete('cascade')->nullable(false);
             $table->string('password');
             $table->boolean('is_active')->default(false);
             $table->boolean('is_approved')->default(false);

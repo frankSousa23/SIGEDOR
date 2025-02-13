@@ -17,6 +17,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles, SoftDeletes;
 
+    protected $table = 'users';
     /**
      * The attributes that are mass assignable.
      *
@@ -53,7 +54,7 @@ class User extends Authenticatable
         'is_approved' => 'boolean',
     ];
 
-    // Relationships
+
     public function sede()
     {
         return $this->belongsTo(Sede::class, 'sede_id');
@@ -69,7 +70,7 @@ class User extends Authenticatable
         return $this->hasOne(Teacher::class, 'teacher_id');
     }
 
-    // Scopes
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
@@ -85,7 +86,7 @@ class User extends Authenticatable
         return $query->where('is_approved', false);
     }
 
-    // Helper methods
+
     public function isApproved(): bool
     {
         return $this->is_approved;

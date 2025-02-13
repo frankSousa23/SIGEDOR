@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Dedication;
 use App\Models\PermissionTeacher;
 use App\Models\Site;
+use App\Models\Programa;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -40,27 +41,49 @@ class ReportResource extends Resource
                 ->preload()
                 ->live()
                 ->afterStateUpdated(function ($state, Forms\Set $set) {
-                    $teacher = Teacher::with(['sede', 'area'])->find($state);
+                    $teacher = Teacher::with([
+                        'sede',
+                        'area',
+                        'site' => fn($q) => $q->with('programa')
+                    ])->find($state);
+
                     if ($teacher) {
+                        // Campos principales
                         $set('sede_id', $teacher->sede_id);
                         $set('area_id', $teacher->area_id);
-                        $set('sede_nombre', $teacher->sede ? $teacher->sede->nombre : 'Sin Sede');
-                        $set('area_nombre', $teacher->area ? $teacher->area->nombre : 'Sin Área');
 
-                        // Consultar directamente la tabla categories
+                        // Campos de sede y área con null safety
+                        $set('sede_nombre', optional($teacher->sede)->nombre ?? 'Sin Sede');
+                        $set('area_nombre', optional($teacher->area)->nombre ?? 'Sin Área');
+
+                        // Campos de programa con validación en cascada
+                        $programaId = optional($teacher->site)->programa_id;
+                        $programaNombre = 'Sin Programa';
+
+                        if ($teacher->site && $teacher->site->programa) {
+                            $programaNombre = $teacher->site->programa->nombre;
+                        }
+
+                        $set('programa_id', $programaId);
+                        $set('programa_nombre', $programaNombre);
+
+                        // Campos de categoría y dedicación
                         $category = Category::where('teacher_id', $state)->first();
-                        $set('category_id', $category ? $category->id : null);
-                        $set('category_name', $category ? $category->current_category : 'Sin Categoría');
+                        $set('category_id', $category?->id);
+                        $set('category_name', $category?->current_category ?? 'Sin Categoría');
 
-                        // Consultar directamente la tabla dedications
                         $dedication = Dedication::where('teacher_id', $state)->first();
-                        $set('dedication_id', $dedication ? $dedication->id : null);
-                        $set('dedication_name', $dedication ? $dedication->name : 'Sin Dedicación');
+                        $set('dedication_id', $dedication?->id);
+                        $set('dedication_name', $dedication?->name ?? 'Sin Dedicación');
+
                     } else {
+                        // Reset completo de campos
                         $set('sede_id', null);
                         $set('area_id', null);
                         $set('sede_nombre', 'Sin Sede');
                         $set('area_nombre', 'Sin Área');
+                        $set('programa_id', null);
+                        $set('programa_nombre', 'Sin Programa');
                         $set('category_id', null);
                         $set('category_name', 'Sin Categoría');
                         $set('dedication_id', null);
@@ -99,15 +122,21 @@ class ReportResource extends Resource
             Forms\Components\TextInput::make('area_nombre')
                 ->label('Área')
                 ->disabled(),
+            Forms\Components\TextInput::make('programa_nombre')
+                ->label('Programa')
+                ->disabled(),
             Forms\Components\TextInput::make('category_name')
                 ->label('Categoría')
                 ->disabled(),
             Forms\Components\TextInput::make('dedication_name')
                 ->label('Dedicación')
                 ->disabled(),
-
+            Forms\Components\Hidden::make('sede_id'),
+            Forms\Components\Hidden::make('area_id'),
+            Forms\Components\Hidden::make('programa_id'),
+            Forms\Components\Hidden::make('category_id'),
+            Forms\Components\Hidden::make('dedication_id'),
                             ]);
-
     }
 
     public static function table(Table $table): Table
@@ -132,6 +161,10 @@ class ReportResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('area.nombre')
                     ->label('Área')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('programa.nombre')
+                    ->label('Programa')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('category.current_category')

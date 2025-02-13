@@ -3,14 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Programa extends Model
 {
-    protected $fillable = ['nombre'];
+    protected $fillable = ['nombre', 'teacher_id'];
 
-    // Relación opcional según necesidades
+
+    public function teacher(): BelongsTo
+    {
+        return $this->belongsTo(Teacher::class);
+    }
+
     public function teachers()
     {
-        return $this->hasMany(Teacher::class);
+        return $this->belongsToMany(Teacher::class);
     }
+
+
+
 }

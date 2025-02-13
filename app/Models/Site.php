@@ -12,6 +12,8 @@ class Site extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $table = 'sites';
+
     protected $fillable = [
         'teacher_id',
         'sede_id',
@@ -44,12 +46,12 @@ class Site extends Model
 
     public function sede()
     {
-        return $this->belongsTo(Sede::class, 'sede_id');
+        return $this->belongsTo(Sede::class);
     }
 
     public function area()
     {
-        return $this->belongsTo(Area::class, 'area_id');
+        return $this->belongsTo(Area::class);
     }
 
     public function programa()
@@ -57,10 +59,9 @@ class Site extends Model
         return $this->belongsTo(Programa::class);
     }
 
-
     public function teacher()
     {
-    return $this->belongsTo(Teacher::class, 'teacher_id');
+    return $this->belongsTo(Teacher::class);
     }
 
     public function teachers()

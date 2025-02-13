@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sites', function (Blueprint $table) {
-            $table->id();
+            $table->id()->index();
             $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade')->nullable();
             $table->foreignId('sede_id')->constrained('sedes')->onDelete('cascade')->nullable();
             $table->foreignId('area_id')->constrained('areas')->onDelete('cascade')->nullable();
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->timestamp('last_assignment')->nullable();
             $table->timestamps();
             $table->softDeletes();
+            $table->index('teacher_id');
         });
     }
 

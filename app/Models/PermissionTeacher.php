@@ -10,12 +10,12 @@ class PermissionTeacher extends Model
     protected $table = 'permissionsteachers';
 
     protected $fillable = [
+        'teacher_id',
         'name',
         'description',
         'start_date',
         'end_date',
-        'status',
-        'teacher_id'
+        'status'
     ];
 
     protected $casts = [

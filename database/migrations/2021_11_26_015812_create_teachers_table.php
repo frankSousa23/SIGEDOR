@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
-            $table->string('cdi')->unique()->comment('Cédula de Identidad');
+            $table->string('cdi')->unique()->comment('Cédula de Identidad')->index();
             $table->string('name');
             $table->string('surName');
             $table->enum('genre', ['F', 'M']);
@@ -22,16 +22,21 @@ return new class extends Migration
             $table->date('birthDate');
             $table->date('datePromotion');
             $table->string('asignaturePromotion')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable()->constrained('users')->cascadeOnDelete()->unique();
-            $table->foreignId('sede_id')->constrained('sedes')->cascadeOnDelete()->nullable();
-            $table->foreignId('area_id')->constrained('areas')->cascadeOnDelete()->nullable();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->unique();
+            $table->foreignId('sede_id')->constrained('sedes')->cascadeOnDelete();
+            $table->foreignId('area_id')->constrained('areas')->cascadeOnDelete();
+            $table->foreignId('programa_id')->nullable()->constrained('programas')->onDelete('set null');
+            $table->unsignedBigInteger('site_id')->constrained('sites')->cascadeOnDelete()->nullable();
             $table->unsignedBigInteger('category_id')->constrained('categories')->cascadeOnDelete()->nullable();
             $table->unsignedBigInteger('dedication_id')->constrained('dedications')->cascadeOnDelete()->nullable();
+            $table->unsignedBigInteger('report_id')->constrained('reports')->cascadeOnDelete()->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->index('user_id');
+            $table->index('site_id');
             $table->index('category_id');
             $table->index('dedication_id');
+            $table->index('report_id');
         });
     }
 

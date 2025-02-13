@@ -8,17 +8,20 @@ class Report extends Model
 {
     use HasFactory;
 
+    protected $table = 'reports';
+
     protected $fillable = [
         'teacher_id',
-        'sede_id',
-        'area_id',
-        'category_id',
-        'dedication_id',
+        'memoNumber',
         'typeReport',
         'report',
-        'memoNumber',
         'email',
         'info',
+        'sede_id',
+        'area_id',
+        'programa_id',
+        'category_id',
+        'dedication_id'
     ];
 
     public function teacher()
@@ -34,6 +37,11 @@ class Report extends Model
     public function area()
     {
         return $this->belongsTo(Area::class, 'area_id');
+    }
+
+    public function programa()
+    {
+        return $this->belongsTo(Programa::class, 'programa_id');
     }
 
     public function category()

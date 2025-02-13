@@ -13,15 +13,13 @@ return new class extends Migration
     {
         Schema::create('permissionsteachers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('teacher_id')->nullable()->constrained('teachers')->onDelete('cascade');
             $table->string('name');
             $table->text('description')->nullable();
             $table->datetime('start_date');
-            $table->datetime('end_date')->nullable();
+            $table->datetime('end_date');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
-            $table->foreignId('teacher_id')->constrained()->onDelete('cascade');
             $table->timestamps();
-
-            // Índices
             $table->index('teacher_id');
         });
     }
