@@ -18,6 +18,7 @@ use Filament\Forms\Components\Grid;
 use Filament\Tables\Columns\TextColumn;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 
 class DedicationResource extends Resource
 {
@@ -34,83 +35,103 @@ class DedicationResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make('Información del Docente')
-                    ->description('Seleccione el docente e ingrese sus dedicaciones')
-                    ->collapsible()
-                    ->schema([
-                        Forms\Components\Select::make('teacher_id')
-                            ->relationship('teacher', 'cdi')
-                            ->label('Docente')
-                            ->options(function () {
-                                return Teacher::whereDoesntHave('dedication')->pluck('cdi', 'id');
-                            })
-                            ->required()
-                            ->reactive()
-                            ->columnSpan('full'),
-                    ]),
+                ->schema([
+                    Forms\Components\Select::make('teacher_id')
+                        ->relationship('teacher', 'cdi')
+                        ->label('Docente')
+                        ->options(function () {
+                            return Teacher::pluck('cdi', 'id');
+                        })
+                        ->required()
+                        ->rules([
+                            Rule::unique('dedications', 'teacher_id')->ignore(request()->record)
+                        ])
+                        ->validationMessages([
+                            'required' => 'Debe seleccionar un docente',
+                            'unique' => 'Este docente ya tiene una dedicación asignada'
+                        ])
+                        ->reactive()
+                        ->columnSpan('full'),
+                ]),
 
                 Forms\Components\Select::make('name')
-                    ->options([
-                        'TCV' => 'Tiempo Convencional',
-                        'MT' => 'Medio Tiempo',
-                        'TC' => 'Tiempo Completo',
-                        'EX' => 'Exclusiva'
-                    ])
-                    ->required()
-                    ->label('Dedicación')
-                    ->reactive()
-                    ->afterStateUpdated(function ($state, callable $set) {
-                        $set('hours', null);
-                    })
-                    ->searchable()
-                    ->preload(),
+                ->options([
+                    'TCV' => 'Tiempo Convencional',
+                    'MT' => 'Medio Tiempo',
+                    'TC' => 'Tiempo Completo',
+                    'EX' => 'Exclusiva'
+                ])
+                ->required()
+                ->label('Dedicación')
+                ->reactive()
+                ->afterStateUpdated(function ($state, callable $set) {
+                    $set('hours', null);
+                })
+                ->searchable()
+                ->preload(),
 
                 Forms\Components\Select::make('hours')
-                    ->label('Horas')
-                    ->options(function (callable $get) {
-                        return Dedication::getValidHours($get('name'));
-                    })
-                    ->required()
-                    ->searchable()
-                    ->preload(),
+                ->label('Horas')
+                ->options(function (callable $get) {
+                    return Dedication::getValidHours($get('name'));
+                })
+                ->required()
+                ->rules([
+                    fn ($get) => function (string $attribute, $value, $fail) use ($get) {
+                        $validHours = Dedication::getValidHours($get('name'));
+                        if (!in_array($value, $validHours)) {
+                            $fail('Las horas seleccionadas no son válidas para esta dedicación.');
+                        }
+                    }
+                ])
+                ->searchable()
+                ->preload(),
 
                 Forms\Components\Select::make('director')
-                    ->options([
-                        'Coordinador' => 'Coordinador',
-                        'Jefe de Departamento' => 'Jefe de Departamento',
-                        'Decano' => 'Decano'
-                    ])
-                    ->label('Cargo Directivo')
-                    ->nullable()
-                    ->searchable()
-                    ->preload()
-                    ->helperText('Seleccione si tiene algún cargo directivo'),
+                ->options([
+                    'Coordinador' => 'Coordinador',
+                    'Jefe de Departamento' => 'Jefe de Departamento',
+                    'Decano' => 'Decano'
+                ])
+                ->label('Cargo Directivo')
+                ->nullable()
+                ->searchable()
+                ->preload()
+                ->helperText('Seleccione si tiene algún cargo directivo'),
 
                 Forms\Components\TextInput::make('studentNumber')
-                    ->numeric()
-                    ->label('Número de Estudiantes')
-                    ->helperText('Número de estudiantes en asesoría (1-100)')
-                    ->minValue(1)
-                    ->maxValue(100)
-                    ->nullable()
-                    ->reactive()
-                    ->afterStateUpdated(fn ($state, callable $set) =>
-                        $set('studentHours', $state ? null : null)
-                    ),
+                ->numeric()
+                ->label('Número de Estudiantes')
+                ->helperText('Número de estudiantes en asesoría (1-10)')
+                ->minValue(1)
+                ->maxValue(10)
+                ->nullable()
+                ->rules([
+                    'nullable',
+                    'integer',
+                    'min:1',
+                    'max:10'
+                ]),
 
                 Forms\Components\TextInput::make('studentHours')
-                    ->numeric()
-                    ->label('Horas de Asesoría')
-                    ->helperText('Número de horas dedicadas a asesorías (1-100)')
-                    ->minValue(1)
-                    ->maxValue(100)
-                    ->nullable()
-                    ->hidden(fn (callable $get) => !$get('studentNumber')),
+                ->numeric()
+                ->label('Horas de Asesoría')
+                ->helperText('Número de horas dedicadas a asesorías (1-30)')
+                ->minValue(1)
+                ->maxValue(30)
+                ->nullable()
+                ->rules([
+                    'nullable',
+                    'integer',
+                    'min:1',
+                    'max:100'
+                ]),
 
                 Forms\Components\Textarea::make('info')
-                    ->label('Observaciones')
-                    ->nullable()
-                    ->maxLength(500)
-                    ->columnSpanFull(),
+                ->label('Observaciones')
+                ->nullable()
+                ->maxLength(500)
+                ->columnSpanFull(),
             ]);
     }
 

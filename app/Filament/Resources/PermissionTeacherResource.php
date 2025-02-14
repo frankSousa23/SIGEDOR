@@ -13,6 +13,8 @@ use Filament\Tables\Table;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Carbon;
 
 class PermissionTeacherResource extends Resource
 {
@@ -33,53 +35,134 @@ class PermissionTeacherResource extends Resource
     {
         return $form
             ->schema([
+
+
                 Forms\Components\Section::make('Información del Docente')
-                    ->description('Seleccione el docente e ingrese sus permisos')
-                    ->collapsible()
-                    ->schema([
-                        Forms\Components\Select::make('teacher_id')
-                            ->relationship('teacher', 'cdi')
-                            ->label('Docente')
-                            ->options(function () {
-                                return Teacher::whereDoesntHave('permissionTeachers')->pluck('cdi', 'id');
-                            })
-                            ->required()
-                            ->reactive()
-                            ->columnSpan('full'),
-                    ]),
+                ->schema([
+                    Forms\Components\Select::make('teacher_id')
+    ->relationship('teacher', 'cdi')
+    ->label('Docente')
+    ->options(function () {
+        return Teacher::pluck('cdi', 'id');
+    })
+    ->required()
+    ->rules([
+        Rule::unique('permissionsteachers', 'teacher_id')->ignore(request()->record) // Cambiado a 'permissionsteachers'
+    ])
+    ->validationMessages([
+        'required' => 'Debe seleccionar un docente',
+        'unique' => 'Este docente ya tiene un permiso asignado'
+    ])
+    ->reactive()
+    ->columnSpan('full'),
+                ]),
+
+                Forms\Components\TextInput::make('memo_number')
+    ->label('Nº Memo')
+    ->required()
+    ->unique(ignoreRecord: true)
+    ->maxLength(255)
+    ->rules([
+        'required',
+        'string',
+        'max:255',
+        'unique:permissionsteachers,memo_number,' . request()->record // Cambiado a 'permissionsteachers'
+    ]),
+
+
+    Forms\Components\Select::make('type')
+    ->label('Tipo de Permiso')
+    ->options(PermissionTeacher::TYPES)
+    ->required()
+    ->native(false),
+
 
                 Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->label('Nombre del Permiso')
-                    ->maxLength(255),
+                ->required()
+                ->label('Nombre del Permiso')
+                ->maxLength(255)
+                ->rules([
+                    'required',
+                    'string',
+                    'max:255'
+                ]),
 
-                Forms\Components\Select::make('status')
-                    ->options([
-                        'pending' => 'Pendiente',
-                        'approved' => 'Aprobado',
-                        'rejected' => 'Rechazado'
-                    ])
-                    ->default('pending')
-                    ->required()
-                    ->label('Estado')
-                    ->native(false),
+
+            Forms\Components\Select::make('status')
+                ->options([
+                    'pending' => 'Pendiente',
+                    'approved' => 'Aprobado',
+                    'rejected' => 'Rechazado'
+                ])
+                ->default('pending')
+                ->required()
+                ->label('Estado')
+                ->native(false)
+                ->rules([
+                    'required',
+                    'in:pending,approved,rejected'
+                ]),
+
+                Forms\Components\Select::make('duration_type')
+                ->label('Duración')
+                ->options([
+                    'semestral' => 'Semestral (6 meses)',
+                    'anual' => 'Anual (12 meses)',
+                    'libre' => 'Libre'
+                ])
+                ->default('semestral')
+                ->required()
+                ->live()
+                ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                    $startDate = $get('start_date');
+                    if ($startDate && in_array($state, ['semestral', 'anual'])) {
+                        $endDate = Carbon::parse($startDate);
+                        $months = $state === 'semestral' ? 6 : 12;
+                        $set('end_date', $endDate->addMonths($months)->format('Y-m-d'));
+                    }
+                }),
 
                 Forms\Components\DatePicker::make('start_date')
-                    ->required()
-                    ->label('Fecha de Inicio')
-                    ->format('Y-m-d'),
+    ->required()
+    ->label('Fecha de Inicio')
+    ->format('Y-m-d')
+    ->afterStateUpdated(function ($state, callable $set, callable $get) {
+        $durationType = $get('duration_type');
+        if ($state && in_array($durationType, ['semestral', 'anual'])) {
+            $endDate = Carbon::parse($state);
+            $months = $durationType === 'semestral' ? 6 : 12;
+            $set('end_date', $endDate->addMonths($months)->format('Y-m-d'));
+        }
+    }),
 
                 Forms\Components\DatePicker::make('end_date')
-                    ->required()
-                    ->label('Fecha de Fin')
-                    ->format('Y-m-d')
-                    ->after('start_date'),
+                ->required()
+                ->label('Fecha de Fin')
+                ->format('Y-m-d')
+                ->rules([
+                    'required',
+                    'date',
+                    'after_or_equal:start_date'
+                ]),
+
+                Forms\Components\Toggle::make('is_paid')
+                ->label('Remunerado')
+                ->default(false)
+                ->inline(false)
+                ->onColor('success')
+                ->offColor('danger')
+                ->onIcon('heroicon-o-check')
+                ->offIcon('heroicon-o-x-mark'),
 
                 Forms\Components\Textarea::make('description')
-                    ->required()
-                    ->label('Descripción')
-                    ->maxLength(500)
-                    ->columnSpanFull(),
+                ->label('Observaciones')
+                ->maxLength(500)
+                ->columnSpanFull()
+                ->rules([
+                    'nullable',
+                    'string',
+                    'max:500'
+                ]),
             ]);
     }
 
@@ -98,6 +181,19 @@ class PermissionTeacherResource extends Resource
                               ->orderBy('teachers.surName', $direction);
                     })
                     ->searchable(['teachers.name', 'teachers.surName']),
+
+
+            Tables\Columns\TextColumn::make('memo_number')
+                ->label('Nº Memo')
+                ->searchable()
+                ->sortable(),
+
+            Tables\Columns\TextColumn::make('type')
+                ->label('Tipo')
+                ->searchable()
+                ->sortable(),
+
+
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre del Permiso')
                     ->searchable()
@@ -111,6 +207,24 @@ class PermissionTeacherResource extends Resource
                     ])
                     ->searchable()
                     ->sortable(),
+
+                    Tables\Columns\TextColumn::make('duration_type')
+                ->label('Duración')
+                ->formatStateUsing(fn ($state) => match ($state) {
+                    'semestral' => 'Semestral',
+                    'anual' => 'Anual',
+                    'libre' => 'Libre',
+                    default => $state
+                })
+                ->badge()
+                ->colors([
+                    'primary' => 'semestral',
+                    'success' => 'anual',
+                    'warning' => 'libre',
+                ])
+                ->searchable()
+                ->sortable(),
+
                 Tables\Columns\TextColumn::make('start_date')
                     ->label('Fecha de Inicio')
                     ->date()
@@ -119,8 +233,15 @@ class PermissionTeacherResource extends Resource
                     ->label('Fecha de Fin')
                     ->date()
                     ->sortable(),
+                Tables\Columns\IconColumn::make('is_paid')
+                    ->label('Remunerado')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check')
+                    ->falseIcon('heroicon-o-x-mark')
+                    ->trueColor('success')
+                    ->falseColor('danger'),
                 Tables\Columns\TextColumn::make('description')
-                    ->label('Descripción')
+                    ->label('Observaciones')
                     ->limit(50),
             ])
             ->filters([

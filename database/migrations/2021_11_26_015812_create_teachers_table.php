@@ -29,6 +29,7 @@ return new class extends Migration
             $table->unsignedBigInteger('site_id')->nullable()->constrained('sites')->onDelete('set null');
             $table->unsignedBigInteger('category_id')->constrained('categories')->cascadeOnDelete()->nullable();
             $table->unsignedBigInteger('dedication_id')->constrained('dedications')->cascadeOnDelete()->nullable();
+            $table->unsignedBigInteger('permissionteacher_id')->constrained('permissionsteachers')->cascadeOnDelete()->nullable();
             $table->unsignedBigInteger('report_id')->constrained('reports')->cascadeOnDelete()->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -36,6 +37,7 @@ return new class extends Migration
             $table->index('site_id');
             $table->index('category_id');
             $table->index('dedication_id');
+            $table->index('permissionteacher_id');
             $table->index('report_id');
         });
     }

@@ -94,7 +94,7 @@ class Teacher extends Model
         return $this->belongsTo(Dedication::class);
     }
 
-    public function permissionTeachers()
+    public function permissionsTeachers()
     {
         return $this->hasMany(PermissionTeacher::class);
     }

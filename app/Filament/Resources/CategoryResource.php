@@ -72,6 +72,27 @@ class CategoryResource extends Resource
         return $lastLevel > $preLevel;
     }
 
+    protected static function getRequiredTitlesForHigherCategories(): array
+    {
+        return [
+            'doctorado',
+            'doctor',
+            'phd',
+            'ph.d',
+        ];
+    }
+
+    protected static function hasValidTitleForHigherCategory(string $title): bool
+    {
+        $title = mb_strtolower($title);
+        foreach (static::getRequiredTitlesForHigherCategories() as $required) {
+            if (str_contains($title, $required)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -147,11 +168,11 @@ class CategoryResource extends Resource
                                     ->label('Fecha de Instructor')
                                     ->required()
                                     ->live(debounce: 2000)
-    ->rules(['required', 'date', 'after_or_equal:1980-01-01'])
-    ->validationMessages([
-        'required' => 'La fecha de instructor es obligatoria',
-        'after_or_equal' => 'La fecha no puede ser anterior a 1980'
-    ])
+                                    ->rules(['required', 'date', 'after_or_equal:1980-01-01'])
+                                    ->validationMessages([
+                                'required' => 'La fecha de instructor es obligatoria',
+                                'after_or_equal' => 'La fecha no puede ser anterior a 1980'
+                        ])
                                     ->afterStateUpdated(function ($state, callable $get, callable $set) {
                                         if ($state) {
                                             $set('current_category', 'Instructor');
@@ -190,69 +211,56 @@ class CategoryResource extends Resource
                                     ->live(debounce: 2000)
                                     ->disabled(fn ($get) => !$get('asistente'))
                                     ->dehydrated()
-                                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                        if ($state) {
+                                    ->rules([
+                                        fn ($get) => function (string $attribute, $value, $fail) use ($get) {
                                             $asistenteDate = $get('asistente');
-                                            if ($asistenteDate) {
-                                                $minDate = Carbon::parse($asistenteDate)->addYears(4)->startOfDay();
-                                                if (Carbon::parse($state)->startOfDay()->lessThan($minDate)) {
-                                                    Notification::make()
-                                                        ->warning()
-                                                        ->title('Aviso')
-                                                        ->body('Se recomienda que la fecha sea al menos 4 años después de la fecha de asistente.')
-                                                        ->duration(10000)
-                                                        ->send();
-                                                }
-                                                $set('current_category', 'Agregado');
+                                            if ($asistenteDate && Carbon::parse($value)->startOfDay()->lessThan(Carbon::parse($asistenteDate)->addYears(4)->startOfDay())) {
+                                                $fail('La fecha de agregado debe ser al menos 4 años después de la fecha de asistente.');
                                             }
                                         }
-                                    }),
+                                    ]),
 
                                 Forms\Components\DatePicker::make('asociado')
                                     ->label('Fecha de Asociado')
                                     ->live(debounce: 2000)
                                     ->disabled(fn ($get) => !$get('agregado'))
                                     ->dehydrated()
-                                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                        if ($state) {
+                                    ->rules([
+                                        fn ($get) => function (string $attribute, $value, $fail) use ($get) {
                                             $agregadoDate = $get('agregado');
-                                            if ($agregadoDate) {
-                                                $minDate = Carbon::parse($agregadoDate)->addYears(4)->startOfDay();
-                                                if (Carbon::parse($state)->startOfDay()->lessThan($minDate)) {
-                                                    Notification::make()
-                                                        ->warning()
-                                                        ->title('Aviso')
-                                                        ->body('Se recomienda que la fecha sea al menos 4 años después de la fecha de agregado.')
-                                                        ->duration(10000)
-                                                        ->send();
-                                                }
-                                                $set('current_category', 'Asociado');
+                                            if ($agregadoDate && Carbon::parse($value)->startOfDay()->lessThan(Carbon::parse($agregadoDate)->addYears(4)->startOfDay())) {
+                                                $fail('La fecha de asociado debe ser al menos 4 años después de la fecha de agregado.');
+                                            }
+                                        },
+                                        fn ($get) => function (string $attribute, $value, $fail) use ($get) {
+                                            if (!static::hasValidTitleForHigherCategory($get('lastTitle'))) {
+                                                $fail('Para la categoría de Asociado se requiere un título de Doctorado, Ph.D o similar.');
                                             }
                                         }
-                                    }),
+                                    ]),
 
-                                Forms\Components\DatePicker::make('titular')
+                                    Forms\Components\DatePicker::make('titular')
                                     ->label('Fecha de Titular')
                                     ->live(debounce: 2000)
                                     ->disabled(fn ($get) => !$get('asociado'))
                                     ->dehydrated()
-                                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                        if ($state) {
+                                    ->rules([
+                                        fn ($get) => function (string $attribute, $value, $fail) use ($get) {
                                             $asociadoDate = $get('asociado');
-                                            if ($asociadoDate) {
-                                                $minDate = Carbon::parse($asociadoDate)->addYears(5)->startOfDay();
-                                                if (Carbon::parse($state)->startOfDay()->lessThan($minDate)) {
-                                                    Notification::make()
-                                                        ->warning()
-                                                        ->title('Aviso')
-                                                        ->body('Se recomienda que la fecha sea al menos 5 años después de la fecha de asociado.')
-                                                        ->duration(10000)
-                                                        ->send();
-                                                }
-                                                $set('current_category', 'Titular');
+                                            if ($asociadoDate && Carbon::parse($value)->startOfDay()->lessThan(Carbon::parse($asociadoDate)->addYears(5)->startOfDay())) {
+                                                $fail('La fecha de titular debe ser al menos 5 años después de la fecha de asociado.');
+                                            }
+                                        },
+                                        fn ($get) => function (string $attribute, $value, $fail) use ($get) {
+                                            if (!static::hasValidTitleForHigherCategory($get('lastTitle'))) {
+                                                $fail('Para la categoría de Titular se requiere un título de Doctorado, Ph.D o similar.');
                                             }
                                         }
-                                    }),
+                                    ]),
+
+
+
+
                             ]),
                     ]),
 
