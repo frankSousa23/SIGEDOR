@@ -2,6 +2,9 @@
 
 return [
 
+
+    'charset' => 'UTF-8',
+    'encoding' => 'UTF-8',
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -65,7 +68,7 @@ return [
     |
     */
 
-    'timezone' => env('APP_TIMEZONE', 'UTC'),
+    'timezone' => env('APP_TIMEZONE', 'America/Caracas'),
 
     /*
     |--------------------------------------------------------------------------

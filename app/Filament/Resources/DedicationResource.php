@@ -122,16 +122,13 @@ class DedicationResource extends Resource
                     ->label('Cédula')
                     ->searchable()
                     ->sortable(),
-
-                Tables\Columns\TextColumn::make('teacher.name')
-                    ->label('Nombres')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('teacher.surName')
-                    ->label('Apellidos')
-                    ->searchable()
-                    ->sortable(),
-
+                    Tables\Columns\TextColumn::make('teacher.full_name')
+                    ->label('Nombre Completo')
+                    ->sortable(query: function (Builder $query, string $direction) {
+                        $query->orderBy('teachers.name', $direction)
+                              ->orderBy('teachers.surName', $direction);
+                    })
+                    ->searchable(['teachers.name', 'teachers.surName']),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Dedicación')
                     ->formatStateUsing(fn (string $state): string => match ($state) {
@@ -168,7 +165,36 @@ class DedicationResource extends Resource
                     ->numeric(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('director')
+        ->label('Cargo Directivo')
+        ->options([
+            'Coordinador' => 'Coordinador',
+            'Jefe de Departamento' => 'Jefe de Departamento',
+            'Decano' => 'Decano'
+        ]),
+
+    Tables\Filters\SelectFilter::make('teacher_id')
+        ->label('Docente')
+        ->relationship('teacher', 'cdi')
+        ->searchable()
+        ->getOptionLabelFromRecordUsing(fn ($record) => $record->name.' '.$record->surName),
+
+    Tables\Filters\Filter::make('hours_range')
+        ->form([
+            Forms\Components\TextInput::make('min_hours')
+                ->label('Horas Mínimas')
+                ->numeric(),
+            Forms\Components\TextInput::make('max_hours')
+                ->label('Horas Máximas')
+                ->numeric()
+        ])
+        ->query(function (Builder $query, array $data) {
+            return $query
+                ->when($data['min_hours'],
+                    fn($q) => $q->where('hours', '>=', $data['min_hours']))
+                ->when($data['max_hours'],
+                    fn($q) => $q->where('hours', '<=', $data['max_hours']));
+        })
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

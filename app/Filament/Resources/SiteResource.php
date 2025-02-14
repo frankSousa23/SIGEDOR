@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 
 class SiteResource extends Resource
 {
@@ -34,32 +35,34 @@ class SiteResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make('Información del Docente')
-                ->description('Seleccione el docente para asignar Sede')
-                ->collapsible()
-                ->schema([
-                    Select::make('teacher_id')
-                        ->label('Docente')
-                        ->options(function ($record) {
-                    if ($record) {
-                            return Teacher::whereDoesntHave('sites')
-                        ->orWhere('id', $record->teacher_id)
-                        ->pluck('cdi', 'id');
-                        }
-
-                    return Teacher::whereDoesntHave('sites')->pluck('cdi', 'id');
-                    })
-                        ->required()
-                        ->searchable()
-                        ->preload()
-                        ->live()
-                        ->afterStateUpdated(function ($state, Forms\Set $set) {
-                            $teacher = Teacher::find($state);
-                        if ($teacher && $teacher->user) {
-                            $set('sede_id', $teacher->user->sede_id);
-                            $set('area_id', $teacher->user->area_id);
-                            }
-                    }),
-                    ]),
+    ->description('Seleccione el docente para asignar Sede')
+    ->collapsible()
+    ->schema([
+        Select::make('teacher_id')
+            ->label('Docente')
+            ->options(function ($record) {
+                return Teacher::whereNull('site_id')  // Solo docentes sin site asignada
+                    ->orWhere('id', $record?->teacher_id)  // Permite editar el registro actual
+                    ->pluck('cdi', 'id');
+            })
+            ->required()
+            ->searchable()
+            ->preload()
+            ->live()
+            ->afterStateUpdated(function ($state, Forms\Set $set) {
+                $teacher = Teacher::find($state);
+                if ($teacher && $teacher->user) {
+                    $set('sede_id', $teacher->user->sede_id);
+                    $set('area_id', $teacher->user->area_id);
+                }
+            })
+            ->rules([
+                Rule::unique('sites', 'teacher_id')  // Validación en backend
+            ])
+            ->validationMessages([
+                'unique' => 'Este docente ya tiene una sede asignada'
+            ]),
+    ]),
 
 
              Forms\Components\Select::make('sede_id')
@@ -76,15 +79,21 @@ class SiteResource extends Resource
                 ->default(fn () => null)
                 ->dehydrated(fn ($state) => filled($state)),
 
-            Forms\Components\Select::make('programa_id')
+                Forms\Components\Select::make('programa_id')
                 ->label('Programa')
                 ->options(Programa::all()->pluck('nombre', 'id'))
                 ->required()
                 ->searchable()
                 ->preload()
-                ->default(null),
+                ->default(null)
+                ->rules([
+                    fn ($get) => Rule::unique('sites', 'programa_id')->where('teacher_id', $get('teacher_id'))
+                ])
+                ->validationMessages([
+                    'unique' => 'Este docente ya tiene un programa asignado'
+                ]),
 
-                Forms\Components\TextInput::make('uc')
+            Forms\Components\TextInput::make('uc')
                 ->label('Unidad Curricular')
                 ->required()
                 ->maxLength(255),
@@ -125,14 +134,13 @@ class SiteResource extends Resource
                     ->label('Cédula')
                     ->searchable()
                     ->sortable(),
-                 Tables\Columns\TextColumn::make('teacher.name')
-                    ->label('Nombres')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('teacher.surName')
-                    ->label('Apellidos')
-                    ->searchable()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('teacher.full_name')
+                    ->label('Docente')
+                    ->sortable(query: function (Builder $query, string $direction) {
+                        $query->orderBy('teachers.name', $direction)
+                              ->orderBy('teachers.surName', $direction);
+                    })
+                    ->searchable(['teachers.name', 'teachers.surName']),
                 Tables\Columns\TextColumn::make('sede.nombre')
                     ->label('Sede')
                     ->searchable()
@@ -174,7 +182,29 @@ class SiteResource extends Resource
                     ->boolean(),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('programa_id')
+                ->label('Programa')
+                ->relationship('programa', 'nombre')
+                ->searchable(),
 
+            Tables\Filters\SelectFilter::make('teacher_id')
+                ->label('Docente')
+                ->relationship('teacher', 'cdi')
+                ->searchable()
+                ->getOptionLabelFromRecordUsing(fn ($record) => $record->name.' '.$record->surName),
+
+            Tables\Filters\TernaryFilter::make('is_active')
+                ->label('Estado Activo'),
+
+            Tables\Filters\Filter::make('created_at')
+                ->form([
+                    Forms\Components\DatePicker::make('from'),
+                    Forms\Components\DatePicker::make('to'),
+                ])
+                ->query(fn ($query, $data) => $query
+                    ->when($data['from'], fn($q) => $q->whereDate('created_at', '>=', $data['from']))
+                    ->when($data['to'], fn($q) => $q->whereDate('created_at', '<=', $data['to']))
+                ),
                 Tables\Filters\TernaryFilter::make('is_active')
                     ->label('Activo'),
 
@@ -183,6 +213,7 @@ class SiteResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
 

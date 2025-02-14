@@ -9,8 +9,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sites', function (Blueprint $table) {
-            $table->id()->index();
-            $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade')->nullable();
+            $table->id();
+            $table->foreignId('teacher_id')->unique()->constrained('teachers')->onDelete('cascade')->index();
             $table->foreignId('sede_id')->constrained('sedes')->onDelete('cascade')->nullable();
             $table->foreignId('area_id')->constrained('areas')->onDelete('cascade')->nullable();
             $table->foreignId('programa_id')->constrained('programas')->onDelete('cascade')->nullable();

@@ -45,7 +45,7 @@ class SedeSeeder extends Seeder
             'Guasipatti/Monagas',
             'Higuerote',
             'Humocaro',
-            'La Guaira/Vargas',
+            'La Guaira/La Guaira',
             'La Morita/Aragua',
             'La Trinidad/Caracas',
             'La Victoria/Aragua',

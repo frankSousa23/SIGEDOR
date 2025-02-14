@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade')->nullable();
             $table->foreignId('sede_id')->constrained('sedes')->cascadeOnDelete()->nullable();
             $table->foreignId('area_id')->constrained('areas')->cascadeOnDelete()->nullable();
-            $table->foreignId('programa_id')->nullable()->constrained('programas')->onDelete('set null');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade')->nullable();
             $table->foreignId('dedication_id')->constrained('dedications')->onDelete('cascade')->nullable();
             $table->string('report')->index();

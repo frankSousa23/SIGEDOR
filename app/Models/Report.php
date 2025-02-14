@@ -19,16 +19,14 @@ class Report extends Model
         'info',
         'sede_id',
         'area_id',
-        'programa_id',
         'category_id',
         'dedication_id'
     ];
 
     public function teacher()
-    {
-        return $this->belongsTo(Teacher::class, 'teacher_id');
-    }
-
+{
+    return $this->belongsTo(Teacher::class, 'programa_id');
+}
     public function sede()
     {
         return $this->belongsTo(Sede::class, 'sede_id');
@@ -37,11 +35,6 @@ class Report extends Model
     public function area()
     {
         return $this->belongsTo(Area::class, 'area_id');
-    }
-
-    public function programa()
-    {
-        return $this->belongsTo(Programa::class, 'programa_id');
     }
 
     public function category()
@@ -54,5 +47,9 @@ class Report extends Model
         return $this->belongsTo(Dedication::class, 'dedication_id');
     }
 
+    public function getFullNameAttribute(): string
+    {
+        return "{$this->name} {$this->surName}";
+    }
 
 }

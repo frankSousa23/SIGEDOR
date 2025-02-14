@@ -66,7 +66,7 @@ class Category extends Model
     public function getCurrentCategoryAttribute($value)
     {
         if (!$value) {
-            // Si no hay valor establecido, determinar basado en las fechas
+
             $dates = [
                 'titular' => $this->titular,
                 'asociado' => $this->asociado,
@@ -81,9 +81,14 @@ class Category extends Model
                 }
             }
 
-            return 'Instructor'; // Categoría por defecto
+            return 'Instructor';
         }
 
         return $value;
+    }
+
+    public function getFullNameAttribute(): string
+    {
+        return "{$this->name} {$this->surName}";
     }
 }

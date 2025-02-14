@@ -43,6 +43,17 @@ class Site extends Model
         'area_id' => null,
     ];
 
+    protected static function boot()
+    {
+    parent::boot();
+
+    static::saving(function ($site) {
+            if (Site::where('teacher_id', $site->teacher_id)->exists()) {
+                throw new \Exception('Este docente ya tiene una sede asignada.');
+            }
+        });
+    }
+
 
     public function sede()
     {
@@ -67,5 +78,10 @@ class Site extends Model
     public function teachers()
     {
         return $this->hasMany(Teacher::class);
+    }
+
+    public function getFullNameAttribute(): string
+    {
+        return "{$this->name} {$this->surName}";
     }
 }

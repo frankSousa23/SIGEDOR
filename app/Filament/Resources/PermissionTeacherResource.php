@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Builder;
 
 class PermissionTeacherResource extends Resource
 {
@@ -90,14 +91,13 @@ class PermissionTeacherResource extends Resource
                     ->label('Cédula')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('teacher.name')
-                    ->label('Nombres')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('teacher.surName')
-                    ->label('Apellidos')
-                    ->searchable()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('teacher.full_name')
+                    ->label('Nombre Completo')
+                    ->sortable(query: function (Builder $query, string $direction) {
+                        $query->orderBy('teachers.name', $direction)
+                              ->orderBy('teachers.surName', $direction);
+                    })
+                    ->searchable(['teachers.name', 'teachers.surName']),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre del Permiso')
                     ->searchable()

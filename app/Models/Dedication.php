@@ -75,4 +75,8 @@ class Dedication extends Model
             default => [],
         };
     }
+    public function getFullNameAttribute(): string
+    {
+        return "{$this->name} {$this->surName}";
+    }
 }

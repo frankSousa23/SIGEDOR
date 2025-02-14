@@ -7,6 +7,7 @@ use App\Filament\Resources\TeacherResource\RelationManagers;
 use App\Models\Teacher;
 use App\Models\Sede;
 use App\Models\Area;
+use Illuminate\Validation\Rule;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -60,15 +61,50 @@ class TeacherResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('cdi')
-                    ->label('Cédula de Identidad')
+                Forms\Components\Select::make('user_id')
+                    ->label('Usuario')
+                    ->relationship('user', 'name')
                     ->required()
-                    ->unique(ignoreRecord: true)
-                    ->maxLength(255)
+                    ->searchable()
+                    ->preload()
+                    ->getSearchResultsUsing(fn (string $search) =>
+                        User::query()
+                            ->whereDoesntHave('teacher')  // Filtra usuarios sin relación con teacher
+                            ->where('name', 'like', "%{$search}%")
+                            ->limit(50)
+                            ->pluck('name', 'id')
+                    )
+                    ->getOptionLabelUsing(fn ($value): ?string =>
+                        User::find($value)?->name
+                    )
+                    ->afterStateUpdated(function ($state, Forms\Set $set) {
+                        $user = User::find($state);
+                        if ($user) {
+                            $set('sede_id', $user->sede_id);
+                            $set('area_id', $user->area_id);
+                        }
+                    })
+                    ->rules([
+                        Rule::unique('teachers', 'user_id')
+                    ])
                     ->validationMessages([
-                        'required' => 'La cédula es obligatoria',
-                        'unique' => 'La cédula ya está registrada',
+                        'unique' => 'Este usuario ya tiene un docente asignado'
                     ]),
+
+                Forms\Components\TextInput::make('cdi')
+                        ->label('Cédula de Identidad')
+                        ->required()
+                        ->unique(ignoreRecord: true)
+                        ->minLength(7)
+                        ->maxLength(10)
+                        ->numeric()
+                        ->validationMessages([
+                            'required' => 'La cédula es obligatoria',
+                            'unique' => 'La cédula ya está registrada',
+                            'min' => 'La cédula debe tener al menos :min dígitos',
+                            'max' => 'La cédula no puede exceder :max dígitos',
+                            'numeric' => 'La cédula solo puede contener números'
+                            ]),
 
                 Forms\Components\TextInput::make('name')
                     ->label('Nombres')
@@ -92,52 +128,49 @@ class TeacherResource extends Resource
                     ->label('Teléfono')
                     ->tel()
                     ->required()
-                    ->maxLength(255),
+                    ->minLength(7)
+                    ->maxLength(15)
+                    ->validationMessages([
+                        'required' => 'El teléfono es obligatorio',
+                        'min' => 'El teléfono debe tener al menos :min dígitos',
+                        'max' => 'El teléfono no puede exceder :max dígitos'
+                    ]),
 
                 Forms\Components\TextInput::make('email')
-                    ->label('Correo')
-                    ->email()
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->maxLength(255),
+                        ->label('Correo')
+                        ->email()
+                        ->required()
+                        ->unique(ignoreRecord: true)
+                        ->maxLength(255)
+                        ->validationMessages([
+                            'required' => 'El correo es obligatorio',
+                            'unique' => 'El correo ya está registrado',
+                            'email' => 'Debe ser un correo válido'
+                            ]),
 
                 Forms\Components\DatePicker::make('birthDate')
                     ->label('Fecha de Nacimiento')
                     ->required()
-                    ->maxDate(now()->subYears(18)),
+                    ->maxDate(now()->subYears(18))
+                    ->validationMessages([
+                        'required' => 'La fecha de nacimiento es obligatoria',
+                        'max' => 'Debe ser mayor de 18 años'
+                    ]),
 
                 Forms\Components\DatePicker::make('datePromotion')
                     ->label('Fecha de Promoción')
-                    ->required(),
+                    ->required()
+                    ->minDate(now()->subYears(50))
+                    ->maxDate(now())
+                    ->validationMessages([
+                        'required' => 'La fecha de promoción es obligatoria',
+                        'min' => 'La fecha no puede ser anterior a :min',
+                        'max' => 'La fecha no puede ser futura'
+                    ]),
 
                 Forms\Components\TextInput::make('asignaturePromotion')
                     ->label('Asignatura de Promoción')
                     ->maxLength(255),
-
-                Forms\Components\Select::make('user_id')
-                    ->label('Usuario')
-                    ->relationship('user', 'name')
-                    ->required()
-                    ->searchable()
-                    ->preload()
-                    ->getSearchResultsUsing(fn (string $search) =>
-                        User::query()
-                            ->where('name', 'like', "%{$search}%")
-                            ->limit(50)
-                            ->pluck('name', 'id')
-                    )
-                    ->afterStateUpdated(function ($state, Forms\Set $set) {
-                        $user = User::find($state);
-                        if ($user) {
-                            $set('sede_id', $user->sede_id);
-                        }
-                    })
-                    ->afterStateUpdated(function ($state, Forms\Set $set) {
-                        $user = User::find($state);
-                        if ($user) {
-                            $set('area_id', $user->area_id);
-                        }
-                    }),
 
                 Forms\Components\Hidden::make('sede_id')
                     ->default(fn () => Auth::user()->sede_id)
@@ -157,14 +190,11 @@ class TeacherResource extends Resource
                     ->label('Cédula')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Nombres')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('surName')
-                    ->label('Apellidos')
-                    ->searchable()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('full_name')
+                    ->label('Nombre Completo')
+                    ->getStateUsing(fn ($record) => $record->name.' '.$record->surName)
+                    ->searchable(['name', 'surName'])
+                    ->sortable(['name', 'surName']),
                 Tables\Columns\TextColumn::make('sede.nombre')
                     ->label('Sede')
                     ->searchable()
@@ -192,11 +222,37 @@ class TeacherResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('genre')
-                    ->options([
-                        'F' => 'Femenino',
-                        'M' => 'Masculino',
-                    ])
-                    ->label('Género'),
+                ->label('Género')
+                ->options([
+                    'F' => 'Femenino',
+                    'M' => 'Masculino'
+        ]),
+
+    Tables\Filters\SelectFilter::make('sede_id')
+        ->label('Sede')
+        ->relationship('sede', 'nombre')
+        ->searchable()
+        ->preload(),
+
+    Tables\Filters\SelectFilter::make('area_id')
+        ->label('Área')
+        ->relationship('area', 'nombre')
+        ->searchable(),
+
+    Tables\Filters\Filter::make('created_at')
+        ->form([
+            Forms\Components\DatePicker::make('from')
+                ->label('Registro desde'),
+            Forms\Components\DatePicker::make('to')
+                ->label('Registro hasta'),
+        ])
+        ->query(function (Builder $query, array $data): Builder {
+            return $query
+                ->when($data['from'],
+                    fn($q) => $q->whereDate('created_at', '>=', $data['from']))
+                ->when($data['to'],
+                    fn($q) => $q->whereDate('created_at', '<=', $data['to']));
+        })
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

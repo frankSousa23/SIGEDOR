@@ -81,7 +81,7 @@ class Teacher extends Model
 
     public function sites()
     {
-    return $this->belongsToMany(Site::class, 'site_teacher');
+    return $this->belongsToMany(Site::class);
     }
 
     public function category()
@@ -106,14 +106,7 @@ class Teacher extends Model
 
     public function programa()
     {
-    return $this->hasOneThrough(
-        Programa::class,
-        Site::class,
-        'id',         // FK en sites
-        'id',         // FK en programas
-        'site_id',    // Local key en teachers
-        'programa_id' // Local key en sites
-        );
+        return $this->belongsTo(Programa::class);
     }
 
     public function programas()

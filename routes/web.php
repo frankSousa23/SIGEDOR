@@ -8,5 +8,3 @@ Route::get('/', function () {
     }
     return view('welcome');
 });
-
-// Filament maneja automáticamente la autenticación para /dashboard

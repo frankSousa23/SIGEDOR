@@ -32,4 +32,9 @@ class PermissionTeacher extends Model
     {
         return $this->belongsTo(Teacher::class);
     }
+
+    public function getFullNameAttribute(): string
+    {
+        return "{$this->name} {$this->surName}";
+    }
 }

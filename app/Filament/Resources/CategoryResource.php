@@ -21,6 +21,7 @@ use Illuminate\Support\Carbon;
 use Filament\Notifications\Notification;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 
 class CategoryResource extends Resource
 {
@@ -86,11 +87,15 @@ class CategoryResource extends Resource
                                 return Teacher::whereDoesntHave('category')->pluck('cdi', 'id');
                             })
                             ->required()
-                            ->validationMessages([
-                                'required' => 'Debe seleccionar un docente',
-                            ])
-                            ->reactive()
-                            ->columnSpan('full'),
+                            ->rules([
+                    Rule::unique('categories', 'teacher_id')
+                ])
+                        ->validationMessages([
+                            'required' => 'Debe seleccionar un docente',
+                            'unique' => 'Este docente ya tiene una categoría asignada'
+                ])
+                        ->reactive()
+                        ->columnSpan('full'),
 
                         Forms\Components\Grid::make(2)
                             ->schema([
@@ -142,6 +147,11 @@ class CategoryResource extends Resource
                                     ->label('Fecha de Instructor')
                                     ->required()
                                     ->live(debounce: 2000)
+    ->rules(['required', 'date', 'after_or_equal:1980-01-01'])
+    ->validationMessages([
+        'required' => 'La fecha de instructor es obligatoria',
+        'after_or_equal' => 'La fecha no puede ser anterior a 1980'
+    ])
                                     ->afterStateUpdated(function ($state, callable $get, callable $set) {
                                         if ($state) {
                                             $set('current_category', 'Instructor');
@@ -252,10 +262,27 @@ class CategoryResource extends Resource
                             ->label('Observaciones')
                             ->maxLength(255),
 
-                        Forms\Components\TextInput::make('current_category')
-                            ->label('Nombre de Categoría')
-                            ->required()
-                            ->maxLength(255),
+                            Forms\Components\Hidden::make('current_category') // Ocultamos current_category
+    ->afterStateHydrated(function ($state, callable $get, callable $set) {
+        // Actualizar current_category basado en las fechas ingresadas
+        if ($get('titular')) {
+            $set('current_category', 'Titular');
+        } elseif ($get('asociado')) {
+            $set('current_category', 'Asociado');
+        } elseif ($get('agregado')) {
+            $set('current_category', 'Agregado');
+        } elseif ($get('asistente')) {
+            $set('current_category', 'Asistente');
+        } elseif ($get('instructor')) {
+            $set('current_category', 'Instructor');
+        } else {
+            $set('current_category', '');
+        }
+    }),
+
+
+
+
                     ]),
             ]);
     }
@@ -268,14 +295,13 @@ class CategoryResource extends Resource
                     ->label('Cédula')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('teacher.name')
-                    ->label('Nombres')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('teacher.surName')
-                    ->label('Apellidos')
-                    ->searchable()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('teacher.full_name')
+                    ->label('Nombre Completo')
+                    ->sortable(query: function (Builder $query, string $direction) {
+                        $query->orderBy('teachers.name', $direction)
+                              ->orderBy('teachers.surName', $direction);
+                    })
+                    ->searchable(['teachers.name', 'teachers.surName']),
                 Tables\Columns\TextColumn::make('current_category')
                     ->label('Categoría Actual')
                     ->searchable()
@@ -290,9 +316,6 @@ class CategoryResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->wrap(),
-                Tables\Columns\IconColumn::make('disable_assistant_rule')
-                    ->label('Ascenso Inmediato')
-                    ->boolean(),
                 Tables\Columns\TextColumn::make('instructor')
                     ->label('Instructor')
                     ->date()
@@ -313,9 +336,39 @@ class CategoryResource extends Resource
                     ->label('Titular')
                     ->date()
                     ->sortable(),
+                Tables\Columns\IconColumn::make('disable_assistant_rule')
+                    ->label('Ascenso Inmediato')
+                    ->boolean(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('teacher_id')
+        ->label('Docente')
+        ->relationship('teacher', 'cdi')
+        ->searchable()
+        ->getOptionLabelFromRecordUsing(fn ($record) => $record->name.' '.$record->surName),
+
+    Tables\Filters\SelectFilter::make('current_category')
+        ->label('Categoría Actual')
+        ->options([
+            'Instructor' => 'Instructor',
+            'Asistente' => 'Asistente',
+            'Agregado' => 'Agregado',
+            'Asociado' => 'Asociado',
+            'Titular' => 'Titular'
+        ]),
+
+    Tables\Filters\Filter::make('date_range')
+        ->form([
+            Forms\Components\DatePicker::make('start_date'),
+            Forms\Components\DatePicker::make('end_date'),
+        ])
+        ->query(function (Builder $query, array $data) {
+            return $query
+                ->when($data['start_date'],
+                    fn($q) => $q->whereDate('created_at', '>=', $data['start_date']))
+                ->when($data['end_date'],
+                    fn($q) => $q->whereDate('created_at', '<=', $data['end_date']));
+        }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

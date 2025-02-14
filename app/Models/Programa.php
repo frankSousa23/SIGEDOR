@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Programa extends Model
 {
-    protected $fillable = ['nombre', 'teacher_id'];
+    protected $fillable = ['nombre'];
 
 
     public function teacher(): BelongsTo
@@ -20,6 +20,10 @@ class Programa extends Model
         return $this->belongsToMany(Teacher::class);
     }
 
+    public function getFullNameAttribute(): string
+    {
+        return "{$this->name} {$this->surName}";
+    }
 
 
 }

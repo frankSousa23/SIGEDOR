@@ -18,6 +18,8 @@ use App\Filament\Resources\ReportResource\Pages;
 use Filament\Actions\Exports\Models\Export;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class ReportResource extends Resource
 {
@@ -33,7 +35,7 @@ class ReportResource extends Resource
     {
         return $form
             ->schema([
-            Forms\Components\Select::make('teacher_id')
+                Forms\Components\Select::make('teacher_id')
                 ->label('Docente')
                 ->options(Teacher::pluck('cdi', 'id'))
                 ->required()
@@ -44,7 +46,6 @@ class ReportResource extends Resource
                     $teacher = Teacher::with([
                         'sede',
                         'area',
-                        'site' => fn($q) => $q->with('programa')
                     ])->find($state);
 
                     if ($teacher) {
@@ -52,22 +53,9 @@ class ReportResource extends Resource
                         $set('sede_id', $teacher->sede_id);
                         $set('area_id', $teacher->area_id);
 
-                        // Campos de sede y área con null safety
                         $set('sede_nombre', optional($teacher->sede)->nombre ?? 'Sin Sede');
                         $set('area_nombre', optional($teacher->area)->nombre ?? 'Sin Área');
 
-                        // Campos de programa con validación en cascada
-                        $programaId = optional($teacher->site)->programa_id;
-                        $programaNombre = 'Sin Programa';
-
-                        if ($teacher->site && $teacher->site->programa) {
-                            $programaNombre = $teacher->site->programa->nombre;
-                        }
-
-                        $set('programa_id', $programaId);
-                        $set('programa_nombre', $programaNombre);
-
-                        // Campos de categoría y dedicación
                         $category = Category::where('teacher_id', $state)->first();
                         $set('category_id', $category?->id);
                         $set('category_name', $category?->current_category ?? 'Sin Categoría');
@@ -77,13 +65,10 @@ class ReportResource extends Resource
                         $set('dedication_name', $dedication?->name ?? 'Sin Dedicación');
 
                     } else {
-                        // Reset completo de campos
                         $set('sede_id', null);
                         $set('area_id', null);
                         $set('sede_nombre', 'Sin Sede');
                         $set('area_nombre', 'Sin Área');
-                        $set('programa_id', null);
-                        $set('programa_nombre', 'Sin Programa');
                         $set('category_id', null);
                         $set('category_name', 'Sin Categoría');
                         $set('dedication_id', null);
@@ -122,9 +107,6 @@ class ReportResource extends Resource
             Forms\Components\TextInput::make('area_nombre')
                 ->label('Área')
                 ->disabled(),
-            Forms\Components\TextInput::make('programa_nombre')
-                ->label('Programa')
-                ->disabled(),
             Forms\Components\TextInput::make('category_name')
                 ->label('Categoría')
                 ->disabled(),
@@ -133,23 +115,29 @@ class ReportResource extends Resource
                 ->disabled(),
             Forms\Components\Hidden::make('sede_id'),
             Forms\Components\Hidden::make('area_id'),
-            Forms\Components\Hidden::make('programa_id'),
             Forms\Components\Hidden::make('category_id'),
             Forms\Components\Hidden::make('dedication_id'),
                             ]);
     }
+
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('memoNumber')
-                    ->label('Número de Memo')
-                    ->searchable()
-                    ->sortable(),
+        ->label('N° Memo')
+        ->searchable()
+        ->sortable()
+        ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('typeReport')
-                    ->label('Tipo de Reporte')
-                    ->searchable()
+                    ->label('Tipo')
+                    ->formatStateUsing(fn ($state) => match($state) {
+                        'academic' => 'Académico',
+                        'administrative' => 'Administrativo',
+                        'research' => 'Investigación',
+                        'extension' => 'Extensión'
+                    })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('teacher.cdi')
                     ->label('Cédula')
@@ -163,10 +151,6 @@ class ReportResource extends Resource
                     ->label('Área')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('programa.nombre')
-                    ->label('Programa')
-                    ->searchable()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('category.current_category')
                     ->label('Categoría')
                     ->searchable()
@@ -175,14 +159,13 @@ class ReportResource extends Resource
                     ->label('Dedicación')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('teacher.name')
-                    ->label('Nombres')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('teacher.surName')
-                    ->label('Apellidos')
-                    ->searchable()
-                    ->sortable(),
+                    Tables\Columns\TextColumn::make('teacher.full_name')
+                    ->label('Nombre Completo')
+                    ->sortable(query: function (Builder $query, string $direction) {
+                        $query->orderBy('teachers.name', $direction)
+                              ->orderBy('teachers.surName', $direction);
+                    })
+                    ->searchable(['teachers.name', 'teachers.surName']),
                 Tables\Columns\TextColumn::make('report')
                     ->label('Reporte')
                     ->searchable()
@@ -195,10 +178,61 @@ class ReportResource extends Resource
                     ->label('Observaciones')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\IconColumn::make('has_programa')
+                    ->label('Programa')
+                    ->boolean()
+                    ->getStateUsing(fn ($record) => !is_null($record->programa_id)),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Fecha')
+                    ->dateTime('d/m/Y H:i')
+                    ->sortable()
+                    ->toggleable(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('typeReport')
+        ->label('Tipo de Reporte')
+        ->options([
+            'academic' => 'Académico',
+            'administrative' => 'Administrativo',
+            'research' => 'Investigación',
+            'extension' => 'Extensión'
+        ]),
+
+    Tables\Filters\SelectFilter::make('teacher_id')
+        ->label('Docente')
+        ->relationship('teacher', 'cdi')
+        ->searchable()
+        ->preload(),
+
+    Tables\Filters\Filter::make('created_at')
+        ->form([
+            Forms\Components\DatePicker::make('from')
+                ->label('Desde'),
+            Forms\Components\DatePicker::make('to')
+                ->label('Hasta'),
+        ])
+        ->query(function ($query, array $data) {
+            return $query
+                ->when($data['from'],
+                    fn($q) => $q->whereDate('created_at', '>=', $data['from']))
+                ->when($data['to'],
+                    fn($q) => $q->whereDate('created_at', '<=', $data['to']));
+        })
             ])
+            ->actions([
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make()
+                        ->icon('heroicon-m-eye'),
+                    Tables\Actions\EditAction::make()
+                        ->icon('heroicon-m-pencil-square'),
+                    Tables\Actions\Action::make('pdf')
+                        ->label('PDF')
+                        ->icon('heroicon-m-arrow-down-tray')
+                        ->url(fn ($record) => route('reports.pdf', $record))
+                        ->openUrlInNewTab()
+                ])
+            ])
+
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('export')
@@ -236,6 +270,8 @@ class ReportResource extends Resource
 
             ]);
     }
+
+
 
     public static function getPages(): array
     {

@@ -4,6 +4,8 @@ use Illuminate\Support\Str;
 
 return [
 
+    'charset' => 'utf8mb4',
+    'collation' => 'utf8mb4_unicode_ci',
     /*
     |--------------------------------------------------------------------------
     | Default Database Connection Name
@@ -16,7 +18,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'sqlite'),
+    'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------

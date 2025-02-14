@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreignId('sede_id')->constrained('sedes')->cascadeOnDelete();
             $table->foreignId('area_id')->constrained('areas')->cascadeOnDelete();
             $table->foreignId('programa_id')->nullable()->constrained('programas')->onDelete('set null');
-            $table->unsignedBigInteger('site_id')->constrained('sites')->cascadeOnDelete()->nullable();
+            $table->unsignedBigInteger('site_id')->nullable()->constrained('sites')->onDelete('set null');
             $table->unsignedBigInteger('category_id')->constrained('categories')->cascadeOnDelete()->nullable();
             $table->unsignedBigInteger('dedication_id')->constrained('dedications')->cascadeOnDelete()->nullable();
             $table->unsignedBigInteger('report_id')->constrained('reports')->cascadeOnDelete()->nullable();
