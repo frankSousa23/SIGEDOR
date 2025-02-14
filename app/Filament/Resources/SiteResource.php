@@ -19,6 +19,7 @@ use Filament\Forms\Components\Select;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
+use Filament\Tables\Actions\EditAction;
 
 class SiteResource extends Resource
 {
@@ -122,7 +123,8 @@ class SiteResource extends Resource
             Forms\Components\Toggle::make('is_available')
                 ->label('Disponible')
                 ->default(true),
-        ]);
+        ])
+        ->visible(fn () => auth()->user()->hasRole('admin'));
     }
 
     public static function table(Table $table): Table
@@ -236,6 +238,39 @@ class SiteResource extends Resource
 
             ]);
     }
+
+
+    protected function getTableQuery(): Builder
+{
+    $user = auth()->user();
+
+    if ($user->hasRole('admin')) {
+        return Site::query(); // Admin ve todo
+    }
+
+    if ($user->hasRole('area_manager')) {
+        return Site::query()
+            ->where('sede_id', $user->sede_id)
+            ->where('area_id', $user->area_id); // Area Manager ve solo su sede y área
+    }
+
+    return Site::where('user_id', $user->id); // Teacher ve solo sus propios sites
+}
+
+protected function getTableActions(): array
+{
+    return [
+        EditAction::make()
+            ->visible(fn (Site $record): bool => auth()->user()->hasRole('admin') ||
+                (auth()->user()->hasRole('area_manager') &&
+                 $record->sede_id === auth()->user()->sede_id &&
+                 $record->area_id === auth()->user()->area_id) ||
+                (auth()->user()->hasRole('teacher') &&
+                 $record->user_id === auth()->user()->id)), // Solo admin, area_manager con misma sede/área o teacher dueño puede editar
+    ];
+}
+
+
 
     public static function getRelations(): array
     {

@@ -5,15 +5,18 @@
         @page { size: landscape; margin: 20px; }
         .header { text-align: center; margin-bottom: 20px; }
         .footer { text-align: center; margin-top: 20px; font-size: 12px; }
-        table { width: 100%; border-collapse: collapse; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
         th, td { border: 1px solid #000; padding: 8px; text-align: left; }
         th { background-color: #f2f2f2; }
+        .title { font-size: 18px; font-weight: bold; }
+        .subtitle { font-size: 14px; margin-top: 5px; }
+        .footer-text { font-size: 12px; margin-top: 10px; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h2>Institución Educativa</h2>
-        <p>Reporte de Docentes - {{ now()->format('d/m/Y H:i') }}</p>
+        <div class="title">Universidad Nacional Experimental "Rómulo Gallegos"</div>
+        <div class="subtitle">Control Académico - Reporte de Docentes - {{ now()->format('d/m/Y H:i') }}</div>
     </div>
 
     <table>
@@ -50,8 +53,9 @@
     </table>
 
     <div class="footer">
-        <p>Total de docentes: {{ $teachers->count() }}</p>
-        <p>Generado automáticamente por el sistema</p>
+        <div class="footer-text">Total de docentes: {{ $teachers->count() }}</div>
+        <div class="footer-text">SIGEDOR - Sistema para Gestión de Docentes Ordinarios</div>
+        <div class="footer-text">Generado automáticamente por el sistema</div>
     </div>
 </body>
 </html>

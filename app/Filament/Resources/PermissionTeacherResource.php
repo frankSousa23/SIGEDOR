@@ -15,6 +15,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Carbon;
+use Filament\Tables\Actions\EditAction;
 
 class PermissionTeacherResource extends Resource
 {
@@ -163,7 +164,8 @@ class PermissionTeacherResource extends Resource
                     'string',
                     'max:500'
                 ]),
-            ]);
+            ])
+            ->visible(fn () => auth()->user()->hasRole('admin'));
     }
 
     public static function table(Table $table): Table
@@ -302,6 +304,39 @@ class PermissionTeacherResource extends Resource
 
             ]);
     }
+
+
+    protected function getTableQuery(): Builder
+{
+    $user = auth()->user();
+
+    if ($user->hasRole('admin')) {
+        return PermissionTeacher::query(); // Admin ve todo
+    }
+
+    if ($user->hasRole('area_manager')) {
+        return PermissionTeacher::query()
+            ->where('sede_id', $user->sede_id)
+            ->where('area_id', $user->area_id); // Area Manager ve solo su sede y área
+    }
+
+    return PermissionTeacher::where('user_id', $user->id); // Teacher ve solo sus propios registros
+}
+
+
+protected function getTableActions(): array
+{
+    return [
+        EditAction::make()
+            ->visible(fn (PermissionTeacher $record): bool => auth()->user()->hasRole('admin') ||
+                (auth()->user()->hasRole('area_manager') &&
+                 $record->sede_id === auth()->user()->sede_id &&
+                 $record->area_id === auth()->user()->area_id) ||
+                (auth()->user()->hasRole('teacher') &&
+                 $record->user_id === auth()->user()->id)), // Solo admin, area_manager con misma sede/área o teacher dueño puede editar
+    ];
+}
+
 
     public static function getRelations(): array
     {

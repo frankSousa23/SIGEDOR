@@ -50,12 +50,12 @@ class StatsOverview extends BaseWidget
 
     private function getAreaManagerStats(): array
     {
-        $siteId = auth()->user()->site_id;
+        $sedeId = auth()->user()->sede_id; // Cambiado de `site_id` a `sede_id`
 
         return [
             Stat::make('Profesores en mi Sede',
                 User::role('teacher')
-                    ->where('site_id', $siteId)
+                    ->where('sede_id', $sedeId)
                     ->count())
                 ->description('Profesores asignados')
                 ->descriptionIcon('heroicon-m-academic-cap')

@@ -1,11 +1,15 @@
 <?php
 
 namespace App\Providers;
+namespace App\Providers\Gate;
 
 use App\Models\Teacher;
 use App\Policies\TeacherPolicy;
 use App\Models\User;
+use App\Models\Report;
 use App\Policies\UserPolicy;
+use App\Policies\ReportPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -16,8 +20,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        Teacher::class => TeacherPolicy::class,
         User::class => UserPolicy::class,
+        Teacher::class => TeacherPolicy::class,
+        Report::class => ReportPolicy::class,
     ];
 
     /**
@@ -26,5 +31,9 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
+
+        Gate::define('access-users', function ($user) {
+            return $user->hasRole('admin');
+        });
     }
 }

@@ -49,7 +49,7 @@ class TasksOverview extends BaseWidget
         if ($user->hasRole('area_manager')) {
             return User::query()
                 ->role('teacher')
-                ->where('site_id', $user->site_id)
+                ->where('sede_id', $user->sede_id) // Cambiado de `site_id` a `sede_id`
                 ->where('is_active', true)
                 ->latest();
         }

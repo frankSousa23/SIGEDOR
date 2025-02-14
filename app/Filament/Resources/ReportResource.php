@@ -20,6 +20,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables\Actions\EditAction;
 
 class ReportResource extends Resource
 {
@@ -270,6 +271,36 @@ class ReportResource extends Resource
 
             ]);
     }
+
+    protected function getTableQuery(): Builder
+{
+    $user = auth()->user();
+
+    if ($user->hasRole('admin')) {
+        return Report::query(); // Admin ve todo
+    }
+
+    if ($user->hasRole('area_manager')) {
+        return Report::query()
+            ->where('sede_id', $user->sede_id)
+            ->where('area_id', $user->area_id); // Area Manager ve solo su sede y área
+    }
+
+    return Report::where('user_id', $user->id); // Teacher ve solo sus propios reports
+}
+
+protected function getTableActions(): array
+{
+    return [
+        EditAction::make()
+            ->visible(fn (Report $record): bool => auth()->user()->hasRole('admin') ||
+                (auth()->user()->hasRole('area_manager') &&
+                 $record->sede_id === auth()->user()->sede_id &&
+                 $record->area_id === auth()->user()->area_id) ||
+                (auth()->user()->hasRole('teacher') &&
+                 $record->user_id === auth()->user()->id)), // Solo admin, area_manager con misma sede/área o teacher dueño puede editar
+    ];
+}
 
 
 

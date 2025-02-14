@@ -179,7 +179,8 @@ class TeacherResource extends Resource
                     ->default(fn () => Auth::user()->area_id)
                     ->required(),
             ])
-            ->columns(2);
+            ->columns(2)
+            ->visible(fn () => auth()->user()->hasRole('admin'));
     }
 
     public static function table(Table $table): Table
@@ -277,6 +278,23 @@ class TeacherResource extends Resource
                 ]),
             ]);
     }
+
+    protected function getTableQuery(): Builder
+{
+    $user = auth()->user();
+
+    if ($user->hasRole('admin')) {
+        return Teacher::query();
+    }
+
+    if ($user->hasRole('area_manager')) {
+        return Teacher::query()
+            ->where('sede_id', $user->sede_id)
+            ->where('area_id', $user->area_id);
+    }
+
+    return Teacher::where('user_id', $user->id);
+}
 
     public static function getRelations(): array
     {
