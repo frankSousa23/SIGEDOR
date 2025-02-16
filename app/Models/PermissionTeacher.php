@@ -11,7 +11,7 @@ class PermissionTeacher extends Model
     protected $table = 'permissionsteachers';
 
     protected $fillable = [
-        'teacher_id',
+        'teacher_cdi',
         'memo_number',
         'type',
         'is_paid',
@@ -50,9 +50,9 @@ class PermissionTeacher extends Model
     ];
 
     public function teacher()
-    {
-        return $this->belongsTo(Teacher::class);
-    }
+{
+    return $this->belongsTo(Teacher::class, 'teacher_cdi', 'cdi');
+}
 
     public function calculateEndDate(): ?string
     {

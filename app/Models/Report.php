@@ -11,7 +11,7 @@ class Report extends Model
     protected $table = 'reports';
 
     protected $fillable = [
-        'teacher_id',
+        'teacher_cdi',
         'memoNumber',
         'typeReport',
         'report',
@@ -25,7 +25,7 @@ class Report extends Model
 
     public function teacher()
 {
-    return $this->belongsTo(Teacher::class, 'teacher_id');
+    return $this->belongsTo(Teacher::class, 'teacher_cdi', 'cdi');
 }
     public function sede()
     {

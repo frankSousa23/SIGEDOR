@@ -45,8 +45,8 @@ class Teacher extends Model
     ];
 
     protected $casts = [
-        'birthDate' => 'date',
-        'datePromotion' => 'date',
+        'birthDate' => 'date:d/m/Y',
+        'datePromotion' => 'date:d/m/Y',
         'sede_id' => 'string',
         'area_id' => 'string',
         'programa_id' => 'string',

@@ -16,4 +16,9 @@ class ListUsers extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    public function updatedTableFilters(): void
+{
+    $this->table->resetPage(); // ← Forzar reinicio de paginación
+}
 }
