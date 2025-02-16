@@ -55,20 +55,36 @@ class User extends Authenticatable
     ];
 
 
-    public function sede()
-    {
-        return $this->belongsTo(Sede::class, 'sede_id');
-    }
+    // Relación con sede/area para area_manager
+public function sede()
+{
+    return $this->belongsTo(Sede::class);
+}
 
-    public function area()
-    {
-        return $this->belongsTo(Area::class, 'area_id');
-    }
+public function area()
+{
+    return $this->belongsTo(Area::class);
+}
 
-    public function teacher()
-    {
-        return $this->hasOne(Teacher::class, 'teacher_id');
-    }
+// Conversión a teacher
+public function teacher()
+{
+    return $this->hasOne(Teacher::class);
+}
+
+// Crear teacher automáticamente para area_managers
+protected static function booted()
+{
+    static::created(function ($user) {
+        if ($user->hasRole('area_manager')) {
+            $user->teacher()->create([
+                'cdi' => 'MGR-' . Str::uuid(),
+                'sede_id' => $user->sede_id,
+                'area_id' => $user->area_id
+            ]);
+        }
+    });
+}
 
 
     public function scopeActive($query)

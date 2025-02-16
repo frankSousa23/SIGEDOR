@@ -13,7 +13,7 @@ class Dedication extends Model
     protected $table = 'dedications';
 
     protected $fillable = [
-        'teacher_id',
+        'teacher_cdi',
         'name',
         'hours',
         'director',
@@ -56,10 +56,10 @@ class Dedication extends Model
         'Exclusiva' => 'Exclusiva',
     ];
 
-    public function teacher(): BelongsTo
-    {
-        return $this->belongsTo(Teacher::class);
-    }
+    public function teacher()
+{
+    return $this->belongsTo(Teacher::class, 'teacher_cdi', 'cdi');
+}
 
     public function report(){
         return $this->hasMany(Report::class);

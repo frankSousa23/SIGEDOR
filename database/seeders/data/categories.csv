@@ -1,0 +1,26 @@
+id;teacher_cdi;preTitle;lastTitle;current_category;instructor;asistente;agregado;asociado;titular;disable_assistant_rule;info
+1;10101001;Ingeniero en Informática;Magíster en Ciencias de la Computación;Agregado;2010-06-15;2013-06-15;2017-09-20;;;0;Acreditación PEII Nivel A
+2;10101002;Médico Cirujano;Doctora en Ciencias Médicas;Titular;2003-04-10;2006-04-10;2010-06-15;2015-09-20;2021-03-10;0;Jefa de Cátedra y Directora de Investigación
+3;10101003;Ingeniero Agrónomo;Doctor en Biotecnología Agrícola;Titular;2005-09-18;2008-09-18;2012-11-10;2017-05-15;2023-01-20;0;Coordinador de Estación Experimental
+4;10101004;Licenciada en Educación;Magíster en Lingüística Aplicada;Asociado;2008-01-20;2011-01-20;2015-06-15;2020-10-10;;0;Coordinadora de Prácticas Profesionales
+5;10101005;Ingeniero en Informática;Especialista en Telemática y Redes;Asistente;2014-03-20;2018-05-12;;;;0;Tutor de proyectos de grado
+6;10101006;Licenciada en Enfermería;Magíster en Salud Comunitaria;Agregado;2012-09-15;2015-09-15;2020-02-18;;;0;Docente Asistencial en Hospital Universitario
+7;10101007;Ingeniero Agrónomo;Magíster en Mecánica Agrícola;Asociado;2007-05-18;2010-05-18;2014-09-20;2019-11-15;;0;Investigador en Tecnologías Apropiadas
+8;10101008;Contador Público;Magíster en Finanzas Corporativas;Agregado;2009-11-25;2012-11-25;2017-04-10;;;0;Asesora Financiera Institucional
+9;10101009;Ingeniero en Informática;Licenciado en Matemáticas;Asistente;2016-02-14;2020-03-10;;;;0;Coordinador de Laboratorio de Redes
+10;10101010;Licenciada en Educación;Doctora en Pedagogía Crítica;Asociado;2011-07-22;2014-07-22;2018-09-15;2023-06-20;;0;Investigadora en Formación Docente
+11;10101011;Médico Veterinario;Doctor en Ciencias Veterinarias;Titular;2004-10-30;2007-10-30;2011-12-15;2016-08-20;2022-05-10;0;Miembro del Consejo de Escuela
+12;10101012;Médico Cirujano;Magíster en Epidemiología;Agregado;2013-04-16;2016-04-16;2021-08-10;;;0;Epidemióloga Regional
+13;10101013;Licenciado en Educación;Magíster en Orientación y Consejería;Asistente;2015-08-19;2019-10-25;;;;0;Consejero Estudiantil
+14;10101014;Ingeniero en Informática;Ingeniero en Sistemas;Instructor;2017-06-25;;;;;;0;Docente en desarrollo de software
+15;10101015;Economista;Magíster en Políticas Económicas;Asociado;2008-03-12;2011-03-12;2015-07-20;2020-12-15;;0;Analista Económico
+16;10101016;Odontólogo;Especialista en Periodoncia;Asistente;2014-11-10;2018-12-05;;;;0;Docente en Clínica Odontológica
+17;10101017;Ingeniero Civil;Magíster en Ingeniería Vial;Agregado;2010-09-28;2013-09-28;2018-11-15;;;0;Inspector de Obras Civiles
+18;10101018;Abogado;Magíster en Ciencias Penales y Criminología;Agregado;2012-05-14;2015-05-14;2020-09-20;;;0;Litigante y Defensora Universitaria
+19;10101019;Médico Cirujano;Doctor en Bioquímica y Biología Molecular;Titular;2002-11-20;2005-11-20;2009-08-15;2014-04-10;2020-11-15;0;Premio Nacional de Ciencia y Tecnología
+20;10101020;Ingeniero en Informática;Ingeniero de Sistemas;Instructor;2018-09-15;;;;;;0;Desarrolladora Fullstack y DevOps
+21;10101021;Licenciado en Educación;Magíster en Innovación Educativa;Agregado;2011-04-18;2014-04-18;2019-10-12;;;0;Coordinador de Aula Virtual
+22;10101022;Médico Cirujano;Especialista en Obstetricia y Ginecología;Asistente;2013-10-05;2017-11-20;;;;0;Jefa de Guardia Hospitalaria
+23;10101023;Arquitecto;Magíster en Urbanismo y Hábitat;Agregado;2009-08-22;2012-08-22;2017-06-15;;;0;Planificador Urbano
+24;10101024;Licenciada en Administración;Magíster en Gerencia Estratégica;Instructor;2016-12-10;;;;;;0;Asesora en Emprendimiento
+25;10101025;Médico Veterinario;Doctor en Reproducción Bovina;Titular;2001-07-14;2004-07-14;2008-10-20;2013-05-15;2019-08-25;0;Asesor Ganadero Nacional

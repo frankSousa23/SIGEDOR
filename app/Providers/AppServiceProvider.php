@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Blade;
+use App\Models\Category;
+use App\Observers\CategoryObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,5 +35,7 @@ class AppServiceProvider extends ServiceProvider
                 'Configuración',
             ]);
         });
+
+        Category::observe(CategoryObserver::class);
     }
 }

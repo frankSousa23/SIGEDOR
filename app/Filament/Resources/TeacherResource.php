@@ -279,23 +279,6 @@ class TeacherResource extends Resource
             ]);
     }
 
-    protected function getTableQuery(): Builder
-{
-    $user = auth()->user();
-
-    if ($user->hasRole('admin')) {
-        return Teacher::query();
-    }
-
-    if ($user->hasRole('area_manager')) {
-        return Teacher::query()
-            ->where('sede_id', $user->sede_id)
-            ->where('area_id', $user->area_id);
-    }
-
-    return Teacher::where('user_id', $user->id);
-}
-
     public static function getRelations(): array
     {
         return [

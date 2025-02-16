@@ -10,7 +10,8 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade')->nullable();
+            $table->string('teacher_cdi', 15)->index()->comment('RELACIÓN: teachers.cdi');
+            $table->foreign('teacher_cdi')->references('cdi')->on('teachers')->onDelete('cascade');
             $table->string('preTitle')->nullable()->comment('Título de pregrado del docente');
             $table->string('lastTitle')->nullable()->comment('Título más alto obtenido');
             $table->boolean('disable_assistant_rule')->default(false)->comment('Habilita promoción inmediata a Asistente');
@@ -26,7 +27,6 @@ return new class extends Migration
             $table->text('info')->nullable()->comment('Información adicional');
             $table->timestamps();
             $table->softDeletes();
-            $table->index('teacher_id');
         });
     }
 
