@@ -10,10 +10,11 @@ return new class extends Migration
     {
         Schema::create('dedications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('teacher_id')->nullable()->constrained('teachers')->onDelete('cascade');
+            $table->string('teacher_cdi', 15)->index()->comment('CDI del docente');
+            $table->unsignedSmallInteger('hours')->comment('Horas asignadas');
+            $table->foreign('teacher_cdi')->references('cdi')->on('teachers')->onDelete('cascade');
             $table->string('name')->index();
             $table->enum('type', ['TCV', 'MT', 'TC', 'EX'])->comment('TCV: Tiempo Convencional, MT: Medio Tiempo, TC: Tiempo Completo, EX: Exclusiva');
-            $table->integer('hours')->comment('Horas semanales de dedicación');
             $table->enum('director_role', ['Coordinador', 'Jefe de Departamento', 'Decano'])->nullable();
             $table->integer('max_students')->nullable()->unsigned()->comment('Número máximo de estudiantes en asesoría');
             $table->integer('min_advisory_hours')->nullable()->unsigned()->comment('Horas mínimas dedicadas a asesorías');
@@ -24,7 +25,6 @@ return new class extends Migration
             $table->timestamp('last_assignment')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->index('teacher_id');
         });
     }
 

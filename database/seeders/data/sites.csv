@@ -1,0 +1,26 @@
+id;teacher_cdi;sede_nombre;area_nombre;programa_nombre;uc;weekHours;sections;info;is_active
+1;10101001;Sede Central/San Juan de los Morros;Ingeniería de sistemas;Ingeniería en Informática;4;6;2;Cátedra de Algoritmos y Estructuras de Datos;1
+2;10101002;Sede Central/San Juan de los Morros;Ciencias de la salud;Medicina;5;8;3;Cátedra de Fisiopatología Médica;1
+3;10101003;Calabozo/Guárico;Ingeniería agronómica;Agronomía;4;8;2;Cátedra de Suelos y Fertilidad;1
+4;10101004;Valle de la Pascua/Guárico;Ciencias de la educación;Educación Integral;3;6;2;Cátedra de Lingüística y Gramática;1
+5;10101005;Sede Central/San Juan de los Morros;Ingeniería de sistemas;Ingeniería en Informática;3;4;2;Cátedra de Redes de Computadoras;1
+6;10101006;Sede Central/San Juan de los Morros;Ciencias de la salud;Enfermería;4;6;2;Cátedra de Farmacología Aplicada;1
+7;10101007;Calabozo/Guárico;Ingeniería agronómica;Agronomía;4;6;2;Cátedra de Maquinaria Agrícola;1
+8;10101008;Valle de la Pascua/Guárico;Ciencias económicas y sociales;Contaduría Pública;3;4;2;Cátedra de Contabilidad Superior;1
+9;10101009;Sede Central/San Juan de los Morros;Ingeniería de sistemas;Ingeniería en Informática;3;4;2;Cátedra de Sistemas Operativos;1
+10;10101010;Sede Central/San Juan de los Morros;Ciencias de la educación;Educación Integral;4;8;3;Cátedra de Diseño y Evaluación Curricular;1
+11;10101011;Zaraza/Guárico;Medicina veterinaria;Medicina Veterinaria;5;8;2;Cátedra de Semiología y Clínica de Rumiantes;1
+12;10101012;Sede Central/San Juan de los Morros;Ciencias de la salud;Medicina;3;4;2;Cátedra de Salud Pública y Medicina Preventiva;1
+13;10101013;Altagracia de Orituco/Guárico;Ciencias de la educación;Educación Integral;3;4;2;Cátedra de Psicología del Desarrollo;1
+14;10101014;Sede Central/San Juan de los Morros;Ingeniería de sistemas;Ingeniería en Informática;4;6;3;Cátedra de Modelado y Gestión de Bases de Datos;1
+15;10101015;Calabozo/Guárico;Ciencias económicas y sociales;Economía;4;6;2;Cátedra de Teoría Microeconómica;1
+16;10101016;Sede Central/San Juan de los Morros;Ciencias odontológicas;Odontología;4;6;2;Cátedra de Periodoncia Clínica;1
+17;10101017;Valle de la Pascua/Guárico;Ingeniería, arquitectura y tecnología;Ingeniería Civil;3;4;2;Cátedra de Mecánica de Suelos;1
+18;10101018;Sede Central/San Juan de los Morros;Ciencias políticas y jurídicas;Derecho;3;4;2;Cátedra de Derecho Procesal Penal;1
+19;10101019;Sede Central/San Juan de los Morros;Ciencias de la salud;Medicina;5;8;3;Cátedra de Bioquímica y Genética Médica;1
+20;10101020;Sede Central/San Juan de los Morros;Ingeniería de sistemas;Ingeniería en Informática;4;6;2;Cátedra de Desarrollo de Aplicaciones Web;1
+21;10101021;Mellado/El Sombrero;Ciencias de la educación;Educación Integral;4;6;2;Cátedra de Recursos Didácticos Digitales;1
+22;10101022;Calabozo/Guárico;Ciencias de la salud;Medicina;4;6;2;Cátedra de Ginecología y Obstetricia;1
+23;10101023;Valle de la Pascua/Guárico;Ingeniería, arquitectura y tecnología;Arquitectura;3;4;2;Cátedra de Taller de Proyectos Arquitectónicos;1
+24;10101024;Ortiz/Guárico;Ciencias económicas y sociales;Administración Comercial;3;4;2;Cátedra de Principios de Administración;1
+25;10101025;Zaraza/Guárico;Medicina veterinaria;Medicina Veterinaria;5;8;2;Cátedra de Fisiología de la Reproducción Bovina;1

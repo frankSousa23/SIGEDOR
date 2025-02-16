@@ -12,6 +12,7 @@ class UserPolicy
     public function viewAny(User $user)
     {
     return $user->hasAnyRole(['admin', 'area_manager']);
+    return true;
     }
 
     public function view(User $user, User $model): bool

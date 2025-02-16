@@ -278,6 +278,8 @@ class TeacherResource extends Resource
             ]);
     }
 
+
+
     public static function getRelations(): array
     {
         return [

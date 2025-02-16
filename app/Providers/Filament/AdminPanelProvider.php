@@ -88,5 +88,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware(['auth'])
             ->navigation(fn () => Navigation::build());
+
+
     }
 }

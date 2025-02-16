@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('teacher_id')->unique()->constrained('teachers')->onDelete('cascade')->index();
+            $table->foreignId('teacher_cdi')->constrained('teachers')->onDelete('cascade')->index();
             $table->foreignId('sede_id')->constrained('sedes')->onDelete('cascade')->nullable();
             $table->foreignId('area_id')->constrained('areas')->onDelete('cascade')->nullable();
             $table->foreignId('programa_id')->constrained('programas')->onDelete('cascade')->nullable();
@@ -21,10 +21,16 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->integer('teachers_count')->default(0);
             $table->boolean('is_available')->default(true);
+            $table->unique([
+                'teacher_cdi',
+                'sede_id',
+                'area_id',
+                'programa_id'
+            ], 'unique_site_assignment');
             $table->timestamp('last_assignment')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->index('teacher_id');
+            $table->index('teacher_cdi');
         });
     }
 

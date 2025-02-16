@@ -12,7 +12,7 @@ class Category extends Model
     protected $table = 'categories';
 
     protected $fillable = [
-        'teacher_id',
+        'teacher_cdi',
         'category',
         'preTitle',
         'lastTitle',
@@ -43,10 +43,20 @@ class Category extends Model
         'Titular' => 'Titular',
     ];
 
+    protected $dates = [
+        'instructor',
+        'asistente', 
+        'agregado',
+        'asociado',
+        'titular',
+        'created_at',
+        'updated_at'
+    ];
+
     public function teacher()
-    {
-        return $this->belongsTo(Teacher::class);
-    }
+{
+    return $this->belongsTo(Teacher::class, 'teacher_cdi', 'cdi');
+}
 
     public function reports(){
         return $this->hasMany(Report::class);
@@ -91,4 +101,16 @@ class Category extends Model
     {
         return "{$this->name} {$this->surName}";
     }
+
+    protected static function booted()
+{
+    static::updating(function ($category) {
+        if ($category->isDirty(['instructor', 'asistente', 'agregado', 'asociado', 'titular'])) {
+            activity()
+                ->performedOn($category)
+                ->withProperties($category->getChanges())
+                ->log('Actualización de categoría');
+        }
+    });
+}
 }

@@ -1,0 +1,26 @@
+id;teacher_cdi;name;hours;director;studentNumber;studentHours;info
+1;10101001;Tiempo Completo;30;Coordinador;45;6;Coordinador de Línea de Investigación en Software
+2;10101002;Exclusiva;36;Director;60;8;Directora del Centro de Investigaciones Médicas
+3;10101003;Exclusiva;36;Decano;35;8;Decano del Área de Agronomía
+4;10101004;Tiempo Completo;30;Jefe de Departamento;50;6;Jefa del Dpto. de Práctica Docente
+5;10101005;Medio Tiempo;18;;30;4;Carga docente regular de laboratorio
+6;10101006;Tiempo Convencional;12;;25;2;Docencia clínica asistencial
+7;10101007;Tiempo Completo;30;Coordinador;40;6;Coordinador de Extensión Universitaria
+8;10101008;Medio Tiempo;18;;35;4;Docente de auditoría y contabilidad
+9;10101009;Tiempo Convencional;12;;28;2;Carga horaria en turnos vespertinos
+10;10101010;Exclusiva;36;Sub-Director;55;8;Subdirectora Académica de Postgrado
+11;10101011;Exclusiva;36;Director;40;8;Director del Hospital Veterinario
+12;10101012;Medio Tiempo;18;;32;4;Docente de epidemiología y salud pública
+13;10101013;Tiempo Convencional;12;;20;2;Tutorías y orientación
+14;10101014;Tiempo Completo;30;;50;6;Docente en materias troncales de algoritmos
+15;10101015;Tiempo Completo;30;Coordinador;42;6;Coordinador del Programa de Economía
+16;10101016;Medio Tiempo;18;;25;4;Atención de clínicas odontológicas
+17;10101017;Tiempo Convencional;12;;30;2;Docente de estructuras y topografía
+18;10101018;Medio Tiempo;18;;40;4;Docente de clínica jurídica
+19;10101019;Exclusiva;36;;65;8;Investigador Emérito a Dedicación Exclusiva
+20;10101020;Tiempo Completo;30;;48;6;Docente de arquitectura de software y cloud
+21;10101021;Tiempo Completo;30;Coordinador;38;6;Coordinador de Tecnologías en la Educación
+22;10101022;Medio Tiempo;18;;26;4;Práctica hospitalaria
+23;10101023;Tiempo Convencional;12;;22;2;Taller de diseño y dibujo técnico
+24;10101024;Tiempo Convencional;12;;30;2;Docencia en administración general
+25;10101025;Exclusiva;36;Coordinador;45;8;Coordinador de Investigación Pecuaria

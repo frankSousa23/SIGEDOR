@@ -1,0 +1,31 @@
+id;name;email;password;sede_nombre;area_nombre;rol_name;is_active;is_approved
+1;Administrador General;admin@sigedor.com;password;Sede Central/San Juan de los Morros;Ingeniería de sistemas;admin;1;1
+2;Jefe de Área de Sistemas;areamanager@sigedor.com;password;Sede Central/San Juan de los Morros;Ingeniería de sistemas;area_manager;1;1
+3;Prof. Carlos Mendoza;docente@sigedor.com;password;Sede Central/San Juan de los Morros;Ingeniería de sistemas;teacher;1;1
+4;Dra. Carmen Alicia Silva;areamanager.salud@sigedor.com;password;Sede Central/San Juan de los Morros;Ciencias de la salud;area_manager,teacher;1;1
+5;Dr. Gustavo Adolfo Rivas;areamanager.agronomia@sigedor.com;password;Calabozo/Guárico;Ingeniería agronómica;area_manager,teacher;1;1
+6;MSc. Patricia Coromoto Díaz;areamanager.educacion@sigedor.com;password;Valle de la Pascua/Guárico;Ciencias de la educación;area_manager;1;1
+7;Ing. Alejandro Gómez Briceño;alejandro.gomez@sigedor.com;password;Sede Central/San Juan de los Morros;Ingeniería de sistemas;teacher;1;1
+8;Dra. Elena Mercedes Morales;elena.morales@sigedor.com;password;Sede Central/San Juan de los Morros;Ciencias de la salud;teacher;1;1
+9;Ing. José Luis Fernández Parra;jose.fernandez@sigedor.com;password;Calabozo/Guárico;Ingeniería agronómica;teacher;1;1
+10;Econ. Carmen Beatriz Vargas;carmen.vargas@sigedor.com;password;Valle de la Pascua/Guárico;Ciencias económicas y sociales;teacher;1;1
+11;Ing. Roberto Carlos Hernández;roberto.hernandez@sigedor.com;password;Sede Central/San Juan de los Morros;Ingeniería de sistemas;teacher;1;1
+12;MSc. Patricia Virginia Silva;patricia.silva@sigedor.com;password;Sede Central/San Juan de los Morros;Ciencias de la educación;teacher;1;1
+13;MV. Fernando Antonio Castro;fernando.castro@sigedor.com;password;Zaraza/Guárico;Medicina veterinaria;teacher;1;1
+14;Dra. Diana Carolina Navarro;diana.navarro@sigedor.com;password;Sede Central/San Juan de los Morros;Ciencias de la salud;teacher;1;1
+15;Lic. Gabriel Eduardo Ortiz;gabriel.ortiz@sigedor.com;password;Altagracia de Orituco/Guárico;Ciencias de la educación;teacher;1;1
+16;Ing. Lucía Gabriela Romero;lucia.romero@sigedor.com;password;Sede Central/San Juan de los Morros;Ingeniería de sistemas;teacher;1;1
+17;Lic. Andrés Felipe Castillo;andres.castillo@sigedor.com;password;Calabozo/Guárico;Ciencias económicas y sociales;teacher;1;1
+18;Od. Valentina Isabel Paredes;valentina.paredes@sigedor.com;password;Sede Central/San Juan de los Morros;Ciencias odontológicas;teacher;1;1
+19;Ing. Manuel Enrique Salazar;manuel.salazar@sigedor.com;password;Valle de la Pascua/Guárico;Ingeniería, arquitectura y tecnología;teacher;1;1
+20;Abg. Sofía Alejandra Rivas;sofia.rivas@sigedor.com;password;Sede Central/San Juan de los Morros;Ciencias políticas y jurídicas;teacher;1;1
+21;Dr. Héctor Ramón Colmenares;hector.colmenares@sigedor.com;password;Sede Central/San Juan de los Morros;Ciencias de la salud;teacher;1;1
+22;Ing. Vanessa Carolina Montero;vanessa.montero@sigedor.com;password;Sede Central/San Juan de los Morros;Ingeniería de sistemas;teacher;1;1
+23;Lic. Javier Ignacio Benítez;javier.benitez@sigedor.com;password;Mellado/El Sombrero;Ciencias de la educación;teacher;1;1
+24;Dra. Mariana Eugenia Blanco;mariana.blanco@sigedor.com;password;Calabozo/Guárico;Ciencias de la salud;teacher;1;1
+25;Arq. Daniel Alberto Cordero;daniel.cordero@sigedor.com;password;Valle de la Pascua/Guárico;Ingeniería, arquitectura y tecnología;teacher;1;1
+26;Lic. Gabriela Estefanía Lugo;gabriela.lugo@sigedor.com;password;Ortiz/Guárico;Ciencias económicas y sociales;teacher;1;1
+27;Dr. Ricardo Alfonso Vielma;ricardo.vielma@sigedor.com;password;Zaraza/Guárico;Medicina veterinaria;teacher;1;1
+28;Prof. Nuevo Pendiente;usuario.pendiente@sigedor.com;password;Sede Central/San Juan de los Morros;Ingeniería de sistemas;teacher;1;0
+29;Prof. Segundo Pendiente;usuario.revision@sigedor.com;password;Calabozo/Guárico;Ciencias de la salud;teacher;1;0
+30;Prof. Cuenta Inactiva;usuario.inactivo@sigedor.com;password;Valle de la Pascua/Guárico;Ciencias de la educación;teacher;0;1
