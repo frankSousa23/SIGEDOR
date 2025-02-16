@@ -15,7 +15,7 @@ class Site extends Model
     protected $table = 'sites';
 
     protected $fillable = [
-        'teacher_id',
+        'teacher_cdi',
         'sede_id',
         'area_id',
         'programa_id',
@@ -48,31 +48,37 @@ class Site extends Model
     parent::boot();
 
     static::saving(function ($site) {
-            if (Site::where('teacher_id', $site->teacher_id)->exists()) {
-                throw new \Exception('Este docente ya tiene una sede asignada.');
-            }
-        });
+        $exists = Site::where('teacher_cdi', $site->teacher_cdi)
+            ->where('sede_id', $site->sede_id)
+            ->where('area_id', $site->area_id)
+            ->where('programa_id', $site->programa_id)
+            ->exists();
+
+        if ($exists) {
+            throw new \Exception('Configuración duplicada para este docente en la misma sede/área/programa');
+        }
+    });;
     }
 
 
-    public function sede()
-    {
-        return $this->belongsTo(Sede::class);
-    }
+    public function teacher()
+{
+    return $this->belongsTo(Teacher::class);
+}
 
-    public function area()
-    {
-        return $this->belongsTo(Area::class);
-    }
+public function sede()
+{
+    return $this->belongsTo(Sede::class, 'sede_nombre', 'nombre');
+}
+
+public function area()
+{
+    return $this->belongsTo(Area::class, 'area_nombre', 'nombre');
+}
 
     public function programa()
     {
         return $this->belongsTo(Programa::class);
-    }
-
-    public function teacher()
-    {
-    return $this->belongsTo(Teacher::class);
     }
 
     public function teachers()

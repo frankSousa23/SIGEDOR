@@ -261,4 +261,18 @@ class UserResource extends Resource
 
         return $query->where('id', auth()->id());
     }
+
+    protected function getTableRecordsPerPageSelectOptions(): array
+{
+    return [10, 25, 50, 100, 'all']; // ← Opciones personalizadas
+}
+
+protected function getTableQuery(): Builder
+{
+    return parent::getTableQuery()
+        ->withoutGlobalScopes() // ← Deshabilitar scopes globales
+        ->limit(10000); // ← Límite máximo para queries sin filtro
+}
+
+
 }

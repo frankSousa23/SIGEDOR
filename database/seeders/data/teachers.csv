@@ -1,0 +1,872 @@
+﻿id;user_name;cdi;name;surName;genre;phone;email;birthDate;datePromotion;asignaturePromotion
+;Karen De Jesús Cedeño Montenegro;16657727;Karen De Jesús;Cedeño Montenegro;F;4145978249;karendefonseca@gmail.com;14/06/1983;15/10/2012;Autoestima Y Crecimiento Personal
+;Zoraima G. Morales Diaz;15812615;Zoraima G.;Morales Diaz;F;4162407812;elielcaro15@gmail.com;15/10/1981;08/12/2014;Trabajo De Investigación I
+;Zaida M. Perez T.;8787866;Zaida M.;Perez T.;F;4163469690;36@gmail.com;10/12/1965;09/12/2010;Administración Publica
+;Yusmary Vidal;12361346;Yusmary;Vidal;F;4164354838;yusmaryvidal2007@hotmail.com;29/04/1973;04/02/2004;Problemática Científica Y Tecnologica
+;Yulitze Del Carmen Morea Camacho;17164150;Yulitze Del Carmen;Morea Camacho;F;4142948733;yulitzemorea@hotmail.com;09/01/1985;10/12/2014;Mercadeo
+;Yudith C. Lozada V.;17571778;Yudith C.;Lozada V.;F;4261363886;ingenierialozadayudith@gmail.com;01/07/1984;27/10/2010;Dibujo Tecnico Y A Mano Suelta
+;Ysnaldo A. Garcia R.;15145270;Ysnaldo A.;Garcia R.;M;4265676237;isnaldo_84@hotmail.com;28/10/1982;22/02/2008;Estructuras Discretas I
+;Yominsimar De Los A. Carpavire A.;11116417;Yominsimar De Los A.;Carpavire A.;F;4163491152;yominsimar@hotmail.com;04/07/1975;16/12/2004;Clínica Integral Periodoncia
+;Yolman Morales Bautista ;13115656;Yolman;Morales Bautista ;M;4265329857;yamb21@hotmail.com;03/05/1975;16/12/2004;Formación Cultural Y Artística Ii
+;Yoletzi Pérez De Arana;11120200;Yoletzi;Pérez De Arana;F;4264494894;perezyoletzy@gmail.com;18/09/1974;21/03/2002;Investigación De Operaciones
+;Ynés L. Hernandez De M.;8824056;Ynés L.;Hernandez De M.;F;4161998801;yneshernandez76@gmail.com;02/02/1966;15/12/2004;Organización De Empresa
+;Yesika C. Castellanos S.;15081137;Yesika C.;Castellanos S.;F;4124695641;72@gmail.com;25/08/1982;08/12/2010;Comportamiento Organizacional
+;Yennyferr C. Milano C.;13151592;Yennyferr C.;Milano C.;F;4243427810;yennyferrmilano@gmail.com;01/08/1978;18/02/2004;Contabilidad Iii
+;Yelitza E. Torrealba S.;9654824;Yelitza E.;Torrealba S.;F;4244466297;ytorrealba@unerg.edu.ve;14/04/1969;29/07/2002;Matemática
+;Yeliptza Hernandez L.;10673054;Yeliptza;Hernandez L.;F;4128566296;lunadorada1993@hotmail.com;02/07/1972;08/12/2010;Seminario Trabajo De Grado
+;Yeisy Del Carmen Castellanos S.;13151288;Yeisy Del Carmen;Castellanos S.;F;4124441817;76@gmail.com;15/07/1977;13/12/2011;Procesos Administrativos
+;Yaurymar Coromoto Escobar Borrego;15710746;Yaurymar Coromoto;Escobar Borrego;F;4243804266;yescobar@unerg.edu.ve;21/11/1982;12/11/2010;Estructuras Discretas
+;Yasmira R. Padrino ;9883101;Yasmira R.;Padrino ;F;4169342958;padrinoyasmira@gmail.com;22/05/1967;15/12/2004;Enfermería Básica
+;Yasmin El Issa;11118530;Yasmin;El Issa;F;4243024138;elissayasmin@hotmail.com;01/08/1973;10/02/2004;Problema Socio-Económico
+;Yamir Irlanda Muñoz Padrino;13151043;Yamir Irlanda;Muñoz Padrino;F;4164368620;yimp278@gmail.com;02/09/1978;14/12/2011;Investigación (Proyecto De Grado)
+;Yaluimar J. Willians R.;13447505;Yaluimar J.;Willians R.;F;4243409504;willians.yaluimar@gmail.com;13/02/1979;11/12/2008;Física Ii
+;Yajaira C. Lugo C.;5722571;Yajaira C.;Lugo C.;F;4243517754;yajaira.lugo.lugo@gmail.com;17/08/1960;10/02/2004;Formulación Y Evaluación De Presupuesto
+;Wilmer R. Escorche H.;15247783;Wilmer R.;Escorche H.;M;4124206966;escorchew@hotmail.com;26/04/1982;11/12/2008;Fundamentos Micro Y Macro
+;Wilmer R. Caldera ;13150002;Wilmer R.;Caldera ;M;4243344297;wcaldera1@unerg.edu.ve;30/08/1974;15/10/2012;Control De Proyecto
+;Wilmer De J. Torres S.;7809532;Wilmer De J.;Torres S.;M;4262461040;wilmerto53@gmail.com;22/09/1964;12/12/2006;Sociología Y Educación
+;Wilmer A. Delgado S.;8632631;Wilmer A.;Delgado S.;M;4143841982;wilmerdelgado_1@hotmail.com;27/09/1967;09/12/2008;Técnicas De Estudios
+;Willian O. Rivero M.;4346684;Willian O.;Rivero M.;M;4169445521;willian_rivero@yahoo.es;17/12/1955;11/12/2008;Sistemas De Información Gerencial
+;Virginia J. Lopez G. ;17739705;Virginia J.;Lopez G. ;F;0;134@gmail.com;31/08/1985;09/12/2010;Metodologia De La Investigación
+;Virginia Castellano;18895623;Virginia;Castellano;F;4243308353;virginiareval@gmail.com;04/08/1988;11/12/2019;
+;Vilma Ely Medina Pereira;11349916;Vilma Ely;Medina Pereira;F;4162432397;medinavilma428@gmail.com;15/09/1971;10/12/2008;Costos I Y Ii
+;Victor M. Hidalgo T.;7183372;Victor M.;Hidalgo T.;M;4144456983;victormanuelhidalgo@gmail.com;07/11/1961;01/07/2004;Practicas De Campo Iv
+;Victor Luis Herbonniere Villarroel;8847715;Victor Luis;Herbonniere Villarroel;M;4162387713;herbonniere@yahoo.com;03/10/1963;14/03/2002;Informática
+;Victor L. Herbonniere V.;8884715;Victor L.;Herbonniere V.;M;4266961844;herbonniere@yahoo.com;03/06/1966;14/03/2002;Informática
+;Victor Jose Moy Morales;12841025;Victor Jose;Moy Morales;M;4126720557;70@gmail.com;28/11/1974;09/12/2014;Proyecto Comunitario Socio Jurídico I
+;Veronica Beatriz  Flores Lopez;15710235;Veronica Beatriz ;Flores Lopez;F;4243743937;mariaveronica272010@gmail.com ;03/02/1982;15/10/2012;Prácticas De Campo Ii
+;Venezuela Tovar R.;10672985;Venezuela;Tovar R.;F;0;147@gmail.com;01/01/1963;15/12/2004;Estadística
+;Velia Y. Reyes C.;7284489;Velia Y.;Reyes C.;F;4166450527;yovanina12@hotmail.com;16/03/1961;17/11/2009;Introducción A La Administración
+;Tibisay B. Duarte Salazar;8996811;Tibisay B.;Duarte Salazar;F;4243527412;tbdsalazar67@yahoo.es;29/01/1969;15/10/2012;Lenguaje Y Comunicación
+;Teresa Barrios D.;17603787;Teresa;Barrios D.;F;4243599033;tbarrios.d@hotmail.com;22/05/1986;28/10/2010;Alimentación Animal
+;Telmo Flores M.;4397564;Telmo;Flores M.;M;4165641723;telmoflores@hotmail.com;30/08/1955;27/10/2010;Economía Agricola
+;Tania Lopez C.;8233119;Tania;Lopez C.;F;4243786528;taniatorto@gmail.com;20/03/1965;22/02/2008;Metodología De La Investigación
+;Susana E. De Farias N.;12840963;Susana E.;De Farias N.;F;4140526461;susanaefn@gmail.com;12/08/1976;12/11/2010;Ingeniería Económica
+;Soleidy. Peña.;16346601;Soleidy.;Peña.;F;4121755355;sapena@unerg.edu.ve;19/09/1983;17/11/2009;Investigación De Operaciones
+;Sidalia De Sousa V.;9889835;Sidalia;De Sousa V.;M;4144487433;sidaliadesousav@hotmail.com;28/11/1967;08/12/2010;Comportamiento Organizacional
+;Rudy Roraima Galindo Barrios;13732084;Rudy Roraima;Galindo Barrios;F;4265301543;rudy.galindo.b@gmail.com;24/11/1978;20/05/2013;Autoestima Y Crecimiento Personal
+;Rubmary Izaguirre;12164403;Rubmary;Izaguirre;F;4162077871;izaguirrerubmary@gmail.com;18/06/1976;28/11/2002;Producción De Cerdos
+;Ruben D. Silverio S.;16044450;Ruben D.;Silverio S.;M;4124084936;rdss2@hotmail.com;04/02/1984;21/02/2008;Organizador Del Computador
+;Rose Mary Hernandez Roman;10273148;Rose Mary;Hernandez Roman;F;4243750006;rosemhernandezr@gmail.com;08/02/1972;08/12/2014;Filosofía De La Educación
+;Rosana  M. Galindo  B.;17353569;Rosana  M.;Galindo  B.;F;4145439867;rosanamgb04@gmail.com;08/04/1986;17/11/2009;Salud Pública Y Ambiente
+;Rosa Margarita Carrillo ;8995047;Rosa Margarita;Carrillo ;F;4242303423;rosamarcar123@gmail.com;28/11/1965;09/12/2019;Derecho  Constitucional
+;Rosa C. Delgado S.;8625200;Rosa C.;Delgado S.;F;4243083248;caridaddemartinez@gmail.com;06/04/1965;16/12/2004;Formación Ciudadana
+;Rosa Arminda Ponce;10672760;Rosa Arminda;Ponce;F;4140524687;arminrosa06@yahoo.com;17/11/1973;17/05/2013;Física
+;Roraymis D. Bustamante M.;11119406;Roraymis D.;Bustamante M.;F;4141467007;roraymis@hotmail.com;11/02/1976;28/11/2002;Clínica Integral Operatoria
+;Rony E. Quijada M.;12334536;Rony E.;Quijada M.;M;4169078304;rquijada@unerg.edu.ve;13/10/1974;30/06/2004;Dibujo Técnico
+;Rodolfo. Uribe J.;3177122;Rodolfo.;Uribe J.;M;4243286844;rodolfouribe49@gmail.com;07/01/1949;22/02/2008;Reproducción Animal
+;Roder M. Montoya B.;11153682;Roder M.;Montoya B.;F;4267498919;rodermontoya@yahoo.com;28/11/1971;01/04/2002;Sistemas De Información Gerencial
+;Robert Morea;12990832;Robert;Morea;M;4262334929;morearoberth@hotmail.com;22/04/1978;15/10/2012;Informática
+;Rita M. Villegas De V.;9914134;Rita M.;Villegas De V.;F;4167380308;rita.villegas25@gmail.com;17/10/1967;18/02/2004;Estadística
+;Rene R. Reinefeld M.;11117852;Rene R.;Reinefeld M.;M;4140354697;rrreinefeld2@gmail.com;28/02/1975;27/10/2010;Botanica
+;Raúl J. Bello F.;10272185;Raúl J.;Bello F.;M;4127570184;bellobello200@gmail.com;10/05/1972;20/10/2005;Contabilidad  Especializada
+;Ramon A. Gil E.;8619401;Ramon A.;Gil E.;M;4144687129;rgilegui@cantv.net;20/02/1963;06/12/2006;Formulación Y Evaluación De Proyectos Económicos
+;Ramon A. Galindo B.;15082366;Ramon A.;Galindo B.;M;0;186@gmail.com;29/10/1981;17/10/2005;Estadística
+;Raiseth  Acosta Mariño;10671575;Raiseth ;Acosta Mariño;F;4141465552;raisethacostam@gmail.com;19/11/1973;16/10/2012;Mecánica Racional I
+;Rafael E. Rengifo Avila;16999228;Rafael E.;Rengifo Avila;M;0;196@gmail.com;02/08/1984;15/10/2012;Principios De Control Y Combate De Malezas
+;Rafael E. Pérez ;9387625;Rafael E.;Pérez ;M;4144652982;perezrafaele@gmail.com;31/03/1965;19/06/2001;Maquinaria I Y Ii
+;Porfirio A. Fajardo N.;13964324;Porfirio A.;Fajardo N.;M;4127837092;porfirio1304@hotmail.com;01/12/1978;20/11/2002;Estadística General
+;Petra M. Moreno S.;2745865;Petra M.;Moreno S.;F;4124505404;migdalia274@yahoo.com;08/01/1948;06/12/2002;Internado Rotatorio
+;Petra H. Michell N.;2644177;Petra H.;Michell N.;F;4169319055;erminiamichell@hotmail.com;29/06/1953;09/12/2010;Integración Comunitaria
+;Pedro Y. Bastardo M.;8619275;Pedro Y.;Bastardo M.;M;4127794992;pedrobastardo@gmail.com ;04/04/1963;22/02/2008;Matemática Ii
+;Pedro Ramon Mezones Requena;15392548;Pedro Ramon;Mezones Requena;M;4243603393;pedromezarpa@gmail.com;18/12/1982;29/10/2010;Microbiologia
+;Pedro Hildebrando Peña Curto;12171532;Pedro Hildebrando;Peña Curto;M;4124331695;pedropeñacuerto@hotmail.com;11/11/1975;17/11/2009;Orientación Agropecuaria
+;Pedro Fernando Rodriguez Ramirez ;9913338;Pedro Fernando;Rodriguez Ramirez ;M;4168479693;prodriguez583@gmail.com;09/12/1969;13/12/2011;Legislación Laboral
+;Pedro Antonio Rios G.;17044833;Pedro Antonio;Rios G.;M;4124652721;ingenieriapedrorios@gmail.com;21/12/1985;28/10/2010;Sistema De Certificacion De Semillas
+;Pedro Antonio Carpio Diaz;8615222;Pedro Antonio;Carpio Diaz;M;0;110@gmail.com;29/06/1961;21/03/2002;Procesos Administrativos
+;Pedro A. Gomez;2517061;Pedro A.;Gomez;M;4149443137;pegom56@gmai.com ;11/10/1949;09/12/2002;Bioquímica
+;Pavel Rojas Bustamante;9693664;Pavel;Rojas Bustamante;M;4164391449;pavelrojas@outlook.com;11/12/1970;06/12/2002;Metodologia De La Investigación
+;Paolo A. Mandala V.;9886579;Paolo A.;Mandala V.;M;4144012282;paonic15@hotmail.com;28/05/1969;20/11/2002;Matemática
+;Pablo M. Quiroz M.;10665194;Pablo M.;Quiroz M.;M;0;187@gmail.com;29/06/1970;04/06/2001;Fundamentos De La Computación
+;Pablo G. Pizzani C.;7251842;Pablo G.;Pizzani C.;M;4269312850;pablopizzani@yahoo.com;06/09/1964;13/06/2001;Alimentación Y Nutrición Animal
+;Oswaldo R. Arana A.;11115534;Oswaldo R.;Arana A.;M;4169493021;unergsistemas@gmail.com;26/01/1975;14/03/2002;Informática
+;Oswaldo Emilio Berroteran Belisario;12856133;Oswaldo Emilio;Berroteran Belisario;M;4266330577;oberroteran@hotmail.com;13/07/1972;09/12/2014;Proyecto Comunitario Socio Jurídico Ii
+;Oswaldo  Linares ;3766646;Oswaldo ;Linares ;M;4144674202;linos41@hotmail.com ;01/04/1953;20/11/2002;Ecología
+;Oscar D. Garrido A.;16998763;Oscar D.;Garrido A.;M;4121369357;garridooscar_2012@hotmail.com;11/11/1983;10/12/2008;Teoría Económica
+;Orlando. Ramirez L.;11413569;Orlando.;Ramirez L.;M;4266020772;cesaagro216unerg@gmail.com;28/06/1973;17/11/2009;Dibujo Técnico A Mano Suelta
+;Orlando E. Linares L.;7319041;Orlando E.;Linares L.;M;4165462726;olinarez963@gmail.com;05/01/1962;08/03/2000;Ecologia
+;Omar E. Ojeda L.;11118428;Omar E.;Ojeda L.;M;0;126@gmail.com;09/02/1974;22/02/2008;Administración Y Planificación De Educación
+;Omailez Alejandra Delgado Lopez;13151002;Omailez Alejandra;Delgado Lopez;F;4243092531;mailez@gmail.com;25/09/1976;17/05/2013;Practicas De Campo I
+;Olga L. Parra M.;10669560;Olga L.;Parra M.;F;4243519230;olgamonkada@gmail.com;17/07/1972;16/12/2004;Formación Cultural Y Artística Ii
+;Oleiny C. Arana Araujo;13874685;Oleiny C.;Arana Araujo;F;4144568660;oleiny@hotmail.com;18/10/1979;17/05/2013;Física   
+;Oel A. Flores M.;9883389;Oel A.;Flores M.;M;4165440560;pemonflores@gmail.com;13/01/1969;29/07/2004;Matemática
+;Octabio Rafael Rangel;7208885;Octabio Rafael;Rangel;M;4127421572;octabiorangel@unerg.edu.ve;12/11/1961;27/11/2002;Matemática I Y Ii
+;Norberto J. Franco S.;7299573;Norberto J.;Franco S.;M;4264316194;norberto11464@hotmail.com;11/04/1964;17/05/2013;Química General
+;Norbelto Castro;20877147;Norbelto;Castro;M;4124303364;norbeltocastro@gmail.com;28/04/1992;11/12/2019;Programación Iii
+;Noraima De J. Guerrero Q.;8617812;Noraima De J.;Guerrero Q.;F;4243402141;profnoraimaguerrero@gmail.com;23/12/1961;15/12/2004;Estadística  
+;Ninoska Ruiz;4678507;Ninoska;Ruiz;F;2464328292;ninoskruiz@gmail.com;27/01/1958;28/06/2004;Microbiologia
+;Ninfa Y. Aguilar V.;18933693;Ninfa Y.;Aguilar V.;F;4141144899;ninfaaguilar@hotmail.com;27/12/1975;28/11/2002;Clínica Integral Periodoncia
+;Nileni Ilibel. Bolivar R.;13573529;Nileni Ilibel.;Bolivar R.;F;4145797243;n.i.b.r@hotmail.com;28/04/1979;10/12/2010;Clínica De Enfermería Quirúrgica
+;Nicolas Reyes Vilera Diaz;8785279;Nicolas Reyes;Vilera Diaz;M;4269461737;vilera.nicolas@gmail.com;08/02/1966;20/05/2013;Autoestima Y Crecimiento Personal
+;Neyla C. Quintana V.;13150725;Neyla C.;Quintana V.;F;4243164863;neyla.quintana@hotmail.com;04/09/1977;03/03/2008;Derecho Constitucional
+;Neyda Del C. Bohorquez R.;9679143;Neyda Del C.;Bohorquez R.;F;4143459591;neydaunerg@yahoo.es;16/08/1971;18/10/2005;Ecologia
+;Nelson Alvarez;8996608;Nelson;Alvarez;M;4163460617;n_ingnacio_unerg@hotmail.com;18/12/1966;20/12/2002;Enfermería Gineco Obstetricia
+;Nellys Del C. Chirinos S.;8618970;Nellys Del C.;Chirinos S.;F;4243801607;nellyscar@gmail.com;23/01/1965;27/11/2002;Psicología General
+;Nelly Del C. Malave D.;15823038;Nelly Del C.;Malave D.;F;4121780749;malave_nery@hotmail.com;15/11/1980;09/12/2010;Calculo Financiero
+;Nélida Fernandez T.;3998184;Nélida;Fernandez T.;F;4164353787;feccaven@hotmail.com;10/06/1953;19/06/2001;Educación Y Comunicación Rural
+;Nacary De Los Angeles Pulido Arevalo;12899543;Nacary De Los Angeles;Pulido Arevalo;F;4143443797;nacarypulido@hotmail.com;04/02/1976;25/02/2008;Patología Vegetal
+;Miriam J. Bellorin G.;9903978;Miriam J.;Bellorin G.;F;4140530694;ebellorin@gmail.com;12/06/1967;29/11/2002;Comunitaria Iv
+;Mildre Andira Pérez Palacio;11120718;Mildre Andira;Pérez Palacio;F;4144882270;mildrepérez@hotmail.com;10/12/1974;11/12/2008;Planificación
+;Miguel O. Hernandez L.;12737448;Miguel O.;Hernandez L.;M;4161078220;mhernandez@unerg.edu.ve;27/06/1976;22/02/2008;Probabilidad Y Estadística
+;Miguel L. Véliz Montezuma ;8788212;Miguel L.;Véliz Montezuma ;M;4124638598;mveliz@unerg.edu.ve;04/02/1968;13/12/2011;Procesos Administrativos
+;Miguel E. Padron S.;9883255;Miguel E.;Padron S.;M;4165401370;mpadron@unerg.edu.ve;05/07/1968;11/12/2008;Programación I
+;Miguel D. Tirado;13948562;Miguel D.;Tirado;M;4143462575;mtiradourg@gmail.com;15/03/1979;29/11/2002;Lenguaje De Programación
+;Miguel A. Reyes O.;17251549;Miguel A.;Reyes O.;M;4144459471;56@gmail.com;03/02/1986;10/12/2008;Edafologia I
+;Miguel A. Reyes C.;7282649;Miguel A.;Reyes C.;M;4126441563;recurnatu2016@gmail.com;18/11/1962;10/12/2008;Tecnología De Los R.N.R
+;Miguel A. Lira;8633183;Miguel A.;Lira;M;0;1@gmail.com;10/07/1969;28/09/2010;Matemática Ii
+;Migdalia Josefina Sumosa De Blanco;8789043;Migdalia Josefina;Sumosa De Blanco;F;4141478692;migdaliasumosa@hotmail.com;19/04/1967;13/12/2011;Contabilidad Ii
+;Michele Alexandra Sanchez Brea ;16075508;Michele Alexandra;Sanchez Brea ;F;0;204@gmail.com;27/07/1984;12/11/2010;Proyecto De Grado I
+;Mery Tomasello M.;11684186;Mery;Tomasello M.;F;4166437416;26@gmail.com;09/10/1954;10/12/2002;Morfología Humana
+;Mery J. Caldera;10672832;Mery J.;Caldera;F;4269325853;merycal08@hotmail.com;08/03/1973;10/12/2008;Informática I Y Ii
+;Merly Carolina Orta Fernandez;14745710;Merly Carolina;Orta Fernandez;F;4243562083;morta@unerg.edu.ve;08/09/1980;11/12/2019;Proyecto De Grado Ii
+;Mercedes V. Garcia R.;4932037;Mercedes V.;Garcia R.;F;4166431122;mercedesgarciavr@hotmail.com;25/03/1957;09/12/2008;Auditoria
+;Mercedes  Flores M.;10669060;Mercedes ;Flores M.;F;4124408659;mercedes_flores04@hotmail.com;04/09/1972;16/12/2004;Procesos Administrativos
+;Merblan Elvira Luna Jimenez ;14395686;Merblan Elvira;Luna Jimenez ;F;4243042894;merblanluna@yahoo.es;14/06/1981;08/12/2014;Clínica Integral Del Adultio Ii (Periodoncia)
+;Melissa F. Reyes O.;14780628;Melissa F.;Reyes O.;F;4143466801;mefaeo@gmail.com;14/12/1981;17/10/2005;Contabilidad Ii
+;Maximo Antonio Camacho Gonzalez;13151409;Maximo Antonio;Camacho Gonzalez;M;4128918446;maximisar2005@gmail.com;27/11/1976;16/12/2004;Matemática Financiera / Calculo Financiero 
+;Mauro Alberto Cabeza Vargas;5263297;Mauro Alberto;Cabeza Vargas;M;4141464609;maurocabeza@hotmail.com;23/12/1956;16/12/2004;Contabilidad Social
+;Maurella Z. Alvarado C.;14741995;Maurella Z.;Alvarado C.;F;4243752788;zoribencon@gmail.com;29/01/1979;16/12/2004;Técnicas De Estudios
+;Martin G. Moreno A. ;11124925;Martin G.;Moreno A. ;M;4267436370;margregor33@gmail.com;13/08/1976;16/12/2004;Formación Instrumental I
+;Marlen Josefina Gonzalez Diaz;7277715;Marlen Josefina;Gonzalez Diaz;F;4164352369;marlengonzalezd@hotmail.com;14/05/1961;14/12/2011;Investigación Ii
+;Maritza C. Navarro H.;11796858;Maritza C.;Navarro H.;F;4149462323;maritzanh@yahoo.com ;22/08/1975;16/12/2004;Lengua Castellano
+;Maritza Benilde Alvarado;8633206;Maritza Benilde;Alvarado;F;0;144@gmail.com;23/11/1961;08/12/2014;Introducción Al Derecho
+;Marisela Trujillo G.;7225216;Marisela;Trujillo G.;F;4266300731;libertad_2929@hotmail.com;25/10/1963;16/12/2004;Probabilidad Y Estadística
+;Maris Coromoto Coronel Gutierrez;4805633;Maris Coromoto;Coronel Gutierrez;F;4243236765;mariscoronelg@gmail.com;20/08/1956;15/10/2012;Autoestima Y Crecimiento Personal
+;Marioxy J. Morales T.;7238245;Marioxy J.;Morales T.;F;4164471971;29@gmail.com;15/09/1966;16/12/2004;Bioquímica
+;Mario Nildo Valecillos Alvarado;10991377;Mario Nildo;Valecillos Alvarado;M;4267340181;mario10991377@gmail.com;21/11/1973;05/11/2010;Matemática I
+;Mariela Del Rosario Garbi Mendoza;8998338;Mariela Del Rosario;Garbi Mendoza;F;4165122174;marielagarbim@gmail.com;08/11/1967;27/11/2002;Matemática I
+;Mariela Del R. Garbi M.;8988338;Mariela Del R.;Garbi M.;F;4144652929;50@gmail.com;08/11/1967;27/11/2002;Matemática I
+;Marianna Isabel Cerezo Pozo;18044132;Marianna Isabel;Cerezo Pozo;F;4263370355;mariannacerezopozo@gmail.com;06/09/1985;14/12/2011;Informática
+;Maria Teresa Carapa ;12597112;Maria Teresa;Carapa ;F;4243703349;carapa-1976@hotmail.com;16/01/1976;10/12/2010;Introducción A La Administración
+;Maria Rosario Tovar Leon;9890149;Maria Rosario;Tovar Leon;F;4126476178;mariatovar_70@hotmail.com;22/04/1970;17/05/2013;Química Agricola
+;Maria P. Acosta Z.;4344503;Maria P.;Acosta Z.;F;4140350849;mariaacosta1618@gmail.com;30/05/1955;15/05/2002;Sociologia
+;Maria Milagros Guindo Cedeño ;10668934;Maria Milagros;Guindo Cedeño ;F;4168460030;17@gmail.com;24/03/1973;13/12/2011;Comunitaria Ii
+;Maria Luisa Chira;10669069;Maria Luisa;Chira;F;4149471837;chiramaria03@gmail.com;08/03/1972;15/10/2012;Derecho Constitucional
+;Maria Katherine Santil Rengifo;18023036;Maria Katherine;Santil Rengifo;F;4124076171;makasaren@hotmail.com;12/05/1987;13/12/2011;Comunitaria Ii
+;Maria Isabel Montilla Hernandez;15509771;Maria Isabel;Montilla Hernandez;F;4166461200;marisabel4412@hotmail.com;07/09/1981;19/11/2009;Economía Industrial
+;Maria I. Montilla.;15509771-2;Maria I.;Montilla.;F;4166461200;marisabel4412@hotmail.com;07/09/1981;19/11/2009;Economía Industrial
+;Maria I. Collicchio Leon;11796289;Maria I.;Collicchio Leon;F;4243601057;micolicchiol@gmail.com;01/12/1974;12/11/2010;Teoría De Sistemas
+;Maria Hernandez;8995448;Maria;Hernandez;F;4243432492;m_hernandez_alvarez7@hotmail.com;25/04/1968;10/12/2010;Contabilidad Iii
+;Maria Felix Rivas B.;11116565;Maria Felix;Rivas B.;F;4242755282;mariafrivasb2011@gmail.com;12/07/1974;17/05/2013;Química General
+;Maria E. Vasquez M.;10666379;Maria E.;Vasquez M.;F;4243051997;marimorros@hotmail.com;23/07/1970;17/11/2009;Introducción A La Administración
+;Maria Del Rosario Fernandez De Silva;5015878;Maria Del Rosario;Fernandez De Silva;F;4262498597;marysi2010@live.com;25/03/1959;08/12/2014;Seminario Y Trabajo De Grado
+;Maria Carolina Bolivar Jimenez;12596665;Maria Carolina;Bolivar Jimenez;M;4140350834;68@gmail.com;15/12/1975;10/12/2010;Clínica De Enfermería Pediátrica
+;Maria A. Tovar R.;14394890;Maria A.;Tovar R.;F;4248192217;mariato890@gmail.com;23/07/1977;10/12/2010;Contabilidad Iii
+;Maria A. Medina De B.;8631858;Maria A.;Medina De B.;F;4166463780;ariselamedina@gmail.com;27/01/1965;21/02/2005;Historia Y Geografía De Venezuela
+;Margaret R. Carreño R.;15904620;Margaret R.;Carreño R.;F;0;169@gmail.com;29/04/1982;18/11/2009;Clínica Integral Del Adulto Ii
+;Marcos T. Ortega ;14394515;Marcos T.;Ortega ;M;4243051267;unerg1976@hotmail.com;11/06/1976;27/10/2010;Practicas De Campo Iii
+;Marbelis Del Valle Perez Lopez;11117304;Marbelis Del Valle;Perez Lopez;F;4243388688;marbelyspl@hotmail.com;05/12/1973;20/05/2013;Autoestima Y Crecimiento Personal
+;Manuel De J. Camero;5329673;Manuel De J.;Camero;M;4142960647;62@gmail.com;23/12/1957;08/02/2002;Administración De La Educación Superior
+;Manuel Argenis Alvarez Lara;17041726;Manuel Argenis;Alvarez Lara;M;4243156198;alvarezmanuel2021@hotmail.com;25/03/1984;17/05/2013;Producción Animal I
+;Manuel Alejandro Quintero Diaz;8804367;Manuel Alejandro;Quintero Diaz;M;4266408300;manuel_quintero18@hotmail.com;11/07/1967;10/12/2014;Estadística
+;Maludin Josefina Medina Diaz;8631859;Maludin Josefina;Medina Diaz;F;4149434604;maludinm@gmail.com;02/10/1968;08/12/2014;Seminario Y Trabajo De Grado
+;Mailen Del P. Cerezo A.;13622045;Mailen Del P.;Cerezo A.;F;4243574388;mailencerezo@hotmail.com;25/02/1978;15/12/2004;Metodología De La Investigación
+;Maiden C. Lugo E.;5275292;Maiden C.;Lugo E.;F;4121306158;profmaiden@hotmail.com;24/08/1958;10/12/2008;Química General
+;Maholi Del Carmen Lopez Rojas;18405317;Maholi Del Carmen;Lopez Rojas;F;4144549358;maholi28lopez@gmail.com;28/11/1987;09/12/2014;Auditoria
+;Luz M. Ceballos S.;8785177;Luz M.;Ceballos S.;F;4243522480;marinaluce@yahoo.es;05/03/1964;28/10/2010;Reproducción Y Propagación De Plantas
+;Luisa A. Hernandez De H.;14239455;Luisa A.;Hernandez De H.;F;4243082496;luisahdzve@gmail.com;29/08/1978;11/12/2008;Sistemas De Información Gerencial
+;Luis G. Pacheco T.;7248683;Luis G.;Pacheco T.;M;4163421381;luispacheco27@hotmail.com;27/04/1964;20/10/2005;Matemática Ii
+;Luis Ernesto Sapiain Zambrano;5362366;Luis Ernesto;Sapiain Zambrano;M;4140397058;luis25931248@gmail.com;09/12/1960;10/12/2008;Matemática
+;Luis Enrique Rondon ;16326956;Luis Enrique;Rondon ;M;4261548756;luisrondon1702@hotmail.com;17/12/1983;08/12/2014;Contabilidad Ii
+;Luis Enrique Hidalgo Toro;17936346;Luis Enrique;Hidalgo Toro;M;4127590346;lhidalgotoro@gmail.com ;08/08/1986;08/12/2014;Introducción A La Informática
+;Luis E. Diaz R.;6479999;Luis E.;Diaz R.;M;4165437405;luisgco2@gmail.com;05/08/1963;05/11/2010;Cultivos Protegidos
+;Luis D. Méndez M.;13942164;Luis D.;Méndez M.;M;4148467229;goldots@hotmail.com;21/11/1979;21/02/2008;Estructuras Discretas Ii
+;Luis Alejandro Ruiz Medina;4388060;Luis Alejandro;Ruiz Medina;M;4129669777;luisruiz2709@gmail.com;27/09/1952;17/11/2009;Anatomía Animal
+;Luis Adrian Martinez;11378130;Luis Adrian;Martinez;M;4144907726;43@gmail.com;06/12/1972;08/12/2010;Informática I
+;Luis A. Torres B.;15038075;Luis A.;Torres B.;M;4243312262;ltorres@unerg.edu.ve ;15/01/1982;10/12/2010;Informática
+;Luis A. Rivero G.;10670739;Luis A.;Rivero G.;M;4243241525;lriverog@yahoo.es;23/02/1972;16/02/2004;Formulación Y Evaluación Proyectos
+;Luis A. Ortiz R.;12612837;Luis A.;Ortiz R.;M;4243147051;luisort@hotmail.com;16/10/1976;18/11/2009;Calculo Financiero
+;Luis A. Garcia L.;2523004;Luis A.;Garcia L.;M;4168443557;18@gmail.com;19/05/1948;15/12/2004;Semiologia Médico Quirúrgica
+;Luheris M. Salas A.;14219273;Luheris M.;Salas A.;F;4124015105;luheris.salas@gmail.com;17/07/1978;11/12/2008;Arquitectura Del Computador
+;Lourden Paz C.;11120043;Lourden;Paz C.;F;4144535108;lourdenp@hotmail.com;08/12/1975;28/11/2002;Tecnologia De La Conservación De Los Recursos Naturales Renovables
+;Lolymarly Arteaga Carvajal;11121278;Lolymarly;Arteaga Carvajal;F;4121544402;lmarteaga1311@gmail.com;13/11/1974;04/03/2008;Medicina Preventiva Comunitaria Y Familiar I
+;Liz C. Jaramillo C.;15585315;Liz C.;Jaramillo C.;F;4144656450;luisahdzve@gmail.com;02/08/1981;17/10/2005;Instituciones Financieras
+;Liuna Margarita Ruiz Alvia;10666958;Liuna Margarita;Ruiz Alvia;F;4143583466;liuna_ruiz@hotmail.es;04/01/1970;20/05/2013;Autoestima Y Crecimiento Personal
+;Lisbeth Josefina Yanez Carucci ;12139089;Lisbeth Josefina;Yanez Carucci ;F;4143475807;lisbethyanezcaruci@hotmail.com;27/07/1974;09/12/2014;Econometria
+;Liliana Maria Alcala A.;16804257;Liliana Maria;Alcala A.;F;4262343628;liliana_araujo_721@hotmail.com;21/12/1985;15/10/2012;Lógica Matemática
+;Lilia M. Bastidas R.;2516924;Lilia M.;Bastidas R.;F;4144650371;liliabastidasr@gmail.com;13/01/1948;30/05/2000;Derecho
+;Lila V. Martinez H.;13447760;Lila V.;Martinez H.;F;4243484059;lilamar78@gmail.com;15/11/1978;16/12/2004;Contabilidad
+;Lidimar C. Escobar B.;10669914;Lidimar C.;Escobar B.;F;4243365794;angelid25@gmail.com;25/06/1973;10/12/2008;Costos I Y Ii
+;Levis G. Rattia B.;15358794;Levis G.;Rattia B.;M;4243243593;levisrattia_09@hotmail.com;11/05/1982;10/12/2010;Contabilidad Iii
+;Leopoldo J. Arvelaiz P.;11119966;Leopoldo J.;Arvelaiz P.;M;4140591267;leoarve@hotmail.com;12/01/1976;11/12/2008;Métodos Numéricos
+;Leonidas Del C. Virahonda M. ;6523138;Leonidas Del C.;Virahonda M. ;F;4141064213;carmenvira@hotmail.com;20/02/1961;09/12/2010;Integración Comunitaria
+;Leoner Antonio Diaz;14672161;Leoner Antonio;Diaz;M;4261336892;leoner3005@gmail.com;30/05/1981;27/10/2010;Botánica
+;Leonardo A. Rodriguez M.;9891747;Leonardo A.;Rodriguez M.;M;4243520884;2@gmail.com;01/02/1972;12/06/2001;Elementos De Administración De Personal De Empresas Agropecuarias
+;Kriss Cecilia Camejo Carrillo;14219109;Kriss Cecilia;Camejo Carrillo;M;4264001583;krisscamejo5@gmail.com;19/11/1977;16/10/2012;Prácticas De Campo I
+;Kimberlling Zuleima Garcia Moreno;12842917;Kimberlling Zuleima;Garcia Moreno;F;4243371791;kim_zule@hotmail.com;22/09/1975;15/10/2012;Investigación Científica
+;Kellys Jackeline Diaz Ensinoza,;17164065;Kellys Jackeline;Diaz Ensinoza,;F;4243116210;kellyjackeline2009@hotmail.com;01/06/1984;13/12/2011;Clínica Integral Del Adulto I
+;Karin Maria Arreaza Flores;16640833;Karin Maria;Arreaza Flores;F;0;137@gmail.com;17/11/1984;10/12/2014;Aspectos Jurídicos Del Desarrollo Endógeno
+;Karel Nohemi Gonzalez Ochoa;15081827;Karel Nohemi;Gonzalez Ochoa;F;4129654825;karelngonzalez@gmail.com;09/10/1980;08/12/2014;Contabilidad Ii
+;Justine A Pérez P;11120583;Justine A;Pérez P;F;4143437683;yusgiork_06@?hotmail.com;07/09/1974;12/12/2019;Derecho Popular
+;Junney J. Chong;9888113;Junney J.;Chong;F;4166455512;junney.chong@gmail.com;12/05/1968;26/07/2001;Producción De Aves
+;Julio E. Velasquez A.;9887086;Julio E.;Velasquez A.;M;4144655594;jevajheremmy@gmail.com;11/04/1970;16/12/2004;Educación Física I
+;Julio C. Manau C.;13680043;Julio C.;Manau C.;M;0;carapamanau@hotmail.com;29/07/1978;11/12/2008;Analisis De Estados Financieros
+;Juana M. Figueroa R. ;9874249;Juana M.;Figueroa R. ;F;4127792473;juanafigueroa@gmail.com;29/02/1968;14/11/2002;Educación Para El Trabajo
+;Juan P. Suarez G.;12167230;Juan P.;Suarez G.;M;0;141@gmail.com;21/09/1974;11/12/2008;Ética Profesional
+;Juan F. Medina T.;10266070;Juan F.;Medina T.;M;4124750361;juanmedina910@hotmail.com;09/10/1971;16/12/2004;Educación Física, Deporte Y Recreación
+;Juan E. Yllas H.;5005696;Juan E.;Yllas H.;M;4268453182;juanyllas@gmail.com;22/11/1955;20/10/2005;Matemática Ii
+;Juan Carlos Aponte Tenepe;8628518;Juan Carlos;Aponte Tenepe;M;4144673592;agrevenk@yahoo.es;30/08/1965;13/12/2019;Orientación Agropecuaria
+;Juan Carlos Allueva Castellanos;16804240;Juan Carlos;Allueva Castellanos;M;4243268810;jcallueva22@gmail.com ;13/03/1984;16/10/2012;Técnicas De Estudio Y Documentación
+;Juan C. Rodriguez R.;6818693;Juan C.;Rodriguez R.;M;4144657742;juan_rodriguez2@hotmail.com;16/05/1963;05/06/2001;Sistemas De Producción De Carne Con Bovinos
+;Juan C. Meneses G.;12842897;Juan C.;Meneses G.;M;4266423981;juanmenesesgutierrez01@gmail.com;01/06/1978;27/10/2010;Sistema De Producción De Carne Con Bovino
+;Juan C. Barrios A.;10670590;Juan C.;Barrios A.;M;4144489595;juancarloslic2@gmail.com;16/05/1971;07/03/2008;Ética Profesional
+;Josmar. Dugarte.;12346776;Josmar.;Dugarte.;M;4265411820;jdugarte@unerg.edu.ve;21/07/1975;17/11/2009;Matemática I
+;Joseany J. Rodriguez B.;15197276;Joseany J.;Rodriguez B.;F;4127487187;joseanyjrb@gmail.com;04/01/1983;09/12/2010;Introducción A Las Ciencias Económicas
+;José R. Zaa S.;13875978;José R.;Zaa S.;M;0;106@gmail.com;09/12/1978;16/12/2004;Introducción A La Administración
+;José R. Perez Machado;8727985;José R.;Perez Machado;M;416444807;joraperet@hotmail.com;17/03/1964;10/01/2003;Sanidad Animal Ii
+;José Osbwaldo Pérez Ascanio;8789533;José Osbwaldo;Pérez Ascanio;M;4146588636;fuegocotidiano@gmail.com;05/11/1965;08/12/2010;Ingles
+;Jose Manuel Armada Pacheco ;6238707;Jose Manuel;Armada Pacheco ;M;0;203@gmail.com;23/02/1968;07/11/2002;Fundamentos De La Informática
+;Jose Manuel  Tovar Rodriguez;8999341;Jose Manuel ;Tovar Rodriguez;M;4140513146;josemanueltovaro@gmail.com ;31/10/1967;16/10/2012;Sociedad, Ciencia Y Tecnología
+;José M. Fajardo G.;3742676;José M.;Fajardo G.;M;4144692752;207@gmail.com;23/12/1950;11/11/2002;Técnicas De Estudios
+;José Luis Véliz Montezuma;9887038;José Luis;Véliz Montezuma;M;4164334430;radiounerg@gmail.com;23/04/1971;13/12/2011;Física Básica Y Radiológica
+;Jose Luis Castillo Velazco;9136328;Jose Luis;Castillo Velazco;F;4142978706;joseluiscastillo77@hotmail.com;23/04/1965;09/12/2014;Proyecto Comunitario Socio Jurídico Ii
+;José J. Muñoz M.;9883658;José J.;Muñoz M.;M;4144879954;josem_afs@yahoo.es;02/10/1968;02/12/2004;Deportes
+;Jose Gregorio Ladera Perez;10273895;Jose Gregorio;Ladera Perez;F;4143461599;laderajose@hotmail.com;04/04/1972;09/12/2014;Arte Y Folklore
+;Jose Gregorio Coronado Longa;11793559;Jose Gregorio;Coronado Longa;M;0;197@gmail.com;12/12/2012;17/11/2009;Dibujo Técnico Y Mano Suelta
+;José G. Rojas R.;13150282;José G.;Rojas R.;M;4243240785;pferanandez.unerg@gmail.com;30/06/1978;10/12/2010;Habilidades Gerenciales
+;José G. Cholet A.;10668009;José G.;Cholet A.;M;0;139@gmail.com;30/10/1969;09/12/2010;Introducción Al Derecho 
+;Jose G. Blanco Z.;9883844;Jose G.;Blanco Z.;M;4243729374;blancojos9@gmail.com;11/04/1969;27/10/2010;Física Aplicada
+;José F. Rodriguez F.;8999688;José F.;Rodriguez F.;M;4144526749;jfrodriguez67@yahoo.es;04/07/1967;08/02/2002;Forrajicultura
+;Jose De Jesus Ron;11115854;Jose De Jesus;Ron;M;4144522968;jjron36@gmail.com;19/10/1974;28/06/2004;Riego Y Drenaje I Y Ii
+;José D. Medina M.;15527692;José D.;Medina M.;M;4149453086;josemedinazaraza@gmail.com;05/04/1982;22/02/2008;Matemática Ii
+;Jorge Leonardo Rodriguez Villanueva ;19343317;Jorge Leonardo;Rodriguez Villanueva ;M;4243155885;yorleonardor@gmail.com;19/04/1988;10/12/2014;Seminario De Investigación
+;Jorge L. Linares;8628327;Jorge L.;Linares;M;4243422609;jorgelinaresguarico1@gmail.com;01/08/1966;26/05/2000;Política Fiscal
+;Johyce O. Navas L.;9438276;Johyce O.;Navas L.;F;4123460706;johycenavasunerg@gmail.com;07/06/1968;26/07/2002;Algoritmos
+;Johnny J. Goncalves I.;9890839;Johnny J.;Goncalves I.;M;4167409504;jjoohhnnygon@gmail.com;28/05/1971;14/03/2002;Matemática
+;Jhonny R. Gabazutt;11976054;Jhonny R.;Gabazutt;M;4140313377;abog_gabazutt@hotmail.com;07/11/1972;15/10/2012;Derecho Constitucional
+;Jhonathan Jose Requena Pulido;16803982;Jhonathan Jose;Requena Pulido;M;4261341762;jonathanjrp200etc@gmail.com;26/05/1985;09/12/2014;Informatica I
+;Jesús. Martinez U.;4846754;Jesús.;Martinez U.;M;4243023236;jemar2@cantv.net;15/04/1960;22/02/2008;Proyecto De Productor Independiente
+;Jesús R. Hernandez G.;3841882;Jesús R.;Hernandez G.;M;0;146@gmail.com;07/06/1954;30/09/1994;Anatomía Humana
+;Jesus M. Lugo S.;3770236;Jesus M.;Lugo S.;M;4144490922;jesusslugo@gmail.com;12/06/1953;08/12/2010;Medicina General Iv
+;Jesus Ernesto Rojas Camargo;15671785;Jesus Ernesto;Rojas Camargo;M;0;127@gmail.com;28/12/1981;10/12/2014;Investigación De Operaciones
+;Jesús E. Contreras H.;11843256;Jesús E.;Contreras H.;M;4143350794;jcontrerash135@gmail.com ;11/06/1974;16/12/2004;Psicología Del Aprendizaje
+;Jesús D. Larez V.;11118343;Jesús D.;Larez V.;M;4243148458;jesusdlarezv11@hotmail.com;12/10/1974;21/05/2001;Matemática I Y Ii
+;Jesús C. Gonzalez C.;5330275;Jesús C.;Gonzalez C.;M;4166439515;jgonzalezcarpio@gmail.com;10/09/1957;21/03/1995;Histología, Embriología Y Genética
+;Jesus Antonio Alvarez Gadea;4389548;Jesus Antonio;Alvarez Gadea;M;4144906139;jesus.alvarez110@hotmail.com;24/01/1956;09/12/2014;Clínica Jurídica Ii
+;Jesús A. Rivas T.;1565973;Jesús A.;Rivas T.;M;4142375006;jesus.rivastortosa875@gmail.com;15/09/1950;15/12/2004;Comunitaria
+;Jesús  Alvarado;18908400;Jesús ;Alvarado;M;4243198403;jesusalvarado1990@hotmail.com;03/04/1990;08/12/2014;Matemática Ii
+;Jeshua Adriana Nieves Francisco;16101622;Jeshua Adriana;Nieves Francisco;F;4243203352;jnieves@unerg.edu.ve;04/09/1982;17/05/2013;Zoología
+;Jenny N. Padilla M.;11123596;Jenny N.;Padilla M.;F;4262450489;jpadilla@unerg.edu.ve;15/08/1974;07/11/2002;Fundamentos De Informática
+;Jenny M. Reyes H.;13492948;Jenny M.;Reyes H.;F;4243607144;"jennyreyesh@gmail.com;";21/05/1978;06/02/2004;Física I
+;Jellymar D. Dugarte V.;15031487;Jellymar D.;Dugarte V.;F;4120472710;yellydali@gmail.com;27/06/1981;15/10/2012;Teoria De Sistemas
+;Javier Jesus De La Rosa M.;17950758;Javier Jesus;De La Rosa M.;M;4122395742;jdelarosa@unerg.edu.ve;19/04/1985;15/10/2012;Algoritmo I
+;Javier A. Rivero G.;11921098;Javier A.;Rivero G.;M;4168405677;javierrivero33@hotmail.com;20/04/1975;09/12/2008;Auditoria
+;Janilbet C. Morales B.;13115655;Janilbet C.;Morales B.;F;4243525882;janilbet@gmail.com;10/06/1976;23/01/2003;Enfermería Ética Y Legal
+;Jairo A. Rodriguez P.;8784767;Jairo A.;Rodriguez P.;M;4248184572;8@gmail.com;15/11/1965;27/10/2010;Orientación Agropecuaria
+;Ismir Nazareth Fajardo Garcia ;17936163;Ismir Nazareth;Fajardo Garcia ;F;4144692752;ismirfg@hotmail.com;29/02/1988;15/10/2012;Fuentes Para El Estudio De La Historia
+;Isbely Regina Moreno Rivas;14395039;Isbely Regina;Moreno Rivas;F;4243209295; isbelymor@gmail.com;07/08/1980;11/12/2008;Programación I
+;Isabel T. Gonzalez De A.;4393938;Isabel T.;Gonzalez De A.;F;4166328256;isabeldeamador@hotmail.com;04/12/1955;13/11/2002;Metodología De La Investigación
+;Iraima Gisela. Flores De Buitrago;8810302;Iraima Gisela.;Flores De Buitrago;F;4243810993;iraimafg@gmail.com;25/10/1965;10/12/2008;Química General
+;Ingrid C. Rodriguez P.;13150010;Ingrid C.;Rodriguez P.;F;4243538104;ingridcoromoto20@hotmail.com;20/07/1976;29/10/2010;Comercialización De Productos Agricolas
+;Ignamar Josefina Torrealba Tovar ;9922918;Ignamar Josefina;Torrealba Tovar ;F;4142944900;ignamartorrealba@gmail.com;11/02/1971;09/12/2014;Clínicas Jurídicas V
+;Horacio Salvador Aguilar Hurtado;12068181;Horacio Salvador;Aguilar Hurtado;M;4164307971;32@gmail.com;19/10/1939;02/11/2020;Histología
+;Higimar Delfina Laya Moreno;17508856;Higimar Delfina;Laya Moreno;F;4128888533;mariafernanda2013_01@hotmail.com;31/12/1985;14/12/2011;Fundamentos De Micro Y Macro
+;Henry José Tabares Arias;13447731;Henry José;Tabares Arias;M;4144665511;hjtabares@gmail.com;02/09/1978;09/12/2019;Matemática I
+;Héctor A. Tovar G.;5274642;Héctor A.;Tovar G.;M;4164382942;tovargha@hotmail.com;07/08/1959;17/10/2005;Formulación Y Evaluación Proyectos
+;Haydee J. Reyes C.;4396703;Haydee J.;Reyes C.;F;4143925980;hreyes@unerg.edu.ve;01/08/1955;29/05/2001;Metodologia De La Investigación Cientifica Y Documental
+;Gustavo J. Fonseca B.;14437552;Gustavo J.;Fonseca B.;M;0;125@gmail.com;16/08/1978;18/10/2005;Informática Ii
+;Guiseppe Schembari V.;9886372;Guiseppe;Schembari V.;M;4243036814;pepeunerg@gmail.com;04/04/1970;29/07/2002;Matemática
+;Gonzalo R. Yanez Z.;14871579;Gonzalo R.;Yanez Z.;M;0;200@gmail.com;08/02/1982;11/12/2008;Lenguaje De Programación
+;Gladys Josefina Campos Arma;8766471;Gladys Josefina;Campos Arma;F;4144656174;mahomo12@hotmail.com;08/10/1961;09/12/2010;Psicología Y Sociología General
+;Giovanna De Martino;7271098;Giovanna;De Martino;F;4243410818;11@gmail.com;17/05/1948;28/02/2000;Botánica
+;Gerardo Antonio Esaa Jimenez;14192980;Gerardo Antonio;Esaa Jimenez;M;4127626315;gerardoesaa@gmail.com;24/11/1980;10/12/2010;Clínica De Enfermería Quirúrgica
+;Gerardo A. Cordero L.;7142561;Gerardo A.;Cordero L.;M;4168058157;gerardoalexanderc@gmail.com;27/10/1971;10/12/2008;Tecnologia De Los R.N.R
+;Freddy. Martinez.;17374517;Freddy.;Martinez.;M;4243528616;fremart@gmail.com;03/11/1984;17/11/2009;Lenguaje De Programación
+;Freddy R. Mendoza D.;2521643;Freddy R.;Mendoza D.;M;4144651601;menfre35@yahoo.es;01/06/1953;19/12/2002;Clínica Quirúrgica Ii 
+;Freddy R. Contreras C.;8784154;Freddy R.;Contreras C.;M;4265416291;free6@hotmail.com;08/07/1965;15/03/2004;Organización De Empresa
+;Freddy Alexander Flores Briceño;16363466;Freddy Alexander;Flores Briceño;M;4144654819;laplatilla1@gmail.com;08/09/1983;28/10/2010;Practica De Campo I
+;Francisco Javier Delgado Paez ;9891158;Francisco Javier;Delgado Paez ;M;4242563055;frandel22@hotmail.com;26/04/1970;10/12/2014;Investigación De Operaciones
+;Francisco Antonio Tovar ;10668797;Francisco Antonio;Tovar ;F;4243767439;frankto_18@hotmail.com;01/05/1973;14/12/2011;Fisiología Y Fisiopatología
+;Flanklin G. Lugo O.;9643649;Flanklin G.;Lugo O.;M;4243465379;franklinlugo@gmail.comkk;31/05/1968;18/12/2002;Informática
+;Fernando R. Sanchez P.;11118856;Fernando R.;Sanchez P.;M;4164352291;fernandorsanchezp@gmail.com;09/11/1974;01/07/2004;Fundamentos De La Computación
+;Fernando E. Pulido E.;14871470;Fernando E.;Pulido E.;M;4144648164;pulido_fernando@hotmail.com;25/05/1982;10/12/2008;Edafologia Ii
+;Félix  Alvarado;8634339;Félix ;Alvarado;M;4248330606;felixramon1967@gmail.com;06/12/1967;26/02/2008;Filosofía De La Educación
+;Faustino German Gonzalez Mota;12116380;Faustino German;Gonzalez Mota;M;0;191@gmail.com;06/09/1972;17/11/2009;Dibujo Técnico A Mano Suelta
+;Fatima Lisbeth Viegas Pérez;11930355;Fatima Lisbeth;Viegas Pérez;F;4149848077;fundesurg17@gmail.com;05/07/1971;13/12/2019;Tecnología De Alimentos
+;Fatima Del P. Hernandez C.;8788743;Fatima Del P.;Hernandez C.;F;4144655960;fatypili@gmail.com;06/03/1968;29/11/2002;Microbiología Y Parasitología
+;Fanny A. Brito Carapa;18043558;Fanny A.;Brito Carapa;F;4243186436;rurra87@gmail.com;16/06/1987;09/12/2014;Iniciación A La Clínica
+;Fabio Giunta L.;7284098;Fabio;Giunta L.;M;4124638194;fabiogiuntal@hotmail.com;07/08/1961;21/05/2001;Matemática I Y Ii
+;Evelin C. Fernandez B.;7225603;Evelin C.;Fernandez B.;F;4144630705;evefer41@gmail.com;01/03/1962;29/07/2002;Metodología Y Técnicas De La Investigación
+;Eulogio Antonio Villar Muñoz;10273027;Eulogio Antonio;Villar Muñoz;M;4144655939;villar.eulogio@gmail.com ;15/05/1950;13/12/2019;Geometría Descriptiva I
+;Eudis A. Gonzalez B.;8631354;Eudis A.;Gonzalez B.;M;4124324457;eudisgonza@gmail.com;30/05/1968;06/02/2004;Planificación
+;Eucaris C. Sanchez B.;14238155;Eucaris C.;Sanchez B.;F;4244637208;eucasaba@gmail.com;05/08/1979;15/12/2004;Practicas Profesionales
+;Erika Marlly Jaramillo Cano;13969521;Erika Marlly;Jaramillo Cano;F;4242078269;jaramillo.marlly@gmail.com;11/07/1978;18/11/2009;Informática I
+;Erick. Siso.;14643607;Erick.;Siso.;M;4128463055;sisoerik13@hotmail.com;05/10/1981;17/11/2009;Investigación De Operaciones
+;Enny Bellorin G.;12003264;Enny;Bellorin G.;M;4244468116;ebellorin@gmail.com;26/04/1973;12/11/2006;Derecho Constitucional
+;Emilio José Donaire R.;7294991;Emilio José;Donaire R.;M;4124657294;donairesramos4@hotmail.com;28/03/1962;15/12/2010;Legislación Laboral
+;Emigdio Ramon Vargas Rojas;8995257;Emigdio Ramon;Vargas Rojas;M;4269359667;enoelcorrea@hotmail.com;16/04/1967;10/12/2008;Forrajicultura
+;Elizabeth L. Cusati P;13811476;Elizabeth L.;Cusati P;F;4243214762;elizabeth_cusati@hotmail.com;07/02/1980;04/02/2004;Ingles I Y Ii
+;Eliezer Rafael Rodriguez R.;16804040;Eliezer Rafael;Rodriguez R.;M;4243209986;eliezerodriguez2016@gmail.com;30/01/1985;14/12/2011;Fundamentos De Micro Y Macro
+;Elias Oswaldo Delgado Lopez;15710130;Elias Oswaldo;Delgado Lopez;M;4144668810;lopezdeliaso@hotmail.com;14/05/1981;09/12/2014;Informática I
+;Eitil Jesuite Rodriguez Ojeda;13150507;Eitil Jesuite;Rodriguez Ojeda;M;4142701550;eitilrodriguezz@hotmail.com;14/01/1978;09/12/2014;Contabilidad Iii
+;Ehira Mercedes Contreras Castro;11124162;Ehira Mercedes;Contreras Castro;F;4143466435;ehiracontreras@gmail.com;16/05/1977;08/12/2014;Contabilidad Ii
+;Eduardo J. Avila L.;13150395;Eduardo J.;Avila L.;M;4144460366;eduardoavila1978@hotmail.com;05/05/1978;15/12/2004;Matemática I Y Ii
+;Eduardo E. Fuentes A.;10670895;Eduardo E.;Fuentes A.;M;4124688777;eenriquef@yahoo.com;06/10/1973;18/11/2009;Informática I
+;Edith Gabriela Hernandez Kipps;17063158;Edith Gabriela;Hernandez Kipps;F;4162456010;edithkipps@gmail.com;09/07/1984;11/12/2019;Sistemas De Información Ii
+;Edgar Orestes Palomares Mota;16552619;Edgar Orestes;Palomares Mota;M;4141222069;epalomaresais@gmail.com;04/06/1984;12/11/2010;Programación Web (Electiva Libre Ii)
+;Edgar J. Tovar S.;9883586;Edgar J.;Tovar S.;M;4144656007;edtovarsotomayor08@gmail.com;14/08/1969;04/02/2004;Matemática Ii
+;Edgar Alexander Diaz Arteaga;11121245;Edgar Alexander;Diaz Arteaga;M;4124365640;yurisma1992@hotmail.com;07/11/1975;09/12/2014;Ideología Y Doctrina Del Derecho
+;Edgar  Rattia;5158143;Edgar ;Rattia;M;4129403164;edgarcoromotoratia@gmail.com ;27/12/1953;10/12/2008;Matemática
+;Dunia Xiomara Ceballos Salazar;7298239;Dunia Xiomara;Ceballos Salazar;F;4265303787;duniaceballos@gmail.com;02/08/1962;15/12/2004;Microbiología Y Parasitología
+;Douglas A. Rodriguez C.;10456016;Douglas A.;Rodriguez C.;M;4144673136; rodriguezcdouglasa@gmail.com;19/04/1971;14/06/2000;Ecónometria
+;Diogenes Solorzano Z.;4831633;Diogenes;Solorzano Z.;M;4140353101;diogenes.solorzano@gmail.com;22/10/1956;04/02/2004;Introducción A Las Ciencias Económicas
+;Diogenes E. Alvarez;5621308;Diogenes E.;Alvarez;M;4243519601;dioalvarez@gmail.com;18/09/1960;22/02/2008;Metodología De La Investigación
+;Diana Al Matar I.;11121789;Diana;Al Matar I.;F;4144673236;dianalmatar@hotmail.com;17/11/1974;29/11/2002;Comunitaria Iv
+;Denny Carolina Garcia Moreno;15037223;Denny Carolina;Garcia Moreno;F;4266492662;jexadel_23@hotmail.com;18/05/1982;08/12/2010;Proyecto Comunitario
+;Delys Roberti Sojo Brizuela;11117476;Delys Roberti;Sojo Brizuela;F;4144674099;delysrober@hotmail.com;27/05/1973;13/12/2011;Clínica Integral Del Adulto Ii
+;Delfin. Rodriguez.;11760067;Delfin.;Rodriguez.;M;4261442077;delfinro4@gmail.com;28/11/1972;26/02/2008;Diseño De Software Educativo
+;Deixy J. Villarroel M.;14643077;Deixy J.;Villarroel M.;F;4124060952;deixyunerg@gmail.com;18/09/1981;18/11/2009;Calculo Financiero
+;Deanet Abreu;8734668;Deanet;Abreu;F;4121481444;deanetabreu@hotmail.com;26/08/1966;28/10/2010;Textiles Y Oleaginosas
+;Dayana G. Mejias M.;15963285;Dayana G.;Mejias M.;F;4144934860;dayanamejias2782@hotmail.com ;27/05/1982;10/12/2010;Clínica De Enfermería Pedriatrica
+;Daniela Rodriguez;15365544;Daniela;Rodriguez;F;4120370252;mafhere@gmail.com;21/03/1981;12/11/2010;Lenguaje Y Comunicación
+;Cynthia S. Gonzalez A.;9664445;Cynthia S.;Gonzalez A.;F;4124657140;susanapichi@gmail.com;26/08/1971;09/12/2010;Integración Comunitaria
+;Constanza I. Rojas M.;12259000;Constanza I.;Rojas M.;F;4243771064;rojasmilano@hotmail.com;17/10/1974;29/05/2001;Producción Animal Ii
+;Claudia Ines Ortuño Martinez;18597809;Claudia Ines;Ortuño Martinez;F;4243363844;claudiaines1988@gmail.com;30/10/1988;17/05/2013;Dibujo Técnico
+;Claudia F. Mastrorosa P.;13132332;Claudia F.;Mastrorosa P.;F;4145897374;claudiamastrorosa@hotmail.com ;04/08/1976;15/12/2004;Bioética
+;Claritza Del Valle Sierra Bolivar;9891990;Claritza Del Valle;Sierra Bolivar;F;4243757972;claritza_sierra@hotmail.com;21/03/1972;20/05/2013;Autoestima Y Crecimiento Personal
+;Ciro A. Pérez P.;5014056;Ciro A.;Pérez P.;M;0;111@gmail.com;10/03/1957;14/03/2002;Contabilidad
+;Cesar Rafael Alvarez Oropeza;14147567;Cesar Rafael;Alvarez Oropeza;M;4127692809;cesarr_ao14@hotmail.com;26/08/1980;18/11/2009;Economía Política De Venezuela Contemporanea
+;César Noguera;10671083;César;Noguera;M;4243232393;cesarjnoguera@gmail.com;23/03/1971;05/02/2004;Matemática
+;César D. Peralta V.;8626534;César D.;Peralta V.;F;4164460496;cperalta@unerg.edu.ve;22/11/1967;10/12/2002;Estadística
+;César A. Ovalles M.;7289196;César A.;Ovalles M.;M;4142664450;cesagro8@gmail.com;08/02/1962;29/06/2004;Zoologia
+;Carmen Z. Cabrera H.;15711496;Carmen Z.;Cabrera H.;F;4128568527;carmencabrera81@hotmail.com;07/09/1981;15/10/2012;Diseño Experimental
+;Carmen S. Rondon;8789085;Carmen S.;Rondon;F;4144653079;csolanye@hotmail.com;24/06/1966;06/02/2004;Contabilidad
+;Carmen Islandia Lugo Tovar;5161421;Carmen Islandia;Lugo Tovar;F;4167464730;islandialugot@hotmail.com;19/10/1957;16/10/2012;Cálculo Iii
+;Carmen Felicia Acosta Palma;12841085;Carmen Felicia;Acosta Palma;F;4168437430;gsfelicia@hotmail.es;22/06/1976;15/10/2012;Autoestima Y Crecimiento Personal
+;Carmen E. Muñoz V.;4392216;Carmen E.;Muñoz V.;F;4243525278;carmenmu1234@gmail.com;16/01/1956;14/10/1997;Contabilidad
+;Carlos V. Rodriguez O.;15081195;Carlos V.;Rodriguez O.;M;4141460470;vicencar22@hotmail.com;22/11/1979;16/12/2004;Matemática Financiera / Calculo Financiero 
+;Carlos J. Vasquez O.;12841402;Carlos J.;Vasquez O.;M;4165437047;cjvasquez77@gmail.com;15/11/1977;05/11/2010;Matemática I
+;Carlos Eduardo Toro Valera;9884464;Carlos Eduardo;Toro Valera;M;4243640388;esjuct29@hotmail.com;12/12/1969;10/12/2014;Procedimental Del Derecho I
+;Carlos E. Hernandez T.;11120279;Carlos E.;Hernandez T.;M;4168447445;carlherna@gmail.com;31/10/1975;18/09/2005;Informática I.
+;Carlos Barrios;10980136;Carlos;Barrios;M;4140350849;cbarrios99@hotmail.com;23/06/1972;06/05/2002;Ecologia
+;Carla M. Gallardo P.;12169713;Carla M.;Gallardo P.;F;4128902909;carlagallardop@hotmail.com;21/06/1976;03/12/2002;Metodologia De La Investigación Cientifica Y Documental
+;Blanca Vanessa Gonzalez Pacheco ;16132255;Blanca Vanessa;Gonzalez Pacheco ;F;4243783661;bvgp_391@hotmail.com;19/07/1983;13/12/2011;Clínica Integral Del Adulto I
+;Blanca Vanessa Gonzalez Pacheco;16132255-2;Blanca Vanessa;Gonzalez Pacheco;F;4243673538;9@gmail.com;19/07/1983;13/12/2011;Clínica Integral Del Adulto I
+;Bianca D. Parra J.;16075249;Bianca D.;Parra J.;F;4243065348;gabianca25@gmail.com;16/05/1982;11/12/2008;Ética Y Desarrollo Profesional
+;Beysimar C. Escobar B.;10668076;Beysimar C.;Escobar B.;F;4125078524;beysimarescobar@gmail.com;03/02/1972;14/03/2002;Contabilidad
+;Betzabeth L. Lozada M.;8620795;Betzabeth L.;Lozada M.;F;4243686516;aguinancy@hotmail.com;18/11/1963;26/05/2000;Teoría De Mercado
+;Bestalia Yakelina Flores;11845014;Bestalia Yakelina;Flores;F;4262432619;bestalia.flores@gmail.com;18/12/1974;15/10/2012;Edafología I
+;Barbara Josefina Moreno Fernandez;12840357;Barbara Josefina;Moreno Fernandez;F;0;179@gmail.com;01/04/1976;18/11/2009;Clínica Integral Del Adulto Ii
+;Aurimar. Rengifo P.;14345502;Aurimar.;Rengifo P.;F;0;120@gmail.com;08/03/1979;19/11/2009;Contabilidad Especializada
+;Aura M. Betancourt V.;9874132;Aura M.;Betancourt V.;F;4143929892;auramarinabv@gmail.com;15/05/1968;18/12/2002;Metodología De La Investigación
+;Astrid Marquez P.;5760699;Astrid;Marquez P.;F;4160992980;amarquez@unerg.edu.ve;12/05/1961;26/05/2000;Matemática Financiera
+;Arturo R. Rattia C.;5153839;Arturo R.;Rattia C.;M;4268461688;arunerg@gmail.com ;17/04/1952;15/12/2004;Fundamentos De Las Matemáticas
+;Argenis R. Cedeño M.;7292311;Argenis R.;Cedeño M.;M;4243579773;argenisrafael23@hotmail.com;23/09/1961;23/03/1995;Parasitologia
+;Argenis A. Mendoza R.;15711834;Argenis A.;Mendoza R.;M;4243015499;argemen@gmail.com;06/11/1983;21/02/2008;Estructuras Discretas Ii
+;Antonio J. Guerrero Q.;8620395;Antonio J.;Guerrero Q.;M;4243299331;antoniojoseguerrerp@gmail.com;27/02/1963;29/07/2002;Matemática
+;Anny B. Cabrices B.;15046173;Anny B.;Cabrices B.;F;4243382283;cabrices.a20@gmail.com;10/12/1981;17/11/2009;Comunitaria Ii
+;Anny Andrea Garcia Hernandez;15129153;Anny Andrea;Garcia Hernandez;F;4145900678;aandreagh@hotmail.com;28/03/1981;13/12/2011;Legislación Mercantil
+;Angie Lissette Hernandez Jimenez;16384159;Angie Lissette;Hernandez Jimenez;F;4149599656;angielissette21@gmail.com;12/01/1985;08/12/2014;Análisis Y Diseño De Sistemas
+;Angie G. Rodriguez Villanueva;15812570;Angie G.;Rodriguez Villanueva;F;4243031852;angie.angiecarolina1999@gmail.com;10/12/1982;08/12/2014;Trabajo De Investigación I
+;Angel Ramon Pantoja Rebolledo;8565913;Angel Ramon;Pantoja Rebolledo;M;4243356046;angelrpantoja61@gmail.com;17/12/1961;13/12/2011;Enfermería Pediatrica
+;Angel R. Lara S.;10666999;Angel R.;Lara S.;M;4162492693;angellara708@gmail.com;07/08/1970;11/12/2008;Planificación Agricola
+;Angel Gregorio Delgado Oliveros;10340277;Angel Gregorio;Delgado Oliveros;M;4144948406;angl_delgado@hotmail.com;11/02/1971;09/12/2014;Protección Jurídica De Las Sociedades Mercantil
+;Angel Filiberto Gonzalez B.;7245355;Angel Filiberto;Gonzalez B.;M;4124507238;angel.gonzalez.betancourt@gmail.com;14/10/1964;15/10/2012;Autoestima Y Crecimiento Personal
+;Angel   Rojas;12137483;Angel  ;Rojas;M;4268301409;apontejoseangel@yahoo.es;28/10/1972;30/06/2004;Química General
+;Andrés E. Cordova M.;11684744;Andrés E.;Cordova M.;M;4145867926;andreseduardocordova@gmail.com;04/06/1973;30/06/2004;Química General
+;Andrea Carolina Teran Lugo ;19120678;Andrea Carolina;Teran Lugo ;F;4243415330;andre.teran.lugo@gmail.com;10/04/1990;10/12/2014;Investigación De Operaciones
+;Analis C. Brito M.;16074889;Analis C.;Brito M.;F;4243661638;anawid@hotmail.com;30/12/1982;12/11/2010;Organización Del Computador
+;Anahuarqui Rodriguez Z.;10667315;Anahuarqui;Rodriguez Z.;F;4243019748;anahuarquirodriguez@yahoo.com;05/12/1970;06/02/2004;Legislación Mercantil Fiscal
+;Anabel Blanco;9680222;Anabel;Blanco;F;4124307104;anabel_blanco@gmail.com;30/05/1972;10/12/2010;Informática
+;Ana Bersais Baez Tirado;11795161;Ana Bersais;Baez Tirado;F;4144652252;abaezt1@hotmail.com;22/01/1972;11/11/2002;Técnicas De Estudios
+;Amilcar Vasquez R;8560175;Amilcar;Vasquez R;M;4169419793;amilcarvasquez@hotmail.com;27/09/1958;19/05/2000;Faena Pecuaria
+;Ambar Josymar Ramirez;15031351;Ambar Josymar;Ramirez;F;4165435283;ramirezambar2021@gmail.com;18/05/1980;08/12/2014;Investigación I
+;Amarilis Martinez H.;8785874;Amarilis;Martinez H.;F;4121380779;amarilis_2021@hotmail.com;25/07/1967;16/12/2004;Metodología De La Investigación
+;Amarilext  T. Guedez  De  B.;11925360;Amarilext  T.;Guedez  De  B.;F;4169970499;amarilex@gmail.com;25/12/1975;17/11/2009;Cirugía Veterinaria
+;Alvaro Jose Ochoa Reyes;6516192;Alvaro Jose;Ochoa Reyes;M;4144673068;alvaroochoaunerg@gmail.com;09/10/1969;09/12/2014;Doctrina Política Bolivariana Ii
+;Ali Armando Aguilar Calderon;12501757;Ali Armando;Aguilar Calderon;M;4127527846;aliarmando25@gmail.com;25/02/1974;09/12/2014;Econometria
+;Alfredo José Sanchez P.;16132256;Alfredo José;Sanchez P.;M;4166437609;asanchezp@unerg.edu.ve;24/05/1984;15/10/2012;Arquitectura Del Computador
+;Alfredo J. Gomez;12388294;Alfredo J.;Gomez;M;4166418430;gomezaj291@gmail.com;28/08/1972;11/12/2008;Sistemas De Información Gerencial
+;Alexander Ruiz Morales;12842923;Alexander;Ruiz Morales;M;4165028597;alexrisu@hotmail.com;25/04/1978;09/12/2014;Contabilidad Iii
+;Alexander R. Herrera;11797018;Alexander R.;Herrera;M;0;86@gmail.com;24/10/1974;15/12/2004;Matemática
+;Alejandro Enrique Funes Campos;4568522;Alejandro Enrique;Funes Campos;M;0;140@gmail.com;22/02/1955;10/12/2014;Procedimental Del Derecho I
+;Alejandra Franco Jordan;5097463;Alejandra;Franco Jordan;F;4166411725;tatiana_francoj@hotmail.com;22/02/1958;11/12/2019;Clínica Integral Del Adulto Iii (Prótesis)
+;Alberto Gabriel. Rodriguez Urrutia.;16407820;Alberto Gabriel.;Rodriguez Urrutia.;M;4169437733;arod.unerg@gmail.com;20/12/1983;22/02/2008;Algoritmo I
+;Alberto E. Zamora E.;2507203;Alberto E.;Zamora E.;M;0;112@gmail.com;09/07/1948;16/10/1997;Inglés
+;Alberto De Sousa Viveiros ;10674498;Alberto;De Sousa Viveiros ;M;0;202@gmail.com;19/11/1971;15/10/2012;Problemática Científica Y Tecnológica
+;Alba C. Garcia;8631960;Alba C.;Garcia;F;4140396918;alcegarci@gmail.com;16/02/1970;29/11/2002;Lenguaje Y Comunicación
+;Airam Karellys Torres Buitriago;13574251;Airam Karellys;Torres Buitriago;F;4243377245;ktorres@unerg.edu.ve;23/08/1979;14/12/2011;Investigación (Proyecto De Grado)
+;Aholimar Sarai Hernandez Lopez;17062851;Aholimar Sarai;Hernandez Lopez;F;4121754444;a.hernandez.unerg@gmail.com;14/09/1985;11/12/2008;Investigación De Operaciones
+;Agustin Ridell P.;4055375;Agustin;Ridell P.;M;4168254820;aridell@gmail.com;29/09/1955;08/06/2001;Orientación Agropecuaria
+;Adrienne J. Rangel G.;14146363;Adrienne J.;Rangel G.;F;4243165862;arangel@unerg.edu.ve;06/08/1980;11/12/2008;Redes
+;Adriangela Del C. Tovar R.;9884267;Adriangela Del C.;Tovar R.;F;4243348933;adriangela.tovar@gmail.com;09/10/1969;18/03/2002;Auditoria
+;Adriana Roa;17063477;Adriana;Roa;M;4249101980;adriroa45@gmail.com;20/12/1985;11/12/2019;Sistemas De Información Iii
+;Adriana Maria Flores De Quintero;9884200;Adriana Maria;Flores De Quintero;F;4164447220;amaflores1@gmail.com;24/02/1970;13/12/2011;Instituciones Financieras
+;Adriana Del V. Urbaez R.;12842395;Adriana Del V.;Urbaez R.;F;4243197243;adrianaurbaezr@gmail.com;28/06/1977;11/12/2008;Ingeniería Económica
+;Adriana Del Carmen Molina Hermoso;8787628;Adriana Del Carmen;Molina Hermoso;F;4165434982;adrianamolina2009@gmail.com;18/10/1967;28/02/2000;Botánica
+;Adriana Del C. Pérez. M;15610270;Adriana Del C.;Pérez. M;F;4243790763;adrianaunerg@hotmail.com;03/05/1981;17/11/2009;Ingeniería Económica
+;Adriana Coromoto Alvarez Machado;9919852;Adriana Coromoto;Alvarez Machado;F;4165434982;alvarezadri@gmail.com;21/02/1970;15/10/2012;Prácticas De Campo Iv
+;Adriana C. Rengifo S.;14394189;Adriana C.;Rengifo S.;F;4144590911;adrianarengifo1@hotmail.com;16/03/1979;09/12/2008;Auditoria
+;Adrian O. Gonzalez P.;6855088;Adrian O.;Gonzalez P.;M;2464321430;agonzalez@unerg.edu.ve;28/03/1966;29/02/2000;Sistemas De Producción De Leche Con Bovinos
+; Rafael Antonio Martinez Utrera;14538110; Rafael Antonio;Martinez Utrera;M;0;205@gmail.com;06/01/1979;15/10/2012;Practica De Campo I
+; Luz Marina Gomez Castañeda;10805307; Luz Marina;Gomez Castañeda;F;4162497148;luzmar2314@hotmail.com;11/06/1957;21/03/1995;Nutrición
+; Jose Manuel Amundaray Martinez;9675600; Jose Manuel;Amundaray Martinez;M;0;190@gmail.com;21/10/1971;02/08/2001;Química Agrícola
+; Franka Jacqueline Lopez Castro;16732216; Franka Jacqueline;Lopez Castro;F;4243578581;franka12@gmail.com;27/10/1983;17/11/2009;Comunitaria Iv
+; Darvin Antonio Vegas Contreras;15712735; Darvin Antonio;Vegas Contreras;M;4243487739;darvin_vegas@hotmail.com;06/04/1983;10/12/2014;Clínica Integral Del Adulto I (Operatoria)
+; Ariadna Susana Teran Velasquez;12446881; Ariadna Susana;Teran Velasquez;F;4243152588;ariadnastv@hotmail.com;07/09/1976;13/12/2011;Morfología Dentaria Y Oclusión
+;Yaruby M. Malaspina M.;11843851;Yaruby M.;Malaspina M.;F;4144664291;yarubymalaspina2013@gmail.com;15/10/1974;03/12/2002;Comunitaria Iii
+;Zulema De Lourdes Camero Flores ;15392774;Zulema De Lourdes;Camero Flores ;F;4243480289;zulemacamero@hotmail.com;10/07/1981;13/12/2011;Morfología Dentaria Y Oclusión
+;Zulayda Josefina Sanchez Estrada;11085282;Zulayda Josefina;Sanchez Estrada;F;4162358736;38@gmail.com;13/05/1973;Servidor no encontrado;Farmacología
+;Zaida Carolina Guevara S.;13152238;Zaida Carolina;Guevara S.;F;4243600596;zacaguso@hotmail.com;23/05/1978;15/10/2012;Investigación Científica
+;Yvis C. Ocariza S.;8630321;Yvis C.;Ocariza S.;F;4145433619;yvisoca@gmail.com;29/10/1968;16/12/2004;Ciencias Básicas
+;Yurgenis M. Herra L.;13447974;Yurgenis M.;Herra L.;M;4127577508;martinherra76@gmail.com;14/08/1976;10/12/2008;Educación Física
+;Ysnardi Jose Guarecuco Lugo;13571045;Ysnardi Jose;Guarecuco Lugo;M;4124653693;ysnardi@hotmail.com;26/10/1978;08/12/2014;Formación Cultural I
+;Yomilcaring Del Valle Camacho Balza ;15392733;Yomilcaring Del Valle;Camacho Balza ;F;4243479407;yvcbalza@gmail.com;07/03/1982;13/12/2011;Clínica Integral Del Adulto Ii
+;Yajaira Yurancy Diaz Cadenas ;11118555;Yajaira Yurancy;Diaz Cadenas ;F;4143874966;yajairadiazc@hotmail.com;18/07/1974;26/01/2015;Clínica Integral Del Adulto Ii (Patología)
+;Xiomara J. Montañez S.;12103961;Xiomara J.;Montañez S.;F;4121485717;80@gmail.com;16/11/1967;10/12/2010;Fisiología Humana
+;Wilmer Enrique Guerra Flores;8782150;Wilmer Enrique;Guerra Flores;M;4166416823;wguerraf@hotmail.com;10/03/1965;09/01/2020;
+;Wilfredo Jose Rincones Arias;7186332;Wilfredo Jose;Rincones Arias;M;4164319608;rinconeswilfredo88@gmail.com;20/03/1960;10/12/2008;Derecho Constitucional
+;Wendy A. Jiménez R.;11121253;Wendy A.;Jiménez R.;F;4265207468;wendyj_2@hotmail.com;01/09/1976;28/11/2002;Biomateríales Odontológicos
+;Tony Jose Suarez Roman;10267984;Tony Jose;Suarez Roman;M;4243154619;tonujsuarezr@gmail.com;23/03/1971;08/12/2014;Formación Instrumental I
+;Thamara Del V. Muñoz A.;14147820;Thamara Del V.;Muñoz A.;F;4144774417;thammymuar@gmail.com ;10/10/1978;08/12/2010;Clínicas De Enfermería Medica
+;Saúl A. Bracho Y.;15393268;Saúl A.;Bracho Y.;M;0;115@gmail.com;15/10/1980;09/12/2008;Diseño Proyecto De Negocios
+;Roselys Josefina Martinez Perez ;16075243;Roselys Josefina;Martinez Perez ;F;4144497512;roussa24@gmail.com;25/05/1984;10/12/2014;Histología Embriología Y Genética
+;Roselia Isabel Marin Ron ;10266369;Roselia Isabel;Marin Ron ;F;4167463482;roselia7@cantv.net;27/07/1969;01/03/2001;Tecnología Educativa
+;Reinaldo A. Castillo B.;2523907;Reinaldo A.;Castillo B.;M;0;128@gmail.com;12/09/1948;16/12/2004;Introducción A La Administración
+;Rebeca Del Mar Hernandez  ;14642322;Rebeca Del Mar;Hernandez  ;F;4143159769;rebecadelmar348@gmail.com;20/12/1978;17/05/2013;Investigación Científica
+;Ramon G. Ruiz G.;4389649;Ramon G.;Ruiz G.;M;4144586758;habilidadesgerenciales@hotmail.com;18/07/1955;11/12/2008;Habilidades Gerenciales
+;Prudencio D. Montoya;4667904;Prudencio D.;Montoya;M;4144922615;julieddavila@hotmail.com;31/12/1952;17/11/2006;Derecho Constitucional
+;Oscar Alberto Garcia Rivas;9888405;Oscar Alberto;Garcia Rivas;M;4243033411;groa1070@gmail.com;31/10/1970;08/12/2014;Formación Cultural I
+;Omar R. Tovar Suarez;5920240;Omar R.;Tovar Suarez;M;4243223887;omarcaridad@yahoo.es;13/12/1960;15/10/2012;Producción Animal
+;Nohelia Carolina Loste C.;16525089;Nohelia Carolina;Loste C.;F;4149160222;cescarolin@hotmail.com;10/05/1984;10/12/2014;Morfología Dentaria Y Oclusión
+;Niruma A. Gutierrez De S.;17105983;Niruma A.;Gutierrez De S.;F;0;155@gmail.com;21/02/1985;08/12/2010;Medicina General Iv
+;Nelson Jose Ascanio Villamizar;12057392;Nelson Jose;Ascanio Villamizar;M;4144536833;nelsonjascanio@hotmail.com;29/01/1974;19/02/2004;Investigación De Operadores
+;Nazaret Caroni Bello Luzardo ;18617279;Nazaret Caroni;Bello Luzardo ;F;4243349598;ncbelloluzardo@gmail.com;10/01/1990;10/12/2014;Investigación Iii
+;Mirla Josefina Arvelaez Manrique;8627507;Mirla Josefina;Arvelaez Manrique;F;4140397292;arvelaezmirla@hotmail.com;29/04/1964;10/12/2014;Enseñanza De La Historia
+;Migdalia De Jesus Garcia De Bello;4394749;Migdalia De Jesus;Garcia De Bello;F;4162942144;migdaliagarcia15@gmail.com;29/05/1957;17/05/2013;Atención Integral Al Paciente
+;Mayra Rodriguez;16364246;Mayra;Rodriguez;F;4243309165;gymery5@gmail.com;21/01/1985;12/11/2010;Algoritmo I
+;Marlene Coromoto Rebolledo;8807811;Marlene Coromoto;Rebolledo;F;4121465553;mcrdg1304@gmail.com;03/07/1965;15/10/2012;Autoestima Y Crecimiento Personal
+;Maribel Caridad Gouveia Casseres;8789528;Maribel Caridad;Gouveia Casseres;F;4166454320;25@gmail.com;27/10/1967;19/12/2002;Farmacología
+;Mariaselva Rodriguez S.;2523530;Mariaselva;Rodriguez S.;F;4144650122;mariaselvarodriguez9@gmail.com;29/11/1952;09/02/1999;Historia Y Doctrina Económicas
+;Maria I. Benavides;10670178;Maria I.;Benavides;F;4145374567;marisabel_benavides@hotmail.com;04/12/1971;29/06/2004;Maquinaría Agrícola I Y Ii
+;Maria Gliceria Figueroa Bastardo;16803770;Maria Gliceria;Figueroa Bastardo;F;4263465311;mariagli3@hotmail.com;15/10/1985;08/12/2014;Clínica Integral Del Adulto I
+;Maite Pinto De Freitas;12840907;Maite;Pinto De Freitas;F;4243165004;maitepdf111075@gmail.com;26/04/1975;14/12/2011;Morfología Humana
+;Lusberth A. Rodriguez C.;13553750;Lusberth A.;Rodriguez C.;F;4144655574;lusberhtrodriguezc@gmail.com;11/10/1978;23/11/2004;Histología, Embriología Y Genética
+;Luisa E. Blanco;5160504;Luisa E.;Blanco;F;4166642274;luisaeblanco@gmail.com;20/04/1960;26/05/2000;Matemática Financiera
+;Luis R. Franco A.;7285526;Luis R.;Franco A.;M;4144651169;luisrfranko@hotmail.com;13/03/1960;17/10/2005;Parasitologia
+;Luis E. Pérez C.;12606527;Luis E.;Pérez C.;M;4124850976;luisperezunerg@hotmail.com;17/06/1977;29/11/2006;Contabilidad
+;Luis Dayan Arias;9577453;Luis Dayan;Arias;M;4269455760;ingenieroluisdayan@gmail.com;04/12/1967;10/12/2010;Informática
+;Luis Alberto Pino;10265427;Luis Alberto;Pino;M;4144575798;luisalbertopino4@hotmail.com;20/05/1971;08/12/2014;Procedimental Del Derecho I
+;Luis Alberto Marchena;7295266;Luis Alberto;Marchena;M;4267425847;marchena508@gmail.com;04/04/1961;16/10/2012;Cálculo Iii
+;Luis A. Flores D.;5154109;Luis A.;Flores D.;M;416312865;37@gmail.com;03/02/1958;03/02/1999;Inglés Instrumental Ii
+;Lourdes J. Casadiego.;5161276;Lourdes J.;Casadiego.;F;4167461675;lourdescasadiego@hotmail.com;11/02/1958;10/12/2008;Ética Profesional
+;Lizbeth Rojas B.;12840876;Lizbeth;Rojas B.;F;4141346996;67@gmail.com;11/11/1977;15/12/2004;Morfología Humana
+;Lidia Y. Licon.;10340968;Lidia Y.;Licon.;F;4121387128;lidiayaxira@hotmail.com;02/08/1969;09/12/2010;Integración Comunitaria
+;Leonardo Jose Parraga Balza.;14146846;Leonardo Jose;Parraga Balza.;M;4141463806;leonardo_parraga@hotmail.com;27/06/1979;29/11/2006;Contabilidad
+;Laura Eliza Ferreira Rodriguez;17252807;Laura Eliza;Ferreira Rodriguez;F;0;180@gmail.com;08/07/1986;09/12/2014;Clínica Integral Del Adulto Ii
+;Keily Andreina Saez Viloria ;18617397;Keily Andreina;Saez Viloria ;F;4262557641;andreinadebourg@hotmail.com;18/08/1987;10/12/2014;Histología Embriología Y Genética
+;Karina Hernandez;13576526;Karina;Hernandez;F;4243029057;karinajhv@hotmail.com;02/08/1977;15/12/2004;Programación I Y Ii
+;Julio Pino G.;10671145;Julio;Pino G.;M;4243574665;juli.cpg27@yahoo.com;27/10/1972;29/11/2002;Anatomía Animal
+;Julieta C. Araujo Ortiz;13448065;Julieta C.;Araujo Ortiz;F;4144568686;jaraujo94@hotmail.com;13/07/1978;09/12/2014;Iniciación A La Clínica
+;Jose S. Morales. ;7291141;Jose S.;Morales. ;M;4121471875;81@gmail.com;22/03/1961;08/12/2010;Medicina General Iv
+;Jose R. Sanchez S. ;8785497;Jose R.;Sanchez S. ;M;4127581472;jrsanchez28@hotmail.com;28/12/1965;08/12/2010;Seminario Trabajo De Grado
+;Jose Luis Silva Millan;8155158;Jose Luis;Silva Millan;M;0;164@gmail.com;08/02/1962;19/12/2002;Clínica Quirúrgica Iii
+;Jose Luis Blanco Hernandez;9892303;Jose Luis;Blanco Hernandez;F;0;142@gmail.com;19/03/1972;10/12/2014;Garantías Procedimentales I
+;Jose L. Rodriguez F.;4391043;Jose L.;Rodriguez F.;M;4124600108;jotaeleere@hotmail.com;19/03/1957;14/03/2002;Matemática
+;José L. Arcia T.;7297911;José L.;Arcia T.;M;4142974136;jarcia@unerg.edu.ve;25/06/1964;15/06/2001;Genética General
+;José Gregorio. Graterol Miranda.;9806085;José Gregorio.;Graterol Miranda.;M;4165483133;graterolmirandajose@gmail.com;14/10/1970;22/02/2001;Clínica Integral Cirugía
+;Jose Gregorio Jimenez Capuano ;4836684;Jose Gregorio;Jimenez Capuano ;M;4162453379;playapatanemo@gmail.com;31/05/1955;15/12/2004;Clínica Integral Endodoncia
+;Jose Gerardo Velasquez Campos ;10979233;Jose Gerardo;Velasquez Campos ;F;4243187023;velasquezg4@hotmail.com;31/05/1972;;
+;José G. Rios S.;8332966;José G.;Rios S.;M;4166454486;24@gmail.com;30/11/1966;30/11/2004;Morfologia Humana
+;José G. Parra.;9087145;José G.;Parra.;M;4243468199;jgparra251@gmail.com;25/11/1959;29/02/2008;Producción Vegetal
+;José G. Briceño R.;9648146;José G.;Briceño R.;M;4145620538;odontojose@hotmail.com;28/02/1968;02/12/2002;Clínica Integral Cirugía
+;José Evelio Rodriguez Carrillo;5646007;José Evelio;Rodriguez Carrillo;M;4161481467;joseevrodriguez@hotmail.com;16/03/1958;13/12/2011;Anatomía Radiológica
+;Jose Daniel  Cardenas;13377703;Jose Daniel ;Cardenas;M;4241756083;jcardenas@unerg.edu.ve;12/05/1978;17/05/2013;Matemática I/Ii
+;Jorge Nicolas Campos Reina ;10506149;Jorge Nicolas;Campos Reina ;M;4243825712;jorgecampo147@gmail.com;09/03/1971;10/12/2014;Seminario De Trabajo De Grado Ii
+;Jhonny Gota M.;6522559;Jhonny;Gota M.;M;4149439424;jhonnygota@gmail.com;26/06/1963;14/03/2002;Contabilidad
+;Jesús M. Bello;2234899;Jesús M.;Bello;M;0;138@gmail.com;16/11/1942;17/11/2006;Derecho Constitucional
+;Jesus Alejandro Jimenez Leones;17471329;Jesus Alejandro;Jimenez Leones;M;4126939592;jesusjimenezleones@gmail.com;16/12/1985;09/12/2014;Atención Integral Al Niño I
+;Jenny M. Gomez J.;9887688;Jenny M.;Gomez J.;F;4124601020;jennymer@gmail.com;14/05/1971;02/12/2002;Investigación Iv
+;Jenny L. Maroun E.;12842358;Jenny L.;Maroun E.;F;4120470431;jennymaroun977@hotmail.com;26/08/1977;16/12/2004;Clínica Integral Radiologia
+;Jenny Del V. Bolivar T.;8794243;Jenny Del V.;Bolivar T.;F;4128850404;jennybolivart@gmail.com;21/09/1964;08/12/2010;Clínicas De Enfermería Medica
+;Jackson Jesús Silva Díaz;13560136;Jackson Jesús;Silva Díaz;M;0;181@gmail.com;12/12/2012;16/12/2004;Educación Física I
+;Ivonne J. Villavicencio De H.;8631827;Ivonne J.;Villavicencio De H.;F;4243521239;aheisahar_37@hotmail.com;15/02/1968;15/12/2004;Practicas Profesionales
+;Ivan Andres Gonzalez Mora ;10669712;Ivan Andres;Gonzalez Mora ;F;4144651265;iagm712@hotmail.com;17/06/1972;10/12/2014;Garantías Procedimentales Ii
+;Isleyer. Burgos R.;14642885;Isleyer.;Burgos R.;F;4144776575;isleyerva@gmail.com;19/03/1981;08/12/2014;Biomateriales Odontológicos
+;Ike A. Matos S.;7280190;Ike A.;Matos S.;M;4143465576;ikematos@gmail.com;03/09/1958;06/10/1994;Estadística General
+;Herna Del C. Cuevas S.;16785792;Herna Del C.;Cuevas S.;F;4141484477;hcuevas70@hotmail.com;04/09/1965;03/12/2002;Clínica Integral Prótesis
+;Hector M. Parra M.;8783625;Hector M.;Parra M.;M;4144654957;hecmilti2@yahoo.com;10/01/1967;17/10/2005;Estadística
+;Grevimar Del Milagro Carpavire Alarcon;14147783;Grevimar Del Milagro;Carpavire Alarcon;F;4167461233;greviguarico@gmail.com;09/06/1980;16/11/2010;Conducta Humana (Electiva I)
+;Gregoria Ramona Blanco;9989583;Gregoria Ramona;Blanco;M;4126477680;blancoramona73@gmail.com;01/01/1978;13/12/2011;Investigación Científica
+;Gloria Diaz Macero;7277129;Gloria;Diaz Macero;F;0;160@gmail.com;12/12/2012;15/12/2004;Medicina General Iii
+;Gladys Margarita Armas Carmona;8556889;Gladys Margarita;Armas Carmona;F;4261496405;gladys_armas_vdlp@hotmail.com;24/02/1962;13/12/2011;Comunitaria I
+;German I. Salazar G.;11164649;German I.;Salazar G.;M;4120456143;mgjg4@hotmail.com ;26/05/1974;08/12/2010;Clínicas De Enfermería Medica
+;Frontado Gonzalez;10665605;Frontado                        ;Gonzalez;F;4164300939;ffrontado1970@gmail.com;14/09/1970;10/12/2014;Histología Embriología Y Genética
+;Freddy Manuel Martinez;4719554;Freddy Manuel;Martinez;M;4144624212;53@gmail.com;20/05/1954;09/02/2004;Economía Política Contemporánea De Venezuela
+;Francisco Isaias Herrera Reyes;4648597;Francisco Isaias;Herrera Reyes;M;4261425131;chichidiazpozzo55@hotmail.com;27/05/1955;13/12/2011;Nutrición
+;Fermin Santana Veitia Marin;10855142;Fermin Santana;Veitia Marin;M;4166489045;ferminveitia@gmail.com;02/07/1968;09/12/2014;Ideologia Y Doctrina Del Derecho
+;Evelia Del C. Casseres D.;10673505;Evelia Del C.;Casseres D.;F;4243300603;eveliadelc@hotmail.com;26/12/1973;16/12/2004;Comunitaria Ii
+;Douglas Ruiz A.;11123298;Douglas;Ruiz A.;M;4120334216;druiz58@hotmail.com;09/05/1977;12/11/2010;Control De Proyectos
+;Doroteo Rios C.;8554649;Doroteo;Rios C.;M;4145439808;doroteorios@hotmail.com;22/03/1959;20/11/2002;
+;Dilia Del V. Gomez De F.;7281078;Dilia Del V.;Gomez De F.;F;4140495834;diliagomezv@hotmail.com;16/12/1960;10/12/2010;Clínica De Enfermería Pediatrica
+;Denia Margarita Cabeza ;11630440; Denia Margarita;Cabeza ;F;4163400911;denia911qhotmail.com;19/12/1973;14/12/2011;Anatomía De Los Animales Domésticos
+;Daniel Rafael Baloa Girand ;14893665;Daniel Rafael;Baloa Girand ;M;0;103@gmail.com;25/09/1980;10/12/2014;Procesos Administrativos
+;Catyhuzca Elena Castillo Bastidas;9886015;Catyhuzca Elena;Castillo Bastidas;F;4168418806;castillocatyhuzca@yahoo.com;10/03/1969;13/12/2011;Crecimiento Personal
+;Carmen Emperatriz Sierra Viloria ;10669259;Carmen Emperatriz;Sierra Viloria ;F;4141462965;camuchasv@yahoo.es;31/05/1973;13/12/2011;Clínica Integral Del Adulto Iii
+;Carmen Cecilia Zamora Lugo;13151066;Carmen Cecilia;Zamora Lugo;F;0;163@gmail.com;12/12/2012;05/03/2008;Estadística
+;Carly Y. Lopez C.;11037700;Carly Y.;Lopez C.;F;4243504894;carlycampos2@hotmail.com;22/10/1971;29/11/2002;Atención Integral Al Niño
+;Carlos J. Piermattei A.;14147293;Carlos J.;Piermattei A.;M;4140510066;carlosjpaunerg@hotmail.com;22/12/1980;07/03/2008;Ética Profesional
+;Carlos Guillermo Miranda Escobar;11116241;Carlos Guillermo;Miranda Escobar;M;2465210833;85@gmail.com;23/01/1975;15/03/2002;Administración Pública
+;Bernaldo José Jiménez;17689683; Bernaldo José;Jiménez;F;4149436848;bernardo689@hotmail.com;10/10/1986;14/12/2011;Histología, Embriología Y Genética
+;Baltazar Ramón Aponte Rodriguez;4391804;Baltazar Ramón;Aponte Rodriguez;M;0;161@gmail.com;02/09/1950;20/12/2002;Medicina General Iv
+;Andres Dario Urdaneta Rodriguez;3849028;Andres Dario;Urdaneta Rodriguez;M;4142969028;andresunerg@hotmail.com;19/12/1951;19/12/2002;Bioetica Ii
+;Andrea E. Padron P.;11116640;Andrea E.;Padron P.;F;4141463823;66@gmail.com;08/07/1975;28/11/2002;Clínica Integral Patologia
+;Alberto J. Rojas G.;7287120;Alberto J.;Rojas G.;M;4144651295;albertorojasg@gmail.com;14/11/1961;12/02/2001;Investigación Iii
+;Alberto C. Gonzalez B.;3953721;Alberto C.;Gonzalez B.;M;4167326226;alce.gonzalez@gmail.com;12/09/1953;03/03/1995;
+;Adolfo J. Molina B.;10058718;Adolfo J.;Molina B.;M;4149439944;adolfomolina@hotmail.com;03/10/1968;16/12/2004;Legislación Informática
+; Yris Rebolledo Infante ;16363665; Yris;Rebolledo Infante ;F;4124352365;78@gmail.com;22/03/1984;09/12/2014;Educación Física Y Deporte I I
+; Jesus Honofre Toledo Gomes;5156163; Jesus Honofre;Toledo Gomes;M;0;166@gmail.com;12/06/1959;20/05/2013;Autoestima Y Crecimiento Personal
+; Ineisa Angelica Tesares Galindo;15081387; Ineisa Angelica;Tesares Galindo;F;4140997511;ineisatg80@gmail.com;10/03/1980;08/12/2014;Odontología Comunitaria Iv
+; Gustavo Adolfo Melean Martinez;7766410; Gustavo Adolfo;Melean Martinez;M;4144750942;44@gmail.com;20/12/1963;07/02/2003;Medicina General Iv
+; Elibert Nathalie Gonzalez Campos;15651255; Elibert Nathalie;Gonzalez Campos;F;4120433807;elibert23@hotmail.com;19/04/1982;09/12/2014;Clínica Integral Del Adulto Ii
+; Alexandra Yanin Cadenas Pulido;14926890; Alexandra Yanin;Cadenas Pulido;F;0;201@gmail.com;30/05/1980;17/05/2013;Dibujo Técnico
+;Zaira J. Garcia S.;8785703;Zaira J.;Garcia S.;F;4141467653;zagas2005@hotmail.com;03/06/1965;20/12/2002;Medicina General Iv
+;Ysabel Del V. Cancine M.;10267944;Ysabel Del V.;Cancine M.;F;4262482293;ysacancine@hotmail.com;04/06/1970;10/12/2010;Administración De Los Servicios En Enfermeria
+;Yorman N. Herra L.;8998987;Yorman N.;Herra L.;M;0;132@gmail.com;05/12/1968;17/11/2009;Matemática I
+;Yices Magaly Bravo.;9921067;Yices Magaly;Bravo.;F;4243395572;yicesmagaly-bravo04@hotmail.com;31/05/1970;10/12/2010;Clínica De Enfermería Quirurgíca
+;Yaritza J. Castellano;7216487;Yaritza J.;Castellano;F;4265440431;yaritzacastellano@hotmail.com;11/02/1962;12/12/2002;Enfermería Médica
+;Yacsamith F. De Oliveira D.;8788714;Yacsamith F.;De Oliveira D.;F;4164454242;yacsadeoli05@hotmail.com;10/05/1968;15/03/2002;Administración Pública
+;Wilmer J. Subero R.;14142964;Wilmer J.;Subero R.;M;4123111466;suberowilmer@gmail.com;11/12/1979;22/02/2008;Matemática Ii
+;Victor L. Alvarez;12899486;Victor L.;Alvarez;M;4144659449;avictor128@outlook.es;15/04/1976;03/03/2004;Informática
+;Tatiana M. Aragol H. ;15818424;Tatiana M.;Aragol H. ;F;4243566468;julietdavila@hotmail.com;24/02/1980;15/12/2010;Introducción Al Derecho 
+;Suleima. Manciro H.;8792342;Suleima.;Manciro H.;F;4163588935;suleimamaneiro@hotmail.com;29/01/1966;10/12/2010;Administración De Los Servicios En Enfermería
+;Sofia J. Scott C.;8788309;Sofia J.;Scott C.;F;4143272299;shopy65@gmail.com;21/10/1965;09/12/2010;Metodología De La Investigación
+;Rosalia Moreno Moncada;10672784;Rosalia;Moreno Moncada;F;4162308562;40@gmail.com;12/04/1974;10/12/2014;Mercadeo
+;Rosa América Camacho V.;5333890;Rosa América;Camacho V.;F;4161481474;camacho_rosa@hotmail.com;31/12/1957;14/12/2011;Fisiología Y Fisiopatologia
+;Rafael F. Rodriguez;7291757;Rafael F.;Rodriguez;M;4124389085;matapalito2009@gmail.com;26/02/1960;04/02/2004;Problematica Cientifica Y Tecnológica
+;Oswaldo Rafael Hernández.;7256417;Oswaldo Rafael;Hernández.;M;2468721691;82@gmail.com;23/11/1964;10/12/2008;Matemática
+;Olga Susana Bastardo Mendoza ;8627350;Olga Susana;Bastardo Mendoza ;F;4166463775;abg.olgabastardo2013@gmail.com;14/09/1966;08/12/2014;Técnica Documental De Investigación Y Lógica Jurídica
+;Norelis C. Flores F.;7187156;Norelis C.;Flores F.;F;4163136836;noreflores0202@hotmail.com;02/02/1961;11/12/2002;Microbiologia Y Parasitologia
+;Nancy Lisbeth Ortiz Aguirre;14925105;Nancy Lisbeth;Ortiz Aguirre;F;4123110869;lisvalenti@gmail.com;29/05/1980;08/12/2014;Ideología Y Doctrina Del Derecho
+;Milvida Villegas De N.;4396155;Milvida;Villegas De N.;F;4264343434;milvidavillegas@hotmail.com;31/07/1957;08/12/2010;Seminario Trabajo De Grado
+;Miguel Angel Ferrer C.;11365827;Miguel Angel;Ferrer C.;M;4165478336;maikol1070@hotmail.com;02/08/1972;15/10/2012;Problematica Cientifica Y Tecnológica
+;May-Lin C. Santana H.;11116309;May-Lin C.;Santana H.;F;4243155041;mcaridad32@hotmail.com;18/01/1975;10/12/2008;Contabilidad De Costos
+;Mayda Josefina Marrero Figueroa;9884066;Mayda Josefina;Marrero Figueroa;F;4162313111;39@gmail.com;17/01/1969;14/12/2011;Investigación (Proyecto De Grado)
+;Marysol Josefina Hernandez Perez;7280904;Mary Sol Josefina;Hernandez Perez;F;2464318369;solher_1@hotmail.com;12/07/1961;20/05/2013;Autoestima Y Crecimiento Personal
+;Mary C. Martínez H.;12991240;Mary C.;Martínez H.;F;4167463402;19@gmail.com;04/08/1976;26/02/2008;Tecnología Educativa
+;Maria Luisa Celis Coll;15081188;Maria Luisa;Celis Coll;F;4149472177;celismaria56@gmail.com;22/06/1981;09/12/2014;Odontología Comunitaria I
+;Maria A. Diaz R.;14147500;Maria A.;Diaz R.;M;4160423328;mariadiazdeavila@hotmail.com;11/10/1980;12/11/2010;Auditoria De Sistemas (Electiva De Área Ii)
+;Marco Aurelio Dominguez Tovar;10674690;Marco Aurelio;Dominguez Tovar;M;4144655857;marcoaureliodominguez@hotmail.com;20/10/1974;10/12/2014;Garantías Procedimentales Ii
+;Luisa M. Gomez ;10666044;Luisa M.;Gomez ;F;4124630729;74@gmail.com;16/09/1967;16/12/2004;Matemática Financiera/ Calculo Financiero
+;Lilibel C. Gouveia C.;12841172;Lilibel C.;Gouveia C.;F;4143464811;lilibelg@hotmail.com;03/12/1977;16/12/2004;Clínica Atención Al Niño
+;Lidia Marina Alvarado De Tovar;4070506;Lidia Marina;Alvarado De Tovar;F;4162438342;lidiaalvarado286@gmail.com;28/06/1953;13/12/2011;Socioantropologia
+;Ledys Lima;10268167;Ledys;Lima;F;4243440590;ledyslima@gmail.com;11/09/1965;10/12/2010;Medios De Comunicación E Historia
+;Juana C. Caggi De B.;18044016;Juana C.;Caggi De B.;F;4168447851;jcaggi@hotmail.com;13/05/1966;09/12/2010;Procesos Administrativos
+;José Luis Sojo Garcia;10669567;José Luis;Sojo Garcia;M;4128486474;2015joseluissojos@gmail.com;20/12/1972;13/12/2011;Enfermería Básica
+;José G. Ramirez L.;10491086;José G.;Ramirez L.;M;4163400911;denia911qhotmail.com;20/12/1971;19/05/2000;Medicina Preventiva Y Clínica Hospitalaria
+;Javier Montenegro E.;7280517;Javier;Montenegro E.;M;2468083067;84@gmail.com;06/04/1961;15/12/2004;Estadística
+;Ingrid Josefina Hernandez ;7294550;Ingrid Josefina;Hernandez ;F;4144654547;injovali@hotmail.com;23/09/1960;09/12/2014;Clínicas Jurídicas V
+;Hernan Javier Amador Gonzalez ;15481084;Hernan Javier;Amador Gonzalez ;M;0;96@gmail.com;27/10/1981;22/02/2008;Estadística General
+;Genniberth M. Reinoso P.;11116590;Genniberth M.;Reinoso P.;F;4243201431;genniberthreinoso@gmail.com;21/06/1975;12/11/2010;Fisica Ii
+;Franklin Bautista Martinez Clemente;7283611;Franklin Bautista;Martinez Clemente;M;0;162@gmail.com;29/05/1963;18/12/2002;Medicina Legal
+;Florencio E. Carreño ;8351129;Florencio E.;Carreño ;M;4147546973;carrenofe@gmail.com;07/10/1959;04/02/2004;Problemática Científica Y Tecnológica
+;Daily J. Rodriguez F.;13448405;Daily J.;Rodriguez F.;F;4243509865;ingdailyr@gmail.com;11/05/1979;12/11/2010;Organización Del Computador
+;Cesar E. Montilla M.;16362077;Cesar E.;Montilla M.;M;4264459950;cesarnetworks@gmail.com;30/08/1983;11/12/2008;Traductores E Interpretes
+;Carlos Jose Carpio Bastidas;8791624;Carlos Jose;Carpio Bastidas;M;4149080179;carloscarpio65@hotmail.com;05/08/1965;09/12/2014;Estudio Jurídico Conductual
+;Beatriz Adriana Aguilar Delgado;16998410;Beatriz Adriana;Aguilar Delgado;F;4261435714;6@gmail.com;20/11/1983;10/12/2014;Teorías Y Políticas Fiscal Y Monetaria
+;Azucena Balza B.;8793657;Azucena;Balza B.;F;4243373985;12@gmail.com;15/12/1960;08/12/2010;Clínicas De Enfermería Medica
+;Asdrúbal Rafael Ledezma Alvarez.;4796617;Asdrúbal Rafael;Ledezma Alvarez.;M;0;87@gmail.com;24/10/1954;25/02/2008;Geografía De Venezuela
+;Ana M. Bolivar P.;9888323;Ana M.;Bolivar P.;F;4121471305;anakaiyumare3@gmail.com;17/05/1971;09/12/2010;Integración Comunitaria
+;Yecenia Del C. Hernandez H.;10667585;Yecenia Del C.;Hernandez H.;F;4164454882;30@gmail.com;12/04/1972;17/02/2004;Matemática
+;Yanitze Josefina Figueroa Brizuela;16364325;Yanitze Josefina;Figueroa Brizuela;F;4143821821;57@gmail.com;09/03/1982;13/12/2011;Medicina General Ii
+;Yadexy M. Carbay G.;8998021;Yadexy M.;Carbay G.;F;4262313524;yadeuc@yahoo.es;15/05/1968;08/12/2010;Medicina General V
+;Wolfgang Marvez Chavez;4792633;Wolfgang;Marvez Chavez;M;4243047048;marvezchavez@hotmail.com;23/12/1958;05/02/2004;Historia Y Doctrina Económicas
+;Teodora L. Ramirez R.;8783901;Teodora L.;Ramirez R.;F;4125364439;71@gmail.com;09/01/1966;14/12/2011;Antropologia
+;Sandra E. Ramirez P.;8220192;Sandra E.;Ramirez P.;F;4144652655;sandra1709ramirez@hotmail.com;17/09/1964;16/12/2004;Semiologia Médico Quirúrgica
+;Sandra D. Gomez E.;8999276;Sandra D.;Gomez E.;F;4122005696;sdamaris69@gmail.com;16/09/1969;15/12/2004;Clínica Integral Protesis
+;Rosa Alba Cortez ;5207978;Rosa Alba;Cortez ;F;2468711069;83@gmail.com;24/11/1956;15/12/2004;Práctica Profesional
+;Oswaldo D. Tovar V.;14538888;Oswaldo D.;Tovar V.;M;4140395434;oswaldotrv68@gmail.com;26/04/1980;22/02/2008;Estadística General
+;Nucho L. Fantasia P.;4364959;Nucho L.;Fantasia P.;M;4166460070;nuchofapa@gmail.com;12/08/1957;17/03/1995;Morfología Humana
+;Nora M. Cerezo A.;8786847;Nora M.;Cerezo A.;F;4129695397;noramaribelcerezo@gmail.com;06/11/1961;27/10/2010;Metodología De La Investigación
+;Nhayira Solisbella Contreras Farfan;12840031;Nhayira Solisbella;Contreras Farfan;F;4164350438;nhayisol@hotmail.com;25/02/1976;13/12/2011;Clínica Integral Del Adulto Ii
+;Nepsy D. Rengifo P.;11843800;Nepsy D.;Rengifo P.;F;4141462505;nepsyrengifo@gmail.com;19/11/1974;28/11/2002;Clínica Integral Patología
+;Moises Eduardo Diaz Zamora.;4308661;Moises Eduardo;Diaz Zamora.;M;0;148@gmail.com;31/03/1956;19/12/2002;Clínica Quirúrgica I
+;Milagros Leon H.;8786261;Milagros;Leon H.;F;2465210201;leonmilagro@hotmail.com;31/07/1966;27/10/2010;Riego Y Drenaje I
+;Miguel Angel Garcia Soto;12842780;Miguel Angel;Garcia Soto;M;4163360817;m_garcia281077@hotmail.com;28/10/1977;13/12/2011;Contabilidad De Costos I
+;Migdalia Avila Rivas;5224410;Migdalia;Avila Rivas;F;0;152@gmail.com;29/04/1959;26/05/2003;Anatomía Humana
+;Mary Del C. Marrero C.;8789118;Mary Del C.;Marrero C.;F;4262896793;marrero.mary@gmail.com;27/03/1967;08/12/2010;Medicina General I
+;Marinela Bastidas De Donaire;7278534;Marinela;Bastidas De Donaire;F;4142966083;maribastidas@cantv.net;15/08/1959;13/12/2011;Radiología Iii
+;Maria Elena Blanco Orta ;11796726;Maria Elena;Blanco Orta ;F;4144659437;elenblanco_1@hotmail.com;28/05/1974;15/12/2004;Lógica Simbólica
+;Maria E. Tovar H.;7293858;Maria E.;Tovar H.;F;4163488395;35@gmail.com;19/11/1964;15/12/2004;Semiologia Médico Quirúrgica
+;Luis Meza;4055452;Luis;Meza;M;4144926184;luisomezam@hotmail.com;02/07/1954;10/12/2014;Clínicas Jurídicas Iii
+;Lissette M. Guzman F.;9886147;Lissette M.;Guzman F.;F;4166456982;dralissette@gmail.com;05/08/1970;16/12/2004;Fisiología
+;Lisbeth Graciela Medina Covis;16363994;Lisbeth Graciela;Medina Covis;F;4140385829;lisbhetgraciela@gmail.com;11/03/1985;13/12/2011;Clínica Integral Del Adulto Ii
+;Lirys Abreu;7205729;Lirys;Abreu;F;0;150@gmail.com;03/08/1960;15/12/2004;Clínica Obstétrica I
+;Leontina G. Di Pietro S.;8999172;Leontina G.;Di Pietro S.;F;4144475569;guillermosalasgs161@hotmail.com;24/11/1968;12/12/2002;Enfermería Médica
+;Leida I. Ruiz P.;5894195;Leida I.;Ruiz P.;F;4123472953;leidaynes@hotmail.com;22/01/1960;29/06/2001;Técnicas De Estudios
+;Keyla L. Vidal R.;15180140;Keyla L.;Vidal R.;F;4145886034;keilalvr@hotmail.com;25/12/1980;03/03/2008;Formación Ciudadana
+;Karen Desiree Ziegler B.;10673684;Karen Desiree;Ziegler B.;F;4144656125;odonkaxx@gmail.com;27/05/1974;15/12/2004;Clínica Integral Endodoncia
+;Julio Rodriguez;2514873;Julio;Rodriguez;M;4143441165;60@gmail.com;18/05/1947;15/12/2004;Semiología Médico Quirúrgica
+;Julio C. Pacheco E.;7231058;Julio C.;Pacheco E.;M;4243600722;juliopache458@gmail.com;22/02/1964;15/12/2004;Clínica Integral Cirugía
+;Judith M. Lucero M.;6459905;Judith M.;Lucero M.;F;4267303140;yluc23@hotmail.com;04/07/1962;09/12/2002;Enfermería Básica
+;Juan D. Sierra A.;7278956;Juan D.;Sierra A.;M;4144674169;48@gmail.com;08/03/1961;03/03/2008;Derecho Constitucional
+;Juan Carlos Piñango;5388030;Juan Carlos;Piñango;M;4120356887;jcpiñango13@gmail.com;13/10/1958;10/12/2010;Economía Política De Venezuela
+;Juan B. Escobar N.;3952838;Juan B.;Escobar N.;M;4144650579;51@gmail.com;13/02/1949;12/11/1997;Semiologia Médico Quirúrgica
+;Jose Luis  Moreno Sosa;8634591;Jose Luis ;Moreno Sosa;M;4144563212;ingenijose@yahoo.com ;05/05/1970;04/02/2004;Matemática Ii
+;José L. Yoris L.;9887095;José L.;Yoris L.;M;4163493817;34@gmail.com;27/08/1970;15/12/2004;Clinica Obstétrica Ii
+;José L. Gil G.;4432147;José L.;Gil G.;M;4162387012;jlgil@yahoo.com;31/08/1956;06/05/2002;Ecología
+;Isbelia C. Castro E.;8618518;Isbelia C.;Castro E.;F;4144699514;isbecar47@hotmail.com;20/05/1962;16/12/2004;Clínica Atención Al Niño
+;Iliana J. Prieto D.;10272718;Iliana J.;Prieto D.;F;4124357142;ilianaprieto72@gmai.com;18/12/1972;15/12/2004;Clínica Integral Cirugía
+;Iker E. Pinto B.;14304704;Iker E.;Pinto B.;M;4144656696;ikerpinto@hotmail.com;26/03/1980;16/12/2004;Bioquímica
+;Heidy C. Rejon C.;11123142;Heidy C.;Rejon C.;F;4243542806;hrejon9@gmail.com;09/11/1976;15/12/2004;Clínica Integral Operatoria
+;Guillermo F. Bolivar I.;3953746;Guillermo F.;Bolivar I.;M;4142966040;61@gmail.com;06/08/1954;15/12/2004;Semiología Médico Quirúrgica
+;Guillermo A. Salas G.;5161655;Guillermo A.;Salas G.;M;0;149@gmail.com;10/05/1960;12/11/1997;Semiologia Médico Quirúrgica
+;Franklin D. Monger M.;4418229;Franklin D.;Monger M.;M;4165400971;franklinmonger@hotmail.com;25/04/1952;16/12/2004;Clínica Pediatrica I
+;Dibelys Del Carmen Naranjo Rico ;15100554;Dibelys Del Carmen;Naranjo Rico ;F;4243267192;13@gmail.com;19/09/1980;25/02/2008;Ciencias Básicas
+;Cora Rocio Gerbi Rojas ;21759887;Cora Rocio;Gerbi Rojas ;F;4265411737;coragerbi13@gmail.com ;13/01/1979;12/11/2010;Proyecto Informático
+;Concepcion R. Rivas A.;7298464;Concepcion R.;Rivas A.;M;4164384541;31@gmail.com;08/12/1961;15/12/2004;Semiologia Médico Quirúrgica
+;Claudia Josefina Navarro Calderon;11120503;Claudia Josefina;Navarro Calderon;F;4124317468;claudianc2009@gmail.com;17/03/1976;13/12/2011;Clínica Integral Del Adulto I
+;Carlos E. Morales F.;7235139;Carlos E.;Morales F.;M;4143448451;59@gmail.com;03/06/1966;15/12/2004;Semiologia Médico Quirúrgica
+;Carlos E. Figuera J.;8996788;Carlos E.;Figuera J.;M;4140471450;cfiguera317@gmail.com;27/02/1966;11/12/2008;Problemática Socio-Económica
+;Carlos A. Rodriguez T.;9546873;Carlos A.;Rodriguez T.;M;4144640373;rodriguez@cantv.net ;05/07/1966;14/03/2002;Contabilidad
+;Belkis Mujica;5751038;Belkis;Mujica;F;4125128992;belkis_mbeatriz@hotmail.com;25/03/1960;14/12/2011;Medicina General I
+;Beatriz A. Padilla W.;12030314;Beatriz A.;Padilla W.;F;4125068489;beatriz.pw12@gmail.com;12/07/1973;15/12/2004;Clínica Integral Operatoria
+;Balmore Ortega D.;10975897;Balmore;Ortega D.;M;4243484268;bortega48@gmail.com;05/06/1971;08/12/2010;Legislación Mercantil
+;Antonio Del C. Lugo;4345574;Antonio Del C.;Lugo;M;4264228968;delcar.antonio,lugo@gmail.com;10/05/1958;15/12/2004;Morfología Humana
+;Alfredo José Cordova,;5689555;Alfredo José;Cordova,;M;4128301342;vallemetido@hotmail.com;03/11/1955;13/12/2011;Medicina General Iii
+;Alexander De Jesus Cabrera Cabeza S;10997781;Alexander De Jesus;Cabrera Cabeza S;M;4166433803;27@gmail.com;25/04/1969;22/02/2008;Práctica Profesional
+;Alejandra J. Rodriguez S.;9884443;Alejandra J.;Rodriguez S.;F;4144082760;kyrto25@yahoo.com;23/06/1968;09/12/2002;Enfermería Básica
+;Adriana I. Garay Q.;15325283;Adriana I.;Garay Q.;F;4144127394;agarayq13@hotmail.com;13/01/1963;29/11/2002;Atención Integral Al Niño 
+; Jose Armas Ramirez;8782722; Jose;Armas Ramirez;M;4243136675;oscar_cirujano@hotmail.com;17/09/1965;13/12/2011;Clínica Quirúrgica I
+;Yudith Del Valle Delgado Garcia;8438753;Yudith Del Valle;Delgado Garcia;F;4242525134;yudithdelgado2009hotmail.com;01/10/1962;14/12/2011;Investigación Iii
+;Soleyl Teresa Luzardo De Bello;4392651;Soleyl Teresa;Luzardo De Bello;F;4162496389;soleyl-luzardo@hotmail.com;16/03/1957;14/12/2011;Investigación Ii
+;Nohemi N. Salmeron.;9276546;Nohemi N.;Salmeron.;F;4127625856;69@gmail.com;24/11/1965;10/12/2010;Salud Mental Y Psiquiatria
+;Maryorie A. Mujica Z.;13576395;Maryorie A.;Mujica Z.;F;4243128269;mayoriemujica@hotmail.com;04/01/1979;10/12/2010;Clínica De Enfermería Quirúrgica
+;Mark F. Olivo P.;11119745;Mark F.;Olivo P.;M;4263480146;corredorolivo@hotmail.com;02/08/1974;27/10/2010;Educación Física Y Deporte
+;Mariam Sussanna Carpabire Giunta;15710378;Mariam Sussanna;Carpabire Giunta;F;4243429715;mariamcarpavire@hotmail.com;10/02/1983;13/12/2011;Clínica Integral Del Adulto Ii
+;Maria Savo L.;4739291;Maria;Savo L.;F;4141470306;mariesala@gmail.com;18/06/1957;15/02/2001;Fisiopatológia
+;Jose Luis Guillen Zambrano;17165081;Jose Luis;Guillen Zambrano;M;4167319004;joseluisguillenz13@gmail.com ;13/07/1985;12/11/2010;Sistemas De Información
+;Cesar A. Perez M.;8642883;Cesar A.;Perez M.;M;4263532928;cepeme2009@hotmail.com;02/03/1968;12/11/2010;Matemática I 
+;Arjelys Maria Guevara Diaz;13152083;Arjelys Maria;Guevara Diaz;F;4166455482;arjelys@hotmail.com;04/08/1976;14/12/2011;Histologia, Embriologia Y Genética
+;Tubalcain Ramos Castillo;12323982;Tubalcain;Ramos Castillo;M;0;195@gmail.com;28/05/1974;17/05/2013;Entomología
+;Rodolfo Johnson;10979816;Rodolfo;Johnson;M;4127833937;rodolfojhonson@hotmail.com;29/11/1971;16/12/2004;Inglés
+;Maria L. Ochoa De E.;4569483;Maria L.;Ochoa De E.;F;4144618468;54@gmail.com;12/12/2012;20/10/2005;Legislación Laboral
+;Marcos Gutierrez;14643112;Marcos;Gutierrez;M;0;194@gmail.com;31/05/1981;17/05/2013;Zoologia
+;Lourdes Yadhira Castillo Martinez;3956927;Lourdes Yadhira;Castillo Martinez;F;0;206@gmail.com;08/12/1954;06/02/2002;Procesos Industriales E Inspección Sanitaria
+;Dayana N. Pérez V.;12840889;Dayana N.;Pérez V.;F;4144582382;dayanaper13@hotmail.com;13/06/1976;16/12/2004;Matemática Financiera/ Calculo Financiero
+;Carmen M. Melecio P.;14238577;Carmen M.;Melecio P.;F;4128670601;calabozosucreje3@gmail.com;29/06/1978;16/12/2004;Educación Para El Trabajo
+;Yenny Blanco;17373209;Yenny;Blanco;F;4243491154;yblanco86@gmail.com;14/04/1986;09/12/2014;Clínica Integral Del Adulto I (Endodoncia)
+;Yaralis Barbara Torrealba Urbina;15392919;Yaralis Barbara;Torrealba Urbina;F;4144650956;yaralist@hotmail.com;30/03/1982;09/12/2014;Clínica Integral Del Adulto Iii (Prótesis)
+;Yamilet Alvertina Castillo Corona ;12990929;Yamilet Alvertina;Castillo Corona ;F;4163307652;yamic7@gmail.com;21/05/1979;09/12/2014;Base De Datos
+;Rosa Beatriz Zamora;15220535;Rosa Beatriz;Zamora;F;4163492981;rosib-zamora@hotmail.com;08/06/1982;26/01/2015;Clínica Integral Del Adulto Ii (Patología)
+;Reina Carolina Flores Abreu;11844787;Reina Carolina;Flores Abreu;F;4165951267;rcfa75@hotmail.com;05/01/1975;09/12/2014;Clínica Integral Del Adulto Iii (Prótesis)
+;Mario Jose Plaza Coronado;5109461;Mario Jose;Plaza Coronado;M;0;182@gmail.com;14/09/1957;08/12/2014;Clinica Integral Del Adultio I (Periodoncia)
+;Marielys Aragort B.;17082811;Marielys;Aragort B.;F;0;170@gmail.com;30/10/1985;08/12/2014;Clinica Integral Del Adulto Iii (Periodoncia)
+;Maria Luisa Medina De R ;8421826;Maria Luisa;Medina De R ;F;0;100@gmail.com;06/05/1964;09/12/2008;Diseño Curricular
+;Marco Antonio Yoris P;14643140;Marco Antonio;Yoris P;M;0;177@gmail.com;12/02/1980;09/12/2014;Clínica Integral Del Adulto I (Endodoncia)
+;Marbelis Josefina Rondon Jimenez;8550854;Marbelis Josefina;Rondon Jimenez;F;4144673065;marbelisjosefinarondonjimenez@gmail.com;01/02/1960;10/12/2014;Medicina Interna
+;Loida D. Meza S.;11796541;Loida D.;Meza S.;F;4124975820;loida_damaris_meza@hotmail.com;15/12/1974;11/12/2008;Lengua Castellano
+;Karen Yanira Linares Martinez;13722049;Karen Yanira;Linares Martinez;F;4143434350;kylm22ve@hotmail.com;15/08/1978;08/12/2014;Clínica Integral Del Adulto I (Periodoncia)
+;Johaiza Robinson;15480879;Johaiza;Robinson;F;4243366139;johaizarobinson@gmail.com;01/02/1980;26/01/2015;Clínica Integral Del Adulto Ii (Patología)
+;Hileska Araida. Landaeta Nieves;16733181;Hileska Araida.;Landaeta Nieves;F;4149350044;hileskalandaeta@hotmail.com;15/07/1984;26/01/2015;Clínica Integral Del Adulto Ii (Patología)
+;Elias Antonio Gil Perez;16384271;Elias Antonio;Gil Perez;M;4262457575;eliasgilunerg@gmail.com;27/09/1983;10/12/2014;Paleografia Y Archivo
+;Denise Dayana Hereida Capote;13861055;Denise Dayana;Hereida Capote;F;4265334281;deniheredia@hotmail.com;22/12/1978;09/12/2014;Clínica Integral Del Adulto Ii
+;Clara Y. Martinez A.;15392272;Clara Y.;Martinez A.;F;0;173@gmail.com;05/09/1982;26/01/2015;Clínica Integral Del Adulto Ii (Patología)
+;Anny Padron;17689712;Anny;Padron;F;0;174@gmail.com;20/01/1988;08/12/2014;Clínica Integral Del Adulto I
+;Andreyna Alexandra Vermiglio Da Silva;16363691;Andreyna Alexandra;Vermiglio Da Silva;F;4243757177;andreynav@hotmail.com;12/06/1984;09/12/2014;Clínica Integral Del Adulto I
+;Zurima Del Valle Bolivar Castro ;8809981;Zurima Del Valle;Bolivar Castro ;F;4165475292;bolivarzurima9@gmail.com;28/02/1969;09/12/2014;Legislación Laboral
+;Yury Emilio Buaiz Valera;7282281;Yury Emilio;Buaiz Valera;M;4143342024;ybuaiz@gmail.com;22/05/1961;12/01/2015;Derecho A La Protección Familiar
+;Yuraima Daria Ydrogo;8347556;Yuraima Daria;Ydrogo;F;4143462668;darienglish@hotmail.com;27/01/1968;16/10/2012;Idiomas Modernos
+;Yunis Javier Pérez Camacho;14146863;Yunis Javier;Pérez Camacho;M;4243300155;yunisjavier@hotmail.com;26/01/1980;13/12/2011;Introducción A La Administración
+;Yulimar Vanezca ;15081578;Yulimar;Vanezca ;F;0;165@gmail.com;12/12/2012;20/05/2013;Autoestima Y Crecimiento Personal
+;Yoleida Del Valle Rondon De Viettry;5980029;Yoleida Del Valle;Rondon De Viettry;F;4162498135;yoleidarondon_154@hotmail.com;23/04/1961;16/10/2012;Investigación Veterinaria I
+;Yngrid Josefina Aquino Infante ;8623143;Yngrid Josefina;Aquino Infante ;F;4143461139;58@gmail.com;20/04/1965;08/12/2014;Procedimental Del Derecho I
+;Yerika Carolina Villazana Castillo ;18219777;Yerika Carolina;Villazana Castillo ;F;0;90@gmail.com;27/09/1986;08/12/2014;Psicología General
+;Yenny L. Rivero G.;6317025;Yenny L.;Rivero G.;F;0;121@gmail.com;16/10/1967;11/12/2008;Sistemas De Información Gerencial
+;Yenny Josefina Perdomo Velasquez;11123447;Yenny Josefina;Perdomo Velasquez;F;0;109@gmail.com;26/11/1975;10/12/2014;Legislación Mercantil
+;Yasmalur. Willians R.;12841255;Yasmalur.;Willians R.;F;4243409504;yasmita.0d@hotmail.com;02/08/1977;18/11/2009;Clínica Integral Del Adulto I 
+;Yanet Coromoto Perez;10367218;Yanet Coromoto;Perez;F;4141466714;yanetperez23@hotmail.com;02/03/1971;09/12/2014;Contabilidad Iii
+;Yajaira J. Alvarez M.;9885031;Yajaira J.;Alvarez M.;F;4243202370;yalvarez@unerg.edu.ve;09/09/1968;08/12/2010;Proyecto Comunitario
+;Vivian Del C. Hayek O.;8087311;Vivian Del C.;Hayek O.;F;4164376069;vivianhayek@hotmail.com;09/01/1966;08/12/2010;Medicina General I
+;Vilma Ramona Alvarez Rengifo;8571895;Vilma Ramona;Alvarez Rengifo;F;4268416343;3@gmail.com;01/03/1963;13/12/2011;Embriologia Y Anatomía
+;Viky Rosanna Camejo Solorzano;15710018;Viky Rosanna;Camejo Solorzano;F;4129758434;camejosolorzanovikyrossana@hotmail.com;08/03/1979;10/12/2014;Técnica Documental De Investigación Y Lógica
+;Victor Manuel Parra Hernandez;2517421;Victor Manuel;Parra Hernandez;M;4243120214;victormparra51@gmail.com;31/05/1951;08/12/2014;Clínica Jurídica V
+;Victor Manuel Martinez A.;16145471;Victor Manuel;Martinez A.;M;4144688257;victornx12@gmail.com;01/02/1988;09/12/2014;Clínica Integral Del Adulto Ii (Cirugía)
+;Víctor Isaac Villavicencio;4426128;Víctor Isaac;Villavicencio;M;4266416230;doctorvillav@gmail.com;12/12/2012;04/03/2008;Medicina Preventiva Comunitaria Y Familiar I
+;Thairy Verenzuela Rojas;8785441;Thairy;Verenzuela Rojas;F;4142215677;tverenzuela@gmail.com;28/02/1967;17/05/2013;Investigación Cientifica
+;Tania Pastora Alvarez Diaz;7405712;Tania Pastora;Alvarez Diaz;F;4142978878;taniapad@hormail.com;14/01/1967;16/10/2012;Bioquímica
+;Sthefanny Maria Moreno Hernandez;19943746;Sthefanny Maria;Moreno Hernandez;F;0;209@gmail.com;11/05/1991;08/12/2014;Clínica Jurídica I
+;Sara H. Callochia De C.;6427568;Sara H.;Callochia De C.;F;4144624753;saracallocchia@hotmail.com;12/07/1962;13/12/2010;Derecho Mercantil
+;Sandra Georgina Silva Gilmond;7280156;Sandra Georgina;Silva Gilmond;F;4144658886;49@gmail.com;23/06/1960;17/11/2009;Introducción A La Administración
+;Sally Nathalie Fernandez Machado;9918893;Sally Nathalie;Fernandez Machado;F;4243831829;sally-fernandez@hotmail.com;28/12/1968;09/12/2014;Estudio Jurídico Conductual
+;Roxana C. Agüero C.;14573759;Roxana C.;Agüero C.;F;2464328135;roxyaguero_78@hotmail.com;17/09/1978;08/12/2010;Medicina General I
+;Rosmira Antonieta Milano Matos;9698379;Rosmira Antonieta;Milano Matos;F;4164473822;rosmiramilano@gmail.com;22/04/1974;08/12/2014;Histofisiologia
+;Rosangel. Camero M.;15548173;Rosangel.;Camero M.;F;4144772958;rosangelcamero@gmail.com;07/03/1980;09/12/2014;Microbiologia Y Paracitologia
+;Rosalia Castro De Soublette;8783496;Rosalia;Castro De Soublette;F;4126820543;rosaliacastro_66@hotmail.com;08/10/1966;09/12/2014;Ideología Y Doctrina Del Derecho
+;Rosa Goldcheidt Martinez;16551605;Rosa;Goldcheidt Martinez;F;4265330437;4@gmail.com;08/01/1985;10/12/2010;Salud Mental Y Psiquiatría
+;Ronny Manuel Yoris;18583199;Ronny Manuel;Yoris;M;0;184@gmail.com;15/07/1987;09/12/2014;Clínica Integral Del Adulto Ii
+;Rolando Allexer Castillo Villanueva;13151802;Rolando Allexer;Castillo Villanueva;M;4265437172;rcastiv@hotmail.com;17/12/1976;09/12/2014;Contabilidad Iii
+;Robert J. Escorche H.;15247014;Robert J.;Escorche H.;M;0;117@gmail.com;22/04/1981;10/12/2010;Informática Ii 
+;Ricardo Antonio Yoris P.;17062084;Ricardo Antonio;Yoris P.;M;0;178@gmail.com;07/06/1984;09/12/2014;Atención Integral Al Niño I
+;Ramon Alfredo Carrero Castro;10269278;Ramon Alfredo;Carrero Castro;F;4144688828;carreroalfredo@gmail.com;14/06/1969;08/12/2014;Clínica Jurídica V
+;Rafael Gonzalez A.;4927468;Rafael;Gonzalez A.;M;0;143@gmail.com;01/08/1959;10/12/2008;Legislación Mercantil Fiscal
+;Rafael E. Gil M.;14926430;Rafael E.;Gil M.;M;0;188@gmail.com;28/06/1980;11/12/2008;Planificación Agricola
+;Rafael Angel Medina Rojas;17163187;Rafael Angel;Medina Rojas;F;0;145@gmail.com;30/06/1982;13/12/2011;Socioantropologia
+;Penélope S. Kobelsky M.;10673482;Penélope S.;Kobelsky M.;F;4160280469;yusenkobe_15@hotmail.com;15/10/1973;17/10/2005;Contabilidad Ii
+;Pedro R. Romero Q.;15149548;Pedro R.;Romero Q.;M;0;158@gmail.com;10/09/1980;10/12/2010;Informática
+;Paola Casseres;18043177;Paola;Casseres;F;4243570284;paolacasseres_18@hotmail.com;22/05/1987;08/12/2014;Odontología Comunitaria Iv
+;Pablo E. Velasquez Sanchez;15712162;Pablo E.;Velasquez Sanchez;M;4243660846;pvelasquez@unerg.edu.ve;07/10/1983;10/12/2014;Investigación Iv
+;Nury Yanett Alfaro;13875860;Nury Yanett;Alfaro;F;4127706657;turita.alfaro@gmail.com;04/08/1980;17/05/2013;Investigación Científica
+;Nohelia Margarita Quevedo Petit;4177547;Nohelia Margarita;Quevedo Petit;F;4262405027;nomaque_1954@hotmail.com;11/08/1954;13/12/2011;Medicina Preventiva Comunitaria Y Familiar I
+;Nergio Enrique Prieto Gonzalez;9786658;Nergio Enrique;Prieto Gonzalez;M;4141290208;nergioprieto@hotmail.com;03/06/1970;14/12/2011;Urologia
+;Nehomar Nicolas Quero Tovar;16075001;Nehomar Nicolas;Quero Tovar;F;4144559933;nquero@hotmail.com;16/02/1984;09/12/2014;Doctrina Política Bolivariana Ii
+;Nazaret R. Barrios A;16074440;Nazaret R.;Barrios A;F;0;114@gmail.com;08/03/1984;08/12/2010;Contabilidad I 
+;Natahli N. Sotomayor G.;14643040;Natahli N.;Sotomayor G.;F;0;136@gmail.com;09/02/1980;09/12/2008;Investigación De Operaciones
+;Misael Coromoto Pérez Gomez;2509861;Misael Coromoto;Pérez Gomez;M;4144650186;misaelperezgomez@hotmail.com;14/01/1946;13/12/2011;Legislación Mercantil
+;Mireya R. Funes.;15393576;Mireya R.;Funes.;F;0;130@gmail.com;30/05/1981;11/12/2008;Análisis De Estados Financieros
+;Milca Ysabel Diaz;8621033;Milca Ysabel;Diaz;F;0;93@gmail.com;24/07/1960;09/12/2014;Arte Y Folklore
+;Miguel Eduardo Rotondaro Cabaña;9538299;Miguel Eduardo;Rotondaro Cabaña;M;0;168@gmail.com;07/11/1965;17/05/2013;Bioetica
+;Miguel A. Ramos;5153198;Miguel A.;Ramos;M;4166455545;23@gmail.com;05/10/1956;16/12/2004;Traumatologia
+;Meybis S. Olaizola C.;8839079;Meybis S.;Olaizola C.;F;4265311387;meybissolier@hotmail.com;24/11/1964;10/12/2010;Clínica De Enfermería Quirúrgica
+;Maryalet Teresa Rivas Diaz;14672485;Maryalet Teresa;Rivas Diaz;F;4142942669;maryalet24@hotmail.com;21/09/1979;08/12/2014;Contabilidad Ii
+;Mary N. Maluenga;10672777;Mary N.;Maluenga;F;4164356336;marymaluenga@hotmail.com;20/01/1974;11/12/2008;Habilidades Gerenciales
+;Marwill S. Cerezo T.;15062420;Marwill S.;Cerezo T.;F;4128661722;solsirecerezo30e@hotmail.com;11/11/1979;11/12/2008;Ética Y Desarrollo Profesional
+;Marisol Muñoz Diaz;11121440;Marisol;Muñoz Diaz;F;4243697555;marisol.muoz33@hotmail.com;13/01/1976;09/12/2014;Odontología Comunitaria I
+;Marilyn J. Pérez Salas;6894206;Marilyn J.;Pérez Salas;F;4243313873;marilynjos_1310@hotmail.com;03/04/1966;16/10/2012;Sociedad, Ciencia Y Tecnología
+;Mariely C. Gonzalez Q.;18316729;Mariely C.;Gonzalez Q.;M;0;119@gmail.com;16/09/1986;10/12/2010;Informática Ii 
+;Maricarmen. Futrille H.;17471084;Maricarmen.;Futrille H.;F;0;154@gmail.com;17/01/1985;08/12/2010;Medicina General I
+;Maria M. Mejias De M.;8152750;Maria M.;Mejias De M.;F;0;156@gmail.com;20/08/1958;13/11/2002;Metodología De La Investigación
+;Maria Isabel D`Lucas Mosqueda;8552003;Maria Isabel;D`Lucas Mosqueda;F;4243054003;15@gmail.com;19/10/1961;13/12/2011;Fisiologia Y Biofisica
+;Maria Gabriela Ortega R.;14051701;Maria Gabriela;Ortega R.;F;4127795880;biomatmgor@gmail.com;03/09/1980;08/12/2014;Biomaterialés Odontologicos
+;Maria Crespo;16362776;Maria;Crespo;F;4263385212;5@gmail.com;01/11/1982;13/12/2011;Enfermería Básica
+;Maria C. Escobar V.;13338333;Maria C.;Escobar V.;F;4142773353;mariacarmela77@hotmail.com;09/11/1977;08/12/2010;Diseño De Proyecto De Negocio
+;Maria Alejandra Tovar Suarez;15083623;Maria Alejandra;Tovar Suarez;F;4243565585;aletovar17@hotmail.com;17/08/1982;16/10/2012;Medicina De Equinos
+;Marcos Rafael Calles Cruz;20948439;Marcos Rafael;Calles Cruz;M;4149670556;callesvet@gmail.com;08/11/1982;17/05/2013;Practicas De Campo I
+;Manuel Salvador Pérez Contreras;3953886;Manuel Salvador;Pérez Contreras;M;4144691117;manyperezc@gmail.com;15/04/1950;13/12/2011;Clínica Quirúrgica I
+;Luis Sumoza;7002823;Luis;Sumoza;M;4144675829;luisumoza2@gmail.com;16/03/1959;29/11/2002;Medicina Interna
+;Luis Gerardo Blanco Colmenares;15681270;Luis Gerardo;Blanco Colmenares;M;4165120223;luisblanco2021@yahoo.es;12/01/1983;17/05/2013;Bioetica
+;Luis F. Bonilla Molina;5742307;Luis F.;Bonilla Molina;M;0;185@gmail.com;20/07/1962;14/12/2011;Investigación (Proyecto De Grado)
+;Luis E. Padrino A.;8786545;Luis E.;Padrino A.;F;1415979688;luispadrinoar@hotmail.com;21/05/1965;08/12/2010;Medicina General V
+;Luis Carlos Vargas Delgado;16804101;Luis Carlos;Vargas Delgado;M;0;176@gmail.com;22/06/1985;09/12/2014;Iniciación A La Clínica
+;Luis Antonio Malave Diaz;15823037;Luis Antonio;Malave Diaz;M;4124698049;malave44@hotmail.com;19/11/1971;11/12/2008;Arquitectura Del Computador
+;Luis A. Tovar H.;7276933;Luis A.;Tovar H.;M;4144090091;luito59@hotmail.com;26/11/1959;15/12/2004;Matemática I Y Ii
+;Luis A. Laya M.;12840399;Luis A.;Laya M.;M;0;108@gmail.com;31/07/1977;11/12/2008;Habilidades Gerenciales
+;Luis A. Gomez S.;16074062;Luis A.;Gomez S.;M;0;131@gmail.com;29/08/1983;10/12/2010;Investigación De Operaciones
+;Leydy Laura Tandioy;15081088;Leydy Laura;Tandioy;F;4121345120;laurat-123@hotmail.com;07/12/1981;08/12/2014;Clínica Integral Del Adulto Ii (Periodoncia)
+;Lesbia Josefina Mosqueda Garcia;10271809;Lesbia Josefina;Mosqueda Garcia;F;4144438585;lesbiajmosqueda@hotmail.com;31/10/1970;08/12/2014;Proyecto Comunitario Socio Jurídico I
+;Lersber Asdrubal Alarcon Oviedo;17984095;Lersber Asdrubal;Alarcon Oviedo;F;0;151@gmail.com;16/02/1983;13/12/2011;Medicina General Ii
+;Ledy J. Betancour V.;8154218;Ledy J.;Betancour V.;F;4168481065;ledybeta24@hotmail.com;24/04/1958;28/10/2010;Practica De Campo I
+;Kervin J. Rojas D.;16363618;Kervin J.;Rojas D.;F;0;122@gmail.com;27/01/1984;09/12/2010;Calculo Financiero I
+;Karina Yeniree Arteaga Suarez;18219718;Karina Yeniree;Arteaga Suarez;F;0;171@gmail.com;01/02/1987;08/12/2014;Biomateriales Odontológicos
+;Karen De Jesus Quiroz Melo;13574234;Karen De Jesus;Quiroz Melo;F;4264460542;karenqm@hotmail.com;03/01/1979;08/12/2014;Biomateriales Odontológicos
+;Jullhy M. Delgado B.;8779063;Jullhy M.;Delgado B.;F;2464313414;jullhyd@yahoo.com;08/02/1964;20/12/2002;Microbiologia
+;Juan C. Piñango.;5388030-2;Juan C.;Piñango.;M;4120356887;jcpiñango13@gmail.com;13/10/1958;10/12/2010;Economía Politica De Venezuela
+;Josefina M. Pic Guzman;8784921;Josefina M.;Pic Guzman;F;4141166732;josefina_mpg92@hotmail.com;04/05/1965;15/10/2012;Microbiologia
+;Josefina Gerdet;8631435;Josefina;Gerdet;F;0;91@gmail.com;16/11/1968;12/11/2010;Conducta Humana (Electiva I)
+;José Miguel Chinea Rodriguez;8736501;José Miguel;Chinea Rodriguez;M;4168488377;chineajose@gmail.com;15/02/1966;13/12/2011;Medicina Preventiva Comunitaria Y Familiar Iv 
+;José L. Rivas C.;9875770;José L.;Rivas C.;F;4143871833;jlrc01@hotmail.com;16/04/1970;19/11/2009;Introducción A Las Ciencias Económicas
+;José G. Castillo  ;6819500;José G.;Castillo  ;M;0;192@gmail.com;31/01/1965;29/06/2004;Anatomía Animal
+;José Del Carmen Carvajal;9884384;José Del Carmen;Carvajal;M;4265440714;carvajal_68@hotmail.com;18/11/1968;13/12/2011;Historia De La Medicina
+;Jose De Los Santos Figueroa Escala;8788342;Jose De Los Santos;Figueroa Escala;M;0;118@gmail.com;08/07/1964;09/12/2014;Contabilidad Iii
+;José Arquimedes Rengifo;8791637;José Arquimedes;Rengifo;M;4142478933;65@gmail.com;19/03/1963;13/12/2011;Fisiologia Y Biofisica
+;Jose Antonio Aulenti Garcia;17688196;Jose Antonio;Aulenti Garcia;M;0;129@gmail.com;10/12/2014;10/12/2014;Deporte
+;Jesús Antonio Hidalgo,;5276751;Jesús Antonio;Hidalgo,;M;4268340792;lismerhidalgo@cantv.net;11/05/1959;13/12/2011;Terminología Médica
+;Jesus Alberto Santil Rengifo;14594169;Jesus Alberto;Santil Rengifo;F;0;105@gmail.com;31/10/1983;10/12/2014;Estadística
+;Jesus Alberto Perez Vasquez;5115866;Jesus Alberto;Perez Vasquez;M;4166243296;jesusperez299_@hotmail.com;30/09/1954;10/12/2014;Procedimental Del Derecho I
+;Jesus Adrian Ochoa Flores;13448311;Jesus Adrian;Ochoa Flores;M;0;167@gmail.com;14/05/1979;20/05/2013;Autoestima Y Crecimiento Personal
+;Jessica Joseliany Vasquez;17164627;Jessica Joseliany;Vasquez;F;4144683747;jessialheli@hotmail.com;04/06/1985;14/12/2011;Arte Y Cultura I
+;Jairo L. Sojo B.;14147143;Jairo L.;Sojo B.;M;4121753378;79@gmail.com;18/10/1978;09/12/2010;Deporte
+;Jairo Jose Leon Hernandez ;16804727;Jairo Jose;Leon Hernandez ;M;4143464926;jairoleon2710@gmail.com;27/10/1985;17/05/2013;Bioética
+;Jacobo Rafael Arias Mendoza;5406285;Jacobo Rafael;Arias Mendoza;M;4124632182;73@gmail.com;15/05/1959;09/12/2019;Arte Y Cultura I
+;Jackelyne Coromoto Florentino Amaral;15822151;Jackelyne Coromoto;Florentino Amaral;F;0;124@gmail.com;06/07/1981;10/12/2014;Introducción Al Derecho
+;Ivonne Belisario T.;9883330;Ivonne;Belisario T.;F;4243023285;ivonnedemartinez@gmail.com;02/12/1969;15/12/2010;Derecho Constitucional
+;Hortensia Coromoto Ramos Serrano;8630314;Hortensia Coromoto;Ramos Serrano;F;0;208@gmail.com;01/09/1966;09/12/2014;Protección Jurídica De Las Sociedades Mercantil
+;Hernan A. Gonzalez C.;9099658;Hernan A.;Gonzalez C.;M;4144513543;55@gmail.com;28/03/1962;15/12/2010;Legislación Laboral
+;Hector Jose Rincones P.;13727900;Hector Jose;Rincones P.;M;4141081339;rincones9@hotmail.com;21/09/1977;09/12/2014;Odontología Comunitaria I
+;Haidee Tomasa Matos Segura ;7277166;Haidee Tomasa;Matos Segura ;F;4263432125;htms.9999@hotmail.com;07/03/1957;17/05/2013;Atención Integral Al Paciente
+;Guillermo J. Padilla G.;12596908;Guillermo J.;Padilla G.;M;4124588150;75@gmail.com;11/02/1974;11/12/2008;Problematica Socio-Económica
+;Greta Arimar Sanchez Ceballos ;18617465;Greta Arimar;Sanchez Ceballos ;F;4243111708;gretarim@hotmail.com;10/12/1988;10/12/2014;Garantías Procedimentales I
+;Gregoria L. Tovar B.;10273493;Gregoria L.;Tovar B.;F;4260475660;gregoriatd1@gmail.com;05/09/1971;09/12/2014;Literatura Infantil
+;Gilberto Jesus Castillo Veliz;14538903;Gilberto Jesus;Castillo Veliz;M;4243778266;gilbertopostgrado@hotmail.com;03/06/1980;08/12/2014;Seminario Y Trabajo De Grado
+;Gabriela C. Lara A.;17271493;Gabriela C.;Lara A.;F;4124440675;gaby_lara2010@hotmail.com;10/12/1984;08/12/2010;Contabilidad I 
+;Freddy J. Campos Z.;14194288;Freddy J.;Campos Z.;M;0;116@gmail.com;05/06/1979;09/12/2008;Auditoria
+;Frank Reynaldo Aponte Acosta;8623558;Frank Reynaldo;Aponte Acosta;M;4142571175;64@gmail.com;13/05/1965;14/12/2011;Anatomía Humana
+;Francisco Jose Pacheco Silva;4054111;Francisco Jose;Pacheco Silva;F;4122232887;clases.unerg@gmail.com;28/01/1957;08/12/2014;Investigación I
+;Francisco J. Castrillo P.;4719597;Francisco J.;Castrillo P.;M;4166456510;22@gmail.com;17/08/1957;15/12/2004;Histologia
+;Francia V. De La Santisima Trinidad Rojino Hernandez;13936136;Francia V. De La Santisima Trinidad;Rojino Hernandez;F;0;104@gmail.com;23/04/1977;09/12/2014;Legislación Laboral
+;Eyerlin Del C. Santana H.;16804638;Eyerlin Del C.;Santana H.;F;4143455473;sofiaj_1206@hotmail.com;06/12/1984;09/12/2010;Introducción A Las Ciencias Económicas
+;Esther Josefina Hernandez Triviño;10673310;Esther Josefina;Hernandez Triviño;F;4144896020;esterlina1974@hotmail.com;10/01/1974;10/12/2014;Investigación De Operaciones
+;Emily Maria Mercado Garcia;13820231;Emily Maria;Mercado Garcia;F;4243264734;mercadoemily759@gmail.com;14/08/1978;09/12/2014;Practica Profesional Lii
+;Elizabeth Coromoto Febres ;17353241;Elizabeth Coromoto;Febres ;F;4145865814;elizabethfebres@hotmail.com;03/01/1987;17/05/2013;Terminología Médica
+;Eglish Katiuska Azuaje Alayon;11118603;Eglish Katiuska;Azuaje Alayon;F;0;113@gmail.com;20/04/1975;09/12/2014;Auditoria
+;Eglis Marilu Medina ;9891625;Eglis Marilu;Medina ;F;4124374256;eglismarilu@hotmail.com;16/05/1966;20/05/2013;Autoestima Y Crecimiento Personal
+;Eduardo J. Diaz C.;9884415;Eduardo J.;Diaz C.;M;4144640228;52@gmail.com;18/12/1968;10/12/2010;Análisis De Estados Financieros
+;Eduardo Alfonzo Puerta Sierra;17556216;Eduardo Alfonzo;Puerta Sierra;M;4243653057;10@gmail.com;17/12/1984;13/12/2011;Medicina General Ii
+;Dulce A. Parra De M.;7293073;Dulce A.;Parra De M.;F;4121422500;parradulce7293@gmail.com;29/07/1963;18/10/2005;Informática Ii
+;Daria M. Lara M.;8823089;Daria M.;Lara M.;F;4144946697;42@gmail.com;02/09/1967;27/05/2003;Medicina General
+;Damarys Elimar Tovar Hernandez;14395032;Damarys Elimar;Tovar Hernandez;F;4265315609;damaryst38@gmail.com;14/02/1981;17/05/2013;Atención Integral Al Paciente
+;Corina Del Carmen Rojas Hernandez;11116914;Corina Del Carmen;Rojas Hernandez;F;0;123@gmail.com;25/11/1974;13/12/2011;Instituciones Financieras
+;Cesar Roberto Tovar Rodriguez;9107179;Cesar Roberto;Tovar Rodriguez;M;4144640480;crtr1961@hotmail.com;25/12/1961;09/12/2014;Procedimental Del Derecho Ii
+;César Augusto Mendoza,;7059829;César Augusto;Mendoza,;M;4166920503;20@gmail.com;15/10/1961;13/12/2011;Clínica Quirúrgica I
+;Celia Margarita Serradas De Saade;9825986;Celia Margarita;Serradas De Saade;F;4121318097;celiaserradas@hotmail.com;12/03/1967;08/12/2014;Proyecto Comunitario Socio Jurídico Ii
+;Carolyn Luree Vila Cummings;12635111;Carolyn Luree;Vila Cummings;F;4163403445;carolynlvc@hotmail.com;02/01/1975;16/10/2012;Medicina De Pequeños Animales
+;Carmen T. Correa.;8824494;Carmen T.;Correa.;F;4262330331;carmencorrea88@hotmail.com;03/10/1965;09/12/2010;Integración Comunitaria
+;Carmen G. Morgado De H.;11115009;Carmen G.;Morgado De H.;F;4269446144;laamiquik.m@hotmail.com;11/02/1972;08/12/2010;Clínicas De Enfermería Medica
+;Carmen A. Torrealba U.;15037838;Carmen A.;Torrealba U.;F;4241791692;camena.u@hotmail.com;16/07/1981;10/12/2008;Teoría Económica
+;Carlos Cermeño S.;8797991;Carlos;Cermeño S.;M;0;cermeoseijas.carlos@gmail.com;28/03/1965;13/12/2011;Fisiologia Y Biofisica
+;Carlos Alfredo Sanchez Pacheco;20055840;Carlos Alfredo;Sanchez Pacheco;M;4144642014;sanchezcarlosp@gmail.com;19/05/1989;17/05/2013;Anatomía Humana Y Radiológica
+;Carlos Alberto Navas Sifonte;13874625;Carlos Alberto;Navas Sifonte;F;4124423142;ccarlos979@gmail.com;12/09/1979;08/12/2014;Contabilidad Ii
+;Carlos Alberto Gutierrez Zamora;10975079;Carlos Alberto;Gutierrez Zamora;M;4266331760;carlosalbertogupzamo@hotmail.com;01/01/1972;09/12/2014;Auditoria
+;Betzay Alejandra Huggins Lozada;18405614;Betzay Alejandra;Huggins Lozada;F;0;107@gmail.com;14/01/1988;09/12/2014;Informática I
+;Auristela Castro B. ;7280504;Auristela;Castro B. ;F;4144657073;auristelacb@gmail.com;25/11/1962;13/12/2011;Autoconocimiento Y Empatia Por La Carrera
+;Atahualpa Rodriguez Z.;8995423;Atahualpa;Rodriguez Z.;M;0;135@gmail.com;25/11/1965;10/12/2008;Derecho Constitucional
+;Argil Dacelys Contreras A.;11119814;Argil Dacelys;Contreras A.;F;4163385007;argil2205@gmail.com;22/05/1974;10/12/2014;Investigación Iii
+;Arantxa Aniuska Flores Diaz;19476588;Arantxa Aniuska;Flores Diaz;F;0;172@gmail.com;08/05/1990;10/12/2014;Investigación Iv
+;Antonio Jose Quero Torres;18972305;Antonio Jose;Quero Torres;M;4261336401;7@gmail.com;24/06/1990;09/12/2014;Contabilidad Iii
+;Angela Silvia Leon;6625263;Angela Silvia;Leon;F;4266881545;silvialeon23@yahoo.es;02/08/1962;13/12/2011;Enfermería Básica
+;Andrés E. Baralt C.;15818635;Andrés E.;Baralt C.;M;4164319051;andrewbaralt@hotmail.com;05/07/1983;15/10/2012;Bioquímica
+;Andreina. Pérez A.;11989831;Andreina.;Pérez A.;F;4140535984;perezaraque@gmail.com;23/02/1974;17/11/2009;Orientación Agropecuaria
+;Andreina. Jiménes.;18972076;Andreina.;Jiménes.;M;0;133@gmail.com;21/06/1988;12/11/2010;Proyecto De Grado Ii
+;Andreina Villanueva V.;16362648;Andreina;Villanueva V.;F;4124440674;andreinavi_25@hotmail.com;25/05/1984;08/12/2010;Contabilidad I 
+;Ana L. Nuñez De D.;8588461;Ana L.;Nuñez De D.;F;4166424706;28@gmail.com;05/09/1965;10/12/2010;Salud Mental Y Psiquiatria
+;Ana Beatriz Mejias Tortolero;15532349;Ana Beatriz;Mejias Tortolero;F;4243138186;anabeatriz83@hotmail.com;10/12/1982;09/12/2014;Educación Física Y Deporte I I
+;Alexandra Vasquez Basyester;14394030;Alexandra;Vasquez Basyester;F;4124321590;bayesteralexa@gmail.com;19/06/1978;08/12/2014;Contabilidad Ii
+;Alejandra Baron M.;15710180;Alejandra;Baron M.;F;4144932523;alejandrabaronm@gmail.com;18/09/1982;14/12/2011;Socioantropologia
+;Alberto De J. Torrealba Lopez;3218271;Alberto De J.;Torrealba Lopez;M;4166468370;21@gmail.com;05/11/1947;16/10/1997;Derecho
+;Aida Maria  Tabares ;18473185;Aida Maria ;Tabares ;F;4124232588;aditabare@hotmail.com;09/06/1986;10/12/2014;Histología Embriología Y Genética
+;Adolfo José Gonzalez A.;6903879;Adolfo José;Gonzalez A.;M;4142567547;adolfojgonzalez@hotmail.com;05/06/1965;10/12/2008;Derecho Constitucional
+;Ada C. Virguez T.;7316731;Ada C.;Virguez T.;F;4144659683;adavtr@gmail.com;01/08/1961;26/02/2008;Diseño De Sofware Educativo
+; Jose Timoteo Roman Martinez;8633549; Jose Timoteo;Roman Martinez;M;4243155885;14@gmail.com;13/12/1970;15/10/2012;Historia Oral
+;Yirma C. Sequera L.;5376857;Yirma C.;Sequera L.;F;0;159@gmail.com;11/12/1958;15/12/2004;Otorrinolaringologia
+;Yaidira Yugenis Perez Pereira;13576229;Yaidira Yugenis;Perez Pereira;F;4144931755;yaidiraperez@hotmail.com;06/02/1977;10/12/2014;Odontología Comunitaria Ii
+;Pedro A. Lopez L.;4349599;Pedro A.;Lopez L.;M;4123494937;pa1181956@gmail.com;17/08/1956;19/09/1991;Ecología
+;Luis Folache Fleitas;13150340;Luis;Folache Fleitas;M;0;193@gmail.com;02/11/1976;17/05/2013;Producción Animal I
+;Jaimary Castillo;18016349;Jaimary;Castillo;F;4243305342;jaimaryc@hotmail.com;07/12/1983;08/12/2014;Odontología Comunitaria Iv
+;Eryka Fatima Ferreira Ferreira;18231256;Eryka Fatima;Ferreira Ferreira;F;4248934248;erykaf87@gmail.com ;09/01/1987;09/12/2014;Odontología Comunitaria I
+;Carlos L. Valdivieso M.;8646952;Carlos L.;Valdivieso M.;M;0;189@gmail.com;01/01/1965;28/11/2002;Tecnología De La Conservación De Los Recursos Naturales Renovables
+;Anney Josefina Escalona;9913019;Anney Josefina;Escalona;F;4121459818;anneicita1969@gmail.com;03/08/1969;09/12/2014;Odontología Comunitaria Iii
+;Yusmeri Del Valle Andrea Carrillo ;16145951;Yusmeri Del Valle;Andrea Carrillo ;F;0;97@gmail.com;16/05/1983;09/12/2008;Técnica De Estudios
+;Yamilet Rondon De T.;12122220;Yamilet;Rondon De T.;F;4243070827;yamilethunerg.@gmail.com;16/03/1974;17/05/2013;Matemática I/Ii
+;Ubaldo A. Ruiz R.;5623478;Ubaldo A.;Ruiz R.;M;4243804941;ulbadoruiz1@hotmail.com;16/05/1961;21/02/2005;Historia Y Geografía De Venezuela
+;Richard De J. Oropeza;13238901;Richard De J.;Oropeza;M;4161122014;41@gmail.com;24/01/1977;11/12/2008;Lógica Simbolica
+;Milagro C. Mota A.;8623369;Milagro C.;Mota A.;F;4142957752;63@gmail.com;30/07/1964;21/02/2005;Historia Y Geografía De Venezuela
+;Mayela C. Ascanio ;14394735;Mayela C.;Ascanio ;F;4121336806;mayelacoromoto@hotmail.com;16/07/1979;15/12/2004;Derecho
+;Marvin A. Flores G.;5628966;Marvin A.;Flores G.;M;4168462631;16@gmail.com;16/12/1960;16/09/1997;Estadística Y Demografia Médica
+;Lizbeth Del Valle Fajardo Naranjo;17105287;Lizbeth Del Valle;Fajardo Naranjo;F;0;92@gmail.com;07/12/1984;10/12/2008;Ética Profesional
+;Lisenka T. Castillo M.;13199221;Lisenka T.;Castillo M.;F;4124367005;77@gmail.com;06/09/1976;05/02/2004;Legislación Laboral
+;Kendy Corona Melendez;11761750;Kendy;Corona Melendez;M;0;94@gmail.com;14/01/1975;08/12/2014;Historia De Venezuela
+;Heidi Karina Diamond R.;13237192;Heidi Karina;Diamond R.;F;0;199@gmail.com;13/05/1978;17/05/2013;Física
+;Edgar E. León B.;14538873;Edgar E.;León B.;M;0;95@gmail.com;25/03/1979;10/12/2008;Ética Profesional
+;Deysi Maria Benitez Perez ;13948728;Deysi Maria;Benitez Perez ;F;0;98@gmail.com;12/01/1980;09/12/2008;Técnica De Estudios
+;Carlos J. Rios R.;3557371;Carlos J.;Rios R.;M;4163495413;carlosjriosroldan@hotmail.com;09/08/1951;18/12/2002;Antropologia
+;Anabel M. Perroni P.;12600757;Anabel M.;Perroni P.;F;4166456711;annabelperroni@yahoo.com;29/10/1975;15/12/2004;Derecho
+; Angel Carlos Eduardo Acosta Martinez ;14870659; Angel Carlos Eduardo;Acosta Martinez ;M;0;198@gmail.com;12/12/2012;17/05/2013;Matemática I / Ii
+;Miguel. Rengifo.;2006516;Miguel.;Rengifo.;M;0;211@gmail.com;18/03/1940;11/12/2008;Formación Ciudadana
+;Mary S. Rattia C.;7276528;Mary S.;Rattia C.;F;4144692614;11marisol@yahoo.es;11/08/1960;27/11/2002;Administración Y Planificación Educativa
+;Leonidas Del Carmen Andrade Cortez ;8619646;Leonidas Del Carmen;Andrade Cortez ;M;4144692837;46@gmail.com;17/01/1965;09/12/2008;Diseño Curricular
+;Leivy Ramos L.;11795095;Leivy;Ramos L.;F;4144563490;yvielsomar@gmail.com;23/07/1975;09/12/2008;Diseño Curricular
+;Claudia. Olavarria De A.;7113210;Claudia.;Olavarria De A.;F;0;157@gmail.com;12/12/2012;17/11/2006;Derecho Constitucional
+;Carlos A. Ruiz V.;8617894;Carlos A.;Ruiz V.;M;4242409023;210@gmail.com;17/01/1962;11/12/2008;Formación Ciudadana
+;Argenis L. Herra L.;10673642;Argenis L.;Herra L.;M;4243732977;aargenisherral@gmail.com;29/11/1970;15/12/2004;Estadística
+;Arelys Maria Aponte De Palacio ;10273409;Arelys Maria;Aponte De Palacio ;F;4144677443;47@gmail.com;12/03/1971;11/12/2008;Formación Ciudadana
+;Alvaro Cozzo T.;12730291;Alvaro;Cozzo T.;M;0;153@gmail.com;12/12/2012;17/11/2006;Derecho Constitucional
+;Yenifer Francisca Reyes Delgado ;16691457;Yenifer Francisca;Reyes Delgado ;F;0;102@gmail.com;20/05/1984;09/12/2008;Técnicas De Estudios
+;Victor Manuel Medina Tovar ;8626892;Victor Manuel;Medina Tovar ;M;0;101@gmail.com;05/08/1967;29/02/2008;Educación Física, Deporte Y Recreación 
+;Norvelis Victoria Villavicencio Figueroa ;16384758;Norvelis Victoria;Villavicencio Figueroa ;F;0;89@gmail.com;27/10/1982;22/02/2008;Práctica Profesional
+;Maria Alejandra Rebolledo Colmenares;13874058; Maria Alejandra;Rebolledo Colmenares;F;0;175@gmail.com;17/07/1979;;
+;Johan Rafael Diaz Vargas, ;12841977;Johan Rafael;Diaz Vargas, ;M;0;183@gmail.com;25/01/1977;03/12/2002;Clínica Integral Endodoncia
+;Carmen Teresa Ramos Soto ;5554724;Carmen Teresa;Ramos Soto ;F;0;88@gmail.com;26/09/1959;26/02/2008;Tecnología Educativa
+;Carlos Francisco Bofil Rodriguez ;7200140;Carlos Francisco;Bofil Rodriguez ;M;0;99@gmail.com;12/12/1960;03/03/2008;Derecho  Constitucional
+;Arelys Del Valle Sanchez Barcenas ;12477182;Arelys Del Valle;Sanchez Barcenas ;F;4163496253;33@gmail.com;03/06/1976;15/12/2004;Introducción A La Informática
+; Jose Antonio Ladera Garrido;10271657; Jose Antonio;Ladera Garrido;M;4144699468;45@gmail.com;04/04/1973;15/12/2004;Instrucción A La Informática
+; Francis Josefina Villamediana Aparicio;11755647; Francis Josefina;Villamediana Aparicio;F;4145866342;cava.francis@gmail.com;25/10/1974;08/12/2014;Evaluación De Los Aprendizajes
+; Cesar Enrique Arana Araujo;15712486; Cesar Enrique;Arana Araujo;M;4269892665;cesararanaiaveg@gmail.com;30/09/1982;17/05/2013;Matemática I / Ii

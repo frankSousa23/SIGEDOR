@@ -7,6 +7,9 @@ use Illuminate\Database\Seeder;
 use App\Models\Sede;
 use App\Models\Area;
 use App\Models\Programa;
+use App\Models\Site;
+use App\Models\Category;
+use App\Models\Dedication;
 
 class DatabaseSeeder extends Seeder
 {
@@ -28,6 +31,10 @@ class DatabaseSeeder extends Seeder
             AreaSeeder::class,
             ProgramaSeeder::class,
             UserSeeder::class,
+            TeacherSeeder::class,
+            CategorySeeder::class,
+            DedicationSeeder::class,
+            SiteSeeder::class,
         ]);
     }
 }

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade')->nullable();
+            $table->string('teacher_cdi', 15)->index()->comment('CDI del docente');
+            $table->foreign('teacher_cdi')->references('cdi')->on('teachers')->onDelete('cascade');
             $table->foreignId('sede_id')->constrained('sedes')->cascadeOnDelete()->nullable();
             $table->foreignId('area_id')->constrained('areas')->cascadeOnDelete()->nullable();
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade')->nullable();
@@ -24,7 +25,6 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('info')->nullable();
             $table->timestamps();
-            $table->index('teacher_id');
             $table->index('category_id');
             $table->index('dedication_id');
         });
