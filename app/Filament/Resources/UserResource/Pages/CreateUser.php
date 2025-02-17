@@ -7,6 +7,9 @@ use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use App\Models\Sede;
 use Spatie\Permission\Models\Role;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Spatie\Permission\Traits\HasRoles;
 
 class CreateUser extends CreateRecord
 {
@@ -29,7 +32,7 @@ class CreateUser extends CreateRecord
     // Asignación de rol por nombre usando ID seleccionado
         if (isset($this->data['roles'])) {
             $role = Role::findById($this->data['roles']);
-            $this->record->assignRole($role->name);
+            $this->record->syncRoles([$role->name]);
         }
 
     // Sincronización de área única

@@ -25,6 +25,7 @@ use Carbon\Carbon;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Role;
 
+
 class TeacherResource extends Resource
 {
     protected static ?string $model = Teacher::class;
@@ -42,7 +43,8 @@ class TeacherResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        if (Auth::check() && (Auth::user()->hasRole('admin') || Auth::user()->hasRole('area_manager'))) {
+        // @phpstan-ignore-next-line
+        if (Auth::check() && (Auth::user()->roles->contains('name', 'admin') || Auth::user()->roles->contains('name', 'area_manager'))) {
             return static::getEloquentQuery()->count();
         }
         return null;
@@ -51,7 +53,8 @@ class TeacherResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->when(Auth::user()->hasRole('area_manager'), fn ($query) =>
+            // @phpstan-ignore-next-line
+            ->when(Auth::check() && Auth::user()->roles->contains('name', 'area_manager'), fn ($query) =>
                 $query->whereHas('sede', fn($q) => $q->where('id', Auth::user()->sede_id))
     );
             // ->with(['sede', 'areas', 'user']);
@@ -179,8 +182,7 @@ class TeacherResource extends Resource
                     ->default(fn () => Auth::user()->area_id)
                     ->required(),
             ])
-            ->columns(2)
-            ->visible(fn () => auth()->user()->hasRole('admin'));
+            ->columns(2);
     }
 
     public static function table(Table $table): Table
@@ -298,11 +300,13 @@ class TeacherResource extends Resource
 
     public function isAdmin()
     {
-        return Auth::user()?->hasRole('admin') ?? false;
+        // @phpstan-ignore-next-line
+        return Auth::check() && Auth::user()->roles->contains('name', 'admin');
     }
 
     public function isAreaManager()
     {
-        return Auth::user()?->hasRole('area_manager') ?? false;
+        // @phpstan-ignore-next-line
+        return Auth::check() && Auth::user()->roles->contains('name', 'area_manager');
     }
 }

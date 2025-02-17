@@ -30,8 +30,7 @@
                 <th>Fecha Nac.</th>
                 <th>Fecha Prom.</th>
                 <th>Sede</th>
-                <th>Categoría</th>
-                <th>Dedicación</th>
+                <th>Área</th>
             </tr>
         </thead>
         <tbody>
@@ -44,9 +43,8 @@
                 <td>{{ $teacher->phone }}</td>
                 <td>{{ $teacher->birthDate ? $teacher->birthDate->format('d/m/Y') : 'N/A' }}</td>
                 <td>{{ $teacher->datePromotion ? $teacher->datePromotion->format('d/m/Y') : 'N/A' }}</td>
-                <td>{{ $teacher->site->name ?? 'N/A' }}</td>
-                <td>{{ $teacher->category->current_category ?? 'N/A' }}</td>
-                <td>{{ $teacher->dedication->name ?? 'N/A' }}</td>
+                <td>{{ $teacher->sede->nombre ?? 'N/A' }}</td>
+                <td>{{ $teacher->area->nombre ?? 'N/A' }}</td>
             </tr>
             @endforeach
         </tbody>

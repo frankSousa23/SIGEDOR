@@ -10,27 +10,46 @@ return new class extends Migration
     {
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('teacher_cdi')->constrained('teachers')->onDelete('cascade')->index();
-            $table->foreignId('sede_id')->constrained('sedes')->onDelete('cascade')->nullable();
-            $table->foreignId('area_id')->constrained('areas')->onDelete('cascade')->nullable();
-            $table->foreignId('programa_id')->constrained('programas')->onDelete('cascade')->nullable();
-            $table->string('uc')->nullable();
-            $table->integer('weekHours')->nullable();
-            $table->integer('sections')->nullable();
+
+            // Relación docente (formato corregido)
+            $table->string('teacher_cdi', 15)->comment('CDI docente');
+            $table->foreign('teacher_cdi', 'fk_sites_teacher_cdi')
+                  ->references('cdi')
+                  ->on('teachers')
+                  ->onDelete('cascade');
+
+            // Relaciones institucionales (nombres explícitos)
+            $table->foreignId('sede_id')
+                  ->constrained('sedes', 'id', 'fk_sites_sede_id')
+                  ->onDelete('cascade')
+                  ->nullable();
+
+            $table->foreignId('area_id')
+                  ->constrained('areas', 'id', 'fk_sites_area_id')
+                  ->onDelete('cascade')
+                  ->nullable();
+
+            $table->foreignId('programa_id')
+                  ->constrained('programas', 'id', 'fk_sites_programa_id')
+                  ->onDelete('cascade')
+                  ->nullable();
+
+            // Campos principales
+            $table->string('uc', 100)->nullable();
+            $table->unsignedSmallInteger('weekHours')->default(0);
+            $table->unsignedTinyInteger('sections')->default(1);
             $table->text('info')->nullable();
+
             $table->boolean('is_active')->default(true);
-            $table->integer('teachers_count')->default(0);
             $table->boolean('is_available')->default(true);
-            $table->unique([
-                'teacher_cdi',
-                'sede_id',
-                'area_id',
-                'programa_id'
-            ], 'unique_site_assignment');
-            $table->timestamp('last_assignment')->nullable();
+
+            $table->unique(
+                ['teacher_cdi', 'sede_id', 'area_id', 'programa_id'],
+                'uidx_site_assignment'
+            );
+
             $table->timestamps();
             $table->softDeletes();
-            $table->index('teacher_cdi');
         });
     }
 

@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Permission\Traits\HasRoles;
 
 class Site extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    protected $guarded = [];
 
     protected $table = 'sites';
 
@@ -62,19 +65,20 @@ class Site extends Model
 
 
     public function teacher()
-{
-    return $this->belongsTo(Teacher::class);
-}
+    {
+        return $this->belongsTo(Teacher::class, 'teacher_cdi', 'cdi');
+    }
 
-public function sede()
-{
-    return $this->belongsTo(Sede::class, 'sede_nombre', 'nombre');
-}
+    // Relaciones institucionales
+    public function sede()
+    {
+        return $this->belongsTo(Sede::class, 'sede_id', 'id');
+    }
 
-public function area()
-{
-    return $this->belongsTo(Area::class, 'area_nombre', 'nombre');
-}
+    public function area()
+    {
+        return $this->belongsTo(Area::class);
+    }
 
     public function programa()
     {
