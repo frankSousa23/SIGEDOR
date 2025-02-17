@@ -16,6 +16,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Carbon;
 use Filament\Tables\Actions\EditAction;
+use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role;
+use App\Models\User; // Explicitly import the User model
 
 class PermissionTeacherResource extends Resource
 {
@@ -39,21 +42,22 @@ class PermissionTeacherResource extends Resource
 
 
                 Forms\Components\Section::make('Información del Docente')
+                ->visible(fn () => \Illuminate\Support\Facades\Auth::user()->roles->isNotEmpty() && \Illuminate\Support\Facades\Auth::user()->roles->contains('name', 'admin'))
                 ->schema([
-                    Forms\Components\Select::make('teacher_id')
+                    Forms\Components\Select::make('teacher_cdi')
     ->relationship('teacher', 'cdi')
     ->label('Docente')
     ->options(function () {
-        return Teacher::pluck('cdi', 'id');
+        return Teacher::pluck('cdi', 'cdi');
     })
     ->required()
-    ->rules([
-        Rule::unique('permissionsteachers', 'teacher_id')->ignore(request()->record) // Cambiado a 'permissionsteachers'
-    ])
-    ->validationMessages([
-        'required' => 'Debe seleccionar un docente',
-        'unique' => 'Este docente ya tiene un permiso asignado'
-    ])
+    //->rules([
+    //    Rule::unique('permissionsteachers', 'teacher_id')->ignore(request()->record) // Cambiado a 'permissionsteachers'
+    //])
+    //->validationMessages([
+    //    'required' => 'Debe seleccionar un docente',
+    //    'unique' => 'Este docente ya tiene un permiso asignado'
+    //])
     ->reactive()
     ->columnSpan('full'),
                 ]),
@@ -164,8 +168,7 @@ class PermissionTeacherResource extends Resource
                     'string',
                     'max:500'
                 ]),
-            ])
-            ->visible(fn () => auth()->user()->hasRole('admin'));
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -308,13 +311,13 @@ class PermissionTeacherResource extends Resource
 
     protected function getTableQuery(): Builder
 {
-    $user = auth()->user();
+    $user = \Illuminate\Support\Facades\Auth::user();
 
-    if ($user->hasRole('admin')) {
+    if ($user->roles->contains('name', 'admin')) {
         return PermissionTeacher::query(); // Admin ve todo
     }
 
-    if ($user->hasRole('area_manager')) {
+    if ($user->roles->contains('name', 'area_manager')) {
         return PermissionTeacher::query()
             ->where('sede_id', $user->sede_id)
             ->where('area_id', $user->area_id); // Area Manager ve solo su sede y área
@@ -328,12 +331,12 @@ protected function getTableActions(): array
 {
     return [
         EditAction::make()
-            ->visible(fn (PermissionTeacher $record): bool => auth()->user()->hasRole('admin') ||
-                (auth()->user()->hasRole('area_manager') &&
-                 $record->sede_id === auth()->user()->sede_id &&
-                 $record->area_id === auth()->user()->area_id) ||
-                (auth()->user()->hasRole('teacher') &&
-                 $record->user_id === auth()->user()->id)), // Solo admin, area_manager con misma sede/área o teacher dueño puede editar
+            ->visible(fn (PermissionTeacher $record): bool => \Illuminate\Support\Facades\Auth::user()->roles->contains('name', 'admin') ||
+                (\Illuminate\Support\Facades\Auth::user()->roles->contains('name', 'area_manager') &&
+                 $record->sede_id === \Illuminate\Support\Facades\Auth::user()->sede_id &&
+                 $record->area_id === \Illuminate\Support\Facades\Auth::user()->area_id) ||
+                (\Illuminate\Support\Facades\Auth::user()->roles->contains('name', 'teacher') &&
+                 $record->user_id === \Illuminate\Support\Facades\Auth::user()->id)), // Solo admin, area_manager con misma sede/área o teacher dueño puede editar
     ];
 }
 

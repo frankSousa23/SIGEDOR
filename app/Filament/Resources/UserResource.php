@@ -24,6 +24,7 @@ use App\Models\Site;
 use App\Models\Sede;
 use App\Models\Area;
 use App\Filament\Resources\SiteResource;
+use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Role;
 use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\ToggleColumn;
@@ -193,15 +194,15 @@ class UserResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->visible(fn (User $record) =>
-                        auth()->user()->hasRole('admin') ||
-                        auth()->id() === $record->id
+                   \Illuminate\Support\Facades\Auth::user()->roles()->where('name', 'admin')->exists() ||
+                    \Illuminate\Support\Facades\Auth::id() === $record->id
                     ),
 
                 Tables\Actions\DeleteAction::make()
                     ->visible(fn (User $record) =>
-                        auth()->user()->hasRole('admin') &&
-                        !$record->hasRole('admin') &&
-                        auth()->id() !== $record->id
+                    \Illuminate\Support\Facades\Auth::user()->roles()->where('name', 'admin')->exists() &&
+                        !$record->roles()->where('name', 'admin')->exists() &&
+                        \Illuminate\Support\Facades\Auth::id() !== $record->id
                     ),
 
                 Action::make('approve')
@@ -209,10 +210,10 @@ class UserResource extends Resource
                     ->icon('heroicon-o-check')
                     ->color('success')
                     ->visible(fn (User $record) =>
-                        auth()->user()->hasRole('admin') &&
+                    \Illuminate\Support\Facades\Auth::user()->roles()->where('name', 'admin')->exists() &&
                         !$record->is_approved &&
-                        !$record->hasRole('admin') &&
-                        auth()->id() !== $record->id
+                        !$record->roles()->where('name', 'admin')->exists() &&
+                        \Illuminate\Support\Facades\Auth::id() !== $record->id
                     )
                     ->action(fn (User $record) => $record->update(['is_approved' => true])),
 
@@ -221,17 +222,17 @@ class UserResource extends Resource
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
                     ->visible(fn (User $record) =>
-                        auth()->user()->hasRole('admin') &&
+                        \Illuminate\Support\Facades\Auth::user()->roles()->where('name', 'admin')->exists() &&
                         $record->is_active &&
-                        !$record->hasRole('admin') &&
-                        auth()->id() !== $record->id
+                        !$record->roles()->where('name', 'admin')->exists() &&
+                        \Illuminate\Support\Facades\Auth::id() !== $record->id
                     )
                     ->action(fn (User $record) => $record->update(['is_active' => false])),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->visible(fn () => auth()->user()->hasRole('admin')),
+                        ->visible(fn () => \Illuminate\Support\Facades\Auth::user()->roles()->where('name', 'admin')->exists()),
                 ]),
             ]);
     }
@@ -249,17 +250,17 @@ class UserResource extends Resource
     {
         $query = parent::getEloquentQuery();
 
-        if (auth()->user()->hasRole('admin')) {
+        if (\Illuminate\Support\Facades\Auth::user()->roles()->where('name', 'admin')->exists()) {
             return $query;
         }
 
-        if (auth()->user()->hasRole('area_manager')) {
+        if (\Illuminate\Support\Facades\Auth::user()->roles()->where('name', 'area_manager')->exists()) {
             return $query->whereHas('roles', fn($q) => $q->where('name', 'teacher'))
-                        ->where('sede_id', auth()->user()->sede_id)
-                        ->whereHas('areas', fn($q) => $q->whereIn('id', auth()->user()->areas->pluck('id')));
+                        ->where('sede_id', \Illuminate\Support\Facades\Auth::user()->sede_id)
+                        ->whereHas('areas', fn($q) => $q->whereIn('id', \Illuminate\Support\Facades\Auth::user()->areas->pluck('id')));
         }
 
-        return $query->where('id', auth()->id());
+        return $query->where('id', \Illuminate\Support\Facades\Auth::id());
     }
 
     protected function getTableRecordsPerPageSelectOptions(): array

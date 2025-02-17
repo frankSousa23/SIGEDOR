@@ -17,6 +17,7 @@ use App\Models\Area;
 use App\Models\Programa;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Permission\Traits\HasRoles;
 
 class Teacher extends Model
 {

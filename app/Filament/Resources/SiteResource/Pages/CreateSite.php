@@ -6,6 +6,10 @@ use App\Filament\Resources\SiteResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use App\Models\Site;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role;
 
 class CreateSite extends CreateRecord
 {
@@ -13,7 +17,7 @@ class CreateSite extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
 {
-    if (Site::where('teacher_id', $data['teacher_id'])->exists()) {
+    if (Site::where('teacher_cdi', $data['teacher_cdi'])->exists()) {
         throw new \Exception('Este docente ya tiene una sede asignada.');
     }
 

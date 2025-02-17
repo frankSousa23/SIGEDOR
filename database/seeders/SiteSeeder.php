@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\Site;
 use App\Models\Teacher;
+use App\Models\Sede;
+use App\Models\Area;
+use App\Models\Programa;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -13,180 +16,167 @@ class SiteSeeder extends Seeder
 {
     private $processed = 0;
     private $errors = 0;
-    private $duplicates = 0;
-    private $rows = [];
+    private $missingTeachers = 0;
+    private $missingRelations = 0;
 
     public function run()
     {
-        $csvFile = database_path('seeders/data/sites.csv');
+        $this->command->info('🚀 Iniciando carga masiva de asignaciones docentes');
+        $this->command->warn('⚠️ Validando relaciones requeridas primero...');
 
-        if (!file_exists($csvFile)) {
-            $this->handleFileNotFound($csvFile);
-            return;
+        DB::beginTransaction();
+        try {
+            $this->processCSVFile();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $this->handleProcessingError(0, $e);
         }
 
-        $this->rows = $this->readCSV($csvFile);
-
-        if (empty($this->rows)) {
-            $this->command->error('El archivo CSV está vacío o tiene formato incorrecto');
-            return;
-        }
-
-        DB::transaction(function () {
-            foreach ($this->rows as $index => $row) {
-                $this->processRow($row, $index + 1);
-            }
-        });
-
-        $this->outputResults();
+        $this->outputFinalResults();
     }
 
-    private function readCSV($filePath)
+    private function processCSVFile()
+    {
+        $filePath = database_path('seeders/data/sites.csv');
+        $rows = $this->readCSVFile($filePath);
+
+        $this->command->info("📁 Archivo detectado: " . basename($filePath));
+        $this->command->line("📊 Total de registros CSV: " . number_format(count($rows), 0));
+
+        foreach ($rows as $line => $row) {
+            $this->processSingleRecord($line + 1, $row);
+        }
+    }
+
+    private function readCSVFile($path)
     {
         $rows = [];
-        $handle = fopen($filePath, 'r');
-
-        if ($handle === false) {
-            return [];
-        }
-
-        $header = fgetcsv($handle, 0, ';');
-        
-        if ($header === false) {
-            fclose($handle);
-            return [];
-        }
+        $handle = fopen($path, 'r');
 
         while (($data = fgetcsv($handle, 0, ';')) !== false) {
-            if (count($data) === 1 && trim($data[0]) === '') {
-                continue;
-            }
-            $rows[] = array_combine($header, $data);
+            $rows[] = $data;
         }
 
         fclose($handle);
+        array_shift($rows); // Remover encabezado
         return $rows;
     }
 
-    private function processRow($row, $lineNumber)
+    private function processSingleRecord($lineNumber, $row)
     {
         try {
-            $this->validateRow($row);
-            
-            $teacherCdi = trim($row['teacher_cdi']);
-            $sede = $this->normalizeString($row['sede_nombre']);
-            $area = $this->normalizeString($row['area_nombre']);
-            $programa = $this->normalizeString($row['programa_nombre']);
-            $uc = $this->sanitizeUc($row['uc'] ?? 1);
+            $this->validateCSVRowStructure($row, $lineNumber);
 
-            if (!$this->teacherExists($teacherCdi)) {
-                throw new \Exception("Docente con CDI $teacherCdi no registrado");
-            }
+            $cdi = $this->normalizeAndVerifyCDI($row[1], $lineNumber);
+            $relations = $this->locateRequiredRelationships($row, $lineNumber);
 
-            if ($this->isDuplicateAssignment($teacherCdi, $sede, $area)) {
-                $this->duplicates++;
-                return;
-            }
-
-            Site::updateOrCreate(
-                [
-                    'teacher_cdi' => $teacherCdi,
-                    'sede_nombre' => $sede,
-                    'area_nombre' => $area
-                ],
-                [
-                    'programa_nombre' => $programa,
-                    'uc' => $uc,
-                    'is_active' => true,
-                    'last_assignment' => now()  // Nueva columna requerida
-                ]
-            );
-
+            $this->createOrUpdateSiteRecord($cdi, $relations, $row);
             $this->processed++;
 
         } catch (\Exception $e) {
-            $this->logError($lineNumber, $e->getMessage());
-            $this->errors++;
+            $this->handleProcessingError($lineNumber, $e);
         }
     }
 
-    private function validateRow($row)
+    private function validateCSVRowStructure($row, $line)
     {
-        $requiredFields = [
-            'teacher_cdi' => 'CDI docente',
-            'sede_nombre' => 'Nombre de sede',
-            'area_nombre' => 'Área académica'
-        ];
-
-        foreach ($requiredFields as $field => $name) {
-            if (empty(trim($row[$field] ?? ''))) {
-                throw new \Exception("Campo requerido faltante: $name");
-            }
+        if (count($row) < 7) {
+            throw new \Exception("❌ Estructura inválida. Columnas requeridas: 7 | Encontradas: " . count($row));
         }
     }
 
-    private function normalizeString($value)
+    private function normalizeAndVerifyCDI($rawCDI, $line)
     {
-        $value = trim($value);
-        if ($value === 'Pendiente corregir' || empty($value)) {
-            return 'Por definir';
+        $cdi = str_pad(preg_replace('/[^0-9]/', '', $rawCDI), 8, '0', STR_PAD_LEFT);
+
+        if (!Teacher::where('cdi', $cdi)->exists()) {
+            $this->missingTeachers++;
+            throw new \Exception("👨🏫 Docente no registrado con CDI: {$cdi}");
         }
-        return Str::title(Str::lower($value));
+
+        return $cdi;
     }
 
-    private function sanitizeUc($value)
-    {
-        $uc = (int) preg_replace('/[^0-9]/', '', $value);
-        return max(1, min(30, $uc));
+    private function locateRequiredRelationships($row, $line)
+{
+    // Búsqueda exacta con parámetros vinculados
+    $sede = Sede::whereRaw('BINARY nombre = ?', [trim($row[2])])->first();
+    $area = Area::whereRaw('BINARY nombre = ?', [trim($row[3])])->first();
+    $programa = Programa::whereRaw('BINARY nombre = ?', [trim($row[4])])->first();
+
+    if (!$sede) {
+        throw new \Exception("SEDE no encontrada: '{$row[2]}'");
+    }
+    if (!$area) {
+        throw new \Exception("ÁREA no encontrada: '{$row[3]}'");
+    }
+    if (!$programa) {
+        throw new \Exception("PROGRAMA no encontrado: '{$row[4]}'");
     }
 
-    private function teacherExists($cdi)
+    return [
+        'sede' => $sede,
+        'area' => $area,
+        'programa' => $programa
+    ];
+}
+
+    private function formatMissingRelations($row)
     {
-        return Teacher::where('cdi', $cdi)->exists();
+        return sprintf('Sede: "%s" | Area: "%s" | Programa: "%s"',
+            $row[2], $row[3], $row[4]);
     }
 
-    private function isDuplicateAssignment($cdi, $sede, $area)
+    private function createOrUpdateSiteRecord($cdi, $relations, $row)
     {
-        return Site::where('teacher_cdi', $cdi)
-            ->where('sede_nombre', $sede)
-            ->where('area_nombre', $area)
-            ->exists();
+        Site::updateOrCreate(
+            [
+                'teacher_cdi' => $cdi,
+                'sede_id' => $relations['sede']->id,
+                'area_id' => $relations['area']->id,
+                'programa_id' => $relations['programa']->id
+            ],
+            [
+                'uc' => Str::limit(trim($row[5]), 250, ''),
+                'is_active' => $this->parseBoolean($row[6]),
+                'weekHours' => 0, // Valor temporal seguro
+                'sections' => 0,  // Valor temporal seguro
+                'last_assignment' => now()
+            ]
+        );
     }
 
-    private function handleFileNotFound($path)
+    private function parseBoolean($value)
     {
-        Log::error("Archivo no encontrado: $path");
-        $this->command->error("¡Error crítico! El archivo CSV no existe en: $path");
-        $this->command->warn('Verifica que:');
-        $this->command->line('1. El archivo exista en la ruta especificada');
-        $this->command->line('2. El nombre del archivo coincida exactamente (incluyendo mayúsculas)');
-        $this->command->line('3. El archivo tenga permisos de lectura');
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
     }
 
-    private function logError($line, $message)
+    private function handleProcessingError($line, $e)
     {
-        Log::error("Línea $line: $message");
-        $this->command->warn("Error en línea $line: " . Str::limit($message, 50));
+        Log::error("LÍNEA {$line}: {$e->getMessage()}");
+        $this->command->error("[L{$line}] " . Str::limit($e->getMessage(), 45));
+        $this->errors++;
     }
 
-    private function outputResults()
+    private function outputFinalResults()
     {
-        $totalRows = count($this->rows);
-        $this->command->newLine(2);
-        $this->command->info('Resultado del proceso de asignaciones:');
+        $this->command->line("\n📊 RESUMEN FINAL:");
         $this->command->table(
-            ['Procesados', 'Duplicados', 'Errores', 'Total CSV'],
+            ['Procesados', 'Docentes Faltantes', 'Relaciones Faltantes', 'Errores'],
             [[
-                $this->processed, 
-                $this->duplicates, 
-                $this->errors, 
-                $totalRows
+                $this->processed,
+                $this->missingTeachers,
+                $this->missingRelations,
+                $this->errors
             ]]
         );
-        
+
         if ($this->errors > 0) {
-            $this->command->error('Errores detectados. Revisa el archivo de logs para detalles:');
-            $this->command->line(storage_path('logs/laravel.log'));
+            $this->command->error("\n🔧 Acciones Requeridas:");
+            $this->command->line("1. Verificar CDI en teachers.csv");
+            $this->command->line("2. Validar nombres exactos en sedes, áreas y programas");
+            $this->command->line("3. Revisar log completo: " . storage_path('logs/laravel.log'));
         }
     }
 }

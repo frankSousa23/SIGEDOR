@@ -23,6 +23,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Filament\Tables\Actions\EditAction;
+use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role;
+
 
 class CategoryResource extends Resource
 {
@@ -292,11 +295,11 @@ class CategoryResource extends Resource
 
 
 
-                    ]),
-            ])
-            ->visible(fn () => auth()->user()->hasRole('admin'));
-    }
-
+                    
+                                        ]),
+                                ])
+                                ;
+                        }
     public static function table(Table $table): Table
     {
         return $table
@@ -409,13 +412,13 @@ class CategoryResource extends Resource
 
     protected function getTableQuery(): Builder
 {
-    $user = auth()->user();
+    $user = \Illuminate\Support\Facades\Auth::user();
 
-    if ($user->hasRole('admin')) {
+    if (\Illuminate\Support\Facades\Auth::user()->hasRole('admin')) {
         return Category::query(); // Admin ve todo
     }
 
-    if ($user->hasRole('area_manager')) {
+    if (\Illuminate\Support\Facades\Auth::user()->hasRole('area_manager')) {
         return Category::query()
             ->where('sede_id', $user->sede_id)
             ->where('area_id', $user->area_id); // Area Manager ve solo su sede y área
@@ -428,10 +431,10 @@ protected function getTableActions(): array
 {
     return [
         EditAction::make()
-            ->visible(fn (Category $record): bool => auth()->user()->hasRole('admin') ||
-                (auth()->user()->hasRole('area_manager') &&
-                 $record->sede_id === auth()->user()->sede_id &&
-                 $record->area_id === auth()->user()->area_id)), // Solo admin o area_manager con misma sede/área puede editar
+            ->visible(fn (Category $record): bool => \Illuminate\Support\Facades\Auth::user()->hasRole('admin') ||
+                (\Illuminate\Support\Facades\Auth::user()->hasRole('area_manager') &&
+                 $record->sede_id === \Illuminate\Support\Facades\Auth::user()->sede_id &&
+                 $record->area_id === \Illuminate\Support\Facades\Auth::user()->area_id)), // Solo admin o area_manager con misma sede/área puede editar
     ];
 }
 

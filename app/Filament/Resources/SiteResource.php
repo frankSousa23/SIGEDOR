@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Models\User;
 use App\Models\Site;
 use App\Models\Teacher;
 use App\Models\Sede;
@@ -20,6 +21,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Filament\Tables\Actions\EditAction;
+use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role;
 
 class SiteResource extends Resource
 {
@@ -39,26 +42,26 @@ class SiteResource extends Resource
     ->description('Seleccione el docente para asignar Sede')
     ->collapsible()
     ->schema([
-        Select::make('teacher_id')
+        Select::make('teacher_cdi')
             ->label('Docente')
             ->options(function ($record) {
                 return Teacher::whereNull('site_id')  // Solo docentes sin site asignada
-                    ->orWhere('id', $record?->teacher_id)  // Permite editar el registro actual
-                    ->pluck('cdi', 'id');
+                    ->orWhere('cdi', $record?->teacher_cdi)  // Permite editar el registro actual
+                    ->pluck('cdi', 'cdi');
             })
             ->required()
             ->searchable()
             ->preload()
             ->live()
             ->afterStateUpdated(function ($state, Forms\Set $set) {
-                $teacher = Teacher::find($state);
+                $teacher = Teacher::where('cdi', $state)->first();
                 if ($teacher && $teacher->user) {
                     $set('sede_id', $teacher->user->sede_id);
                     $set('area_id', $teacher->user->area_id);
                 }
             })
             ->rules([
-                Rule::unique('sites', 'teacher_id')  // Validación en backend
+                Rule::unique('sites', 'teacher_cdi')  // Validación en backend
             ])
             ->validationMessages([
                 'unique' => 'Este docente ya tiene una sede asignada'
@@ -69,14 +72,14 @@ class SiteResource extends Resource
              Forms\Components\Select::make('sede_id')
                 ->label('Sede')
                 ->options(Sede::all()->pluck('nombre', 'id'))
-                ->disabled(fn ($get) => $get('teacher_id') !== null)
+                ->disabled(fn ($get) => $get('teacher_cdi') !== null)
                 ->default(fn () => null)
                 ->dehydrated(fn ($state) => filled($state)),
 
             Forms\Components\Select::make('area_id')
                 ->label('Área')
                 ->options(Area::all()->pluck('nombre', 'id'))
-                ->disabled(fn ($get) => $get('teacher_id') !== null)
+                ->disabled(fn ($get) => $get('teacher_cdi') !== null)
                 ->default(fn () => null)
                 ->dehydrated(fn ($state) => filled($state)),
 
@@ -88,7 +91,7 @@ class SiteResource extends Resource
                 ->preload()
                 ->default(null)
                 ->rules([
-                    fn ($get) => Rule::unique('sites', 'programa_id')->where('teacher_id', $get('teacher_id'))
+                    fn ($get) => Rule::unique('sites', 'programa_id')->where('teacher_cdi', $get('teacher_cdi'))
                 ])
                 ->validationMessages([
                     'unique' => 'Este docente ya tiene un programa asignado'
@@ -124,7 +127,7 @@ class SiteResource extends Resource
                 ->label('Disponible')
                 ->default(true),
         ])
-        ->visible(fn () => auth()->user()->hasRole('admin'));
+        ;
     }
 
     public static function table(Table $table): Table
@@ -242,7 +245,7 @@ class SiteResource extends Resource
 
     protected function getTableQuery(): Builder
 {
-    $user = auth()->user();
+    $user = \Illuminate\Support\Facades\Auth::user();
 
     if ($user->hasRole('admin')) {
         return Site::query(); // Admin ve todo
@@ -261,12 +264,12 @@ protected function getTableActions(): array
 {
     return [
         EditAction::make()
-            ->visible(fn (Site $record): bool => auth()->user()->hasRole('admin') ||
-                (auth()->user()->hasRole('area_manager') &&
-                 $record->sede_id === auth()->user()->sede_id &&
-                 $record->area_id === auth()->user()->area_id) ||
-                (auth()->user()->hasRole('teacher') &&
-                 $record->user_id === auth()->user()->id)), // Solo admin, area_manager con misma sede/área o teacher dueño puede editar
+            ->visible(fn (Site $record): bool => \Illuminate\Support\Facades\Auth::user()->hasRole('admin') ||
+                (\Illuminate\Support\Facades\Auth::user()->hasRole('area_manager') &&
+                 $record->sede_id === \Illuminate\Support\Facades\Auth::user()->sede_id &&
+                 $record->area_id === \Illuminate\Support\Facades\Auth::user()->area_id) ||
+                (\Illuminate\Support\Facades\Auth::user()->hasRole('teacher') &&
+                 $record->user_id === \Illuminate\Support\Facades\Auth::user()->id)), // Solo admin, area_manager con misma sede/área o teacher dueño puede editar
     ];
 }
 

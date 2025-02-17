@@ -21,6 +21,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Actions\EditAction;
+use Spatie\Permission\Models\Role;
+
 
 class ReportResource extends Resource
 {
@@ -49,7 +51,11 @@ class ReportResource extends Resource
                         'area',
                     ])->find($state);
 
+                    \Log::info('Teacher ID State: ' . $state);
+
                     if ($teacher) {
+                        \Log::info('Teacher found: ' . $teacher->toJson());
+                        \Log::info('Teacher CDI: ' . $teacher->cdi);
                         // Campos principales
                         $set('sede_id', $teacher->sede_id);
                         $set('area_id', $teacher->area_id);
@@ -57,14 +63,17 @@ class ReportResource extends Resource
                         $set('sede_nombre', optional($teacher->sede)->nombre ?? 'Sin Sede');
                         $set('area_nombre', optional($teacher->area)->nombre ?? 'Sin Área');
 
-                        $category = Category::where('teacher_id', $state)->first();
+                        
+                        $category = Category::where('teacher_cdi', $teacher->cdi)->first();
+                        \Log::info('Category: ' . ($category ? $category->toJson() : 'null'));
                         $set('category_id', $category?->id);
                         $set('category_name', $category?->current_category ?? 'Sin Categoría');
 
-                        $dedication = Dedication::where('teacher_id', $state)->first();
+                        
+                        $dedication = Dedication::where('teacher_cdi', $teacher->cdi)->first();
+                        \Log::info('Dedication: ' . ($dedication ? $dedication->toJson() : 'null'));
                         $set('dedication_id', $dedication?->id);
                         $set('dedication_name', $dedication?->name ?? 'Sin Dedicación');
-
                     } else {
                         $set('sede_id', null);
                         $set('area_id', null);
@@ -274,10 +283,10 @@ class ReportResource extends Resource
 
     protected function getTableQuery(): Builder
 {
-    $user = auth()->user();
+    $user = \Illuminate\Support\Facades\Auth::user();
 
     if ($user->hasRole('admin')) {
-        return Report::query(); // Admin ve todo
+        return Report::query();
     }
 
     if ($user->hasRole('area_manager')) {
@@ -293,12 +302,12 @@ protected function getTableActions(): array
 {
     return [
         EditAction::make()
-            ->visible(fn (Report $record): bool => auth()->user()->hasRole('admin') ||
-                (auth()->user()->hasRole('area_manager') &&
-                 $record->sede_id === auth()->user()->sede_id &&
-                 $record->area_id === auth()->user()->area_id) ||
-                (auth()->user()->hasRole('teacher') &&
-                 $record->user_id === auth()->user()->id)), // Solo admin, area_manager con misma sede/área o teacher dueño puede editar
+            ->visible(fn (Report $record): bool => \Illuminate\Support\Facades\Auth::user()->hasRole('admin') ||
+                \Illuminate\Support\Facades\Auth::user()->hasRole('area_manager') &&
+                 $record->sede_id === \Illuminate\Support\Facades\Auth::user()->sede_id &&
+                 $record->area_id === \Illuminate\Support\Facades\Auth::user()->area_id) ||
+                \Illuminate\Support\Facades\Auth::user()->hasRole('teacher') &&
+                 $record->user_id === \Illuminate\Support\Facades\Auth::user()->id // Solo admin, area_manager con misma sede/área o teacher dueño puede editar
     ];
 }
 
