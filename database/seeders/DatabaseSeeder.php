@@ -31,10 +31,6 @@ class DatabaseSeeder extends Seeder
             AreaSeeder::class,
             ProgramaSeeder::class,
             UserSeeder::class,
-            TeacherSeeder::class,
-            CategorySeeder::class,
-            DedicationSeeder::class,
-            SiteSeeder::class,
         ]);
     }
 }
