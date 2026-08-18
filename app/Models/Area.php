@@ -2,26 +2,48 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Modelo de Área Académica / Facultad.
+ *
+ * Representa las áreas de conocimiento (ej: Ingeniería de Sistemas, Ciencias de la Salud).
+ *
+ * @property int $id
+ * @property string $nombre
+ */
 class Area extends Model
 {
+    use HasFactory;
+
+    protected $table = 'areas';
+
     protected $fillable = ['nombre'];
 
-    public function users()
+    /**
+     * Usuarios asignados al área.
+     */
+    public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }
 
-    public function sede(): BelongsTo
+    /**
+     * Docentes asignados al área.
+     */
+    public function teachers(): HasMany
     {
-        return $this->belongsTo(Sede::class);
+        return $this->hasMany(Teacher::class);
     }
 
-    public function teachers(): BelongsToMany
+    /**
+     * Asignaciones de sede en el área.
+     */
+    public function sites(): HasMany
     {
-        return $this->belongsToMany(Teacher::class);
+        return $this->hasMany(Site::class);
     }
 }

@@ -2,25 +2,35 @@
 
 namespace Tests\Feature;
 
+use App\Models\Area;
+use App\Models\Sede;
+use App\Models\User;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\Site;
 
 class UserCreationTest extends TestCase
 {
-    public function test_crear_usuario_con_site_valido()
+    use RefreshDatabase;
+
+    public function test_creacion_de_usuario_con_roles()
     {
-        $site = Site::factory()->create();
+        $this->seed(RoleSeeder::class);
+        $sede = Sede::create(['nombre' => 'Sede Central']);
+        $area = Area::create(['nombre' => 'Ingeniería']);
 
-        $response = $this->post('/filament/dashboard/users', [
-            'name' => 'Test User',
-            'email' => 'test@sigedor.com',
+        $user = User::create([
+            'name' => 'Profesor Nuevo',
+            'email' => 'nuevo@sigedor.com',
             'password' => 'password',
-            'site_id' => $site->id,
-            'role' => 'teacher'
+            'sede_id' => $sede->id,
+            'area_id' => $area->id,
+            'is_active' => true,
+            'is_approved' => true,
         ]);
+        $user->assignRole('teacher');
 
-        $this->assertDatabaseHas('users', ['email' => 'test@sigedor.com']);
+        $this->assertDatabaseHas('users', ['email' => 'nuevo@sigedor.com']);
+        $this->assertTrue($user->hasRole('teacher'));
     }
 }

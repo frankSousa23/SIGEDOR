@@ -2,18 +2,33 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * Modelo de Asignación de Carga / Sede del Docente.
+ *
+ * Registra la distribución de horas semanales, secciones, unidades de crédito (UC)
+ * y ubicación académica del docente.
+ *
+ * @property int $id
+ * @property string $teacher_cdi
+ * @property int|null $sede_id
+ * @property int|null $area_id
+ * @property int|null $programa_id
+ * @property int|null $uc
+ * @property int|null $weekHours
+ * @property int|null $sections
+ * @property string|null $info
+ * @property bool $is_active
+ * @property bool $is_available
+ */
 class Site extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
-
-    protected $guarded = [];
+    use HasFactory, SoftDeletes;
 
     protected $table = 'sites';
 
@@ -29,69 +44,59 @@ class Site extends Model
         'is_active',
         'is_available',
         'teachers_count',
-        'last_assignment'
+        'last_assignment',
     ];
 
     protected $casts = [
+        'uc' => 'integer',
         'weekHours' => 'integer',
         'sections' => 'integer',
         'is_active' => 'boolean',
         'is_available' => 'boolean',
         'teachers_count' => 'integer',
-        'last_assignment' => 'datetime'
+        'last_assignment' => 'datetime',
+        'sede_id' => 'integer',
+        'area_id' => 'integer',
+        'programa_id' => 'integer',
     ];
 
-    protected $attributes = [
-        'sede_id' => null,
-        'area_id' => null,
-    ];
-
-    protected static function boot()
-    {
-    parent::boot();
-
-    static::saving(function ($site) {
-        $exists = Site::where('teacher_cdi', $site->teacher_cdi)
-            ->where('sede_id', $site->sede_id)
-            ->where('area_id', $site->area_id)
-            ->where('programa_id', $site->programa_id)
-            ->exists();
-
-        if ($exists) {
-            throw new \Exception('Configuración duplicada para este docente en la misma sede/área/programa');
-        }
-    });;
-    }
-
-
-    public function teacher()
+    /**
+     * Docente asociado por CDI.
+     */
+    public function teacher(): BelongsTo
     {
         return $this->belongsTo(Teacher::class, 'teacher_cdi', 'cdi');
     }
 
-    // Relaciones institucionales
-    public function sede()
+    /**
+     * Sede institucional asignada.
+     */
+    public function sede(): BelongsTo
     {
         return $this->belongsTo(Sede::class, 'sede_id', 'id');
     }
 
-    public function area()
+    /**
+     * Área de conocimiento asignada.
+     */
+    public function area(): BelongsTo
     {
-        return $this->belongsTo(Area::class);
+        return $this->belongsTo(Area::class, 'area_id', 'id');
     }
 
-    public function programa()
+    /**
+     * Programa o carrera asignada.
+     */
+    public function programa(): BelongsTo
     {
-        return $this->belongsTo(Programa::class);
+        return $this->belongsTo(Programa::class, 'programa_id', 'id');
     }
 
-    public function teachers()
+    /**
+     * Docentes vinculados directamente a esta sede.
+     */
+    public function teachers(): HasMany
     {
-        return $this->hasMany(Teacher::class);
-    }
-
-    public function getFullNameAttribute(): string
-    {
-        return "{$this->name} {$this->surName}";
+        return $this->hasMany(Teacher::class, 'site_id');
     }
 }

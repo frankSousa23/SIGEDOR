@@ -2,11 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Modelo de Dedicación y Carga Horaria Docente.
+ *
+ * Representa la modalidad de contratación del profesor (Tiempo Convencional,
+ * Medio Tiempo, Tiempo Completo, Exclusiva) y sus horas lectivas/administrativas.
+ *
+ * @property int $id
+ * @property string $teacher_cdi
+ * @property string $name
+ * @property int $hours
+ * @property string|null $director
+ * @property int|null $studentNumber
+ * @property int|null $studentHours
+ * @property string|null $info
+ */
 class Dedication extends Model
 {
     use HasFactory;
@@ -20,7 +35,7 @@ class Dedication extends Model
         'director',
         'studentNumber',
         'studentHours',
-        'info'
+        'info',
     ];
 
     protected $casts = [
@@ -30,54 +45,52 @@ class Dedication extends Model
     ];
 
     // Constantes para tipos de dedicación
-    const DEDICATION_TCV = 'TCV';
-    const DEDICATION_MT = 'MT';
-    const DEDICATION_TC = 'TC';
-    const DEDICATION_EX = 'EX';
+    public const DEDICATION_TCV = 'Tiempo Convencional';
+    public const DEDICATION_MT = 'Medio Tiempo';
+    public const DEDICATION_TC = 'Tiempo Completo';
+    public const DEDICATION_EX = 'Exclusiva';
 
-    // Constantes para tipos de director
-    const DIRECTOR_COORDINATOR = 'Coordinador';
-    const DIRECTOR_DEPARTMENT_HEAD = 'Jefe de Departamento';
-    const DIRECTOR_DEAN = 'Decano';
-    const DIRECTOR_DIRECTOR = 'Director';
-    const DIRECTOR_SUB_DIRECTOR = 'Sub-Director';
+    // Constantes para cargos directivos
+    public const DIRECTOR_COORDINATOR = 'Coordinador';
+    public const DIRECTOR_DEPARTMENT_HEAD = 'Jefe de Departamento';
+    public const DIRECTOR_DEAN = 'Decano';
+    public const DIRECTOR_DIRECTOR = 'Director';
+    public const DIRECTOR_SUB_DIRECTOR = 'Sub-Director';
 
-    // Horas por tipo de dedicación
-    const HOURS_RANGES = [
-        self::DEDICATION_TCV => [1, 17],
-        self::DEDICATION_MT => [18, 18],
-        self::DEDICATION_TC => [30, 30],
-        self::DEDICATION_EX => [35, 36]
-    ];
-
-    const DEDICATIONS = [
+    public const DEDICATIONS = [
         'Tiempo Convencional' => 'Tiempo Convencional',
         'Medio Tiempo' => 'Medio Tiempo',
         'Tiempo Completo' => 'Tiempo Completo',
         'Exclusiva' => 'Exclusiva',
     ];
 
-    public function teacher()
-{
-    return $this->belongsTo(Teacher::class, 'teacher_cdi', 'cdi');
-}
+    /**
+     * Docente asociado por CDI.
+     */
+    public function teacher(): BelongsTo
+    {
+        return $this->belongsTo(Teacher::class, 'teacher_cdi', 'cdi');
+    }
 
-    public function report(){
+    /**
+     * Reportes vinculados a esta dedicación.
+     */
+    public function reports(): HasMany
+    {
         return $this->hasMany(Report::class);
     }
 
-    public static function getValidHours($name)
+    /**
+     * Rango de horas válidas según tipo de dedicación.
+     */
+    public static function getValidHours(string $name): array
     {
         return match ($name) {
-            self::DEDICATION_TCV => array_combine(range(1, 17), range(1, 17)),
-            self::DEDICATION_MT => [18 => 18],
-            self::DEDICATION_TC => [30 => 30],
-            self::DEDICATION_EX => [35 => 35, 36 => 36],
+            'Tiempo Convencional', 'TCV' => array_combine(range(1, 17), range(1, 17)),
+            'Medio Tiempo', 'MT' => [18 => 18],
+            'Tiempo Completo', 'TC' => [30 => 30],
+            'Exclusiva', 'EX' => [35 => 35, 36 => 36],
             default => [],
         };
-    }
-    public function getFullNameAttribute(): string
-    {
-        return "{$this->name} {$this->surName}";
     }
 }

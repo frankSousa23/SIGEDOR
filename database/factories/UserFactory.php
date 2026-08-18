@@ -2,64 +2,63 @@
 
 namespace Database\Factories;
 
+use App\Models\Area;
+use App\Models\Sede;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\Site;
-use App\Models\User;
 
 /**
+ * Factory para el modelo User.
+ *
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
 class UserFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = User::class;
+
     public function definition(): array
     {
         return [
-            'sede_id' => \App\Models\Sede::factory(),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => bcrypt('password'),
+            'password' => 'password',
             'remember_token' => Str::random(10),
             'is_active' => true,
             'is_approved' => true,
-            // 'cdi' => $this->faker->unique()->randomNumber(8, true),
+            'sede_id' => Sede::inRandomOrder()->first()?->id,
+            'area_id' => Area::inRandomOrder()->first()?->id,
         ];
     }
 
     /**
-     * Indicate that the user is a teacher.
+     * Estado con rol Administrador.
      */
-    public function teacher()
+    public function admin(): static
     {
-        return $this->state(function (array $attributes) {
-            return [];
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole('admin');
         });
     }
 
     /**
-     * Indicate that the user is an area manager.
+     * Estado con rol Jefe de Área.
      */
-    public function areaManager()
+    public function areaManager(): static
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'role' => 'area_manager',
-            ];
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole('area_manager');
         });
     }
 
-    public function configure()
+    /**
+     * Estado con rol Docente.
+     */
+    public function teacher(): static
     {
-    return $this->afterCreating(function (User $user) {
-        $user->areas()->attach(
-            \App\Models\Area::inRandomOrder()->take(2)->pluck('id')
-        );
-    });
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole('teacher');
+        });
     }
 }

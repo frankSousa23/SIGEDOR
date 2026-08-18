@@ -2,23 +2,31 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\Dedication;
+use App\Models\PermissionTeacher;
 use Tests\TestCase;
-use App\Models\User;
-use App\Models\Category;
 
-class TeacherCreationTest extends TestCase
+class PermissionAndDedicationTest extends TestCase
 {
-    public function test_crear_teacher_con_usuario_existente()
+    public function test_validacion_de_horas_segun_dedicacion()
     {
-        $user = User::factory()->create(['role' => 'teacher']);
+        $validHoursTCV = Dedication::getValidHours('Tiempo Convencional');
+        $this->assertArrayHasKey(12, $validHoursTCV);
 
-        $response = $this->post('/filament/dashboard/teachers', [
-            'user_id' => $user->id,
-            'category_id' => Category::factory()->create()->id,
+        $validHoursMT = Dedication::getValidHours('Medio Tiempo');
+        $this->assertEquals([18 => 18], $validHoursMT);
+
+        $validHoursTC = Dedication::getValidHours('Tiempo Completo');
+        $this->assertEquals([30 => 30], $validHoursTC);
+    }
+
+    public function test_calculo_de_fecha_fin_en_permisos()
+    {
+        $permission = new PermissionTeacher([
+            'start_date' => '2026-01-01',
+            'duration_type' => 'semestral',
         ]);
 
-        $this->assertDatabaseHas('teachers', ['user_id' => $user->id]);
+        $this->assertEquals('2026-07-01', $permission->calculateEndDate());
     }
 }

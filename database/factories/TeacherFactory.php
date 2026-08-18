@@ -2,44 +2,43 @@
 
 namespace Database\Factories;
 
+use App\Models\Area;
 use App\Models\Category;
 use App\Models\Dedication;
+use App\Models\Programa;
+use App\Models\Sede;
 use App\Models\Site;
+use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
+ * Factory para el modelo Teacher.
+ *
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Teacher>
  */
 class TeacherFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = Teacher::class;
+
     public function definition(): array
     {
-        $user = User::factory()->teacher()->create(); // Crear un User relacionado (teacher)
+        $user = User::factory()->teacher()->create();
 
         return [
             'user_id' => $user->id,
-            'sede_id' => Site::inRandomOrder()->first()->id ?? Site::factory()->create()->id,
-            'category_id' => Category::inRandomOrder()->first()->id ?? Category::factory()->create()->id,
-            'dedication_id' => Dedication::inRandomOrder()->first()->id ?? Dedication::factory()->create()->id,
+            'sede_id' => Sede::inRandomOrder()->first()?->id,
+            'area_id' => Area::inRandomOrder()->first()?->id,
+            'programa_id' => Programa::inRandomOrder()->first()?->id,
             'name' => $this->faker->firstName(),
             'surName' => $this->faker->lastName(),
-            'cdi' => $this->faker->unique()->randomNumber(5, true), // Reducir a 5 dígitos
+            'cdi' => (string) $this->faker->unique()->numberBetween(10000000, 99999999),
             'genre' => $this->faker->randomElement(['F', 'M']),
             'phone' => $this->faker->phoneNumber(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'birthDate' => $this->faker->date(),
-            'datePromotion' => $this->faker->date(),
-            'asignaturePromotion' => $this->faker->optional()->word(),
-            'has_site' => true, // Siempre tiene sede para pruebas
-            'has_category' => true, // Siempre tiene categoría para pruebas
-            'has_dedication' => true, // Siempre tiene dedicación para pruebas
-            'is_completed' => true, // Siempre completado para pruebas
+            'email' => $user->email,
+            'birthDate' => $this->faker->date('Y-m-d', '-30 years'),
+            'datePromotion' => $this->faker->date('Y-m-d', '-5 years'),
+            'asignaturePromotion' => $this->faker->words(3, true),
         ];
     }
 }

@@ -7,163 +7,100 @@ use App\Models\Teacher;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
+/**
+ * Seeder de Categorías Docentes del Sistema SIGEDOR.
+ *
+ * Registra el escalafón inicial de los docentes, grados académicos y fechas de ascenso.
+ */
 class CategorySeeder extends Seeder
 {
-    private $processed = 0;
-    private $errors = 0;
-    private $duplicates = 0;
-    private $rows = [];
-
-    public function run()
+    public function run(): void
     {
         $csvFile = database_path('seeders/data/categories.csv');
 
         if (!file_exists($csvFile)) {
-            $this->handleFileNotFound($csvFile);
+            $this->command->warn("Archivo categories.csv no encontrado.");
             return;
         }
 
-        $this->rows = $this->readCSV($csvFile);
+        $csvContent = mb_convert_encoding(file_get_contents($csvFile), 'UTF-8', 'UTF-8');
+        $lines = array_filter(array_map('trim', explode("\n", $csvContent)));
+        $header = str_getcsv(array_shift($lines), ';');
 
-        DB::transaction(function () {
-            foreach ($this->rows as $index => $row) {
-                $this->processRow($row, $index + 1);
-            }
-        });
+        $processed = 0;
 
-        $this->outputResults();
-    }
-
-    private function readCSV($path)
-    {
-        $rows = [];
-        $handle = fopen($path, 'r');
-        
-        while (($data = fgetcsv($handle, 0, ';')) !== false) {
-            $rows[] = $data;
-        }
-        
-        fclose($handle);
-        return $rows;
-    }
-
-    private function processRow($data, $lineNumber)
-    {
-        try {
-            if ($lineNumber === 1 || empty($data[1])) {
-                return;
+        foreach ($lines as $line) {
+            if (empty($line)) {
+                continue;
             }
 
-            $cdi = $this->normalizeCdi($data[1]);
+            $data = str_getcsv($line, ';');
+
+            if (count($data) < 11) {
+                continue;
+            }
+
+            $cdi = preg_replace('/[^0-9]/', '', trim($data[1]));
+            if (empty($cdi)) {
+                continue;
+            }
+
             $teacher = Teacher::where('cdi', $cdi)->first();
-
             if (!$teacher) {
-                $this->logError($lineNumber, "CDI no existe: {$cdi}");
-                return;
+                continue;
             }
 
-            $categoryData = [
-                'preTitle' => $this->cleanField($data[2]),
-                'lastTitle' => $this->cleanField($data[3]),
-                'disable_assistant_rule' => $this->parseBoolean($data[4]),
-                'current_category' => $this->normalizeCategory($data[5]),
-                'instructor' => $this->parseDate($data[6]),
-                'asistente' => $this->parseDate($data[7]),
-                'agregado' => $this->parseDate($data[8]),
-                'asociado' => $this->parseDate($data[9]),
-                'titular' => $this->parseDate($data[10]),
-                'is_active' => $this->parseBoolean($data[11]),
-                'teachers_count' => 1,
-                'is_available' => true
-            ];
-
-            Category::updateOrCreate(
+            $category = Category::updateOrCreate(
                 ['teacher_cdi' => $cdi],
-                $categoryData
+                [
+                    'preTitle' => $this->cleanField($data[2] ?? null),
+                    'lastTitle' => $this->cleanField($data[3] ?? null),
+                    'current_category' => $this->normalizeCategory($data[4] ?? 'Instructor'),
+                    'instructor' => $this->parseDate($data[5] ?? null),
+                    'asistente' => $this->parseDate($data[6] ?? null),
+                    'agregado' => $this->parseDate($data[7] ?? null),
+                    'asociado' => $this->parseDate($data[8] ?? null),
+                    'titular' => $this->parseDate($data[9] ?? null),
+                    'disable_assistant_rule' => (bool) ($data[10] ?? false),
+                    'info' => $this->cleanField($data[11] ?? null),
+                ]
             );
 
-            $this->processed++;
-
-        } catch (\Exception $e) {
-            $this->logError($lineNumber, $e->getMessage());
+            $teacher->update(['category_id' => $category->id]);
+            $processed++;
         }
+
+        $this->command->info("Seeding de {$processed} categorías completado exitosamente.");
     }
 
-    private function cleanField($value)
+    private function cleanField(?string $value): ?string
     {
-        $value = trim($value);
-        return in_array($value, ['Pendiente corregir', '']) ? null : $value;
+        $value = trim((string) $value);
+        return in_array($value, ['Pendiente corregir', '', 'null']) ? null : $value;
     }
 
-    private function parseDate($value)
+    private function parseDate(?string $value): ?string
     {
-        $value = trim($value);
+        $value = trim((string) $value);
         if (empty($value)) return null;
 
         try {
             return Carbon::createFromFormat('d/m/Y', $value)->toDateString();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             try {
-                return Carbon::createFromFormat('Y-m-d', $value)->toDateString();
-            } catch (\Exception $e) {
+                return Carbon::parse($value)->toDateString();
+            } catch (\Throwable $e) {
                 return null;
             }
         }
     }
 
-    private function normalizeCategory($category)
+    private function normalizeCategory(?string $category): string
     {
-        $category = Str::upper(str_replace(['.', ','], '', trim($category)));
-        $validCategories = ['INSTRUCTOR', 'ASISTENTE', 'AGREGADO', 'ASOCIADO', 'TITULAR'];
-        
-        return in_array($category, $validCategories) ? $category : 'INSTRUCTOR';
-    }
-
-    private function parseBoolean($value)
-    {
-        $value = Str::lower(trim($value));
-        return in_array($value, ['1', 'true', 'si', 'yes']);
-    }
-
-    private function normalizeCdi($value)
-    {
-        return str_pad(trim($value), 8, '0', STR_PAD_LEFT);
-    }
-
-    private function handleFileNotFound($path)
-    {
-        Log::error("Archivo no encontrado: {$path}");
-        $this->command->error("Error crítico: Archivo CSV no existe en {$path}");
-        $this->command->warn('Verifique:');
-        $this->command->line('1. Existencia del archivo');
-        $this->command->line('2. Permisos de lectura');
-        $this->command->line('3. Codificación UTF-8');
-    }
-
-    private function logError($line, $message)
-    {
-        Log::error("Línea {$line}: {$message}");
-        $this->command->warn("Error línea {$line}: " . Str::limit($message, 50));
-        $this->errors++;
-    }
-
-    private function outputResults()
-    {
-        $this->command->table(
-            ['Procesados', 'Duplicados', 'Errores', 'Total CSV'],
-            [[
-                $this->processed, 
-                $this->duplicates, 
-                $this->errors, 
-                count($this->rows) - 1 // Excluir encabezado
-            ]]
-        );
-
-        if ($this->errors > 0) {
-            $this->command->error('Revise el log completo: ' . storage_path('logs/laravel.log'));
-        }
+        $category = Str::title(trim((string) $category));
+        $valid = ['Instructor', 'Asistente', 'Agregado', 'Asociado', 'Titular'];
+        return in_array($category, $valid) ? $category : 'Instructor';
     }
 }

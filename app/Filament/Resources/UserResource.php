@@ -3,33 +3,29 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Models\Area;
+use App\Models\Sede;
 use App\Models\User;
-use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Select;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
-use Illuminate\Support\Facades\Hash;
-use Filament\Tables\Actions\Action;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Grid;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\EndsWith;
-use App\Models\Site;
-use App\Models\Sede;
-use App\Models\Area;
-use App\Filament\Resources\SiteResource;
-use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
-use Filament\Forms\Components\Toggle;
-use Filament\Tables\Columns\ToggleColumn;
 
-
+/**
+ * Recurso Filament para Gestión de Usuarios del Sistema.
+ */
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
@@ -45,80 +41,74 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Section::make('Información del Usuario')
-                ->schema([
-                    TextInput::make('name')
-                        ->label('Usuario')
-                        ->required()
-                        ->maxLength(255),
-                    TextInput::make('email')
-                        ->label('Correo')
-                        ->required()
-                        ->email()
-                        ->unique('users', 'email')
-                        ->rules([
-                            'regex:/@sigedor\.com$/',
-                        ])
-                        ->autocomplete('email')
-                        ->helperText('El correo debe terminar en @sigedor.com'),
-                    TextInput::make('password')
-                        ->label('Contraseña')
-                        ->password()
-                        ->required()
-                        ->minLength(8),
-                ]),
-                Section::make('Asignación de Sede')->schema([
-                    Select::make('sede_id')
-                        ->label('Sede')
-                        ->relationship('sede', 'nombre')
-                        ->required()
-                        ->native(false)
-                        ->searchable()
-                        ->preload()
-                        ->columnSpanFull(),
-                ]),
+                    ->schema([
+                        TextInput::make('name')
+                            ->label('Nombre Completo')
+                            ->required()
+                            ->maxLength(255),
 
-                Section::make('Asignación de Área')->schema([
-                    Select::make('area_id')
-                        ->label('Área')
-                        ->relationship('area', 'nombre')
-                        ->required()
-                        ->native(false)
-                        ->searchable()
-                        ->preload()
-                        ->columnSpanFull(),
-                ]),
+                        TextInput::make('email')
+                            ->label('Correo Electrónico')
+                            ->required()
+                            ->email()
+                            ->unique(ignoreRecord: true)
+                            ->autocomplete('email'),
 
-                Section::make('Asignación de Rol')
-                ->schema([
-                    Select::make('roles')
-                        ->label('Rol')
-                        ->relationship('roles', 'name')
-                        ->options(Role::all()->mapWithKeys(function ($role) {
-                            return [
+                        TextInput::make('password')
+                            ->label('Contraseña')
+                            ->password()
+                            ->dehydrated(fn ($state) => filled($state))
+                            ->required(fn (string $context): bool => $context === 'create')
+                            ->minLength(8)
+                            ->helperText('Dejar en blanco para mantener la contraseña actual en edición.'),
+                    ]),
+
+                Section::make('Asignación Institucional')
+                    ->schema([
+                        Select::make('sede_id')
+                            ->label('Sede')
+                            ->relationship('sede', 'nombre')
+                            ->required()
+                            ->searchable()
+                            ->preload(),
+
+                        Select::make('area_id')
+                            ->label('Área Académica')
+                            ->relationship('area', 'nombre')
+                            ->required()
+                            ->searchable()
+                            ->preload(),
+                    ])->columns(2),
+
+                Section::make('Rol y Permisos')
+                    ->schema([
+                        Select::make('roles')
+                            ->label('Roles del Sistema')
+                            ->relationship('roles', 'name')
+                            ->options(Role::all()->mapWithKeys(fn ($role) => [
                                 $role->id => match ($role->name) {
                                     'admin' => 'Administrador',
                                     'area_manager' => 'Jefe de Área',
                                     'teacher' => 'Docente',
-                                    default => $role->name
+                                    default => $role->name,
                                 }
-                            ];
-                        }))
-                        ->required()
-                        ->native(false)
-                        ->searchable()
-                        ->preload()
-                        ->columnSpanFull(),
-                ]),
+                            ]))
+                            ->multiple()
+                            ->required()
+                            ->searchable()
+                            ->preload(),
+                    ]),
 
-            Section::make('Estado del Usuario')
-                ->schema([
-                    Toggle::make('is_active')
-                        ->label('Activo')
-                        ->default(true),
-                    Toggle::make('is_approved')
-                        ->label('Aprobado')
-                        ->default(false),
-                ]),
+                Section::make('Estado de la Cuenta')
+                    ->schema([
+                        Toggle::make('is_active')
+                            ->label('Activo')
+                            ->default(true),
+
+                        Toggle::make('is_approved')
+                            ->label('Aprobado')
+                            ->default(false),
+                    ])->columns(2),
             ]);
     }
 
@@ -130,38 +120,53 @@ class UserResource extends Resource
                     ->label('Usuario')
                     ->searchable()
                     ->sortable(),
+
                 TextColumn::make('email')
                     ->label('Correo')
                     ->searchable()
                     ->sortable(),
+
                 TextColumn::make('sede.nombre')
                     ->label('Sede')
                     ->searchable()
                     ->sortable(),
+
                 TextColumn::make('area.nombre')
                     ->label('Área')
                     ->searchable()
                     ->sortable(),
+
                 TextColumn::make('roles.name')
                     ->label('Rol')
-                    ->searchable()
-                    ->sortable()
-                    ->badge(),
+                    ->badge()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'admin' => 'Administrador',
+                        'area_manager' => 'Jefe de Área',
+                        'teacher' => 'Docente',
+                        default => $state,
+                    })
+                    ->color(fn (string $state): string => match ($state) {
+                        'admin' => 'danger',
+                        'area_manager' => 'warning',
+                        'teacher' => 'info',
+                        default => 'gray',
+                    }),
+
                 ToggleColumn::make('is_active')
                     ->label('Activo')
                     ->sortable(),
+
                 ToggleColumn::make('is_approved')
                     ->label('Aprobado')
-                    ->sortable(),
-                TextColumn::make('activities.description')
                     ->sortable(),
             ])
             ->filters([
                 SelectFilter::make('roles')
                     ->relationship('roles', 'name')
                     ->options([
+                        'admin' => 'Administrador',
                         'area_manager' => 'Jefe de Área',
-                        'teacher' => 'Profesor'
+                        'teacher' => 'Docente',
                     ])
                     ->label('Rol'),
 
@@ -169,23 +174,21 @@ class UserResource extends Resource
                     ->relationship('sede', 'nombre')
                     ->label('Sede')
                     ->searchable()
-                    ->preload()
-                    ->native(false),
+                    ->preload(),
 
                 SelectFilter::make('area_id')
                     ->relationship('area', 'nombre')
                     ->label('Área')
                     ->searchable()
-                    ->preload()
-                    ->native(false),
+                    ->preload(),
 
-                Tables\Filters\TernaryFilter::make('is_approved')
-                    ->label('Aprobado')
+                TernaryFilter::make('is_approved')
+                    ->label('Aprobación')
                     ->placeholder('Todos')
                     ->trueLabel('Aprobados')
                     ->falseLabel('Pendientes'),
 
-                Tables\Filters\TernaryFilter::make('is_active')
+                TernaryFilter::make('is_active')
                     ->label('Estado')
                     ->placeholder('Todos')
                     ->trueLabel('Activos')
@@ -194,15 +197,7 @@ class UserResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->visible(fn (User $record) =>
-                   \Illuminate\Support\Facades\Auth::user()->roles()->where('name', 'admin')->exists() ||
-                    \Illuminate\Support\Facades\Auth::id() === $record->id
-                    ),
-
-                Tables\Actions\DeleteAction::make()
-                    ->visible(fn (User $record) =>
-                    \Illuminate\Support\Facades\Auth::user()->roles()->where('name', 'admin')->exists() &&
-                        !$record->roles()->where('name', 'admin')->exists() &&
-                        \Illuminate\Support\Facades\Auth::id() !== $record->id
+                        Auth::user()?->isAdmin() || Auth::id() === $record->id
                     ),
 
                 Action::make('approve')
@@ -210,10 +205,9 @@ class UserResource extends Resource
                     ->icon('heroicon-o-check')
                     ->color('success')
                     ->visible(fn (User $record) =>
-                    \Illuminate\Support\Facades\Auth::user()->roles()->where('name', 'admin')->exists() &&
+                        Auth::user()?->isAdmin() &&
                         !$record->is_approved &&
-                        !$record->roles()->where('name', 'admin')->exists() &&
-                        \Illuminate\Support\Facades\Auth::id() !== $record->id
+                        Auth::id() !== $record->id
                     )
                     ->action(fn (User $record) => $record->update(['is_approved' => true])),
 
@@ -222,17 +216,24 @@ class UserResource extends Resource
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
                     ->visible(fn (User $record) =>
-                        \Illuminate\Support\Facades\Auth::user()->roles()->where('name', 'admin')->exists() &&
+                        Auth::user()?->isAdmin() &&
                         $record->is_active &&
-                        !$record->roles()->where('name', 'admin')->exists() &&
-                        \Illuminate\Support\Facades\Auth::id() !== $record->id
+                        !$record->isAdmin() &&
+                        Auth::id() !== $record->id
                     )
                     ->action(fn (User $record) => $record->update(['is_active' => false])),
+
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn (User $record) =>
+                        Auth::user()?->isAdmin() &&
+                        !$record->isAdmin() &&
+                        Auth::id() !== $record->id
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->visible(fn () => \Illuminate\Support\Facades\Auth::user()->roles()->where('name', 'admin')->exists()),
+                        ->visible(fn () => Auth::user()?->isAdmin()),
                 ]),
             ]);
     }
@@ -249,31 +250,22 @@ class UserResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
+        $user = Auth::user();
 
-        if (\Illuminate\Support\Facades\Auth::user()->roles()->where('name', 'admin')->exists()) {
+        if (!$user) {
             return $query;
         }
 
-        if (\Illuminate\Support\Facades\Auth::user()->roles()->where('name', 'area_manager')->exists()) {
-            return $query->whereHas('roles', fn($q) => $q->where('name', 'teacher'))
-                        ->where('sede_id', \Illuminate\Support\Facades\Auth::user()->sede_id)
-                        ->whereHas('areas', fn($q) => $q->whereIn('id', \Illuminate\Support\Facades\Auth::user()->areas->pluck('id')));
+        if ($user->isAdmin()) {
+            return $query;
         }
 
-        return $query->where('id', \Illuminate\Support\Facades\Auth::id());
+        if ($user->isAreaManager()) {
+            return $query->whereHas('roles', fn ($q) => $q->where('name', 'teacher'))
+                ->where('sede_id', $user->sede_id)
+                ->where('area_id', $user->area_id);
+        }
+
+        return $query->where('id', $user->id);
     }
-
-    protected function getTableRecordsPerPageSelectOptions(): array
-{
-    return [10, 25, 50, 100, 'all']; // ← Opciones personalizadas
-}
-
-protected function getTableQuery(): Builder
-{
-    return parent::getTableQuery()
-        ->withoutGlobalScopes() // ← Deshabilitar scopes globales
-        ->limit(10000); // ← Límite máximo para queries sin filtro
-}
-
-
 }

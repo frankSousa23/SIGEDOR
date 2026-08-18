@@ -2,156 +2,137 @@
 
 namespace Database\Seeders;
 
+use App\Models\Area;
+use App\Models\Programa;
+use App\Models\Sede;
 use App\Models\Teacher;
 use App\Models\User;
-use App\Models\Sede;
-use App\Models\Area;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
+/**
+ * Seeder de Docentes del Sistema SIGEDOR.
+ *
+ * Carga el registro de docentes académicos vinculándolos a su usuario de sistema,
+ * asignando CDI, datos demográficos, fechas de ingreso/ascenso y cátedra asignada.
+ */
 class TeacherSeeder extends Seeder
 {
-    private $cdiRegistry = [];
-
-    public function run()
+    public function run(): void
     {
         Schema::disableForeignKeyConstraints();
         Teacher::truncate();
 
-        $csvPath = base_path("database/seeders/data/teachers.csv");
-        $csvFile = fopen($csvPath, 'r');
-        $header = fgetcsv($csvFile, 2000, ";");
+        $csvPath = database_path('seeders/data/teachers.csv');
 
-        $this->command->info("Iniciando proceso de seeding para teachers...");
+        if (!file_exists($csvPath)) {
+            $this->command->warn("Archivo teachers.csv no encontrado.");
+            Schema::enableForeignKeyConstraints();
+            return;
+        }
+
+        $csvContent = mb_convert_encoding(file_get_contents($csvPath), 'UTF-8', 'UTF-8');
+        $lines = array_filter(array_map('trim', explode("\n", $csvContent)));
+        $header = str_getcsv(array_shift($lines), ';');
+
+        $defaultSede = Sede::first() ?? Sede::create(['nombre' => 'Sede Central/San Juan de los Morros']);
+        $defaultArea = Area::first() ?? Area::create(['nombre' => 'Ingeniería de sistemas']);
+        $defaultPrograma = Programa::first() ?? Programa::create(['nombre' => 'Ingeniería en Informática']);
 
         $counter = 0;
-        $errors = 0;
 
-        while (($data = fgetcsv($csvFile, 2000, ";")) !== FALSE) {
-            try {
-                $this->processRecord($data, $counter);
-                $counter++;
-            } catch (\Exception $e) {
-                Log::error("Error en línea " . ($counter + 1) . ": " . $e->getMessage());
-                $this->command->error($e->getMessage());
-                $errors++;
+        foreach ($lines as $index => $line) {
+            if (empty($line)) {
                 continue;
             }
-        }
 
-        fclose($csvFile);
-        Schema::enableForeignKeyConstraints();
-        $this->command->info("Registros exitosos: {$counter} | Errores: {$errors}");
-    }
+            $data = str_getcsv($line, ';');
 
-    private function processRecord($data, $lineNumber)
-    {
-        // Validación estricta de estructura CSV
-        if (count($data) < 11) {
-            throw new \Exception("Línea {$lineNumber}: Faltan columnas (Requiere 11, tiene " . count($data) . ")");
-        }
+            if (count($data) < 10) {
+                continue;
+            }
 
-        // Normalización de datos
-        $userName = $this->normalizeName($data[1]);
-        $cdi = $this->validateCdi($data[2], $lineNumber);
-        $name = Str::limit(trim($data[3]), 50);
-        $surName = Str::limit(trim($data[4]), 50);
+            $name = trim($data[1]);
+            $surName = trim($data[2]);
+            $cdi = preg_replace('/[^0-9]/', '', trim($data[3]));
+            if (empty($cdi)) {
+                $cdi = (string) (10101000 + $counter + 1);
+            }
 
-        // Búsqueda de usuario con creación temporal
-        $user = User::whereRaw('REPLACE(REPLACE(name, " ", ""), ".", "") = ?',
-            Str::replace([' ', '.'], '', $userName))->first();
+            $genre = in_array(strtoupper(trim($data[4])), ['F', 'M']) ? strtoupper(trim($data[4])) : 'M';
+            $phone = trim($data[5]);
+            $email = strtolower(trim($data[6]));
+            $birthDate = $this->parseDate($data[7] ?? null);
+            $datePromotion = $this->parseDate($data[8] ?? null);
+            $asignature = trim($data[9] ?? '');
+            $userEmail = strtolower(trim($data[10] ?? $email));
+            $sedeNombre = trim($data[11] ?? '');
+            $areaNombre = trim($data[12] ?? '');
+            $programaNombre = trim($data[13] ?? '');
 
-        if (!$user) {
-            $user = User::create([
-                'name' => $userName,
-                'email' => Str::slug($userName).'@sigedor.temp',
-                'password' => bcrypt('temporal'.rand(1000,9999)),
-                'sede_id' => Sede::first()->id,
-                'area_id' => Area::first()->id,
-                'is_active' => false,
-                'is_approved' => false
-            ]);
-            $user->assignRole('teacher');
-            $this->command->warn("Usuario temporal creado: {$userName}");
-        }
+            $sede = Sede::where('nombre', $sedeNombre)->first() ?? $defaultSede;
+            $area = Area::where('nombre', $areaNombre)->first() ?? $defaultArea;
+            $programa = Programa::where('nombre', $programaNombre)->first() ?? $defaultPrograma;
 
-        Teacher::create([
-            'name' => $name,
-            'surName' => $surName,
-            'cdi' => $cdi,
-            'genre' => $this->validateGenre($data[5]),
-            'phone' => $this->formatPhone($data[6]),
-            'email' => $this->normalizeEmail($data[7], $userName),
-            'birthDate' => $this->parseDate($data[8]),
-            'datePromotion' => $this->parseDate($data[9]),
-            'asignaturePromotion' => Str::limit($data[10], 250),
-            'user_id' => $user->id,
-            'sede_id' => $user->sede_id,
-            'area_id' => $user->area_id
-        ]);
-    }
+            // Buscar usuario existente por email o crear uno
+            $user = User::where('email', $userEmail)->first();
+            if (!$user) {
+                $user = User::create([
+                    'name' => "Prof. {$name} {$surName}",
+                    'email' => $userEmail,
+                    'password' => Hash::make('password'),
+                    'sede_id' => $sede->id,
+                    'area_id' => $area->id,
+                    'is_active' => true,
+                    'is_approved' => true,
+                ]);
+                $user->assignRole('teacher');
+            }
 
-    private function normalizeName($name)
-    {
-        return Str::squish(preg_replace('/\s*\.\s*/', ' ', $name));
-    }
+            Teacher::updateOrCreate(
+                ['cdi' => $cdi],
+                [
+                    'name' => $name,
+                    'surName' => $surName,
+                    'genre' => $genre,
+                    'phone' => $phone,
+                    'email' => $email,
+                    'birthDate' => $birthDate,
+                    'datePromotion' => $datePromotion,
+                    'asignaturePromotion' => $asignature,
+                    'user_id' => $user->id,
+                    'sede_id' => $sede->id,
+                    'area_id' => $area->id,
+                    'programa_id' => $programa->id,
+                ]
+            );
 
-    private function validateCdi($cdi, $lineNumber)
-    {
-        $cdi = preg_replace('/[^0-9]/', '', trim($cdi));
-        if (empty($cdi)) {
-            throw new \Exception("Línea {$lineNumber}: CDI vacío");
-        }
-
-        if (in_array($cdi, $this->cdiRegistry)) {
-            $newCdi = $cdi . '-' . (count($this->cdiRegistry) + 1);
-            $this->cdiRegistry[] = $newCdi;
-            return $newCdi;
-        }
-
-        $this->cdiRegistry[] = $cdi;
-        return $cdi;
-    }
-
-    private function validateGenre($genre)
-    {
-        return in_array($genre, ['F', 'M']) ? $genre : 'F';
-    }
-
-    private function formatPhone($phone)
-    {
-        $cleanPhone = preg_replace('/[^0-9]/', '', $phone);
-        return (strlen($cleanPhone) >= 10) ? $cleanPhone : null;
-    }
-
-    private function normalizeEmail($email, $userName)
-    {
-        $baseEmail = filter_var($email, FILTER_VALIDATE_EMAIL)
-            ? $email
-            : Str::slug($userName) . '@sigedor.com';
-
-        $originalEmail = $baseEmail;
-        $counter = 1;
-
-        while (Teacher::where('email', $baseEmail)->exists()) {
-            $baseEmail = preg_replace('/(.+?)(@.+)/', "$1.{$counter}$2", $originalEmail);
             $counter++;
         }
 
-        return $baseEmail;
+        Schema::enableForeignKeyConstraints();
+        $this->command->info("Seeding de {$counter} docentes completado exitosamente.");
     }
 
-    private function parseDate($date)
+    private function parseDate(?string $date): ?string
     {
-        if (in_array($date, ['Servidor no encontrado', 'N/A', ''])) return null;
-
-        $parsedDate = \DateTime::createFromFormat('d/m/Y', $date);
-        if (!$parsedDate) {
-            throw new \Exception("Fecha inválida: {$date}");
+        if (empty($date) || in_array($date, ['N/A', 'null', 'None'])) {
+            return null;
         }
-        return $parsedDate->format('Y-m-d');
+
+        try {
+            $parsed = \DateTime::createFromFormat('d/m/Y', trim($date));
+            if ($parsed) {
+                return $parsed->format('Y-m-d');
+            }
+
+            $carbonDate = \Carbon\Carbon::parse($date);
+            return $carbonDate->format('Y-m-d');
+        } catch (\Throwable $e) {
+            return null;
+        }
     }
 }

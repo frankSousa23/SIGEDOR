@@ -2,58 +2,61 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Tables;
-use Filament\Widgets\TableWidget as BaseWidget;
-use Illuminate\Database\Eloquent\Builder;
 use App\Models\User;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Table;
+use Filament\Widgets\TableWidget as BaseWidget;
+use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * Widget de Tareas Pendientes y Usuarios Recientes.
+ */
 class TasksOverview extends BaseWidget
 {
-    protected function getTableColumns(): array
+    protected static ?string $heading = 'Usuarios Pendientes / Recientes';
+
+    public function table(Table $table): Table
     {
-        return [
-            TextColumn::make('name')
-                ->label('Nombre')
-                ->searchable()
-                ->sortable(),
+        return $table
+            ->query($this->getTableQuery())
+            ->columns([
+                TextColumn::make('name')
+                    ->label('Nombre')
+                    ->searchable()
+                    ->sortable(),
 
-            TextColumn::make('email')
-                ->label('Correo')
-                ->searchable(),
+                TextColumn::make('email')
+                    ->label('Correo Electrónico')
+                    ->searchable(),
 
-            BadgeColumn::make('is_approved')
-                ->label('Estado')
-                ->colors([
-                    'danger' => false,
-                    'success' => true,
-                ])
-                ->formatStateUsing(fn (bool $state): string => match ($state) {
-                    true => 'Aprobado',
-                    false => 'Pendiente',
-                }),
-        ];
+                TextColumn::make('is_approved')
+                    ->label('Estado de Aprobación')
+                    ->badge()
+                    ->color(fn (bool $state): string => $state ? 'success' : 'danger')
+                    ->formatStateUsing(fn (bool $state): string => $state ? 'Aprobado' : 'Pendiente'),
+            ]);
     }
 
     protected function getTableQuery(): Builder
     {
         $user = auth()->user();
 
+        if (!$user) {
+            return User::query()->whereRaw('1 = 0');
+        }
+
         if ($user->hasRole('admin')) {
-            return User::query()
-                ->where('is_approved', false)
-                ->latest();
+            return User::query()->latest();
         }
 
         if ($user->hasRole('area_manager')) {
             return User::query()
                 ->role('teacher')
-                ->where('sede_id', $user->sede_id) // Cambiado de `site_id` a `sede_id`
+                ->where('sede_id', $user->sede_id)
                 ->where('is_active', true)
                 ->latest();
         }
 
-        return User::where('id', $user->id);
+        return User::query()->where('id', $user->id);
     }
 }

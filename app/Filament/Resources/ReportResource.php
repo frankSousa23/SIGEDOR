@@ -2,316 +2,201 @@
 
 namespace App\Filament\Resources;
 
-use App\Models\Report;
-use App\Models\Teacher;
+use App\Filament\Resources\ReportResource\Pages;
+use App\Models\Area;
 use App\Models\Category;
 use App\Models\Dedication;
-use App\Models\PermissionTeacher;
-use App\Models\Site;
-use App\Models\Programa;
+use App\Models\Report;
+use App\Models\Sede;
+use App\Models\Teacher;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use App\Filament\Resources\ReportResource\Pages;
-use Filament\Actions\Exports\Models\Export;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables\Actions\EditAction;
-use Spatie\Permission\Models\Role;
 
-
+/**
+ * Recurso Filament para Emisión de Informes Oficiales y Memorandos.
+ */
 class ReportResource extends Resource
 {
     protected static ?string $model = Report::class;
     protected static ?string $navigationIcon = 'heroicon-o-document-chart-bar';
-    protected static ?string $navigationLabel = 'Reportes';
-    protected static ?string $navigationGroup = 'Reportes';
+    protected static ?string $navigationLabel = 'Reportes y Memos';
+    protected static ?string $navigationGroup = 'Gestión Reportes';
     protected static ?string $modelLabel = 'Reporte';
     protected static ?string $pluralModelLabel = 'Reportes';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('teacher_id')
-                ->label('Docente')
-                ->options(Teacher::pluck('cdi', 'id'))
-                ->required()
-                ->searchable()
-                ->preload()
-                ->live()
-                ->afterStateUpdated(function ($state, Forms\Set $set) {
-                    $teacher = Teacher::with([
-                        'sede',
-                        'area',
-                    ])->find($state);
+                Section::make('Identificación del Documento')
+                    ->schema([
+                        Select::make('teacher_cdi')
+                            ->label('Docente')
+                            ->options(function () {
+                                return Teacher::all()->mapWithKeys(fn ($teacher) => [
+                                    $teacher->cdi => "{$teacher->cdi} - {$teacher->name} {$teacher->surName}",
+                                ]);
+                            })
+                            ->required()
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->afterStateUpdated(function ($state, Forms\Set $set) {
+                                $teacher = Teacher::where('cdi', $state)->first();
+                                if ($teacher) {
+                                    $set('sede_id', $teacher->sede_id);
+                                    $set('area_id', $teacher->area_id);
+                                    $set('category_id', $teacher->category_id);
+                                    $set('dedication_id', $teacher->dedication_id);
+                                    $set('email', $teacher->email);
+                                }
+                            }),
 
-                    \Log::info('Teacher ID State: ' . $state);
+                        Grid::make(3)
+                            ->schema([
+                                TextInput::make('memoNumber')
+                                    ->label('Número de Memorando')
+                                    ->required()
+                                    ->maxLength(100),
 
-                    if ($teacher) {
-                        \Log::info('Teacher found: ' . $teacher->toJson());
-                        \Log::info('Teacher CDI: ' . $teacher->cdi);
-                        // Campos principales
-                        $set('sede_id', $teacher->sede_id);
-                        $set('area_id', $teacher->area_id);
+                                Select::make('typeReport')
+                                    ->label('Tipo de Informe')
+                                    ->options([
+                                        'Constancia de Trabajo' => 'Constancia de Trabajo',
+                                        'Informe de Dedicación' => 'Informe de Dedicación',
+                                        'Informe de Escalafón' => 'Informe de Escalafón',
+                                        'Memorando Administrativo' => 'Memorando Administrativo',
+                                    ])
+                                    ->required(),
 
-                        $set('sede_nombre', optional($teacher->sede)->nombre ?? 'Sin Sede');
-                        $set('area_nombre', optional($teacher->area)->nombre ?? 'Sin Área');
+                                TextInput::make('email')
+                                    ->label('Correo de Notificación')
+                                    ->email()
+                                    ->nullable(),
+                            ]),
 
-                        
-                        $category = Category::where('teacher_cdi', $teacher->cdi)->first();
-                        \Log::info('Category: ' . ($category ? $category->toJson() : 'null'));
-                        $set('category_id', $category?->id);
-                        $set('category_name', $category?->current_category ?? 'Sin Categoría');
+                        Grid::make(2)
+                            ->schema([
+                                Select::make('sede_id')
+                                    ->label('Sede')
+                                    ->relationship('sede', 'nombre')
+                                    ->searchable()
+                                    ->preload(),
 
-                        
-                        $dedication = Dedication::where('teacher_cdi', $teacher->cdi)->first();
-                        \Log::info('Dedication: ' . ($dedication ? $dedication->toJson() : 'null'));
-                        $set('dedication_id', $dedication?->id);
-                        $set('dedication_name', $dedication?->name ?? 'Sin Dedicación');
-                    } else {
-                        $set('sede_id', null);
-                        $set('area_id', null);
-                        $set('sede_nombre', 'Sin Sede');
-                        $set('area_nombre', 'Sin Área');
-                        $set('category_id', null);
-                        $set('category_name', 'Sin Categoría');
-                        $set('dedication_id', null);
-                        $set('dedication_name', 'Sin Dedicación');
-                    }
-                }),
-            Forms\Components\TextInput::make('memoNumber')
-                ->label('Número de Memo')
-                ->required()
-                ->maxLength(255),
-            Forms\Components\Select::make('typeReport')
-                ->label('Tipo de Reporte')
-                ->options([
-                    'academic' => 'Académico',
-                    'administrative' => 'Administrativo',
-                    'research' => 'Investigación',
-                    'extension' => 'Extensión'
-                ])
-                ->required()
-                ->searchable(),
-            Forms\Components\TextInput::make('report')
-                ->label('Reporte')
-                ->required()
-                ->maxLength(255),
-            Forms\Components\TextInput::make('email')
-                ->label('Correo')
-                ->email()
-                ->maxLength(255),
-            Forms\Components\Textarea::make('info')
-                ->label('Observaciones')
-                ->maxLength(500)
-                ->columnSpanFull(),
-            Forms\Components\TextInput::make('sede_nombre')
-                ->label('Sede')
-                ->disabled(),
-            Forms\Components\TextInput::make('area_nombre')
-                ->label('Área')
-                ->disabled(),
-            Forms\Components\TextInput::make('category_name')
-                ->label('Categoría')
-                ->disabled(),
-            Forms\Components\TextInput::make('dedication_name')
-                ->label('Dedicación')
-                ->disabled(),
-            Forms\Components\Hidden::make('sede_id'),
-            Forms\Components\Hidden::make('area_id'),
-            Forms\Components\Hidden::make('category_id'),
-            Forms\Components\Hidden::make('dedication_id'),
-                            ]);
+                                Select::make('area_id')
+                                    ->label('Área Académica')
+                                    ->relationship('area', 'nombre')
+                                    ->searchable()
+                                    ->preload(),
+                            ]),
+
+                        Textarea::make('report')
+                            ->label('Contenido del Reporte / Dictamen')
+                            ->rows(5)
+                            ->columnSpanFull(),
+
+                        Textarea::make('info')
+                            ->label('Observaciones Adicionales')
+                            ->rows(2)
+                            ->columnSpanFull(),
+                    ]),
+            ]);
     }
-
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('memoNumber')
-        ->label('N° Memo')
-        ->searchable()
-        ->sortable()
-        ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('typeReport')
-                    ->label('Tipo')
-                    ->formatStateUsing(fn ($state) => match($state) {
-                        'academic' => 'Académico',
-                        'administrative' => 'Administrativo',
-                        'research' => 'Investigación',
-                        'extension' => 'Extensión'
-                    })
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('teacher.cdi')
-                    ->label('Cédula')
+                TextColumn::make('memoNumber')
+                    ->label('Nº Memo')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('sede.nombre')
+
+                TextColumn::make('teacher.full_name')
+                    ->label('Docente')
+                    ->searchable(['name', 'surName'])
+                    ->sortable(),
+
+                TextColumn::make('typeReport')
+                    ->label('Tipo')
+                    ->badge()
+                    ->color('primary')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('sede.nombre')
                     ->label('Sede')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('area.nombre')
+
+                TextColumn::make('area.nombre')
                     ->label('Área')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('category.current_category')
-                    ->label('Categoría')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('dedication.name')
-                    ->label('Dedicación')
-                    ->searchable()
-                    ->sortable(),
-                    Tables\Columns\TextColumn::make('teacher.full_name')
-                    ->label('Nombre Completo')
-                    ->sortable(query: function (Builder $query, string $direction) {
-                        $query->orderBy('teachers.name', $direction)
-                              ->orderBy('teachers.surName', $direction);
-                    })
-                    ->searchable(['teachers.name', 'teachers.surName']),
-                Tables\Columns\TextColumn::make('report')
-                    ->label('Reporte')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->label('Correo')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('info')
-                    ->label('Observaciones')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('has_programa')
-                    ->label('Programa')
-                    ->boolean()
-                    ->getStateUsing(fn ($record) => !is_null($record->programa_id)),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Fecha')
+
+                TextColumn::make('created_at')
+                    ->label('Fecha de Emisión')
                     ->dateTime('d/m/Y H:i')
-                    ->sortable()
-                    ->toggleable(),
+                    ->sortable(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('typeReport')
-        ->label('Tipo de Reporte')
-        ->options([
-            'academic' => 'Académico',
-            'administrative' => 'Administrativo',
-            'research' => 'Investigación',
-            'extension' => 'Extensión'
-        ]),
-
-    Tables\Filters\SelectFilter::make('teacher_id')
-        ->label('Docente')
-        ->relationship('teacher', 'cdi')
-        ->searchable()
-        ->preload(),
-
-    Tables\Filters\Filter::make('created_at')
-        ->form([
-            Forms\Components\DatePicker::make('from')
-                ->label('Desde'),
-            Forms\Components\DatePicker::make('to')
-                ->label('Hasta'),
-        ])
-        ->query(function ($query, array $data) {
-            return $query
-                ->when($data['from'],
-                    fn($q) => $q->whereDate('created_at', '>=', $data['from']))
-                ->when($data['to'],
-                    fn($q) => $q->whereDate('created_at', '<=', $data['to']));
-        })
+                SelectFilter::make('typeReport')
+                    ->label('Tipo')
+                    ->options([
+                        'Constancia de Trabajo' => 'Constancia de Trabajo',
+                        'Informe de Dedicación' => 'Informe de Dedicación',
+                        'Informe de Escalafón' => 'Informe de Escalafón',
+                        'Memorando Administrativo' => 'Memorando Administrativo',
+                    ]),
             ])
-            ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make()
-                        ->icon('heroicon-m-eye'),
-                    Tables\Actions\EditAction::make()
-                        ->icon('heroicon-m-pencil-square'),
-                    Tables\Actions\Action::make('pdf')
-                        ->label('PDF')
-                        ->icon('heroicon-m-arrow-down-tray')
-                        ->url(fn ($record) => route('reports.pdf', $record))
-                        ->openUrlInNewTab()
-                ])
-            ])
-
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('export')
-                ->label('Exportar a PDF')
-                ->icon('heroicon-o-document-arrow-down')
-                ->action(function (Report $record) {
-                    $pdf = Pdf::loadView('pdf.report', [
-                        'report' => $record
-                    ])->setPaper('a4', 'landscape');
-
-                    return response()->streamDownload(function () use ($pdf) {
-                        echo $pdf->output();
-                    }, 'report_'.$record->id.'_'.now()->format('Ymd_His').'.pdf');
-                })
-                ->requiresConfirmation()
+                Action::make('pdf')
+                    ->label('PDF')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->color('danger')
+                    ->action(function (Report $record) {
+                        $pdf = Pdf::loadView('pdf.report', ['report' => $record]);
+                        return response()->streamDownload(
+                            fn () => print($pdf->output()),
+                            "reporte_{$record->memoNumber}.pdf"
+                        );
+                    }),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\BulkAction::make('export')
-                    ->label('Exportar a PDF')
-                    ->icon('heroicon-o-document-arrow-down')
-                    ->action(function (Collection $records) {
-                        $pdf = Pdf::loadView('pdf.reports', [
-                            'reports' => $records
-                        ])->setPaper('a4', 'landscape');
+                    Tables\Actions\BulkAction::make('export_reports')
+                        ->label('Exportar Seleccionados a PDF')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->action(function (Collection $records) {
+                            $pdf = Pdf::loadView('pdf.reports', ['reports' => $records])
+                                ->setPaper('a4', 'landscape');
 
-                        return response()->streamDownload(function () use ($pdf) {
-                            echo $pdf->output();
-                        }, 'reports_'.now()->format('Ymd_His').'.pdf');
-                    })
-                    ->requiresConfirmation()
-            ]),
-
+                            return response()->streamDownload(
+                                fn () => print($pdf->output()),
+                                'reporte_memorandos_' . now()->format('Ymd_His') . '.pdf'
+                            );
+                        })
+                        ->requiresConfirmation(),
+                ]),
             ]);
     }
-
-    protected function getTableQuery(): Builder
-{
-    $user = \Illuminate\Support\Facades\Auth::user();
-
-    if ($user->hasRole('admin')) {
-        return Report::query();
-    }
-
-    if ($user->hasRole('area_manager')) {
-        return Report::query()
-            ->where('sede_id', $user->sede_id)
-            ->where('area_id', $user->area_id); // Area Manager ve solo su sede y área
-    }
-
-    return Report::where('user_id', $user->id); // Teacher ve solo sus propios reports
-}
-
-protected function getTableActions(): array
-{
-    return [
-        EditAction::make()
-            ->visible(fn (Report $record): bool => \Illuminate\Support\Facades\Auth::user()->hasRole('admin') ||
-                \Illuminate\Support\Facades\Auth::user()->hasRole('area_manager') &&
-                 $record->sede_id === \Illuminate\Support\Facades\Auth::user()->sede_id &&
-                 $record->area_id === \Illuminate\Support\Facades\Auth::user()->area_id) ||
-                \Illuminate\Support\Facades\Auth::user()->hasRole('teacher') &&
-                 $record->user_id === \Illuminate\Support\Facades\Auth::user()->id // Solo admin, area_manager con misma sede/área o teacher dueño puede editar
-    ];
-}
-
-
 
     public static function getPages(): array
     {

@@ -2,27 +2,40 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Site;
-use App\Models\Category;
-use App\Models\Dedication;
-use App\Models\PermissionTeacher;
-use App\Models\Report;
-use App\Models\User;
-use App\Models\Sede;
-use App\Models\Area;
-use App\Models\Programa;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * Modelo de Docente del Sistema SIGEDOR.
+ *
+ * Gestiona el expediente académico, datos personales, categorización,
+ * dedicación horaria, asignación de sede/área y permisos de los profesores.
+ *
+ * @property int $id
+ * @property string $cdi
+ * @property string $name
+ * @property string $surName
+ * @property string $genre
+ * @property string|null $phone
+ * @property string $email
+ * @property \Carbon\Carbon|null $birthDate
+ * @property \Carbon\Carbon|null $datePromotion
+ * @property string|null $asignaturePromotion
+ * @property int $user_id
+ * @property int $sede_id
+ * @property int $area_id
+ * @property int|null $programa_id
+ * @property int|null $site_id
+ * @property int|null $category_id
+ * @property int|null $dedication_id
+ */
 class Teacher extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'teachers';
 
@@ -39,91 +52,125 @@ class Teacher extends Model
         'user_id',
         'sede_id',
         'area_id',
-        'site_id',
         'programa_id',
+        'site_id',
         'category_id',
         'dedication_id',
     ];
 
     protected $casts = [
-        'birthDate' => 'date:d/m/Y',
-        'datePromotion' => 'date:d/m/Y',
-        'sede_id' => 'string',
-        'area_id' => 'string',
-        'programa_id' => 'string',
-        'category_id' => 'string',
-        'dedication_id' => 'string',
+        'birthDate' => 'date',
+        'datePromotion' => 'date',
+        'user_id' => 'integer',
+        'sede_id' => 'integer',
+        'area_id' => 'integer',
+        'programa_id' => 'integer',
+        'site_id' => 'integer',
+        'category_id' => 'integer',
+        'dedication_id' => 'integer',
     ];
 
+    /**
+     * Usuario de acceso al sistema vinculado al docente.
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function teacher(): BelongsTo
-    {
-        return $this->belongsTo(Teacher::class);
-    }
-
+    /**
+     * Sede universitaria asignada.
+     */
     public function sede(): BelongsTo
     {
         return $this->belongsTo(Sede::class);
     }
 
-    public function area()
+    /**
+     * Área académica asignada.
+     */
+    public function area(): BelongsTo
     {
         return $this->belongsTo(Area::class);
     }
 
-    public function site()
-    {
-        return $this->belongsTo(Site::class);
-    }
-
-    public function sites()
-    {
-    return $this->belongsToMany(Site::class);
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function dedication()
-    {
-        return $this->belongsTo(Dedication::class);
-    }
-
-    public function permissionsTeachers()
-    {
-        return $this->hasMany(PermissionTeacher::class);
-    }
-
-    public function reports()
-    {
-        return $this->hasMany(Report::class);
-    }
-
-    public function programa()
+    /**
+     * Programa académico asignado.
+     */
+    public function programa(): BelongsTo
     {
         return $this->belongsTo(Programa::class);
     }
 
-    public function programas()
+    /**
+     * Categoría docente actual por relación directa o CDI.
+     */
+    public function category(): BelongsTo
     {
-        return $this->belongsToMany(Programa::class);
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
+    /**
+     * Categoría asociada por CDI.
+     */
+    public function categoryRecord(): HasOne
+    {
+        return $this->hasOne(Category::class, 'teacher_cdi', 'cdi');
+    }
+
+    /**
+     * Dedicación docente actual por relación directa.
+     */
+    public function dedication(): BelongsTo
+    {
+        return $this->belongsTo(Dedication::class, 'dedication_id');
+    }
+
+    /**
+     * Dedicación asociada por CDI.
+     */
+    public function dedicationRecord(): HasOne
+    {
+        return $this->hasOne(Dedication::class, 'teacher_cdi', 'cdi');
+    }
+
+    /**
+     * Asignación de sede / carga horaria vinculada.
+     */
+    public function site(): BelongsTo
+    {
+        return $this->belongsTo(Site::class, 'site_id');
+    }
+
+    /**
+     * Asignaciones de sede asociadas por CDI.
+     */
+    public function siteRecord(): HasOne
+    {
+        return $this->hasOne(Site::class, 'teacher_cdi', 'cdi');
+    }
+
+    /**
+     * Permisos y licencias del docente.
+     */
+    public function permissionsTeachers(): HasMany
+    {
+        return $this->hasMany(PermissionTeacher::class, 'teacher_cdi', 'cdi');
+    }
+
+    /**
+     * Reportes y memorandos generados para el docente.
+     */
+    public function reports(): HasMany
+    {
+        return $this->hasMany(Report::class, 'teacher_cdi', 'cdi');
+    }
+
+    /**
+     * Nombre completo formateado (Nombre + Apellido).
+     */
     public function getFullNameAttribute(): string
     {
-        return "{$this->name} {$this->surName}";
+        return trim("{$this->name} {$this->surName}");
     }
-
-    public function scopeCompleted($query)
-    {
-        return $query->where('is_completed', true);
-    }
-
-
 }
