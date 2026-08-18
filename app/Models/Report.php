@@ -1,10 +1,29 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Modelo de Reportes y Memorandos Docentes.
+ *
+ * Registra los informes oficiales, constancias y documentos generados
+ * para trámites académicos y administrativos.
+ *
+ * @property int $id
+ * @property string $teacher_cdi
+ * @property string|null $memoNumber
+ * @property string|null $typeReport
+ * @property string|null $report
+ * @property string|null $email
+ * @property string|null $info
+ * @property int|null $sede_id
+ * @property int|null $area_id
+ * @property int|null $category_id
+ * @property int|null $dedication_id
+ */
 class Report extends Model
 {
     use HasFactory;
@@ -21,36 +40,53 @@ class Report extends Model
         'sede_id',
         'area_id',
         'category_id',
-        'dedication_id'
+        'dedication_id',
     ];
 
-    public function teacher()
-{
-    return $this->belongsTo(Teacher::class, 'teacher_cdi', 'cdi');
-}
-    public function sede()
+    protected $casts = [
+        'sede_id' => 'integer',
+        'area_id' => 'integer',
+        'category_id' => 'integer',
+        'dedication_id' => 'integer',
+    ];
+
+    /**
+     * Docente asociado al reporte.
+     */
+    public function teacher(): BelongsTo
+    {
+        return $this->belongsTo(Teacher::class, 'teacher_cdi', 'cdi');
+    }
+
+    /**
+     * Sede asociada.
+     */
+    public function sede(): BelongsTo
     {
         return $this->belongsTo(Sede::class, 'sede_id');
     }
 
-    public function area()
+    /**
+     * Área académica asociada.
+     */
+    public function area(): BelongsTo
     {
         return $this->belongsTo(Area::class, 'area_id');
     }
 
-    public function category()
+    /**
+     * Categoría asociada.
+     */
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
 
-    public function dedication()
+    /**
+     * Dedicación asociada.
+     */
+    public function dedication(): BelongsTo
     {
         return $this->belongsTo(Dedication::class, 'dedication_id');
     }
-
-    public function getFullNameAttribute(): string
-    {
-        return "{$this->name} {$this->surName}";
-    }
-
 }

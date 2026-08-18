@@ -6,149 +6,75 @@ use App\Models\Dedication;
 use App\Models\Teacher;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
+/**
+ * Seeder de Dedicaciones Docentes del Sistema SIGEDOR.
+ *
+ * Registra la carga horaria semanal, asignaciones administrativas/docentes
+ * y cantidad de estudiantes atendidos por cada profesor.
+ */
 class DedicationSeeder extends Seeder
 {
-    private $processed = 0;
-    private $errors = 0;
-    private $duplicates = 0;
-    private $rows = [];
-
-    public function run()
+    public function run(): void
     {
         $filePath = database_path('seeders/data/dedications.csv');
 
         if (!file_exists($filePath)) {
-            Log::error('Archivo CSV no encontrado: ' . $filePath);
-            $this->command->error('¡Error crítico! Archivo no encontrado: ' . $filePath);
+            $this->command->warn("Archivo dedications.csv no encontrado.");
             return;
         }
 
-        $rows = $this->readCSV($filePath);
+        $csvContent = mb_convert_encoding(file_get_contents($filePath), 'UTF-8', 'UTF-8');
+        $lines = array_filter(array_map('trim', explode("\n", $csvContent)));
+        $header = str_getcsv(array_shift($lines), ';');
 
-        DB::transaction(function () use ($rows) {
-            foreach ($rows as $index => $row) {
-                $this->processRow($row, $index + 1);
-            }
-        });
+        $processed = 0;
 
-        $this->outputResults();
-    }
-
-    private function readCSV($path)
-    {
-        $rows = [];
-        $handle = fopen($path, 'r');
-        
-        while (($data = fgetcsv($handle, 0, ';')) !== false) {
-            $rows[] = $data;
-        }
-        
-        fclose($handle);
-        return $rows;
-    }
-
-    private function processRow(array $data, int $lineNumber)
-    {
-        // Saltar encabezado y filas vacías
-        if ($lineNumber === 1 || empty($data[1])) {
-            return;
-        }
-
-        // Validar estructura mínima
-        if (count($data) < 5) {
-            $this->logError($lineNumber, "Estructura inválida. Campos requeridos: 5, obtenidos: " . count($data));
-            return;
-        }
-
-        try {
-            $cdi = $this->normalizeCdi($data[1]);
-            $type = $this->normalizeType($data[3]);
-            $hours = $this->validateHours($data[4]);
-
-            // Validar relación con Teacher
-            if (!Teacher::where('cdi', $cdi)->exists()) {
-                $this->logError($lineNumber, "CDI no registrado: {$cdi}");
-                return;
+        foreach ($lines as $line) {
+            if (empty($line)) {
+                continue;
             }
 
-            // Prevenir duplicados
-            if (Dedication::where('teacher_cdi', $cdi)->exists()) {
-                $this->duplicates++;
-                Log::warning("Deduplicación línea {$lineNumber}: CDI {$cdi}");
-                return;
+            $data = str_getcsv($line, ';');
+
+            if (count($data) < 4) {
+                continue;
             }
 
-            // Crear registro
-            Dedication::create([
-                'teacher_cdi' => $cdi,
-                'type' => $type,
-                'hours' => $hours,
-                'name' => $this->generateDedicationName($type, $hours),
-                'is_active' => true
-            ]);
+            $cdi = preg_replace('/[^0-9]/', '', trim($data[1]));
+            if (empty($cdi)) {
+                continue;
+            }
 
-            $this->processed++;
+            $teacher = Teacher::where('cdi', $cdi)->first();
+            if (!$teacher) {
+                continue;
+            }
 
-        } catch (\Exception $e) {
-            $this->logError($lineNumber, "Error: " . $e->getMessage());
+            $name = trim($data[2] ?? 'Tiempo Convencional');
+            $hours = (int) ($data[3] ?? 12);
+            $director = !empty(trim($data[4] ?? '')) ? trim($data[4]) : null;
+            $studentNumber = !empty(trim($data[5] ?? '')) ? (int) $data[5] : null;
+            $studentHours = !empty(trim($data[6] ?? '')) ? (int) $data[6] : null;
+            $info = !empty(trim($data[7] ?? '')) ? trim($data[7]) : null;
+
+            $dedication = Dedication::updateOrCreate(
+                ['teacher_cdi' => $cdi],
+                [
+                    'name' => $name,
+                    'hours' => $hours,
+                    'director' => $director,
+                    'studentNumber' => $studentNumber,
+                    'studentHours' => $studentHours,
+                    'info' => $info,
+                ]
+            );
+
+            $teacher->update(['dedication_id' => $dedication->id]);
+            $processed++;
         }
-    }
 
-    private function normalizeCdi($value)
-    {
-        return str_pad(trim($value), 8, '0', STR_PAD_LEFT);
-    }
-
-    private function normalizeType($type)
-    {
-        $type = Str::upper(str_replace(['.', ','], '', trim($type)));
-        $validTypes = ['TCV', 'DE', 'MT', 'TC', 'EX'];
-        return in_array($type, $validTypes) ? $type : 'TCV';
-    }
-
-    private function validateHours($hours)
-    {
-        $hours = (int)preg_replace('/[^0-9]/', '', $hours);
-        return max(0, min($hours, 40)); // Rango 0-40 horas
-    }
-
-    private function generateDedicationName($type, $hours)
-    {
-        $nombres = [
-            'TCV' => 'Tiempo Convencional',
-            'DE' => 'Dedicación Exclusiva',
-            'MT' => 'Medio Tiempo',
-            'TC' => 'Tiempo Completo',
-            'EX' => 'Exclusiva'
-        ];
-        
-        return ($nombres[$type] ?? 'Tiempo Convencional') . " ({$hours}h)";
-    }
-
-    private function logError($line, $message)
-    {
-        Log::error("Línea {$line}: {$message}");
-        $this->command->warn("Error línea {$line}: " . Str::limit($message, 50));
-        $this->errors++;
-    }
-
-    private function outputResults()
-    {
-        $this->command->table(
-            ['Procesados', 'Duplicados', 'Errores', 'Total CSV'],
-            [[
-                $this->processed, 
-                $this->duplicates, 
-                $this->errors, 
-                count($this->rows) - 1 // Excluir encabezado
-            ]]
-        );
-
-        if ($this->errors > 0) {
-            $this->command->error('Revise el log completo: ' . storage_path('logs/laravel.log'));
-        }
+        $this->command->info("Seeding de {$processed} dedicaciones completado exitosamente.");
     }
 }

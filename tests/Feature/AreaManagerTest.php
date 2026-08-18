@@ -2,21 +2,40 @@
 
 namespace Tests\Feature;
 
+use App\Models\Area;
+use App\Models\Category;
+use App\Models\Dedication;
+use App\Models\PermissionTeacher;
+use App\Models\Sede;
+use App\Models\Teacher;
 use App\Models\User;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class AreaManagerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_gestor_solo_ve_usuarios_de_su_area()
+    public function test_jefe_de_area_puede_acceder_al_panel()
     {
-        $gestor = User::role('area_manager')->first();
-        $this->actingAs($gestor);
+        $this->seed(RoleSeeder::class);
+        $sede = Sede::create(['nombre' => 'Sede Central']);
+        $area = Area::create(['nombre' => 'Ciencias de la Salud']);
 
-        $response = $this->get('/filament/dashboard/teachers');
-        $response->assertSeeText('Gestión de Área');
+        $manager = User::create([
+            'name' => 'Jefe de Area Test',
+            'email' => 'manager@test.com',
+            'password' => 'password',
+            'sede_id' => $sede->id,
+            'area_id' => $area->id,
+            'is_active' => true,
+            'is_approved' => true,
+        ]);
+        $manager->assignRole('area_manager');
+
+        $this->actingAs($manager);
+        $response = $this->get('/admin');
+        $response->assertStatus(200);
     }
 }

@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Providers;
-namespace App\Providers\Gate;
 
 use App\Models\Teacher;
 use App\Policies\TeacherPolicy;

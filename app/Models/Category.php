@@ -2,10 +2,31 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Modelo de Categoría Académica Docente.
+ *
+ * Registra el escalafón universitario del profesorado (Instructor, Asistente,
+ * Agregado, Asociado, Titular), títulos de pregrado/postgrado y fechas de ascenso.
+ *
+ * @property int $id
+ * @property string $teacher_cdi
+ * @property string|null $category
+ * @property string|null $preTitle
+ * @property string|null $lastTitle
+ * @property bool $disable_assistant_rule
+ * @property string|null $current_category
+ * @property \Carbon\Carbon|null $instructor
+ * @property \Carbon\Carbon|null $asistente
+ * @property \Carbon\Carbon|null $agregado
+ * @property \Carbon\Carbon|null $asociado
+ * @property \Carbon\Carbon|null $titular
+ * @property string|null $info
+ */
 class Category extends Model
 {
     use HasFactory;
@@ -24,7 +45,7 @@ class Category extends Model
         'agregado',
         'asociado',
         'titular',
-        'info'
+        'info',
     ];
 
     protected $casts = [
@@ -36,7 +57,7 @@ class Category extends Model
         'titular' => 'date',
     ];
 
-    const CATEGORIES = [
+    public const CATEGORIES = [
         'Instructor' => 'Instructor',
         'Asistente' => 'Asistente',
         'Agregado' => 'Agregado',
@@ -44,74 +65,68 @@ class Category extends Model
         'Titular' => 'Titular',
     ];
 
-    protected $dates = [
-        'instructor',
-        'asistente', 
-        'agregado',
-        'asociado',
-        'titular',
-        'created_at',
-        'updated_at'
-    ];
+    /**
+     * Docente titular de la categoría.
+     */
+    public function teacher(): BelongsTo
+    {
+        return $this->belongsTo(Teacher::class, 'teacher_cdi', 'cdi');
+    }
 
-    public function teacher()
-{
-    return $this->belongsTo(Teacher::class, 'teacher_cdi', 'cdi');
-}
-
-    public function reports(){
+    /**
+     * Reportes asociados a la categoría.
+     */
+    public function reports(): HasMany
+    {
         return $this->hasMany(Report::class);
     }
 
-    public function shouldApplyAssistantRule()
+    /**
+     * Determina si debe aplicarse la regla automática para asistente según posgrado.
+     */
+    public function shouldApplyAssistantRule(): bool
     {
         return !$this->disable_assistant_rule;
     }
 
-    public function updateCurrentCategory($categoryName)
+    /**
+     * Obtiene la categoría docente calculada más alta según las fechas registradas.
+     */
+    public function getCurrentCategoryAttribute($value): ?string
     {
-        $this->current_category = $categoryName;
-        $this->save();
-    }
+        if ($value) {
+            return $value;
+        }
 
-    public function getCurrentCategoryAttribute($value)
-    {
-        if (!$value) {
+        $dates = [
+            'Titular' => $this->titular,
+            'Asociado' => $this->asociado,
+            'Agregado' => $this->agregado,
+            'Asistente' => $this->asistente,
+            'Instructor' => $this->instructor,
+        ];
 
-            $dates = [
-                'titular' => $this->titular,
-                'asociado' => $this->asociado,
-                'agregado' => $this->agregado,
-                'asistente' => $this->asistente,
-                'instructor' => $this->instructor,
-            ];
-
-            foreach ($dates as $category => $date) {
-                if ($date) {
-                    return ucfirst($category);
-                }
+        foreach ($dates as $category => $date) {
+            if ($date) {
+                return $category;
             }
-
-            return 'Instructor';
         }
 
-        return $value;
+        return 'Instructor';
     }
 
-    public function getFullNameAttribute(): string
-    {
-        return "{$this->name} {$this->surName}";
-    }
-
+    /**
+     * Registro de auditoría ante cambios en escalafón.
+     */
     protected static function booted()
-{
-    static::updating(function ($category) {
-        if ($category->isDirty(['instructor', 'asistente', 'agregado', 'asociado', 'titular'])) {
-            activity()
-                ->performedOn($category)
-                ->withProperties($category->getChanges())
-                ->log('Actualización de categoría');
-        }
-    });
-}
+    {
+        static::updating(function ($category) {
+            if (function_exists('activity') && $category->isDirty(['instructor', 'asistente', 'agregado', 'asociado', 'titular'])) {
+                activity()
+                    ->performedOn($category)
+                    ->withProperties($category->getChanges())
+                    ->log('Actualización de escalafón docente');
+            }
+        });
+    }
 }

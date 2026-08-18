@@ -2,31 +2,36 @@
 
 namespace Database\Factories;
 
+use App\Models\Dedication;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Teacher;
 
 /**
+ * Factory para el modelo Dedication.
+ *
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Dedication>
  */
 class DedicationFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = Dedication::class;
+
     public function definition(): array
     {
+        $type = $this->faker->randomElement(['Tiempo Convencional', 'Medio Tiempo', 'Tiempo Completo', 'Exclusiva']);
+        $hours = match ($type) {
+            'Tiempo Convencional' => 12,
+            'Medio Tiempo' => 18,
+            'Tiempo Completo' => 30,
+            'Exclusiva' => 36,
+        };
+
         return [
-            'name' => $this->faker->unique()->word(), // Nombre único para la dedicación
-            'description' => $this->faker->optional()->sentence(),
-            'is_active' => true, // Siempre activo para pruebas
-            'hours' => $this->faker->numberBetween(1, 20), // Reducir el rango
-            'director' => $this->faker->optional()->name(),
-            'studentNumber' => $this->faker->optional()->numberBetween(1, 10),
-            'studentHours' => $this->faker->optional()->numberBetween(1, 20),
+            'teacher_cdi' => (string) $this->faker->unique()->numberBetween(10000000, 99999999),
+            'name' => $type,
+            'hours' => $hours,
+            'director' => $this->faker->optional(0.3)->randomElement(['Coordinador', 'Jefe de Departamento', 'Decano', 'Director']),
+            'studentNumber' => $this->faker->numberBetween(20, 60),
+            'studentHours' => $this->faker->numberBetween(4, 16),
             'info' => $this->faker->optional()->sentence(),
-            'teacher_id' => Teacher::inRandomOrder()->first()->id ?? null,
         ];
     }
 }
