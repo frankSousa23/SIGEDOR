@@ -1,0 +1,6 @@
+{
+  "name": "SIGEDOR - Gestión Docente y Reportes UNERG",
+  "description": "Plataforma para la administración de expedientes académicos, control de escalafón docente universitario, gestión de carga y dedicación horaria, asignación territorial por sedes/áreas, ingesta de datos por CSV y emisión de reportes oficiales.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
