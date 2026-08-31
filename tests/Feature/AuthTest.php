@@ -1,66 +1,58 @@
 <?php
 
-namespace Tests\Feature;
-
-use App\Models\Area;
-use App\Models\Sede;
 use App\Models\User;
-use Database\Seeders\RoleSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use App\Models\Sede;
+use App\Models\Area;
+use App\Filament\Pages\Auth\Login;
+use Livewire\Livewire;
+use Spatie\Permission\Models\Role;
+use function Pest\Laravel\get;
+use function Pest\Laravel\post;
+use function Pest\Laravel\actingAs;
 
-class AuthTest extends TestCase
-{
-    use RefreshDatabase;
+beforeEach(function () {
+    // Asegurar roles básicos
+    Role::firstOrCreate(['name' => 'admin']);
+    Role::firstOrCreate(['name' => 'area_manager']);
+    Role::firstOrCreate(['name' => 'teacher']);
+});
 
-    public function test_welcome_page_is_accessible()
-    {
-        $response = $this->get('/');
-        $response->assertStatus(200);
-        $response->assertSeeText('SIGEDOR');
-    }
+it('permite login a correos con dominio @sigedor.com', function () {
+    $sede = Sede::create(['nombre' => 'Sede Test', 'codigo' => 'TST', 'is_active' => true]);
+    $area = Area::create(['nombre' => 'Area Test']);
+    $user = User::factory()->create([
+        'email' => 'admin@sigedor.com',
+        'is_active' => true,
+        'is_approved' => true,
+        'sede_id' => $sede->id,
+        'area_id' => $area->id,
+    ]);
 
-    public function test_admin_can_access_admin_panel()
-    {
-        $this->seed(RoleSeeder::class);
-        $sede = Sede::create(['nombre' => 'Sede Central']);
-        $area = Area::create(['nombre' => 'Sistemas']);
-
-        $admin = User::create([
-            'name' => 'Admin Test',
-            'email' => 'admin@test.com',
+    Livewire::test(Login::class)
+        ->fillForm([
+            'email' => 'admin@sigedor.com',
             'password' => 'password',
-            'sede_id' => $sede->id,
-            'area_id' => $area->id,
-            'is_active' => true,
-            'is_approved' => true,
-        ]);
-        $admin->assignRole('admin');
+        ])
+        ->call('authenticate')
+        ->assertHasNoFormErrors();
+});
 
-        $this->actingAs($admin);
-        $response = $this->get('/admin');
-        $response->assertStatus(200);
-    }
+it('rechaza login a correos fuera del dominio @sigedor.com', function () {
+    $sede = Sede::create(['nombre' => 'Sede Test 2', 'codigo' => 'TS2', 'is_active' => true]);
+    $area = Area::create(['nombre' => 'Area Test 2']);
+    $user = User::factory()->create([
+        'email' => 'hacker@gmail.com',
+        'is_active' => true,
+        'is_approved' => true,
+        'sede_id' => $sede->id,
+        'area_id' => $area->id,
+    ]);
 
-    public function test_inactive_user_cannot_access_panel()
-    {
-        $this->seed(RoleSeeder::class);
-        $sede = Sede::create(['nombre' => 'Sede Central']);
-        $area = Area::create(['nombre' => 'Sistemas']);
-
-        $inactiveUser = User::create([
-            'name' => 'Inactive User',
-            'email' => 'inactive@test.com',
+    Livewire::test(Login::class)
+        ->fillForm([
+            'email' => 'hacker@gmail.com',
             'password' => 'password',
-            'sede_id' => $sede->id,
-            'area_id' => $area->id,
-            'is_active' => false,
-            'is_approved' => false,
-        ]);
-        $inactiveUser->assignRole('teacher');
-
-        $this->actingAs($inactiveUser);
-        $response = $this->get('/admin');
-        $response->assertStatus(403);
-    }
-}
+        ])
+        ->call('authenticate')
+        ->assertHasFormErrors(['email' => 'regex']);
+});

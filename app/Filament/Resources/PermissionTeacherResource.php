@@ -19,8 +19,10 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 /**
@@ -168,9 +170,36 @@ class PermissionTeacherResource extends Resource
                         'approved' => 'Aprobado',
                         'rejected' => 'Rechazado',
                     ]),
+
                 SelectFilter::make('type')
                     ->label('Tipo')
                     ->options(array_combine(PermissionTeacher::TYPES, PermissionTeacher::TYPES)),
+
+                SelectFilter::make('duration_type')
+                    ->label('Duración')
+                    ->options([
+                        'semestral' => 'Semestral',
+                        'anual' => 'Anual',
+                        'libre' => 'Libre',
+                    ]),
+
+                SelectFilter::make('teacher_id')
+                    ->label('Docente')
+                    ->relationship('teacher', 'cdi')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name . ' ' . $record->surName)
+                    ->searchable()
+                    ->preload(),
+
+                Filter::make('start_date_range')
+                    ->label('Rango de Fecha de Inicio')
+                    ->form([
+                        DatePicker::make('from')->label('Desde'),
+                        DatePicker::make('until')->label('Hasta'),
+                    ])
+                    ->query(fn (Builder $query, array $data): Builder => $query
+                        ->when($data['from'], fn ($q) => $q->whereDate('start_date', '>=', $data['from']))
+                        ->when($data['until'], fn ($q) => $q->whereDate('start_date', '<=', $data['until']))
+                    ),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -220,5 +249,27 @@ class PermissionTeacherResource extends Resource
             'create' => Pages\CreatePermissionTeacher::route('/create'),
             'edit' => Pages\EditPermissionTeacher::route('/{record}/edit'),
         ];
+    }
+
+    /**
+     * Aislamiento de datos por rol:
+     * - Admin: ve todos los permisos.
+     * - Area Manager: solo los de docentes de su sede.
+     * - Teacher: solo los propios.
+     */
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user = auth()->user();
+
+        if ($user && $user->hasRole('area_manager') && $user->sede_id) {
+            return $query->whereHas('teacher.user', fn ($q) => $q->where('sede_id', $user->sede_id));
+        }
+
+        if ($user && $user->hasRole('teacher')) {
+            return $query->whereHas('teacher', fn ($q) => $q->where('user_id', $user->id));
+        }
+
+        return $query;
     }
 }

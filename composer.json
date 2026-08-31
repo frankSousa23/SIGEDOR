@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^2.2",
+        "darkaonline/l5-swagger": "^9.0",
         "filament/filament": "^3.2",
         "filament/forms": "^3.2",
         "filament/support": "^3.2.41",

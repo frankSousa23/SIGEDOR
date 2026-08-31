@@ -51,7 +51,9 @@
    - Constancias de trabajo, expedientes individuales, informes de dedicación y memorandos administrativos vía `barryvdh/laravel-dompdf`.
    - Exportación masiva con soporte para disposición horizontal (landscape) e impresión formal.
 
-6. **Seguridad y Control de Acceso Granular:**
+6. **Seguridad y Control de Acceso Granular (Multi-Inquilino):**
+   - Autenticación estricta: Acceso exclusivo para correos bajo el dominio corporativo `@sigedor.com`.
+   - Arquitectura Multi-Sede: El panel de Filament adapta sus consultas (Eloquent Queries) dinámicamente según el rol. Un Administrador posee visión global, mientras que un Jefe de Área solo visualiza y gestiona los registros estrictamente vinculados a su Sede.
    - Control de roles y permisos con `spatie/laravel-permission` (*Administrador, Jefe de Área, Docente*).
    - Panel de administración interactivo potenciado por **Filament v3**.
    - Registro de auditoría y trazabilidad con `spatie/laravel-activitylog`.

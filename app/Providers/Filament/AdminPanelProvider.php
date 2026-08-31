@@ -21,6 +21,10 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
+/**
+ * Proveedor principal del Panel de Administración de Filament.
+ * Configura la interfaz, middleware, widgets y la navegación principal del sistema.
+ */
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -29,7 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->authGuard('web')
             ->authPasswordBroker('users')
-            ->login()
+            ->login(\App\Filament\Pages\Auth\Login::class)
             ->id('admin')
             ->path('admin')
             ->brandName('SIGEDOR')

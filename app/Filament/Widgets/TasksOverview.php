@@ -15,6 +15,15 @@ class TasksOverview extends BaseWidget
 {
     protected static ?string $heading = 'Usuarios Pendientes / Recientes';
 
+    protected static ?int $sort = 2;
+    protected int | string | array $columnSpan = 'full';
+
+    public static function canView(): bool
+    {
+        // Admin ve usuarios pendientes; Jefe de Área ve docentes activos de su sede.
+        return auth()->user()?->hasAnyRole(['admin', 'area_manager']) ?? false;
+    }
+
     public function table(Table $table): Table
     {
         return $table
