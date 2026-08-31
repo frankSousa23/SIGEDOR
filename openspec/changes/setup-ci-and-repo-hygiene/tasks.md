@@ -16,7 +16,7 @@
 - [x] 3.1 Crear el directorio `.github/workflows/` en la raíz del proyecto y verificar que existe.
 - [x] 3.2 Crear `.github/workflows/ci.yml` con el job `test` que: hace checkout, configura PHP 8.3 con `shivammathur/setup-php`, instala dependencias con `composer install --no-interaction`, copia `.env.example` a `.env`, genera la app key con `php artisan key:generate`, ejecuta migraciones con `php artisan migrate --seed`, y corre `vendor/bin/pest`. Verificar que el workflow tiene sintaxis YAML válida.
 - [x] 3.3 Agregar el job `lint` paralelo al job `test` en el mismo `ci.yml` que ejecuta `vendor/bin/pint --test` tras `composer install`. Verificar que ambos jobs aparecen correctamente definidos.
-- [ ] 3.4 Hacer push del workflow al repositorio remoto y verificar en la pestaña "Actions" de GitHub que el pipeline se ejecuta automáticamente y los dos jobs pasan en verde.
+- [x] 3.4 Hacer push del workflow al repositorio remoto y verificar en la pestaña "Actions" de GitHub que el pipeline se ejecuta automáticamente y los dos jobs pasan en verde.
 
 ## 4. Actualización del README
 
@@ -28,5 +28,5 @@
 
 - [x] 5.1 Ejecutar localmente `vendor/bin/pest` y confirmar que los 18 tests siguen pasando sin cambios en la lógica de negocio.
 - [x] 5.2 Ejecutar `vendor/bin/pint --test` y verificar que no reporta errores de estilo (o corregirlos si los hay).
-- [ ] 5.3 Confirmar en GitHub que el badge dinámico en el README muestra estado "passing" después del primer run exitoso del workflow.
-- [ ] 5.4 Hacer un commit final con mensaje `ci: setup GitHub Actions pipeline and repo hygiene` que incluya todos los cambios de este change.
+- [x] 5.3 Confirmar en GitHub que el badge dinámico en el README muestra estado "passing" después del primer run exitoso del workflow.
+- [x] 5.4 Hacer un commit final con mensaje `ci: setup GitHub Actions pipeline and repo hygiene` que incluya todos los cambios de este change.
