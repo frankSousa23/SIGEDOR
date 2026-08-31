@@ -300,6 +300,33 @@ TeacherResource           → Género, Sede, Área, Rango de fechas*
 
 ---
 
+## Evolución del Modelo Territorial y Sectorial: Sede, Área y Docente
+
+Un aspecto central del desarrollo fue la transición desde un modelo de datos plano hacia una **arquitectura multi-inquilino basada en territorio (Sede) y facultad (Área)**:
+
+### 1. El Planteamiento Original y la Necesidad de Sectorización
+* En las primeras iteraciones, los datos institucionales estaban almacenados de forma monolítica en una o dos tablas maestras (`teachers`, `users`), guardando sedes y áreas como texto plano.
+* La necesidad institucional universitaria exigía que, al registrar un usuario (`User`), se le asignaran obligatoriamente su `sede_id` y su `area_id`.
+* Esto permitiría vincular la cadena de custodia: `Usuario` ➔ `Docente` ➔ `Sede` ➔ `Área Académica`, restringiendo a los Jefes de Área (`area_manager`) para que **únicamente puedan auditar, crear reportes y gestionar docentes adscritos a su misma sede y facultad**.
+
+### 2. Factores de Fracaso en las Ramas Antiguas
+* **Selects dependientes en cascada:** Al intentar que el selector de Área/Programa dependiera de la Sede seleccionada, la falta de reactividad adecuada en los formularios de Filament provocaba pérdida de estado y campos nulos.
+* **La trampa de `SiteOption` / `AreaOption`:** El intento de crear tablas intermedias de opciones por sitio generó excepciones de puntero nulo (`NullPointerException`) en los administradores del sistema, quienes no poseen una sede fija.
+* **Duplicación de claves foráneas:** Se colocaron `sede_id` y `area_id` redundantemente en todas las tablas transaccionales, creando inconsistencias cuando un docente o usuario era editado.
+
+### 3. Solución Arquitectónica Definitiva (Estado Actual v1.0.0)
+* **Modelos Dimensionales Claros:** Tablas normalizadas `sedes`, `areas` y `programas` relacionadas mediante Eloquent estándar.
+* **Seguridad Desacoplada mediante Policies:** `TeacherPolicy` y `CategoryPolicy` protegen los recursos a nivel de lógica de negocio, evaluando `user->sede_id === teacher->sede_id`.
+* **Scopes Dinámicos en Filament:** Implementación de `getEloquentQuery()` estático en todos los recursos (`TeacherResource`, `CategoryResource`, `DedicationResource`, `PermissionTeacherResource`, `ReportResource`).
+* **Tratamiento Especial a Administradores:** El rol `admin` tiene pase maestro (`before()` en Policies y `query()` sin restricciones territoriales).
+
+### 4. Propuestas de Mejora y Futuras Extensiones Arquitectónicas
+* **Auto-llenado Reactivo de Docentes:** Al seleccionar un `User` en `TeacherResource`, heredar automáticamente `sede_id`, `area_id` y `email` para agilizar la carga.
+* **Filtrado Reactivo en Vivo (`->live()`):** Implementar carga dinámica de áreas según la sede seleccionada en los formularios administrativos.
+* **Matriz Territorial (`sede_area`):** Modelar mediante tabla pivote las carreras o áreas específicas que se imparten en cada núcleo universitario.
+
+---
+
 ## Lecciones Técnicas para Futuros Desarrolladores
 
 1. **Verificar siempre la versión de la API de Filament.** Entre v2 y v3 hubo cambios de ruptura
