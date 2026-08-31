@@ -10,8 +10,6 @@ class AreaManagerMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -20,6 +18,7 @@ class AreaManagerMiddleware
             $siteId = $request->user()->teacher->site_id;
             $request->merge(['site_id' => $siteId]);
         }
+
         return $next($request);
     }
 }

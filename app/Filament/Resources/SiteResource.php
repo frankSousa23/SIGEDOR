@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\SiteResource\Pages;
-use App\Models\Area;
 use App\Models\Programa;
 use App\Models\Sede;
 use App\Models\Site;
@@ -32,11 +31,17 @@ use Illuminate\Support\Collection;
 class SiteResource extends Resource
 {
     protected static ?string $model = Site::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
+
     protected static ?string $navigationLabel = 'Sedes y Cátedras';
+
     protected static ?string $navigationGroup = 'Asignaciones';
+
     protected static ?string $modelLabel = 'Asignación de Sede';
+
     protected static ?string $pluralModelLabel = 'Asignaciones de Sede';
+
     protected static ?int $navigationSort = 0;
 
     public static function form(Form $form): Form
@@ -194,8 +199,9 @@ class SiteResource extends Resource
                     ->color('danger')
                     ->action(function (Site $record) {
                         $pdf = Pdf::loadView('pdf.site', ['site' => $record]);
+
                         return response()->streamDownload(
-                            fn () => print($pdf->output()),
+                            fn () => print ($pdf->output()),
                             "sede_{$record->teacher_cdi}.pdf"
                         );
                     }),
@@ -212,8 +218,8 @@ class SiteResource extends Resource
                                 ->setPaper('a4', 'landscape');
 
                             return response()->streamDownload(
-                                fn () => print($pdf->output()),
-                                'reporte_sedes_' . now()->format('Ymd_His') . '.pdf'
+                                fn () => print ($pdf->output()),
+                                'reporte_sedes_'.now()->format('Ymd_His').'.pdf'
                             );
                         })
                         ->requiresConfirmation(),

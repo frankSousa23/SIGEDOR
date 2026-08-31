@@ -9,6 +9,12 @@ use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+/**
+ * Pruebas de acceso y funcionalidad del Administrador.
+ *
+ * Verifica que el rol `admin` puede acceder correctamente a las secciones
+ * de gestión de usuarios del panel Filament.
+ */
 class AdminTest extends TestCase
 {
     use RefreshDatabase;

@@ -4,7 +4,7 @@
 [![Filament](https://img.shields.io/badge/Filament-3.x-F59E0B?style=for-the-badge&logo=filament&logoColor=white)](https://filamentphp.com)
 [![PHP](https://img.shields.io/badge/PHP-8.2%20%7C%208.3-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg?style=for-the-badge)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-100%25%20Passing-brightgreen?style=for-the-badge)](#-ejecución-de-pruebas)
+[![CI](https://github.com/frankSousa23/SIGEDOR/actions/workflows/ci.yml/badge.svg)](https://github.com/frankSousa23/SIGEDOR/actions/workflows/ci.yml)
 
 > **SIGEDOR** es una plataforma web integral desarrollada originalmente como proyecto de tesis universitaria y liberada a la comunidad bajo la **Licencia MIT**. Diseñada para la administración de expedientes académicos, control de escalafón docente universitario, gestión de carga y dedicación horaria, asignación territorial por sedes/áreas, ingesta de datos por CSV y emisión automatizada de reportes oficiales en PDF.
 
@@ -18,6 +18,8 @@
 - [Modelo Entidad - Relación](#-modelo-entidad---relación)
 - [Requisitos Previos](#-requisitos-previos)
 - [Instalación Rápida](#-instalación-rápida)
+- [Setup Rápido para Colaboradores](#-setup-rápido-para-colaboradores)
+- [Documentación de API y Swagger](#-documentación-de-api-y-swagger)
 - [Credenciales de Demostración](#-credenciales-de-demostración)
 - [Ejecución de Pruebas](#-ejecución-de-pruebas)
 - [Estructura del Proyecto](#-estructura-del-proyecto)
@@ -185,6 +187,45 @@ php artisan serve
 ```
 El sistema estará accesible en: [http://127.0.0.1:8000](http://127.0.0.1:8000)  
 Panel Administrativo: [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
+
+---
+
+## ⚡ Setup Rápido para Colaboradores
+
+Si deseas clonar y probar SIGEDOR de inmediato en tu entorno local:
+
+```bash
+# 1. Clonar e instalar dependencias
+git clone https://github.com/frankSousa23/SIGEDOR.git && cd SIGEDOR
+composer install
+npm install
+
+# 2. Configurar entorno y generar clave
+cp .env.example .env
+php artisan key:generate
+
+# 3. Base de datos y carga de datos iniciales
+php artisan migrate --seed
+
+# 4. Generar documentación Swagger (OpenAPI)
+php artisan l5-swagger:generate
+
+# 5. Ejecutar tests para verificar instalación
+vendor/bin/pest
+```
+
+---
+
+## 📚 Documentación de API y Swagger
+
+SIGEDOR cuenta con una API RESTful documentada bajo la especificación OpenAPI / Swagger:
+
+- **Interfaz Swagger UI:** `http://localhost/api/documentation` (o `http://127.0.0.1:8000/api/documentation`)
+- **Regeneración de esquema:**
+  ```bash
+  php artisan l5-swagger:generate
+  ```
+> ℹ️ **Nota:** El archivo `storage/api-docs/api-docs.json` es un artefacto autogenerado excluido de Git para evitar conflictos entre ramas. Cada desarrollador o entorno de CI/CD lo regenera localmente con el comando anterior.
 
 ---
 

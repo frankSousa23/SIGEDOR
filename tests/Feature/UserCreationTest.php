@@ -9,6 +9,12 @@ use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+/**
+ * Pruebas de creación y asignación de roles de Usuario.
+ *
+ * Verifica que los usuarios pueden ser creados con los datos correctos
+ * y que la asignación del rol `teacher` funciona a través de Spatie Permission.
+ */
 class UserCreationTest extends TestCase
 {
     use RefreshDatabase;

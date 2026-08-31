@@ -4,8 +4,8 @@ namespace App\Filament\Resources\PermissionTeacherResource\Pages;
 
 use App\Filament\Resources\PermissionTeacherResource;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\EditRecord;
 
 class EditPermissionTeacher extends EditRecord
 {

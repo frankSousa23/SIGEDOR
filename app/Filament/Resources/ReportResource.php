@@ -3,9 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReportResource\Pages;
-use App\Models\Area;
-use App\Models\Category;
-use App\Models\Dedication;
 use App\Models\Report;
 use App\Models\Sede;
 use App\Models\Teacher;
@@ -32,11 +29,17 @@ use Illuminate\Support\Collection;
 class ReportResource extends Resource
 {
     protected static ?string $model = Report::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-document-chart-bar';
+
     protected static ?string $navigationLabel = 'Reportes y Memos';
+
     protected static ?string $navigationGroup = 'Gestión Reportes';
+
     protected static ?string $modelLabel = 'Reporte';
+
     protected static ?string $pluralModelLabel = 'Reportes';
+
     protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
@@ -172,8 +175,9 @@ class ReportResource extends Resource
                     ->color('danger')
                     ->action(function (Report $record) {
                         $pdf = Pdf::loadView('pdf.report', ['report' => $record]);
+
                         return response()->streamDownload(
-                            fn () => print($pdf->output()),
+                            fn () => print ($pdf->output()),
                             "reporte_{$record->memoNumber}.pdf"
                         );
                     }),
@@ -206,7 +210,7 @@ class ReportResource extends Resource
                                     ]);
                                 }
                                 fclose($handle);
-                            }, 'reportes_' . now()->format('Ymd_His') . '.csv', [
+                            }, 'reportes_'.now()->format('Ymd_His').'.csv', [
                                 'Content-Type' => 'text/csv; charset=UTF-8',
                             ]);
                         }),
@@ -218,8 +222,8 @@ class ReportResource extends Resource
                                 ->setPaper('a4', 'landscape');
 
                             return response()->streamDownload(
-                                fn () => print($pdf->output()),
-                                'reporte_memorandos_' . now()->format('Ymd_His') . '.pdf'
+                                fn () => print ($pdf->output()),
+                                'reporte_memorandos_'.now()->format('Ymd_His').'.pdf'
                             );
                         })
                         ->requiresConfirmation(),
@@ -241,7 +245,7 @@ class ReportResource extends Resource
         $query = parent::getEloquentQuery();
 
         $user = auth()->user();
-        
+
         // El Jefe de Área solo ve reportes de docentes de su sede
         if ($user && $user->hasRole('area_manager') && $user->sede_id) {
             return $query->whereHas('teacher.user', function ($q) use ($user) {

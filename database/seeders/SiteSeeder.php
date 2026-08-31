@@ -8,8 +8,6 @@ use App\Models\Sede;
 use App\Models\Site;
 use App\Models\Teacher;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 /**
  * Seeder de Asignaciones de Sede/Área del Sistema SIGEDOR.
@@ -23,8 +21,9 @@ class SiteSeeder extends Seeder
     {
         $filePath = database_path('seeders/data/sites.csv');
 
-        if (!file_exists($filePath)) {
-            $this->command->warn("Archivo sites.csv no encontrado.");
+        if (! file_exists($filePath)) {
+            $this->command->warn('Archivo sites.csv no encontrado.');
+
             return;
         }
 
@@ -55,7 +54,7 @@ class SiteSeeder extends Seeder
             }
 
             $teacher = Teacher::where('cdi', $cdi)->first();
-            if (!$teacher) {
+            if (! $teacher) {
                 continue;
             }
 
@@ -67,10 +66,10 @@ class SiteSeeder extends Seeder
             $area = Area::where('nombre', $areaNombre)->first() ?? $defaultArea;
             $programa = Programa::where('nombre', $programaNombre)->first() ?? $defaultPrograma;
 
-            $uc = !empty(trim($data[5] ?? '')) ? (int) $data[5] : 3;
-            $weekHours = !empty(trim($data[6] ?? '')) ? (int) $data[6] : 6;
-            $sections = !empty(trim($data[7] ?? '')) ? (int) $data[7] : 2;
-            $info = !empty(trim($data[8] ?? '')) ? trim($data[8]) : null;
+            $uc = ! empty(trim($data[5] ?? '')) ? (int) $data[5] : 3;
+            $weekHours = ! empty(trim($data[6] ?? '')) ? (int) $data[6] : 6;
+            $sections = ! empty(trim($data[7] ?? '')) ? (int) $data[7] : 2;
+            $info = ! empty(trim($data[8] ?? '')) ? trim($data[8]) : null;
 
             $site = Site::updateOrCreate(
                 [

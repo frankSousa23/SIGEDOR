@@ -20,17 +20,17 @@ class TeacherPolicy
      */
     public function viewAny(User $user)
     {
-    return $user->hasRole('admin') ||
-           ($user->hasRole('area_manager') && $user->sede_id && $user->area_id);
-}
+        return $user->hasRole('admin') ||
+               ($user->hasRole('area_manager') && $user->sede_id && $user->area_id);
+    }
 
-public function view(User $user, Teacher $teacher)
-{
-    return $user->hasRole('admin') ||
-           ($user->hasRole('area_manager') &&
-            $teacher->sede_id == $user->sede_id &&
-            $teacher->area_id == $user->area_id);
-}
+    public function view(User $user, Teacher $teacher)
+    {
+        return $user->hasRole('admin') ||
+               ($user->hasRole('area_manager') &&
+                $teacher->sede_id == $user->sede_id &&
+                $teacher->area_id == $user->area_id);
+    }
 
     public function create(User $user): bool
     {

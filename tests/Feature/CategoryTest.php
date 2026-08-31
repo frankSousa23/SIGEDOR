@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Resources\CategoryResource\Pages\CreateCategory;
 use App\Models\Area;
 use App\Models\Category;
 use App\Models\Sede;
@@ -9,9 +10,8 @@ use App\Models\Teacher;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Livewire\Livewire;
-use App\Filament\Resources\CategoryResource\Pages\CreateCategory;
+use Tests\TestCase;
 
 class CategoryTest extends TestCase
 {
@@ -41,13 +41,13 @@ class CategoryTest extends TestCase
     {
         $sede = Sede::create(['nombre' => 'Test Sede']);
         $area = Area::create(['nombre' => 'Test Area']);
-        
+
         $admin = User::factory()->create([
             'sede_id' => $sede->id,
             'area_id' => $area->id,
         ]);
         $admin->assignRole('admin');
-        
+
         $teacher = Teacher::factory()->create([
             'sede_id' => $sede->id,
             'area_id' => $area->id,
@@ -84,7 +84,7 @@ class CategoryTest extends TestCase
             'area_id' => $area->id,
         ]);
         $admin->assignRole('admin');
-        
+
         $teacher = Teacher::factory()->create([
             'sede_id' => $sede->id,
             'area_id' => $area->id,

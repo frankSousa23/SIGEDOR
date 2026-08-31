@@ -8,7 +8,9 @@ use Filament\Widgets\ChartWidget;
 class TeacherDistributionChart extends ChartWidget
 {
     protected static ?string $heading = 'Distribución de Docentes por Dedicación';
+
     protected static ?int $sort = 3;
+
     protected static ?string $maxHeight = '280px';
 
     public static function canView(): bool

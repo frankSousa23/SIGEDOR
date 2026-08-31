@@ -8,10 +8,8 @@ use App\Models\Sede;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Str;
 
 /**
  * Seeder de Docentes del Sistema SIGEDOR.
@@ -28,9 +26,10 @@ class TeacherSeeder extends Seeder
 
         $csvPath = database_path('seeders/data/teachers.csv');
 
-        if (!file_exists($csvPath)) {
-            $this->command->warn("Archivo teachers.csv no encontrado.");
+        if (! file_exists($csvPath)) {
+            $this->command->warn('Archivo teachers.csv no encontrado.');
             Schema::enableForeignKeyConstraints();
+
             return;
         }
 
@@ -79,7 +78,7 @@ class TeacherSeeder extends Seeder
 
             // Buscar usuario existente por email o crear uno
             $user = User::where('email', $userEmail)->first();
-            if (!$user) {
+            if (! $user) {
                 $user = User::create([
                     'name' => "Prof. {$name} {$surName}",
                     'email' => $userEmail,
@@ -130,6 +129,7 @@ class TeacherSeeder extends Seeder
             }
 
             $carbonDate = \Carbon\Carbon::parse($date);
+
             return $carbonDate->format('Y-m-d');
         } catch (\Throwable $e) {
             return null;

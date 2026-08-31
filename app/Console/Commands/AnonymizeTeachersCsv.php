@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use Faker\Factory as Faker;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Console\Command;
 
 class AnonymizeTeachersCsv extends Command
 {
@@ -23,23 +22,33 @@ class AnonymizeTeachersCsv extends Command
     protected $description = 'Anonymize sensitive data in database/seeders/data/teachers.csv';
 
     /**
-     * Execute the console command.
+     * Ejecuta el proceso de anonimización del CSV de docentes.
+     *
+     * Lee el archivo `database/seeders/data/teachers.csv`, reemplaza los campos
+     * sensibles (nombre, apellido, CDI, teléfono, correo) con datos ficticios
+     * generados por Faker (locale: es_ES), preservando datos no personales
+     * (sede, área, programa, asignatura, fechas).
+     *
+     * @return int Código de salida del comando (0 = éxito)
      */
-    public function handle()
+    public function handle(): int
     {
         $csvPath = base_path('database/seeders/data/teachers.csv');
 
-        if (!file_exists($csvPath)) {
+        if (! file_exists($csvPath)) {
             $this->error("File not found at {$csvPath}");
-            return;
+
+            return self::FAILURE;
         }
 
         $this->info("Anonymizing file: {$csvPath}");
 
-        $rows = array_map(function($v) { return str_getcsv($v, ";"); }, file($csvPath));
+        $rows = array_map(function ($v) {
+            return str_getcsv($v, ';');
+        }, file($csvPath));
         $header = array_shift($rows);
-        
-        $this->info("First few rows read successfully.");
+
+        $this->info('First few rows read successfully.');
         $this->table($header, array_slice($rows, 0, 5));
 
         $faker = Faker::create('es_ES');
@@ -61,14 +70,16 @@ class AnonymizeTeachersCsv extends Command
             // 11: sede_nombre
             // 12: area_nombre
             // 13: programa_nombre
-            
-            if(count($row) < 14) continue;
+
+            if (count($row) < 14) {
+                continue;
+            }
 
             $row[1] = $faker->firstName;
             $row[2] = $faker->lastName;
             $row[3] = $faker->unique()->numerify('########');
             $row[5] = $faker->phoneNumber;
-            
+
             $email = $faker->unique()->safeEmail;
             $row[6] = $email;
             $row[10] = $email;
@@ -79,9 +90,9 @@ class AnonymizeTeachersCsv extends Command
         // Write to temp file first
         $tempPath = base_path('database/seeders/data/teachers_temp.csv');
         $fp = fopen($tempPath, 'w');
-        fputcsv($fp, $header, ";");
+        fputcsv($fp, $header, ';');
         foreach ($anonymizedRows as $row) {
-            fputcsv($fp, $row, ";");
+            fputcsv($fp, $row, ';');
         }
         fclose($fp);
 
@@ -90,6 +101,8 @@ class AnonymizeTeachersCsv extends Command
         // Now replace original
         rename($tempPath, $csvPath);
 
-        $this->info("Original CSV replaced with anonymized data.");
+        $this->info('Original CSV replaced with anonymized data.');
+
+        return self::SUCCESS;
     }
 }

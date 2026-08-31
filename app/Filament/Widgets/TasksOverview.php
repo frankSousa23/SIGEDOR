@@ -16,7 +16,8 @@ class TasksOverview extends BaseWidget
     protected static ?string $heading = 'Usuarios Pendientes / Recientes';
 
     protected static ?int $sort = 2;
-    protected int | string | array $columnSpan = 'full';
+
+    protected int|string|array $columnSpan = 'full';
 
     public static function canView(): bool
     {
@@ -50,7 +51,7 @@ class TasksOverview extends BaseWidget
     {
         $user = auth()->user();
 
-        if (!$user) {
+        if (! $user) {
             return User::query()->whereRaw('1 = 0');
         }
 

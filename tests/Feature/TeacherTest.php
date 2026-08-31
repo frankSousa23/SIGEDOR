@@ -3,8 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Area;
-use App\Models\Category;
-use App\Models\Dedication;
 use App\Models\Programa;
 use App\Models\Sede;
 use App\Models\Teacher;

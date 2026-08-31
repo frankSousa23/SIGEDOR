@@ -6,6 +6,7 @@ namespace App\Virtual\Models;
  * @OA\Schema(
  *     title="Report",
  *     description="Modelo de Reporte Académico",
+ *
  *     @OA\Xml(
  *         name="Report"
  *     )
@@ -21,7 +22,7 @@ class Report
      *     example=1
      * )
      *
-     * @var integer
+     * @var int
      */
     private $id;
 
@@ -99,7 +100,7 @@ class Report
      *      example=2
      * )
      *
-     * @var integer
+     * @var int
      */
     public $sede_id;
 
@@ -111,7 +112,7 @@ class Report
      *      example=3
      * )
      *
-     * @var integer
+     * @var int
      */
     public $area_id;
 
@@ -123,7 +124,7 @@ class Report
      *      example=4
      * )
      *
-     * @var integer
+     * @var int
      */
     public $category_id;
 
@@ -135,7 +136,7 @@ class Report
      *      example=2
      * )
      *
-     * @var integer
+     * @var int
      */
     public $dedication_id;
 }

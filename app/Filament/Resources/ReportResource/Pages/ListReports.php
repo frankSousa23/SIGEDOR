@@ -4,8 +4,8 @@ namespace App\Filament\Resources\ReportResource\Pages;
 
 use App\Filament\Resources\ReportResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Exports\ExportBulkAction;
+use Filament\Resources\Pages\ListRecords;
 
 class ListReports extends ListRecords
 {
@@ -33,7 +33,7 @@ class ListReports extends ListRecords
                 ->label('Exportar Seleccionados')
                 ->formats([
                     'pdf',
-                ])
+                ]),
         ];
     }
 }

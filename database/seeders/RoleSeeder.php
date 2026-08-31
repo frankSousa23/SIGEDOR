@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder
 {
@@ -21,7 +21,7 @@ class RoleSeeder extends Seeder
             'manage_dedications',
             'manage_permissions',
             'view_reports',
-            'create_reports'
+            'create_reports',
         ];
 
         foreach ($permissions as $permission) {
@@ -33,7 +33,7 @@ class RoleSeeder extends Seeder
         foreach ($roles as $role) {
             Role::firstOrCreate([
                 'name' => $role,
-                'guard_name' => 'web'
+                'guard_name' => 'web',
             ]);
         }
 
@@ -46,7 +46,7 @@ class RoleSeeder extends Seeder
             'view_teachers',
             'edit_teachers',
             'view_reports',
-            'create_reports'
+            'create_reports',
         ]);
 
         $teacherRole = Role::where('name', 'teacher')->first();

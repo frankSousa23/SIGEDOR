@@ -3,11 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Area;
-use App\Models\Category;
-use App\Models\Dedication;
 use App\Models\Programa;
 use App\Models\Sede;
-use App\Models\Site;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;

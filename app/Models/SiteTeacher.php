@@ -10,7 +10,7 @@ class SiteTeacher extends Model
 
     protected $fillable = [
         'site_id',
-        'teacher_id'
+        'teacher_id',
     ];
 
     public function site()
@@ -22,6 +22,4 @@ class SiteTeacher extends Model
     {
         return $this->belongsTo(Teacher::class);
     }
-
-
 }

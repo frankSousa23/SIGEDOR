@@ -2,7 +2,6 @@
 
 return [
 
-
     'charset' => 'UTF-8',
     'encoding' => 'UTF-8',
     /*
@@ -125,7 +124,5 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
-
-    
 
 ];

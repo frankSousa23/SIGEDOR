@@ -6,6 +6,7 @@ namespace App\Virtual\Resources;
  * @OA\Schema(
  *     title="ErrorResponse",
  *     description="Estructura estándar de respuesta de error",
+ *
  *     @OA\Xml(
  *         name="ErrorResponse"
  *     )

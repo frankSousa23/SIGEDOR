@@ -6,6 +6,7 @@ namespace App\Virtual\Resources;
  * @OA\Schema(
  *     title="PaginationMeta",
  *     description="Metadatos de paginación de Laravel",
+ *
  *     @OA\Xml(
  *         name="PaginationMeta"
  *     )
@@ -21,7 +22,7 @@ class PaginationMeta
      *     example=1
      * )
      *
-     * @var integer
+     * @var int
      */
     public $current_page;
 
@@ -44,7 +45,7 @@ class PaginationMeta
      *     example=1
      * )
      *
-     * @var integer
+     * @var int
      */
     public $from;
 
@@ -56,7 +57,7 @@ class PaginationMeta
      *     example=5
      * )
      *
-     * @var integer
+     * @var int
      */
     public $last_page;
 
@@ -102,7 +103,7 @@ class PaginationMeta
      *     example=15
      * )
      *
-     * @var integer
+     * @var int
      */
     public $per_page;
 
@@ -126,7 +127,7 @@ class PaginationMeta
      *     example=15
      * )
      *
-     * @var integer
+     * @var int
      */
     public $to;
 
@@ -138,7 +139,7 @@ class PaginationMeta
      *     example=75
      * )
      *
-     * @var integer
+     * @var int
      */
     public $total;
 
@@ -147,8 +148,10 @@ class PaginationMeta
      *     title="Links",
      *     description="Enlaces de paginación",
      *     type="array",
+     *
      *     @OA\Items(
      *         type="object",
+     *
      *         @OA\Property(property="url", type="string", nullable=true, example="http://localhost/api/v1/resource?page=1"),
      *         @OA\Property(property="label", type="string", example="1"),
      *         @OA\Property(property="active", type="boolean", example=true)

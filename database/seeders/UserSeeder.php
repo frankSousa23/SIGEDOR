@@ -30,8 +30,8 @@ class UserSeeder extends Seeder
 
         $csvPath = database_path('seeders/data/users.csv');
 
-        if (!file_exists($csvPath)) {
-            $this->command->warn("Archivo users.csv no encontrado, creando usuarios básicos por defecto.");
+        if (! file_exists($csvPath)) {
+            $this->command->warn('Archivo users.csv no encontrado, creando usuarios básicos por defecto.');
 
             User::updateOrCreate(
                 ['email' => 'admin@sigedor.com'],
@@ -125,6 +125,6 @@ class UserSeeder extends Seeder
             }
         });
 
-        $this->command->info("Seeding de usuarios completado exitosamente.");
+        $this->command->info('Seeding de usuarios completado exitosamente.');
     }
 }
