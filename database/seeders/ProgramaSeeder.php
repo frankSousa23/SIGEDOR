@@ -71,7 +71,7 @@ class ProgramaSeeder extends Seeder
             'Profesionalización en radioimagenología',
             'Radiodiagnóstico',
             'Radioimagenología',
-            'Terapia ocupacional'
+            'Terapia ocupacional',
         ];
 
         foreach ($programas as $nombre) {

@@ -42,8 +42,8 @@ beforeEach(function () {
     ]);
 
     $this->category = Category::create([
-        'teacher_cdi' => $this->teacher->cdi, 
-        'instructor' => '2010-01-01'
+        'teacher_cdi' => $this->teacher->cdi,
+        'instructor' => '2010-01-01',
     ]);
 
     $this->dedication = new Dedication([
@@ -58,7 +58,7 @@ beforeEach(function () {
 
     $this->teacher->update([
         'category_id' => $this->category->id,
-        'dedication_id' => $this->dedication->id
+        'dedication_id' => $this->dedication->id,
     ]);
 });
 
@@ -66,17 +66,17 @@ it('returns a successful response for the teachers API endpoint', function () {
     $response = $this->getJson('/api/v1/teachers');
 
     $response->assertStatus(200)
-             ->assertJsonStructure([
-                 'status',
-                 'data' => [
-                     'current_page',
-                     'data' => [
-                         '*' => [
-                             'id',
-                         ]
-                     ]
-                 ]
-             ]);
+        ->assertJsonStructure([
+            'status',
+            'data' => [
+                'current_page',
+                'data' => [
+                    '*' => [
+                        'id',
+                    ],
+                ],
+            ],
+        ]);
 });
 
 it('returns a successful response for the reports API endpoint', function () {
@@ -94,15 +94,15 @@ it('returns a successful response for the reports API endpoint', function () {
     $response = $this->getJson('/api/v1/reports');
 
     $response->assertStatus(200)
-             ->assertJsonStructure([
-                 'status',
-                 'data' => [
-                     'current_page',
-                     'data' => [
-                         '*' => [
-                             'id',
-                         ]
-                     ]
-                 ]
-             ]);
+        ->assertJsonStructure([
+            'status',
+            'data' => [
+                'current_page',
+                'data' => [
+                    '*' => [
+                        'id',
+                    ],
+                ],
+            ],
+        ]);
 });

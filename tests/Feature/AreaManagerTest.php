@@ -3,16 +3,18 @@
 namespace Tests\Feature;
 
 use App\Models\Area;
-use App\Models\Category;
-use App\Models\Dedication;
-use App\Models\PermissionTeacher;
 use App\Models\Sede;
-use App\Models\Teacher;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+/**
+ * Pruebas de acceso y funcionalidad del Jefe de Área.
+ *
+ * Verifica que el rol `area_manager` puede acceder al panel Filament
+ * y que las relaciones con permisos y dedicaciones funcionen correctamente.
+ */
 class AreaManagerTest extends TestCase
 {
     use RefreshDatabase;

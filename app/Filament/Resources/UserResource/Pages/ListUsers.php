@@ -18,7 +18,7 @@ class ListUsers extends ListRecords
     }
 
     public function updatedTableFilters(): void
-{
-    $this->table->resetPage(); // ← Forzar reinicio de paginación
-}
+    {
+        $this->table->resetPage(); // ← Forzar reinicio de paginación
+    }
 }

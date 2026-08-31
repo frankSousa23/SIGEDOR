@@ -8,7 +8,9 @@ use Filament\Widgets\ChartWidget;
 class SedeStatsChart extends ChartWidget
 {
     protected static ?string $heading = 'Personal y Docentes por Sede Universitaria';
+
     protected static ?int $sort = 4;
+
     protected static ?string $maxHeight = '280px';
 
     public static function canView(): bool

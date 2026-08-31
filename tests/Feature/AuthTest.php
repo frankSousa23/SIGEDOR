@@ -1,14 +1,11 @@
 <?php
 
-use App\Models\User;
-use App\Models\Sede;
-use App\Models\Area;
 use App\Filament\Pages\Auth\Login;
+use App\Models\Area;
+use App\Models\Sede;
+use App\Models\User;
 use Livewire\Livewire;
 use Spatie\Permission\Models\Role;
-use function Pest\Laravel\get;
-use function Pest\Laravel\post;
-use function Pest\Laravel\actingAs;
 
 beforeEach(function () {
     // Asegurar roles básicos

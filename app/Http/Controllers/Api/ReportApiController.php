@@ -8,7 +8,11 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Controlador API para consulta de Reportes Académicos.
+ * Controlador API de sólo lectura para consulta de Reportes Académicos.
+ *
+ * Expone endpoints públicos para la integración externa con los reportes
+ * y memorandos registrados en el sistema. Los datos se devuelven paginados
+ * con sus relaciones institucionales (docente, sede, área, categoría, dedicación).
  */
 class ReportApiController extends Controller
 {
@@ -18,17 +22,22 @@ class ReportApiController extends Controller
      *     summary="Listar reportes académicos",
      *     description="Obtiene la lista de reportes emitidos en el sistema.",
      *     tags={"Reportes"},
+     *
      *     @OA\Parameter(
      *         name="page",
      *         in="query",
      *         description="Número de página",
      *         required=false,
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Listado de reportes obtenido exitosamente",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(
      *                 property="data",
@@ -37,8 +46,10 @@ class ReportApiController extends Controller
      *                 @OA\Property(
      *                     property="data",
      *                     type="array",
+     *
      *                     @OA\Items(ref="#/components/schemas/Report")
      *                 ),
+     *
      *                 @OA\Property(property="first_page_url", type="string"),
      *                 @OA\Property(property="from", type="integer"),
      *                 @OA\Property(property="last_page", type="integer"),
@@ -52,14 +63,18 @@ class ReportApiController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Recurso no encontrado",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     ),
+     *
      *     @OA\Response(
      *         response=500,
      *         description="Error interno del servidor",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     )
      * )

@@ -11,7 +11,7 @@ class CategoryObserver
         'ASOCIADO' => 'asociado',
         'AGREGADO' => 'agregado',
         'ASISTENTE' => 'asistente',
-        'INSTRUCTOR' => 'instructor'
+        'INSTRUCTOR' => 'instructor',
     ];
 
     public function saving(Category $category)
@@ -24,12 +24,11 @@ class CategoryObserver
         $currentCategory = 'INSTRUCTOR';
 
         foreach ($this->categoryHierarchy as $cat => $field) {
-            if (!is_null($category->$field)) {
+            if (! is_null($category->$field)) {
                 $currentCategory = $cat;
                 break;
             }
         }
-
 
         $category->current_category = $currentCategory;
     }

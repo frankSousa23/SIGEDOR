@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\Teacher;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
@@ -20,8 +19,9 @@ class CategorySeeder extends Seeder
     {
         $csvFile = database_path('seeders/data/categories.csv');
 
-        if (!file_exists($csvFile)) {
-            $this->command->warn("Archivo categories.csv no encontrado.");
+        if (! file_exists($csvFile)) {
+            $this->command->warn('Archivo categories.csv no encontrado.');
+
             return;
         }
 
@@ -48,7 +48,7 @@ class CategorySeeder extends Seeder
             }
 
             $teacher = Teacher::where('cdi', $cdi)->first();
-            if (!$teacher) {
+            if (! $teacher) {
                 continue;
             }
 
@@ -78,13 +78,16 @@ class CategorySeeder extends Seeder
     private function cleanField(?string $value): ?string
     {
         $value = trim((string) $value);
+
         return in_array($value, ['Pendiente corregir', '', 'null']) ? null : $value;
     }
 
     private function parseDate(?string $value): ?string
     {
         $value = trim((string) $value);
-        if (empty($value)) return null;
+        if (empty($value)) {
+            return null;
+        }
 
         try {
             return Carbon::createFromFormat('d/m/Y', $value)->toDateString();
@@ -101,6 +104,7 @@ class CategorySeeder extends Seeder
     {
         $category = Str::title(trim((string) $category));
         $valid = ['Instructor', 'Asistente', 'Agregado', 'Asociado', 'Titular'];
+
         return in_array($category, $valid) ? $category : 'Instructor';
     }
 }

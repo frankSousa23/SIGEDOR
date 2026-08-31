@@ -3,11 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TeacherResource\Pages;
-use App\Models\Area;
-use App\Models\Category;
-use App\Models\Dedication;
-use App\Models\Programa;
-use App\Models\Sede;
 use App\Models\Teacher;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -35,11 +30,17 @@ use Illuminate\Support\Facades\Auth;
 class TeacherResource extends Resource
 {
     protected static ?string $model = Teacher::class;
+
     protected static ?string $modelLabel = 'Docente';
+
     protected static ?string $pluralModelLabel = 'Docentes';
+
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+
     protected static ?string $navigationLabel = 'Docentes';
+
     protected static ?string $navigationGroup = 'Gestión Docente';
+
     protected static ?int $navigationSort = 1;
 
     public static function getNavigationBadge(): ?string
@@ -270,8 +271,9 @@ class TeacherResource extends Resource
                     ->color('danger')
                     ->action(function (Teacher $record) {
                         $pdf = Pdf::loadView('pdf.teacher-individual', ['teacher' => $record]);
+
                         return response()->streamDownload(
-                            fn () => print($pdf->output()),
+                            fn () => print ($pdf->output()),
                             "expediente_docente_{$record->cdi}.pdf"
                         );
                     }),
@@ -304,7 +306,7 @@ class TeacherResource extends Resource
                                     ]);
                                 }
                                 fclose($handle);
-                            }, 'docentes_' . now()->format('Ymd_His') . '.csv', [
+                            }, 'docentes_'.now()->format('Ymd_His').'.csv', [
                                 'Content-Type' => 'text/csv; charset=UTF-8',
                             ]);
                         }),
@@ -317,8 +319,8 @@ class TeacherResource extends Resource
                             ])->setPaper('a4', 'landscape');
 
                             return response()->streamDownload(
-                                fn () => print($pdf->output()),
-                                'docentes_' . now()->format('Ymd_His') . '.pdf'
+                                fn () => print ($pdf->output()),
+                                'docentes_'.now()->format('Ymd_His').'.pdf'
                             );
                         })
                         ->requiresConfirmation(),

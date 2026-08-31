@@ -2,14 +2,14 @@
 
 namespace App\Providers;
 
-use App\Models\Teacher;
-use App\Policies\TeacherPolicy;
-use App\Models\User;
 use App\Models\Report;
-use App\Policies\UserPolicy;
+use App\Models\Teacher;
+use App\Models\User;
 use App\Policies\ReportPolicy;
-use Illuminate\Support\Facades\Gate;
+use App\Policies\TeacherPolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {

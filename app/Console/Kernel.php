@@ -12,7 +12,6 @@ class Kernel extends ConsoleKernel
      *
      * These schedules are run in accordance with the application's timezone.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
@@ -21,7 +20,7 @@ class Kernel extends ConsoleKernel
             ->weekdays()
             ->timezone('America/Bogota')
             ->between('8:00', '13:00')
-            ->skip(function() {
+            ->skip(function () {
                 return now()->isWeekend();
             });
     }

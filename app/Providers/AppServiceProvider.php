@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Filament\Facades\Filament;
-use Illuminate\Support\Facades\Blade;
 use App\Models\Category;
 use App\Observers\CategoryObserver;
+use Filament\Facades\Filament;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

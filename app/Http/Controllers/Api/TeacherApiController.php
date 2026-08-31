@@ -8,7 +8,11 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Controlador API para consulta y gestión de Docentes.
+ * Controlador API de sólo lectura para consulta de Docentes.
+ *
+ * Expone endpoints públicos para la integración externa con el catálogo
+ * de docentes del sistema. Los datos se devuelven paginados con relaciones
+ * institucionales (sede, área, programa, categoría, dedicación).
  */
 class TeacherApiController extends Controller
 {
@@ -18,24 +22,31 @@ class TeacherApiController extends Controller
      *     summary="Listar docentes del sistema",
      *     description="Obtiene la lista paginada de docentes con sus relaciones institucionales.",
      *     tags={"Docentes"},
+     *
      *     @OA\Parameter(
      *         name="sede_id",
      *         in="query",
      *         description="Filtrar por ID de sede",
      *         required=false,
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="page",
      *         in="query",
      *         description="Número de página",
      *         required=false,
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Listado de docentes obtenido exitosamente",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(
      *                 property="data",
@@ -44,8 +55,10 @@ class TeacherApiController extends Controller
      *                 @OA\Property(
      *                     property="data",
      *                     type="array",
+     *
      *                     @OA\Items(ref="#/components/schemas/Teacher")
      *                 ),
+     *
      *                 @OA\Property(property="first_page_url", type="string"),
      *                 @OA\Property(property="from", type="integer"),
      *                 @OA\Property(property="last_page", type="integer"),
@@ -59,19 +72,25 @@ class TeacherApiController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Recurso no encontrado",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Error de validación de parámetros",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     ),
+     *
      *     @OA\Response(
      *         response=500,
      *         description="Error interno del servidor",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
      *     )
      * )
@@ -92,4 +111,3 @@ class TeacherApiController extends Controller
         ]);
     }
 }
-

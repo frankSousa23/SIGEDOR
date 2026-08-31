@@ -6,7 +6,6 @@ use App\Filament\Resources\PermissionTeacherResource\Pages;
 use App\Models\PermissionTeacher;
 use App\Models\Teacher;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
@@ -31,11 +30,17 @@ use Illuminate\Support\Collection;
 class PermissionTeacherResource extends Resource
 {
     protected static ?string $model = PermissionTeacher::class;
+
     protected static ?string $modelLabel = 'Permiso';
+
     protected static ?string $pluralModelLabel = 'Permisos';
+
     protected static ?string $navigationIcon = 'heroicon-o-document-check';
+
     protected static ?string $navigationLabel = 'Permisos';
+
     protected static ?string $navigationGroup = 'Gestión Reportes';
+
     protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
@@ -186,7 +191,7 @@ class PermissionTeacherResource extends Resource
                 SelectFilter::make('teacher_id')
                     ->label('Docente')
                     ->relationship('teacher', 'cdi')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name . ' ' . $record->surName)
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name.' '.$record->surName)
                     ->searchable()
                     ->preload(),
 
@@ -215,8 +220,9 @@ class PermissionTeacherResource extends Resource
                     ->color('danger')
                     ->action(function (PermissionTeacher $record) {
                         $pdf = Pdf::loadView('pdf.permission', ['permission' => $record]);
+
                         return response()->streamDownload(
-                            fn () => print($pdf->output()),
+                            fn () => print ($pdf->output()),
                             "permiso_{$record->memo_number}.pdf"
                         );
                     }),
@@ -233,8 +239,8 @@ class PermissionTeacherResource extends Resource
                                 ->setPaper('a4', 'landscape');
 
                             return response()->streamDownload(
-                                fn () => print($pdf->output()),
-                                'reporte_permisos_' . now()->format('Ymd_His') . '.pdf'
+                                fn () => print ($pdf->output()),
+                                'reporte_permisos_'.now()->format('Ymd_His').'.pdf'
                             );
                         })
                         ->requiresConfirmation(),

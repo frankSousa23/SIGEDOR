@@ -23,3 +23,6 @@ yarn-error.log
 /.zed
 /docs/private/
 /auth.json
+
+# Generated Swagger docs
+/storage/api-docs/

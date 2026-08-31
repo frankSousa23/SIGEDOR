@@ -2,12 +2,10 @@
 
 namespace App\Filament\Pages\Auth;
 
-use Filament\Forms\Form;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Component;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
 use Filament\Pages\Auth\Login as BaseAuth;
-use Illuminate\Validation\Rule;
-use App\Models\User;
 
 class Login extends BaseAuth
 {

@@ -5,8 +5,6 @@ namespace Database\Seeders;
 use App\Models\Dedication;
 use App\Models\Teacher;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 /**
  * Seeder de Dedicaciones Docentes del Sistema SIGEDOR.
@@ -20,8 +18,9 @@ class DedicationSeeder extends Seeder
     {
         $filePath = database_path('seeders/data/dedications.csv');
 
-        if (!file_exists($filePath)) {
-            $this->command->warn("Archivo dedications.csv no encontrado.");
+        if (! file_exists($filePath)) {
+            $this->command->warn('Archivo dedications.csv no encontrado.');
+
             return;
         }
 
@@ -48,16 +47,16 @@ class DedicationSeeder extends Seeder
             }
 
             $teacher = Teacher::where('cdi', $cdi)->first();
-            if (!$teacher) {
+            if (! $teacher) {
                 continue;
             }
 
             $name = trim($data[2] ?? 'Tiempo Convencional');
             $hours = (int) ($data[3] ?? 12);
-            $director = !empty(trim($data[4] ?? '')) ? trim($data[4]) : null;
-            $studentNumber = !empty(trim($data[5] ?? '')) ? (int) $data[5] : null;
-            $studentHours = !empty(trim($data[6] ?? '')) ? (int) $data[6] : null;
-            $info = !empty(trim($data[7] ?? '')) ? trim($data[7]) : null;
+            $director = ! empty(trim($data[4] ?? '')) ? trim($data[4]) : null;
+            $studentNumber = ! empty(trim($data[5] ?? '')) ? (int) $data[5] : null;
+            $studentHours = ! empty(trim($data[6] ?? '')) ? (int) $data[6] : null;
+            $info = ! empty(trim($data[7] ?? '')) ? trim($data[7]) : null;
 
             $dedication = Dedication::updateOrCreate(
                 ['teacher_cdi' => $cdi],

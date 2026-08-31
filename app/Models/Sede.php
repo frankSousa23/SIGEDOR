@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * Representa los campus, núcleos y extensiones territoriales de la universidad.
  *
  * @property int $id
- * @property string $nombre
+ * @property string $nombre Nombre completo de la sede
  */
 class Sede extends Model
 {

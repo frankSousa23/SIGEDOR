@@ -22,7 +22,7 @@ class AreaSeeder extends Seeder
             'Ingeniería, arquitectura y tecnología',
             'Medicina veterinaria',
             'Post-grado',
-            'Programa nacional de formación'
+            'Programa nacional de formación',
         ];
 
         foreach ($areas as $nombre) {

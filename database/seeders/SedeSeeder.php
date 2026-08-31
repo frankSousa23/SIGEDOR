@@ -83,7 +83,7 @@ class SedeSeeder extends Seeder
             'Valencia/Carabobo',
             'Valle de la Pascua/Guárico',
             'Villa de Cura/Aragua',
-            'Zaraza/Guárico'
+            'Zaraza/Guárico',
         ];
         foreach ($sedes as $nombre) {
             Sede::firstOrCreate(

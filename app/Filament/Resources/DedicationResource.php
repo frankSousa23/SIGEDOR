@@ -7,7 +7,6 @@ use App\Models\Dedication;
 use App\Models\Teacher;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -30,11 +29,17 @@ use Illuminate\Support\Collection;
 class DedicationResource extends Resource
 {
     protected static ?string $model = Dedication::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-clock';
+
     protected static ?string $navigationLabel = 'Dedicaciones';
+
     protected static ?string $navigationGroup = 'Asignaciones';
+
     protected static ?string $modelLabel = 'Dedicación';
+
     protected static ?string $pluralModelLabel = 'Dedicaciones';
+
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
@@ -175,7 +180,7 @@ class DedicationResource extends Resource
                 SelectFilter::make('teacher_id')
                     ->label('Docente')
                     ->relationship('teacher', 'cdi')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name . ' ' . $record->surName)
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name.' '.$record->surName)
                     ->searchable()
                     ->preload(),
 
@@ -203,8 +208,9 @@ class DedicationResource extends Resource
                     ->color('danger')
                     ->action(function (Dedication $record) {
                         $pdf = Pdf::loadView('pdf.dedication', ['dedication' => $record]);
+
                         return response()->streamDownload(
-                            fn () => print($pdf->output()),
+                            fn () => print ($pdf->output()),
                             "dedicacion_{$record->teacher_cdi}.pdf"
                         );
                     }),
@@ -221,8 +227,8 @@ class DedicationResource extends Resource
                                 ->setPaper('a4', 'landscape');
 
                             return response()->streamDownload(
-                                fn () => print($pdf->output()),
-                                'reporte_dedicaciones_' . now()->format('Ymd_His') . '.pdf'
+                                fn () => print ($pdf->output()),
+                                'reporte_dedicaciones_'.now()->format('Ymd_His').'.pdf'
                             );
                         })
                         ->requiresConfirmation(),

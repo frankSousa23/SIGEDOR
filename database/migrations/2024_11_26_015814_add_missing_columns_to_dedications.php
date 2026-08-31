@@ -9,16 +9,16 @@ return new class extends Migration
     public function up()
     {
         Schema::table('dedications', function (Blueprint $table) {
-            if (!Schema::hasColumn('dedications', 'director')) {
+            if (! Schema::hasColumn('dedications', 'director')) {
                 $table->string('director')->nullable();
             }
-            if (!Schema::hasColumn('dedications', 'studentNumber')) {
+            if (! Schema::hasColumn('dedications', 'studentNumber')) {
                 $table->integer('studentNumber')->nullable();
             }
-            if (!Schema::hasColumn('dedications', 'studentHours')) {
+            if (! Schema::hasColumn('dedications', 'studentHours')) {
                 $table->integer('studentHours')->nullable();
             }
-            if (!Schema::hasColumn('dedications', 'info')) {
+            if (! Schema::hasColumn('dedications', 'info')) {
                 $table->text('info')->nullable();
             }
         });

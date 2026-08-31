@@ -23,10 +23,10 @@ class Navigation
 {
     public static function build(): NavigationBuilder
     {
-        $navigation = new NavigationBuilder();
+        $navigation = new NavigationBuilder;
         $user = Auth::user();
 
-        if (!$user) {
+        if (! $user) {
             return $navigation;
         }
 

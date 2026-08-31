@@ -6,6 +6,7 @@ namespace App\Virtual\Models;
  * @OA\Schema(
  *     title="Teacher",
  *     description="Modelo de Docente",
+ *
  *     @OA\Xml(
  *         name="Teacher"
  *     )
@@ -21,7 +22,7 @@ class Teacher
      *     example=1
      * )
      *
-     * @var integer
+     * @var int
      */
     private $id;
 
@@ -134,7 +135,7 @@ class Teacher
      *      example=10
      * )
      *
-     * @var integer
+     * @var int
      */
     public $user_id;
 
@@ -146,7 +147,7 @@ class Teacher
      *      example=2
      * )
      *
-     * @var integer
+     * @var int
      */
     public $sede_id;
 
@@ -158,7 +159,7 @@ class Teacher
      *      example=3
      * )
      *
-     * @var integer
+     * @var int
      */
     public $area_id;
 
@@ -170,7 +171,7 @@ class Teacher
      *      example=1
      * )
      *
-     * @var integer
+     * @var int
      */
     public $programa_id;
 
@@ -182,7 +183,7 @@ class Teacher
      *      example=4
      * )
      *
-     * @var integer
+     * @var int
      */
     public $category_id;
 
@@ -194,7 +195,7 @@ class Teacher
      *      example=2
      * )
      *
-     * @var integer
+     * @var int
      */
     public $dedication_id;
 }

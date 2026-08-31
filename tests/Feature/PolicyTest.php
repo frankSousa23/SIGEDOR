@@ -1,10 +1,9 @@
 <?php
 
-use App\Models\User;
-use App\Models\Sede;
 use App\Models\Area;
+use App\Models\Sede;
 use App\Models\Teacher;
-use App\Models\Category;
+use App\Models\User;
 use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
@@ -16,7 +15,7 @@ beforeEach(function () {
 it('admin puede ver cualquier teacher', function () {
     $sede = Sede::create(['nombre' => 'Sede Admin', 'codigo' => 'SA', 'is_active' => true]);
     $area = Area::create(['nombre' => 'Area Admin']);
-    
+
     $admin = User::factory()->admin()->create([
         'sede_id' => $sede->id,
         'area_id' => $area->id,

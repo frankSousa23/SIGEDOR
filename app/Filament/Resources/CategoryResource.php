@@ -6,20 +6,17 @@ use App\Filament\Resources\CategoryResource\Pages;
 use App\Models\Category;
 use App\Models\Teacher;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -32,11 +29,17 @@ use Illuminate\Support\Collection;
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+
     protected static ?string $navigationLabel = 'Categorías';
+
     protected static ?string $navigationGroup = 'Asignaciones';
+
     protected static ?string $modelLabel = 'Categoría';
+
     protected static ?string $pluralModelLabel = 'Categorías';
+
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
@@ -161,7 +164,7 @@ class CategoryResource extends Resource
                 SelectFilter::make('teacher_id')
                     ->label('Docente')
                     ->relationship('teacher', 'cdi')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name . ' ' . $record->surName)
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name.' '.$record->surName)
                     ->searchable()
                     ->preload(),
 
@@ -185,8 +188,9 @@ class CategoryResource extends Resource
                     ->color('danger')
                     ->action(function (Category $record) {
                         $pdf = Pdf::loadView('pdf.category', ['category' => $record]);
+
                         return response()->streamDownload(
-                            fn () => print($pdf->output()),
+                            fn () => print ($pdf->output()),
                             "categoria_{$record->teacher_cdi}.pdf"
                         );
                     }),
@@ -203,8 +207,8 @@ class CategoryResource extends Resource
                                 ->setPaper('a4', 'landscape');
 
                             return response()->streamDownload(
-                                fn () => print($pdf->output()),
-                                'reporte_categorias_' . now()->format('Ymd_His') . '.pdf'
+                                fn () => print ($pdf->output()),
+                                'reporte_categorias_'.now()->format('Ymd_His').'.pdf'
                             );
                         })
                         ->requiresConfirmation(),
@@ -226,7 +230,7 @@ class CategoryResource extends Resource
         $query = parent::getEloquentQuery();
 
         $user = auth()->user();
-        
+
         // El Jefe de Área solo ve categorías de docentes de su sede
         if ($user && $user->hasRole('area_manager') && $user->sede_id) {
             return $query->whereHas('teacher.user', function ($q) use ($user) {

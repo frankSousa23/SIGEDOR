@@ -3,8 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Models\Area;
-use App\Models\Sede;
 use App\Models\User;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -29,11 +27,17 @@ use Spatie\Permission\Models\Role;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-users';
+
     protected static ?string $navigationGroup = 'Configuración';
+
     protected static ?string $navigationLabel = 'Usuarios';
+
     protected static ?string $modelLabel = 'Usuario';
+
     protected static ?string $pluralModelLabel = 'Usuarios';
+
     protected static ?int $navigationSort = 40;
 
     public static function form(Form $form): Form
@@ -91,7 +95,7 @@ class UserResource extends Resource
                                     'area_manager' => 'Jefe de Área',
                                     'teacher' => 'Docente',
                                     default => $role->name,
-                                }
+                                },
                             ]))
                             ->multiple()
                             ->required()
@@ -196,17 +200,15 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->visible(fn (User $record) =>
-                        Auth::user()?->isAdmin() || Auth::id() === $record->id
+                    ->visible(fn (User $record) => Auth::user()?->isAdmin() || Auth::id() === $record->id
                     ),
 
                 Action::make('approve')
                     ->label('Aprobar')
                     ->icon('heroicon-o-check')
                     ->color('success')
-                    ->visible(fn (User $record) =>
-                        Auth::user()?->isAdmin() &&
-                        !$record->is_approved &&
+                    ->visible(fn (User $record) => Auth::user()?->isAdmin() &&
+                        ! $record->is_approved &&
                         Auth::id() !== $record->id
                     )
                     ->action(fn (User $record) => $record->update(['is_approved' => true])),
@@ -215,18 +217,16 @@ class UserResource extends Resource
                     ->label('Desactivar')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
-                    ->visible(fn (User $record) =>
-                        Auth::user()?->isAdmin() &&
+                    ->visible(fn (User $record) => Auth::user()?->isAdmin() &&
                         $record->is_active &&
-                        !$record->isAdmin() &&
+                        ! $record->isAdmin() &&
                         Auth::id() !== $record->id
                     )
                     ->action(fn (User $record) => $record->update(['is_active' => false])),
 
                 Tables\Actions\DeleteAction::make()
-                    ->visible(fn (User $record) =>
-                        Auth::user()?->isAdmin() &&
-                        !$record->isAdmin() &&
+                    ->visible(fn (User $record) => Auth::user()?->isAdmin() &&
+                        ! $record->isAdmin() &&
                         Auth::id() !== $record->id
                     ),
             ])
@@ -252,7 +252,7 @@ class UserResource extends Resource
         $query = parent::getEloquentQuery();
         $user = Auth::user();
 
-        if (!$user) {
+        if (! $user) {
             return $query;
         }
 

@@ -5,7 +5,6 @@ namespace App\Filament\Pages;
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\TasksOverview;
 use Filament\Pages\Dashboard as BaseDashboard;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Página principal de Escritorio / Dashboard en Filament.
