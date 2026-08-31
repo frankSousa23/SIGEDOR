@@ -19,6 +19,79 @@
         }
     ],
     "paths": {
+        "/api/v1/reports": {
+            "get": {
+                "tags": [
+                    "Reportes"
+                ],
+                "summary": "Listar reportes académicos",
+                "description": "Obtiene la lista de reportes emitidos en el sistema.",
+                "operationId": "4732399f75f35a75d93d3db8cecc3c56",
+                "responses": {
+                    "200": {
+                        "description": "Listado de reportes obtenido exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/teachers": {
+            "get": {
+                "tags": [
+                    "Docentes"
+                ],
+                "summary": "Listar docentes del sistema",
+                "description": "Obtiene la lista paginada de docentes con sus relaciones institucionales.",
+                "operationId": "4e0c8bfeeb2fe7d4a33d7b6b6515d50d",
+                "parameters": [
+                    {
+                        "name": "sede_id",
+                        "in": "query",
+                        "description": "Filtrar por ID de sede",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Listado de docentes obtenido exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/ping": {
             "get": {
                 "tags": [
@@ -85,6 +158,14 @@
         }
     },
     "tags": [
+        {
+            "name": "Reportes",
+            "description": "Reportes"
+        },
+        {
+            "name": "Docentes",
+            "description": "Docentes"
+        },
         {
             "name": "Health",
             "description": "Health"

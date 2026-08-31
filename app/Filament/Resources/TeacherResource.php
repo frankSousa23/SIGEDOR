@@ -73,7 +73,25 @@ class TeacherResource extends Resource
                             ->searchable()
                             ->preload()
                             ->unique(ignoreRecord: true)
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->live()
+                            ->afterStateUpdated(function ($state, Forms\Set $set) {
+                                if ($state) {
+                                    $user = User::find($state);
+                                    if ($user) {
+                                        $parts = explode(' ', trim($user->name), 2);
+                                        $set('name', $parts[0] ?? '');
+                                        $set('surName', $parts[1] ?? '');
+                                        $set('email', $user->email);
+                                        if ($user->sede_id) {
+                                            $set('sede_id', $user->sede_id);
+                                        }
+                                        if ($user->area_id) {
+                                            $set('area_id', $user->area_id);
+                                        }
+                                    }
+                                }
+                            }),
 
                         Grid::make(3)
                             ->schema([
@@ -127,7 +145,8 @@ class TeacherResource extends Resource
                                     ->relationship('sede', 'nombre')
                                     ->required()
                                     ->searchable()
-                                    ->preload(),
+                                    ->preload()
+                                    ->live(),
 
                                 Select::make('area_id')
                                     ->label('Área Académica')
@@ -142,15 +161,20 @@ class TeacherResource extends Resource
                                     ->searchable()
                                     ->preload(),
                             ]),
+                    ]),
 
+                Section::make('Ingreso y Promoción Universitaria')
+                    ->schema([
                         Grid::make(3)
                             ->schema([
                                 DatePicker::make('birthDate')
                                     ->label('Fecha de Nacimiento')
+                                    ->required()
                                     ->maxDate(now()->subYears(18)),
 
                                 DatePicker::make('datePromotion')
                                     ->label('Fecha de Promoción / Ingreso')
+                                    ->required()
                                     ->maxDate(now()),
 
                                 TextInput::make('asignaturePromotion')
@@ -256,6 +280,34 @@ class TeacherResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('export_csv')
+                        ->label('Exportar a CSV / Excel')
+                        ->icon('heroicon-o-table-cells')
+                        ->color('success')
+                        ->action(function (Collection $records) {
+                            return response()->streamDownload(function () use ($records) {
+                                $handle = fopen('php://output', 'w');
+                                fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF)); // UTF-8 BOM
+                                fputcsv($handle, ['Cédula', 'Nombres', 'Apellidos', 'Correo', 'Teléfono', 'Sede', 'Área', 'Programa', 'Categoría', 'Dedicación']);
+                                foreach ($records as $teacher) {
+                                    fputcsv($handle, [
+                                        $teacher->cdi,
+                                        $teacher->name,
+                                        $teacher->surName,
+                                        $teacher->email,
+                                        $teacher->phone ?? '',
+                                        $teacher->sede?->nombre ?? '',
+                                        $teacher->area?->nombre ?? '',
+                                        $teacher->programa?->nombre ?? '',
+                                        $teacher->category?->current_category ?? 'Sin Asignar',
+                                        $teacher->dedication?->name ?? 'Sin Asignar',
+                                    ]);
+                                }
+                                fclose($handle);
+                            }, 'docentes_' . now()->format('Ymd_His') . '.csv', [
+                                'Content-Type' => 'text/csv; charset=UTF-8',
+                            ]);
+                        }),
                     Tables\Actions\BulkAction::make('export')
                         ->label('Exportar Lista a PDF')
                         ->icon('heroicon-o-document-arrow-down')

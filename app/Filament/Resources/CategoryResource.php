@@ -93,7 +93,8 @@ class CategoryResource extends Resource
                                 DatePicker::make('agregado')->label('Fecha Agregado'),
                                 DatePicker::make('asociado')->label('Fecha Asociado'),
                                 DatePicker::make('titular')->label('Fecha Titular'),
-                            ]),
+                            ])
+                            ->helperText('Las fechas de ascenso determinan automáticamente la categoría actual y la antigüedad requerida por la normativa universitaria (mínimo 2 a 5 años entre escalafones).'),
                     ]),
 
                 Section::make('Observaciones')

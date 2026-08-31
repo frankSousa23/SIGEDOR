@@ -4,8 +4,10 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Dashboard as PagesDashboard;
 use App\Filament\Pages\Navigation;
+use App\Filament\Widgets\SedeStatsChart;
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\TasksOverview;
+use App\Filament\Widgets\TeacherDistributionChart;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -76,6 +78,8 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 StatsOverview::class,
                 TasksOverview::class,
+                TeacherDistributionChart::class,
+                SedeStatsChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,
