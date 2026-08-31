@@ -8,6 +8,15 @@ use App\Models\User;
 
 class StatsOverview extends BaseWidget
 {
+    protected static ?int $sort = 1;
+
+    public static function canView(): bool
+    {
+        // Todos los roles autenticados ven su propia versión del widget.
+        // La lógica diferenciada por rol está en getStats().
+        return auth()->check();
+    }
+
     protected function getStats(): array
     {
         $user = auth()->user();

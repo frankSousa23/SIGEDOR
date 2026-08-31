@@ -225,6 +225,18 @@ class TeacherResource extends Resource
                     ->relationship('area', 'nombre')
                     ->searchable()
                     ->preload(),
+
+                Filter::make('created_at')
+                    ->label('Rango de Registro')
+                    ->form([
+                        DatePicker::make('from')->label('Registrado desde'),
+                        DatePicker::make('to')->label('Registrado hasta'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['from'], fn ($q) => $q->whereDate('created_at', '>=', $data['from']))
+                            ->when($data['to'], fn ($q) => $q->whereDate('created_at', '<=', $data['to']));
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

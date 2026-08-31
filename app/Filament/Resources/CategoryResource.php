@@ -20,6 +20,7 @@ use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -150,6 +151,25 @@ class CategoryResource extends Resource
                 SelectFilter::make('current_category')
                     ->label('Categoría')
                     ->options(Category::CATEGORIES),
+
+                SelectFilter::make('teacher_id')
+                    ->label('Docente')
+                    ->relationship('teacher', 'cdi')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name . ' ' . $record->surName)
+                    ->searchable()
+                    ->preload(),
+
+                Filter::make('date_range')
+                    ->label('Rango de Fechas (Registro)')
+                    ->form([
+                        DatePicker::make('start_date')->label('Desde'),
+                        DatePicker::make('end_date')->label('Hasta'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['start_date'], fn ($q) => $q->whereDate('created_at', '>=', $data['start_date']))
+                            ->when($data['end_date'], fn ($q) => $q->whereDate('created_at', '<=', $data['end_date']));
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -193,5 +213,21 @@ class CategoryResource extends Resource
             'create' => Pages\CreateCategory::route('/create'),
             'edit' => Pages\EditCategory::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        $user = auth()->user();
+        
+        // El Jefe de Área solo ve categorías de docentes de su sede
+        if ($user && $user->hasRole('area_manager') && $user->sede_id) {
+            return $query->whereHas('teacher.user', function ($q) use ($user) {
+                $q->where('sede_id', $user->sede_id);
+            });
+        }
+
+        return $query;
     }
 }

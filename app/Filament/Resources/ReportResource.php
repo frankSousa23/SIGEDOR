@@ -23,6 +23,7 @@ use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 /**
@@ -205,5 +206,21 @@ class ReportResource extends Resource
             'create' => Pages\CreateReport::route('/create'),
             'edit' => Pages\EditReport::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        $user = auth()->user();
+        
+        // El Jefe de Área solo ve reportes de docentes de su sede
+        if ($user && $user->hasRole('area_manager') && $user->sede_id) {
+            return $query->whereHas('teacher.user', function ($q) use ($user) {
+                $q->where('sede_id', $user->sede_id);
+            });
+        }
+
+        return $query;
     }
 }

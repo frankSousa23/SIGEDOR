@@ -7,6 +7,7 @@ use App\Models\Dedication;
 use App\Models\Teacher;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -17,8 +18,10 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 /**
@@ -159,6 +162,38 @@ class DedicationResource extends Resource
                 SelectFilter::make('name')
                     ->label('Dedicación')
                     ->options(Dedication::DEDICATIONS),
+
+                SelectFilter::make('director')
+                    ->label('Cargo Directivo')
+                    ->options([
+                        'Coordinador' => 'Coordinador',
+                        'Jefe de Departamento' => 'Jefe de Departamento',
+                        'Decano' => 'Decano',
+                    ])
+                    ->placeholder('Todos los cargos'),
+
+                SelectFilter::make('teacher_id')
+                    ->label('Docente')
+                    ->relationship('teacher', 'cdi')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name . ' ' . $record->surName)
+                    ->searchable()
+                    ->preload(),
+
+                Filter::make('hours_range')
+                    ->label('Rango de Horas')
+                    ->form([
+                        TextInput::make('min_hours')
+                            ->label('Horas Mínimas')
+                            ->numeric(),
+                        TextInput::make('max_hours')
+                            ->label('Horas Máximas')
+                            ->numeric(),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['min_hours'], fn ($q) => $q->where('hours', '>=', $data['min_hours']))
+                            ->when($data['max_hours'], fn ($q) => $q->where('hours', '<=', $data['max_hours']));
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -202,5 +237,27 @@ class DedicationResource extends Resource
             'create' => Pages\CreateDedication::route('/create'),
             'edit' => Pages\EditDedication::route('/{record}/edit'),
         ];
+    }
+
+    /**
+     * Aislamiento de datos por rol:
+     * - Admin: ve todas las dedicaciones.
+     * - Area Manager: solo las de su sede.
+     * - Teacher: solo las propias.
+     */
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user = auth()->user();
+
+        if ($user && $user->hasRole('area_manager') && $user->sede_id) {
+            return $query->whereHas('teacher.user', fn ($q) => $q->where('sede_id', $user->sede_id));
+        }
+
+        if ($user && $user->hasRole('teacher')) {
+            return $query->whereHas('teacher', fn ($q) => $q->where('user_id', $user->id));
+        }
+
+        return $query;
     }
 }

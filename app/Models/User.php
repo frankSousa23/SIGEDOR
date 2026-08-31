@@ -27,7 +27,21 @@ use Spatie\Permission\Traits\HasRoles;
  * @property bool $is_active
  * @property bool $is_approved
  * @property int|null $sede_id
+ * @property int|null $sede_id
  * @property int|null $area_id
+ *
+ * @OA\Schema(
+ *     schema="User",
+ *     title="Usuario",
+ *     description="Modelo de Usuario del Sistema SIGEDOR",
+ *     @OA\Property(property="id", type="integer", format="int64"),
+ *     @OA\Property(property="name", type="string"),
+ *     @OA\Property(property="email", type="string", format="email"),
+ *     @OA\Property(property="is_active", type="boolean"),
+ *     @OA\Property(property="is_approved", type="boolean"),
+ *     @OA\Property(property="sede_id", type="integer", nullable=true),
+ *     @OA\Property(property="area_id", type="integer", nullable=true)
+ * )
  */
 class User extends Authenticatable implements FilamentUser
 {

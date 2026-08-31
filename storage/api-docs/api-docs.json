@@ -1,0 +1,93 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "SIGEDOR API",
+        "description": "Documentación de la API del Sistema de Gestión Docente y Reportes (SIGEDOR).",
+        "contact": {
+            "email": "soporte@sigedor.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://my-default-host.com",
+            "description": "Servidor Principal de API"
+        }
+    ],
+    "paths": {
+        "/api/ping": {
+            "get": {
+                "tags": [
+                    "Health"
+                ],
+                "summary": "Verificar estado de la API",
+                "operationId": "30dd9cf96775eba8d3a5118c5b5b9ee5",
+                "responses": {
+                    "200": {
+                        "description": "API funcionando correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "ok"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "title": "Usuario",
+                "description": "Modelo de Usuario del Sistema SIGEDOR",
+                "properties": {
+                    "id": {
+                        "description": "Modelo de Usuario del Sistema SIGEDOR.\n\nRepresenta a los usuarios del sistema (Administradores, Jefes de Área y Docentes),\nintegrando autenticación, autorización basada en roles (Spatie), borrado lógico\ny control de acceso a paneles de Filament.",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "is_active": {
+                        "type": "boolean"
+                    },
+                    "is_approved": {
+                        "type": "boolean"
+                    },
+                    "sede_id": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "area_id": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Health",
+            "description": "Health"
+        }
+    ]
+}

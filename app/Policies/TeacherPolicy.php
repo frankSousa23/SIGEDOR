@@ -6,12 +6,20 @@ use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
+/**
+ * Política de Seguridad para la gestión de Docentes.
+ * Define qué usuarios tienen acceso a visualizar, crear, editar o eliminar registros de Docentes.
+ */
 class TeacherPolicy
 {
     use HandlesAuthorization;
 
+    /**
+     * Determina si el usuario puede ver la lista general de Docentes.
+     * Solo Administradores y Jefes de Área con sede asignada.
+     */
     public function viewAny(User $user)
-{
+    {
     return $user->hasRole('admin') ||
            ($user->hasRole('area_manager') && $user->sede_id && $user->area_id);
 }
@@ -36,7 +44,7 @@ public function view(User $user, Teacher $teacher)
         }
 
         if ($user->hasRole('area_manager')) {
-            return $teacher->site_id === $user->site_id;
+            return $teacher->sede_id === $user->sede_id;
         }
 
         if ($user->hasRole('teacher')) {
