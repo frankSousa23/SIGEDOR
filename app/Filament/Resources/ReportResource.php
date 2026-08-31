@@ -182,6 +182,34 @@ class ReportResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('export_csv')
+                        ->label('Exportar a CSV / Excel')
+                        ->icon('heroicon-o-table-cells')
+                        ->color('success')
+                        ->action(function (Collection $records) {
+                            return response()->streamDownload(function () use ($records) {
+                                $handle = fopen('php://output', 'w');
+                                fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF)); // UTF-8 BOM
+                                fputcsv($handle, ['N° Memo', 'Tipo', 'Docente CDI', 'Docente Nombre', 'Sede', 'Área', 'Categoría', 'Dedicación', 'Reporte', 'Fecha']);
+                                foreach ($records as $rep) {
+                                    fputcsv($handle, [
+                                        $rep->memoNumber,
+                                        $rep->typeReport,
+                                        $rep->teacher?->cdi ?? '',
+                                        $rep->teacher?->full_name ?? '',
+                                        $rep->sede?->nombre ?? '',
+                                        $rep->area?->nombre ?? '',
+                                        $rep->category?->current_category ?? '',
+                                        $rep->dedication?->name ?? '',
+                                        $rep->report,
+                                        $rep->created_at?->format('d/m/Y H:i') ?? '',
+                                    ]);
+                                }
+                                fclose($handle);
+                            }, 'reportes_' . now()->format('Ymd_His') . '.csv', [
+                                'Content-Type' => 'text/csv; charset=UTF-8',
+                            ]);
+                        }),
                     Tables\Actions\BulkAction::make('export_reports')
                         ->label('Exportar Seleccionados a PDF')
                         ->icon('heroicon-o-document-arrow-down')
