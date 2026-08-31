@@ -27,6 +27,17 @@
                 "summary": "Listar reportes académicos",
                 "description": "Obtiene la lista de reportes emitidos en el sistema.",
                 "operationId": "4732399f75f35a75d93d3db8cecc3c56",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número de página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Listado de reportes obtenido exitosamente",
@@ -39,10 +50,74 @@
                                             "example": "success"
                                         },
                                         "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Report"
+                                                    }
+                                                },
+                                                "first_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "from": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "next_page_url": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "path": {
+                                                    "type": "string"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer"
+                                                },
+                                                "prev_page_url": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "to": {
+                                                    "type": "integer"
+                                                },
+                                                "total": {
+                                                    "type": "integer"
+                                                }
+                                            },
                                             "type": "object"
                                         }
                                     },
                                     "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Recurso no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -67,6 +142,15 @@
                         "schema": {
                             "type": "integer"
                         }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número de página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
                     }
                 ],
                 "responses": {
@@ -81,10 +165,84 @@
                                             "example": "success"
                                         },
                                         "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Teacher"
+                                                    }
+                                                },
+                                                "first_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "from": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page": {
+                                                    "type": "integer"
+                                                },
+                                                "last_page_url": {
+                                                    "type": "string"
+                                                },
+                                                "next_page_url": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "path": {
+                                                    "type": "string"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer"
+                                                },
+                                                "prev_page_url": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "to": {
+                                                    "type": "integer"
+                                                },
+                                                "total": {
+                                                    "type": "integer"
+                                                }
+                                            },
                                             "type": "object"
                                         }
                                     },
                                     "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Recurso no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación de parámetros",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -154,6 +312,342 @@
                     }
                 },
                 "type": "object"
+            },
+            "Report": {
+                "title": "Report",
+                "description": "Modelo de Reporte Académico",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID interno",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "teacher_cdi": {
+                        "title": "Teacher CDI",
+                        "description": "Cédula del docente asociado",
+                        "type": "string",
+                        "example": "V-12345678"
+                    },
+                    "memoNumber": {
+                        "title": "Memo Number",
+                        "description": "Número de memorando",
+                        "type": "string",
+                        "example": "MEMO-2023-001"
+                    },
+                    "typeReport": {
+                        "title": "Type Report",
+                        "description": "Tipo de reporte",
+                        "type": "string",
+                        "example": "Ascenso"
+                    },
+                    "report": {
+                        "title": "Report",
+                        "description": "Contenido o ruta del reporte",
+                        "type": "string",
+                        "example": "/reports/123.pdf"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "description": "Correo al cual se envió",
+                        "type": "string",
+                        "example": "correo@ejemplo.com"
+                    },
+                    "info": {
+                        "title": "Info",
+                        "description": "Información adicional",
+                        "type": "string",
+                        "example": "Reporte generado automáticamente"
+                    },
+                    "sede_id": {
+                        "title": "Sede ID",
+                        "description": "ID de la sede asignada",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 2
+                    },
+                    "area_id": {
+                        "title": "Area ID",
+                        "description": "ID del área académica",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 3
+                    },
+                    "category_id": {
+                        "title": "Category ID",
+                        "description": "ID de la categoría docente",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 4
+                    },
+                    "dedication_id": {
+                        "title": "Dedication ID",
+                        "description": "ID de la dedicación docente",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 2
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Report"
+                }
+            },
+            "Teacher": {
+                "title": "Teacher",
+                "description": "Modelo de Docente",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID interno",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "cdi": {
+                        "title": "CDI",
+                        "description": "Cédula de Identidad",
+                        "type": "string",
+                        "example": "V-12345678"
+                    },
+                    "name": {
+                        "title": "Name",
+                        "description": "Nombre del docente",
+                        "type": "string",
+                        "example": "Juan"
+                    },
+                    "surName": {
+                        "title": "Surname",
+                        "description": "Apellido del docente",
+                        "type": "string",
+                        "example": "Pérez"
+                    },
+                    "genre": {
+                        "title": "Genre",
+                        "description": "Género",
+                        "type": "string",
+                        "example": "Masculino"
+                    },
+                    "phone": {
+                        "title": "Phone",
+                        "description": "Teléfono de contacto",
+                        "type": "string",
+                        "example": "+584121234567"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "description": "Correo electrónico institucional o personal",
+                        "type": "string",
+                        "example": "juan.perez@sigedor.com"
+                    },
+                    "birthDate": {
+                        "title": "Birth Date",
+                        "description": "Fecha de nacimiento",
+                        "type": "string",
+                        "format": "date",
+                        "example": "1980-01-01"
+                    },
+                    "datePromotion": {
+                        "title": "Date Promotion",
+                        "description": "Fecha del último ascenso",
+                        "type": "string",
+                        "format": "date",
+                        "example": "2020-05-15"
+                    },
+                    "asignaturePromotion": {
+                        "title": "Asignature Promotion",
+                        "description": "Asignatura de ascenso",
+                        "type": "string",
+                        "example": "Matemáticas I"
+                    },
+                    "user_id": {
+                        "title": "User ID",
+                        "description": "ID del usuario asociado",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 10
+                    },
+                    "sede_id": {
+                        "title": "Sede ID",
+                        "description": "ID de la sede asignada",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 2
+                    },
+                    "area_id": {
+                        "title": "Area ID",
+                        "description": "ID del área académica",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 3
+                    },
+                    "programa_id": {
+                        "title": "Programa ID",
+                        "description": "ID del programa académico",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "category_id": {
+                        "title": "Category ID",
+                        "description": "ID de la categoría docente",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 4
+                    },
+                    "dedication_id": {
+                        "title": "Dedication ID",
+                        "description": "ID de la dedicación docente",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 2
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Teacher"
+                }
+            },
+            "ErrorResponse": {
+                "title": "ErrorResponse",
+                "description": "Estructura estándar de respuesta de error",
+                "properties": {
+                    "message": {
+                        "title": "Message",
+                        "description": "Mensaje de error",
+                        "type": "string",
+                        "example": "El recurso solicitado no fue encontrado."
+                    },
+                    "errors": {
+                        "title": "Errors",
+                        "description": "Detalle de errores (por ejemplo, validación de campos)",
+                        "type": "object",
+                        "example": {
+                            "field_name": [
+                                "The field_name is required."
+                            ]
+                        },
+                        "nullable": true,
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "ErrorResponse"
+                }
+            },
+            "PaginationMeta": {
+                "title": "PaginationMeta",
+                "description": "Metadatos de paginación de Laravel",
+                "properties": {
+                    "current_page": {
+                        "title": "Current Page",
+                        "description": "Página actual",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 1
+                    },
+                    "first_page_url": {
+                        "title": "First Page URL",
+                        "description": "URL de la primera página",
+                        "type": "string",
+                        "example": "http://localhost/api/v1/resource?page=1"
+                    },
+                    "from": {
+                        "title": "From",
+                        "description": "Desde el elemento número",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 1
+                    },
+                    "last_page": {
+                        "title": "Last Page",
+                        "description": "Última página disponible",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 5
+                    },
+                    "last_page_url": {
+                        "title": "Last Page URL",
+                        "description": "URL de la última página",
+                        "type": "string",
+                        "example": "http://localhost/api/v1/resource?page=5"
+                    },
+                    "next_page_url": {
+                        "title": "Next Page URL",
+                        "description": "URL de la siguiente página",
+                        "type": "string",
+                        "example": "http://localhost/api/v1/resource?page=2",
+                        "nullable": true
+                    },
+                    "path": {
+                        "title": "Path",
+                        "description": "Ruta base del recurso",
+                        "type": "string",
+                        "example": "http://localhost/api/v1/resource"
+                    },
+                    "per_page": {
+                        "title": "Per Page",
+                        "description": "Elementos por página",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 15
+                    },
+                    "prev_page_url": {
+                        "title": "Prev Page URL",
+                        "description": "URL de la página anterior",
+                        "type": "string",
+                        "example": null,
+                        "nullable": true
+                    },
+                    "to": {
+                        "title": "To",
+                        "description": "Hasta el elemento número",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 15
+                    },
+                    "total": {
+                        "title": "Total",
+                        "description": "Total de elementos",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 75
+                    },
+                    "links": {
+                        "title": "Links",
+                        "description": "Enlaces de paginación",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "url": {
+                                    "type": "string",
+                                    "example": "http://localhost/api/v1/resource?page=1",
+                                    "nullable": true
+                                },
+                                "label": {
+                                    "type": "string",
+                                    "example": "1"
+                                },
+                                "active": {
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "PaginationMeta"
+                }
             }
         }
     },

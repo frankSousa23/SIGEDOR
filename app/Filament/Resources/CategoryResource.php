@@ -78,13 +78,19 @@ class CategoryResource extends Resource
                             ->required()
                             ->default('Instructor'),
 
-                        Toggle::make('disable_assistant_rule')
-                            ->label('Desactivar Regla Automática de Asistente')
-                            ->helperText('Si se desactiva, no se promoverá automáticamente a Asistente por posgrado.'),
+                        Select::make('direct_promotion_rule')
+                            ->label('Regla de Ascenso Directo por Mérito Académico')
+                            ->options([
+                                'none' => 'Ninguno (Base: Instructor)',
+                                'specialty_master' => 'Especialización o Maestría (Ascenso a Asistente)',
+                                'doctorate' => 'Doctorado (Ascenso a Agregado)',
+                            ])
+                            ->default('none')
+                            ->helperText('Determina el ascenso directo y registro automático de fechas al crear el escalafón.'),
                     ]),
 
                 Section::make('Fechas de Escalafón')
-                    ->description('Registro histórico de ascensos en el escalafón universitario')
+                    ->description('Registro histórico de ascensos en el escalafón universitario. Las fechas de ascenso determinan automáticamente la categoría actual y la antigüedad requerida por la normativa universitaria (mínimo 2 a 5 años entre escalafones).')
                     ->schema([
                         Grid::make(3)
                             ->schema([
@@ -93,8 +99,7 @@ class CategoryResource extends Resource
                                 DatePicker::make('agregado')->label('Fecha Agregado'),
                                 DatePicker::make('asociado')->label('Fecha Asociado'),
                                 DatePicker::make('titular')->label('Fecha Titular'),
-                            ])
-                            ->helperText('Las fechas de ascenso determinan automáticamente la categoría actual y la antigüedad requerida por la normativa universitaria (mínimo 2 a 5 años entre escalafones).'),
+                            ]),
                     ]),
 
                 Section::make('Observaciones')

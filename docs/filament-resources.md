@@ -163,6 +163,7 @@ class CategoryResource extends Resource
 - Ordenamiento por nivel
 - Validación numérica
 - Conteo de docentes
+- **Hooks (`mutateFormDataBeforeCreate` / `mutateFormDataBeforeSave`):** Implementa lógica de Ascenso Directo. Si el docente ingresa con Especialización/Maestría, asciende directamente a Asistente. Si ingresa con Doctorado, asciende directamente a Agregado, calculando retroactivamente las fechas de los escalafones previos.
 
 ## DedicationResource
 

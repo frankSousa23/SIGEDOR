@@ -13,4 +13,9 @@ use Spatie\Permission\Models\Role;
 class CreateTeacher extends CreateRecord
 {
     protected static string $resource = TeacherResource::class;
+
+    protected function getCreatedNotificationTitle(): ?string
+    {
+        return 'Docente registrado exitosamente';
+    }
 }

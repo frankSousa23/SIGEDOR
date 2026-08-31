@@ -18,4 +18,9 @@ class EditTeacher extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function getSavedNotificationTitle(): ?string
+    {
+        return 'Registro actualizado exitosamente';
+    }
 }

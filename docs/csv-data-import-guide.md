@@ -110,6 +110,20 @@ Control cronológico de los ascensos en el escalafón universitario.
 
 ---
 
+## 🛡️ Seguridad y Pruebas: Ofuscamiento de CSV (Anonimización)
+
+Dado que la información del claustro docente es sensible y privada, el proyecto incluye un comando diseñado específicamente para **anonimizar los datos del archivo `teachers.csv`** antes de realizar pruebas públicas o demostraciones, sin romper la integridad del Seeder.
+
+Si necesitas probar el sistema con volumen masivo pero resguardando los nombres, números telefónicos y cédulas originales, ejecuta el siguiente comando **antes** de hacer la ingesta:
+
+```bash
+php artisan app:anonymize-teachers-csv
+```
+
+Este script leerá el archivo `teachers.csv`, reemplazará toda la información personal por datos falsos (utilizando `FakerPHP`), pero mantendrá intactas las relaciones estructurales (fechas de promoción, áreas, programas, sedes), de forma que el proceso `migrate:fresh --seed` se completará con éxito, pero con datos seguros.
+
+---
+
 ## ⚡ Ejecución de la Ingesta de Datos
 
 Para vaciar la base de datos y cargar los datos desde los archivos CSV actualizados:

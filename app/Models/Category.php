@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $category
  * @property string|null $preTitle
  * @property string|null $lastTitle
- * @property bool $disable_assistant_rule
  * @property string|null $current_category
  * @property \Carbon\Carbon|null $instructor
  * @property \Carbon\Carbon|null $asistente
@@ -38,7 +37,6 @@ class Category extends Model
         'category',
         'preTitle',
         'lastTitle',
-        'disable_assistant_rule',
         'current_category',
         'instructor',
         'asistente',
@@ -49,7 +47,6 @@ class Category extends Model
     ];
 
     protected $casts = [
-        'disable_assistant_rule' => 'boolean',
         'instructor' => 'date',
         'asistente' => 'date',
         'agregado' => 'date',
@@ -79,14 +76,6 @@ class Category extends Model
     public function reports(): HasMany
     {
         return $this->hasMany(Report::class);
-    }
-
-    /**
-     * Determina si debe aplicarse la regla automática para asistente según posgrado.
-     */
-    public function shouldApplyAssistantRule(): bool
-    {
-        return !$this->disable_assistant_rule;
     }
 
     /**
