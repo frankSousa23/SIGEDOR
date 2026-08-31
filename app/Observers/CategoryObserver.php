@@ -30,16 +30,6 @@ class CategoryObserver
             }
         }
 
-        // Regla especial para saltar ASISTENTE
-        if ($category->disable_assistant_rule) {
-            if (!is_null($category->agregado)) {
-                $currentCategory = 'AGREGADO';
-            } elseif (!is_null($category->asociado)) {
-                $currentCategory = 'ASOCIADO';
-            } elseif (!is_null($category->titular)) {
-                $currentCategory = 'TITULAR';
-            }
-        }
 
         $category->current_category = $currentCategory;
     }

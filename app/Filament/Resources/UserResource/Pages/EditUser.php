@@ -27,6 +27,18 @@ class EditUser extends EditRecord
         ];
     }
 
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['sede_id'] = (int) $data['sede_id'];
+        $data['area_id'] = (int) $data['area_id'];
+        return $data;
+    }
+
+    protected function getSavedNotificationTitle(): ?string
+    {
+        return 'Usuario actualizado exitosamente';
+    }
+
     public function form(Form $form): Form
     {
         return $form

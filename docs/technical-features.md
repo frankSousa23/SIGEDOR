@@ -357,6 +357,24 @@ class CacheManager
 }
 ```
 
+## 12. Utilidades y Scripts de Mantenimiento
+
+### Anonimización de Datos (FakerPHP)
+El sistema incluye un comando nativo diseñado para resguardar la privacidad de los docentes al momento de compartir el proyecto o realizar pruebas de estrés.
+
+```php
+// Comando Artisan
+php artisan app:anonymize-teachers-csv
+```
+**Características:**
+- Parsea el archivo `database/seeders/data/teachers.csv`.
+- Ofusca campos sensibles (`name`, `surname`, `cdi`, `email`, `phone`) generando datos aleatorios coherentes.
+- Preserva la integridad referencial (las fechas, la sede y el área original se mantienen para que el Seeder no falle).
+- Guarda el archivo temporal y reemplaza el CSV original de forma segura.
+
+### Limpieza de Deuda Técnica (Observers)
+Se removió la validación legacy `disable_assistant_rule` del modelo `Category` y `CategoryObserver`. La lógica compleja de "Ascenso Directo" ahora se gestiona limpiamente mediante *hooks* en el Frontend (`CategoryResource`), manteniendo el dominio del backend más limpio y directo.
+
 ## Mejores Prácticas
 
 1. Performance

@@ -15,6 +15,11 @@ class CreateUser extends CreateRecord
 {
     protected static string $resource = UserResource::class;
 
+    protected function getCreatedNotificationTitle(): ?string
+    {
+        return 'Usuario creado exitosamente';
+    }
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['sede_id'] = (int) $data['sede_id']; // Forzar tipo correcto
