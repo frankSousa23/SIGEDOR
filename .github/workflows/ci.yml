@@ -22,8 +22,19 @@ jobs:
           extensions: mbstring, dom, fileinfo, xml, ctype, iconv, intl, pdo, sqlite, pdo_sqlite, bcmath, zip, gd
           coverage: none
 
-      - name: Install Dependencies
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Composer Dependencies
         run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Install NPM Dependencies & Build Assets
+        run: |
+          npm ci
+          npm run build
 
       - name: Prepare Environment
         run: |
