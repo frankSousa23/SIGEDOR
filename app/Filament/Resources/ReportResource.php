@@ -51,9 +51,17 @@ class ReportResource extends Resource
                         Select::make('teacher_cdi')
                             ->label('Docente')
                             ->options(function () {
-                                return Teacher::all()->mapWithKeys(fn ($teacher) => [
-                                    $teacher->cdi => "{$teacher->cdi} - {$teacher->name} {$teacher->surName}",
-                                ]);
+                                $user = auth()->user();
+
+                                return Teacher::query()
+                                    ->when($user && $user->hasRole('area_manager') && ! $user->hasRole('admin'), function ($query) use ($user) {
+                                        $query->where('sede_id', $user->sede_id);
+                                    })
+                                    ->select(['cdi', 'name', 'surName'])
+                                    ->get()
+                                    ->mapWithKeys(fn ($teacher) => [
+                                        $teacher->cdi => "{$teacher->cdi} - {$teacher->name} {$teacher->surName}",
+                                    ]);
                             })
                             ->required()
                             ->searchable()

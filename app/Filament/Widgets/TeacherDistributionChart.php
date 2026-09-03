@@ -18,12 +18,33 @@ class TeacherDistributionChart extends ChartWidget
         return auth()->user()?->hasAnyRole(['admin', 'area_manager']) ?? false;
     }
 
+    public function getHeading(): ?string
+    {
+        $user = auth()->user();
+        if ($user && $user->hasRole('area_manager') && ! $user->hasRole('admin') && $user->sede) {
+            return "Distribución de Docentes - Sede {$user->sede->nombre}";
+        }
+
+        return static::$heading;
+    }
+
     protected function getData(): array
     {
+        $user = auth()->user();
+        $isAreaManager = $user && $user->hasRole('area_manager') && ! $user->hasRole('admin');
+
         $dedications = ['Exclusiva', 'Tiempo Completo', 'Medio Tiempo', 'Tiempo Convencional'];
         $data = [];
         foreach ($dedications as $type) {
-            $data[] = Dedication::where('name', $type)->count();
+            $query = Dedication::query()->where('name', $type);
+
+            if ($isAreaManager && $user->sede_id) {
+                $query->whereHas('teacher', function ($q) use ($user) {
+                    $q->where('sede_id', $user->sede_id);
+                });
+            }
+
+            $data[] = $query->count();
         }
 
         return [

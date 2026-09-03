@@ -55,6 +55,10 @@ class UserResource extends Resource
                             ->label('Correo Electrónico')
                             ->required()
                             ->email()
+                            ->rules(['regex:/^[a-zA-Z0-9._%+-]+@sigedor\.com$/i'])
+                            ->validationMessages([
+                                'regex' => 'El correo electrónico debe pertenecer al dominio institucional @sigedor.com',
+                            ])
                             ->unique(ignoreRecord: true)
                             ->autocomplete('email'),
 
@@ -100,7 +104,10 @@ class UserResource extends Resource
                             ->multiple()
                             ->required()
                             ->searchable()
-                            ->preload(),
+                            ->preload()
+                            ->disabled(fn () => ! auth()->user()?->hasRole('admin'))
+                            ->dehydrated(fn () => auth()->user()?->hasRole('admin'))
+                            ->helperText(fn () => ! auth()->user()?->hasRole('admin') ? 'Solo los administradores pueden modificar los roles del sistema.' : null),
                     ]),
 
                 Section::make('Estado de la Cuenta')
@@ -111,7 +118,10 @@ class UserResource extends Resource
 
                         Toggle::make('is_approved')
                             ->label('Aprobado')
-                            ->default(false),
+                            ->default(false)
+                            ->disabled(fn () => ! auth()->user()?->hasRole('admin'))
+                            ->dehydrated(fn () => auth()->user()?->hasRole('admin'))
+                            ->helperText(fn () => ! auth()->user()?->hasRole('admin') ? 'Solo los administradores pueden aprobar cuentas.' : null),
                     ])->columns(2),
             ]);
     }

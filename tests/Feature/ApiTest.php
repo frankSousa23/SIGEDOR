@@ -106,3 +106,18 @@ it('returns a successful response for the reports API endpoint', function () {
             ],
         ]);
 });
+
+it('returns a successful pong response for health ping endpoint', function () {
+    $response = $this->getJson('/api/ping');
+
+    $response->assertStatus(200)
+        ->assertJson([
+            'status' => 'pong',
+            'version' => '1.0.0',
+        ])
+        ->assertJsonStructure([
+            'status',
+            'timestamp',
+            'version',
+        ]);
+});

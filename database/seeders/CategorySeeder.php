@@ -63,7 +63,6 @@ class CategorySeeder extends Seeder
                     'agregado' => $this->parseDate($data[7] ?? null),
                     'asociado' => $this->parseDate($data[8] ?? null),
                     'titular' => $this->parseDate($data[9] ?? null),
-                    'disable_assistant_rule' => (bool) ($data[10] ?? false),
                     'info' => $this->cleanField($data[11] ?? null),
                 ]
             );
