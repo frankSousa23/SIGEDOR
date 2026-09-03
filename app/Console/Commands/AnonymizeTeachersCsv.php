@@ -75,12 +75,17 @@ class AnonymizeTeachersCsv extends Command
                 continue;
             }
 
-            $row[1] = $faker->firstName;
-            $row[2] = $faker->lastName;
-            $row[3] = $faker->unique()->numerify('########');
+            $firstName = $faker->firstName;
+            $lastName = $faker->lastName;
+            $row[1] = $firstName;
+            $row[2] = $lastName;
+
+            $idNum = (int) ($row[0] ?? 0);
+            $row[3] = (string) (10101000 + $idNum);
             $row[5] = $faker->phoneNumber;
 
-            $email = $faker->unique()->safeEmail;
+            $slug = \Illuminate\Support\Str::slug($firstName.'.'.$lastName);
+            $email = "{$slug}@sigedor.com";
             $row[6] = $email;
             $row[10] = $email;
 

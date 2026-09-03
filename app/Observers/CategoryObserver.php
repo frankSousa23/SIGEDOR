@@ -6,22 +6,22 @@ use App\Models\Category;
 
 class CategoryObserver
 {
-    private $categoryHierarchy = [
-        'TITULAR' => 'titular',
-        'ASOCIADO' => 'asociado',
-        'AGREGADO' => 'agregado',
-        'ASISTENTE' => 'asistente',
-        'INSTRUCTOR' => 'instructor',
+    private array $categoryHierarchy = [
+        'Titular' => 'titular',
+        'Asociado' => 'asociado',
+        'Agregado' => 'agregado',
+        'Asistente' => 'asistente',
+        'Instructor' => 'instructor',
     ];
 
-    public function saving(Category $category)
+    public function saving(Category $category): void
     {
         $this->determineCurrentCategory($category);
     }
 
-    private function determineCurrentCategory(Category $category)
+    private function determineCurrentCategory(Category $category): void
     {
-        $currentCategory = 'INSTRUCTOR';
+        $currentCategory = 'Instructor';
 
         foreach ($this->categoryHierarchy as $cat => $field) {
             if (! is_null($category->$field)) {

@@ -36,12 +36,27 @@ class Dedication extends Model
     protected $fillable = [
         'teacher_cdi',
         'name',
+        'type',
         'hours',
         'director',
         'studentNumber',
         'studentHours',
         'info',
     ];
+
+    protected static function booted(): void
+    {
+        static::saving(function (Dedication $dedication) {
+            if (empty($dedication->type)) {
+                $dedication->type = match (trim((string) $dedication->name)) {
+                    'Tiempo Completo' => 'TC',
+                    'Exclusiva', 'Dedicación Exclusiva' => 'EX',
+                    'Medio Tiempo' => 'MT',
+                    default => 'TCV',
+                };
+            }
+        });
+    }
 
     protected $casts = [
         'hours' => 'integer',

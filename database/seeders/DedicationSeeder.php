@@ -58,10 +58,18 @@ class DedicationSeeder extends Seeder
             $studentHours = ! empty(trim($data[6] ?? '')) ? (int) $data[6] : null;
             $info = ! empty(trim($data[7] ?? '')) ? trim($data[7]) : null;
 
+            $type = match ($name) {
+                'Tiempo Completo' => 'TC',
+                'Exclusiva', 'Dedicación Exclusiva' => 'EX',
+                'Medio Tiempo' => 'MT',
+                default => 'TCV',
+            };
+
             $dedication = Dedication::updateOrCreate(
                 ['teacher_cdi' => $cdi],
                 [
                     'name' => $name,
+                    'type' => $type,
                     'hours' => $hours,
                     'director' => $director,
                     'studentNumber' => $studentNumber,

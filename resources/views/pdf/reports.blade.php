@@ -38,10 +38,10 @@
             @foreach($reports as $report)
                 <tr>
                     <td>{{ $report->id }}</td>
-                    <td>{{ $report->teacher->cdi ?? 'Sin Docente' }}</td>
-                    <td>{{ $report->category->current_category ?? 'Sin Categoría' }}</td>
-                    <td>{{ $report->dedication->name ?? 'Sin Dedicación' }}</td>
-                    <td>{{ $report->site->name ?? 'Sin Sede' }}</td>
+                    <td>{{ $report->teacher ? ($report->teacher->name . ' ' . $report->teacher->surName) : ($report->teacher_cdi ?? 'Sin Docente') }}</td>
+                    <td>{{ $report->category?->current_category ?? $report->teacher?->category?->current_category ?? 'Sin Categoría' }}</td>
+                    <td>{{ $report->dedication?->name ?? $report->teacher?->dedication?->name ?? 'Sin Dedicación' }}</td>
+                    <td>{{ $report->sede?->nombre ?? 'Sin Sede' }}</td>
                     <td>{{ $report->report }}</td>
                     <td>{{ $report->memoNumber }}</td>
                     <td>{{ $report->typeReport }}</td>
