@@ -203,8 +203,17 @@ class ReportResource extends Resource
                                 $handle = fopen('php://output', 'w');
                                 fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF)); // UTF-8 BOM
                                 fputcsv($handle, ['N° Memo', 'Tipo', 'Docente CDI', 'Docente Nombre', 'Sede', 'Área', 'Categoría', 'Dedicación', 'Reporte', 'Fecha']);
+                                $sanitizeCell = static function ($value): string {
+                                    $str = (string) ($value ?? '');
+                                    if (preg_match('/^[=\+\-@\t\r]/', $str)) {
+                                        return "'".$str;
+                                    }
+
+                                    return $str;
+                                };
+
                                 foreach ($records as $rep) {
-                                    fputcsv($handle, [
+                                    fputcsv($handle, array_map($sanitizeCell, [
                                         $rep->memoNumber,
                                         $rep->typeReport,
                                         $rep->teacher?->cdi ?? '',
@@ -215,7 +224,7 @@ class ReportResource extends Resource
                                         $rep->dedication?->name ?? '',
                                         $rep->report,
                                         $rep->created_at?->format('d/m/Y H:i') ?? '',
-                                    ]);
+                                    ]));
                                 }
                                 fclose($handle);
                             }, 'reportes_'.now()->format('Ymd_His').'.csv', [

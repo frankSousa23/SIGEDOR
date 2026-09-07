@@ -72,17 +72,6 @@ class Teacher
 
     /**
      * @OA\Property(
-     *      title="Phone",
-     *      description="Teléfono de contacto",
-     *      example="+584121234567"
-     * )
-     *
-     * @var string
-     */
-    public $phone;
-
-    /**
-     * @OA\Property(
      *      title="Email",
      *      description="Correo electrónico institucional o personal",
      *      example="juan.perez@sigedor.com"
@@ -91,18 +80,6 @@ class Teacher
      * @var string
      */
     public $email;
-
-    /**
-     * @OA\Property(
-     *      title="Birth Date",
-     *      description="Fecha de nacimiento",
-     *      example="1980-01-01",
-     *      format="date"
-     * )
-     *
-     * @var string
-     */
-    public $birthDate;
 
     /**
      * @OA\Property(
@@ -126,18 +103,6 @@ class Teacher
      * @var string
      */
     public $asignaturePromotion;
-
-    /**
-     * @OA\Property(
-     *      title="User ID",
-     *      description="ID del usuario asociado",
-     *      format="int64",
-     *      example=10
-     * )
-     *
-     * @var int
-     */
-    public $user_id;
 
     /**
      * @OA\Property(

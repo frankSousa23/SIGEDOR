@@ -291,8 +291,17 @@ class TeacherResource extends Resource
                                 $handle = fopen('php://output', 'w');
                                 fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF)); // UTF-8 BOM
                                 fputcsv($handle, ['Cédula', 'Nombres', 'Apellidos', 'Correo', 'Teléfono', 'Sede', 'Área', 'Programa', 'Categoría', 'Dedicación']);
+                                $sanitizeCell = static function ($value): string {
+                                    $str = (string) ($value ?? '');
+                                    if (preg_match('/^[=\+\-@\t\r]/', $str)) {
+                                        return "'".$str;
+                                    }
+
+                                    return $str;
+                                };
+
                                 foreach ($records as $teacher) {
-                                    fputcsv($handle, [
+                                    fputcsv($handle, array_map($sanitizeCell, [
                                         $teacher->cdi,
                                         $teacher->name,
                                         $teacher->surName,
@@ -303,7 +312,7 @@ class TeacherResource extends Resource
                                         $teacher->programa?->nombre ?? '',
                                         $teacher->category?->current_category ?? 'Sin Asignar',
                                         $teacher->dedication?->name ?? 'Sin Asignar',
-                                    ]);
+                                    ]));
                                 }
                                 fclose($handle);
                             }, 'docentes_'.now()->format('Ymd_His').'.csv', [

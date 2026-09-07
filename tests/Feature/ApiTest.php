@@ -137,3 +137,12 @@ it('returns a successful pong response for health ping endpoint', function () {
             'version',
         ]);
 });
+
+it('includes OWASP recommended security headers in responses', function () {
+    $response = $this->getJson('/api/ping');
+
+    $response->assertHeader('X-Content-Type-Options', 'nosniff')
+        ->assertHeader('X-Frame-Options', 'SAMEORIGIN')
+        ->assertHeader('X-XSS-Protection', '1; mode=block')
+        ->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+});
