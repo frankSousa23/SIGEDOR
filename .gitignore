@@ -5,15 +5,24 @@
 /public/storage
 /storage/*.key
 /storage/pail
+/storage/app/Laravel/
+/storage/app/backup-temp/
 /vendor
+
+# Environments
 .env
+.env.*
 .env.backup
 .env.production
+!.env.example
+
+# IDE & Editor files
 .phpactor.json
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
 auth.json
+/auth.json
 npm-debug.log
 yarn-error.log
 /.fleet
@@ -22,7 +31,14 @@ yarn-error.log
 /.vscode
 /.zed
 /docs/private/
-/auth.json
+
+# Build & Vite artifacts
+vite.config.js.timestamp*
+
+# Database dumps & local databases
+*.sql
+*.sqlite
+*.dump
 
 # Generated Swagger docs
 /storage/api-docs/

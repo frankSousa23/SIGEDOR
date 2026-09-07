@@ -62,7 +62,7 @@ beforeEach(function () {
     ]);
 });
 
-it('returns a successful response for the teachers API endpoint', function () {
+it('returns a successful response for the teachers API endpoint without leaking PII', function () {
     $response = $this->getJson('/api/v1/teachers');
 
     $response->assertStatus(200)
@@ -73,10 +73,18 @@ it('returns a successful response for the teachers API endpoint', function () {
                 'data' => [
                     '*' => [
                         'id',
+                        'cdi',
+                        'name',
+                        'surName',
+                        'genre',
+                        'email',
                     ],
                 ],
             ],
         ]);
+
+    $firstTeacher = $response->json('data.data.0');
+    expect($firstTeacher)->not->toHaveKeys(['phone', 'birthDate', 'user_id']);
 });
 
 it('returns a successful response for the reports API endpoint', function () {
@@ -101,10 +109,18 @@ it('returns a successful response for the reports API endpoint', function () {
                 'data' => [
                     '*' => [
                         'id',
+                        'teacher' => [
+                            'id',
+                            'cdi',
+                            'name',
+                        ],
                     ],
                 ],
             ],
         ]);
+
+    $firstReportTeacher = $response->json('data.data.0.teacher');
+    expect($firstReportTeacher)->not->toHaveKeys(['phone', 'birthDate', 'user_id']);
 });
 
 it('returns a successful pong response for health ping endpoint', function () {

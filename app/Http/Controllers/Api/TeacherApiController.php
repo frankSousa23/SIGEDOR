@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\TeacherPublicResource;
 use App\Models\Teacher;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -104,6 +105,9 @@ class TeacherApiController extends Controller
         }
 
         $teachers = $query->paginate(15);
+        $teachers->setCollection(
+            $teachers->getCollection()->map(fn ($teacher) => (new TeacherPublicResource($teacher))->resolve($request))
+        );
 
         return response()->json([
             'status' => 'success',

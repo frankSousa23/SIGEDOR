@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\ReportPublicResource;
 use App\Models\Report;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -82,6 +83,9 @@ class ReportApiController extends Controller
     public function index(Request $request): JsonResponse
     {
         $reports = Report::with(['teacher', 'sede', 'area', 'category', 'dedication'])->paginate(15);
+        $reports->setCollection(
+            $reports->getCollection()->map(fn ($report) => (new ReportPublicResource($report))->resolve($request))
+        );
 
         return response()->json([
             'status' => 'success',
