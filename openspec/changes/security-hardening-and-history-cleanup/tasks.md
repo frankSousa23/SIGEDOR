@@ -20,12 +20,12 @@
 
 ## 4. Purga de PII en el Historial de Git
 
-- [ ] 4.1 Generar una etiqueta o rama de respaldo local (`git branch backup-pre-purge`) antes de iniciar la reescritura del historial.
-- [ ] 4.2 Utilizar `git-filter-repo` (o rebase interactivo automatizado) para expurgar de todo el árbol histórico los CSVs que contenían los 872 registros de datos reales del commit `06ad522`, sustituyéndolos por las semillas canónicas anonimizadas.
-- [ ] 4.3 Validar mediante `git log` y búsqueda de patrones que no exista ningún blob ni commit en el historial con las cédulas o nombres reales del archivo original.
+- [x] 4.1 Generar una etiqueta o rama de respaldo local (`git branch backup-pre-purge`) antes de iniciar la reescritura del historial.
+- [x] 4.2 Utilizar `git-filter-repo` (o rebase interactivo automatizado) para expurgar de todo el árbol histórico los CSVs que contenían los 872 registros de datos reales del commit `06ad522`, sustituyéndolos por las semillas canónicas anonimizadas.
+- [x] 4.3 Validar mediante `git log` y búsqueda de patrones que no exista ningún blob ni commit en el historial con las cédulas o nombres reales del archivo original.
 
 ## 5. Verificación Integral y Calidad
 
-- [ ] 5.1 Ejecutar `vendor/bin/pest` y confirmar que el 100% de las pruebas automatizadas pasen en verde.
-- [ ] 5.2 Ejecutar `vendor/bin/pint --test` para certificar el cumplimiento de estándares de código Laravel.
-- [ ] 5.3 Ejecutar `openspec validate --all` para asegurar la total coherencia de las especificaciones y artefactos del cambio.
+- [x] 5.1 Ejecutar `vendor/bin/pest` y confirmar que el 100% de las pruebas automatizadas pasen en verde.
+- [x] 5.2 Ejecutar `vendor/bin/pint --test` para certificar el cumplimiento de estándares de código Laravel.
+- [x] 5.3 Ejecutar `openspec validate --all` para asegurar la total coherencia de las especificaciones y artefactos del cambio.
