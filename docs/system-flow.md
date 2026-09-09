@@ -1,251 +1,97 @@
-# Flujo del Sistema
+# Flujo de Datos y Ciclo de Vida del Sistema SIGEDOR
 
-## 1. Registro de Docentes
+En este documento se describe el ciclo de vida de los datos en SIGEDOR: desde el registro inicial de un usuario hasta la emisión y verificación de documentos oficiales en PDF.
 
-### Proceso de Registro
-1. Ingreso de datos personales
-   - CDI (único)
-   - Correo electrónico (único)
-   - Nombre y apellido
-   - Información de contacto
+---
 
-2. Asignaciones opcionales
-   - Sede
-   - Categoría
-   - Dedicación
+## 1. Flujo de Usuario y Aprobación de Cuenta
 
-3. Validaciones
-   - Verificación de unicidad
-   - Validación de formato
-   - Comprobación de relaciones
-
-### Diagrama de Flujo
-```mermaid
-graph TD
-    A[Inicio] --> B[Ingreso de Datos Personales]
-    B --> C{Validar CDI y Email}
-    C -->|Válido| D[Asignaciones Opcionales]
-    C -->|Inválido| B
-    D --> E[Guardar Docente]
-    E --> F[Fin]
+```
+┌─────────────────┐       ┌──────────────────────┐       ┌────────────────────────┐
+│ Registro / Demo │ ----> │  Aprobación Admin    │ ----> │ Asignación Territorial │
+│  @sigedor.com   │       │ (is_approved = true) │       │     (Sede y Área)      │
+└─────────────────┘       └──────────────────────┘       └───────────┬────────────┘
+                                                                     │
+                                                                     ▼
+                                                        ┌────────────────────────┐
+                                                        │ Creación de Expediente │
+                                                        │      en Teachers       │
+                                                        └────────────────────────┘
 ```
 
-## 2. Gestión de Asignaciones
+1. **Autenticación**: El usuario ingresa con credenciales bajo el dominio corporativo `@sigedor.com`.
+2. **Validación de Estado**: El sistema comprueba que `is_active` e `is_approved` sean verdaderos. Si la cuenta no está aprobada, el acceso al panel es rechazado.
+3. **Asignación de Rol**: Un Administrador otorga el rol (`admin`, `area_manager` o `teacher`) y define la filiación territorial (`sede_id`, `area_id`).
+4. **Vinculación con Expediente**: Al crear el registro en `TeacherResource`, la selección del usuario autocompleta los datos personales y vincula `user_id`.
 
-### Asignación de Sede
-1. Selección de sede disponible
-2. Verificación de cupos
-3. Actualización de registros
+---
 
-### Asignación de Categoría
-1. Verificación de requisitos
-2. Selección de categoría
-3. Registro de promoción
+## 2. Flujo de Escalafón, Dedicación y Asignación de Cátedra
 
-### Asignación de Dedicación
-1. Verificación de disponibilidad
-2. Selección de tipo
-3. Cálculo de horas
+SIGEDOR sincroniza de forma atómica y bidireccional los componentes académicos del docente mediante **Hooks Eloquent (`booted`)**:
 
-## 3. Control de Permisos
-
-### Solicitud de Permiso
-1. Ingreso de solicitud
-   - Fechas
-   - Motivo
-   - Documentación
-
-2. Proceso de aprobación
-   - Revisión
-   - Aprobación/Rechazo
-   - Notificación
-
-### Estados de Permiso
-- Pendiente
-- Aprobado
-- Rechazado
-
-### Diagrama de Estados
-```mermaid
-stateDiagram-v2
-    [*] --> Pendiente
-    Pendiente --> Aprobado
-    Pendiente --> Rechazado
-    Aprobado --> [*]
-    Rechazado --> [*]
+```
+        ┌────────────────────────────────────────────────────────┐
+        │               Expediente Docente (Teacher)             │
+        │      (category_id | dedication_id | site_id)           │
+        └───────▲───────────────────▲────────────────────▲───────┘
+                │                   │                    │
+          [booted sync]       [booted sync]        [booted sync]
+                │                   │                    │
+        ┌───────┴──────┐    ┌───────┴──────┐     ┌───────┴──────┐
+        │   Category   │    │  Dedication  │     │     Site     │
+        │ (Escalafón)  │    │(Carga Horas) │     │ (Asignación) │
+        └──────────────┘    └──────────────┘     └──────────────┘
 ```
 
-## 4. Reportes y Seguimiento
+1. **Gestión de Escalafón (`Category`)**:
+   - Se registra el historial de ascensos o títulos académicos.
+   - El sistema calcula la `current_category` aplicando reglas de ascenso directo (Especialidad/Maestría -> Asistente; Doctorado -> Agregado).
+   - El hook `saved` actualiza automáticamente `teachers.category_id`.
+2. **Gestión de Dedicación Horaria (`Dedication`)**:
+   - Se selecciona la modalidad (TCV, MT, TC, EX) y se validan las horas reglamentarias UNERG.
+   - El hook `saved` actualiza automáticamente `teachers.dedication_id`.
+3. **Asignación de Cátedra (`Site`)**:
+   - Se asignan las unidades de crédito, horas semanales y secciones.
+   - El hook `saved` sincroniza `teachers.site_id`, `sede_id`, `area_id` y `programa_id`.
 
-### Tipos de Reportes
-1. Individuales
-   - Historial docente
-   - Permisos
-   - Asignaciones
+---
 
-2. Por Sede
-   - Distribución docente
-   - Carga horaria
-   - Estadísticas
+## 3. Flujo de Permisos y Licencias Académicas
 
-3. Por Categoría
-   - Distribución
-   - Promociones
-   - Requisitos
+1. **Solicitud Inicial**:
+   - El docente ingresa a `PermissionTeacherResource`. Su cédula aparece preseleccionada y bloqueada para edición.
+   - Selecciona el tipo de permiso (`name`), la fecha de inicio (`start_date`) y la duración (`duration_type`).
+   - El sistema calcula reactivamente la fecha final (`end_date`).
+   - La solicitud se guarda obligatoriamente con estado `pending`.
+2. **Revisión y Aprobación**:
+   - El Jefe de Área o Administrador revisa la justificación y documentación anexa.
+   - Conmuta el estado a `approved` o `rejected`.
+3. **Emisión de Memorando**:
+   - Ante un permiso aprobado, el Jefe de Área o Administrador activa la acción "Emitir Memo" para generar el reporte administrativo oficial.
 
-### Generación de Reportes
-1. Selección de tipo
-2. Filtros aplicables
-3. Formato de salida
-   - PDF
-   - Excel
-   - Web
+---
 
-## 5. Mantenimiento de Catálogos
+## 4. Emisión y Verificación de Documentos PDF
 
-### Sedes
-1. Registro
-2. Actualización
-3. Desactivación
-
-### Categorías
-1. Creación
-2. Modificación requisitos
-3. Gestión niveles
-
-### Dedicaciones
-1. Definición tipos
-2. Actualización horas
-3. Control asignaciones
-
-## 6. Gestión de Usuarios
-
-### Roles del Sistema
-1. Administrador
-   - Acceso total
-   - Gestión usuarios
-   - Configuración
-
-2. Supervisor
-   - Aprobación permisos
-   - Reportes
-   - Seguimiento
-
-3. Operador
-   - Registro docentes
-   - Actualización datos
-   - Reportes básicos
-
-### Control de Acceso
-```mermaid
-graph TD
-    A[Usuario] --> B{Autenticación}
-    B -->|Éxito| C[Verificar Rol]
-    B -->|Fallo| D[Denegar Acceso]
-    C --> E{Permisos}
-    E -->|Tiene| F[Permitir Acción]
-    E -->|No tiene| G[Denegar Acción]
+```
+┌──────────────────┐       ┌──────────────────────┐       ┌────────────────────────┐
+│ Acción de Emisión│ ----> │ Generación de Código │ ----> │ Renderizado con DomPDF │
+│(Constancia/Memo) │       │ (UNERG-REP-YYYY-XXXX)│       │ (Membrete Oficial)     │
+└──────────────────┘       └──────────────────────┘       └───────────┬────────────┘
+                                                                      │
+                                                                      ▼
+                                                         ┌────────────────────────┐
+                                                         │ Descarga / Verificación│
+                                                         │   Física o Digital     │
+                                                         └────────────────────────┘
 ```
 
-## 7. Notificaciones
-
-### Tipos
-1. Sistema
-   - Errores
-   - Advertencias
-   - Información
-
-2. Usuario
-   - Aprobaciones
-   - Rechazos
-   - Recordatorios
-
-### Canales
-- Email
-- Sistema interno
-- Dashboard
-
-## 8. Auditoría
-
-### Eventos Registrados
-1. Accesos
-   - Login/Logout
-   - Intentos fallidos
-   - Cambios contraseña
-
-2. Operaciones
-   - Creación
-   - Modificación
-   - Eliminación
-
-3. Permisos
-   - Solicitudes
-   - Aprobaciones
-   - Rechazos
-
-### Registro de Auditoría
-```sql
-CREATE TABLE audit_logs (
-    id bigint PRIMARY KEY,
-    user_id bigint,
-    action varchar(255),
-    model_type varchar(255),
-    model_id bigint,
-    old_values json,
-    new_values json,
-    created_at timestamp
-);
-```
-
-## 9. Respaldo y Recuperación
-
-### Respaldo
-1. Datos
-   - Base de datos
-   - Archivos
-   - Configuración
-
-2. Frecuencia
-   - Diario
-   - Semanal
-   - Mensual
-
-### Recuperación
-1. Punto de restauración
-2. Verificación integridad
-3. Pruebas post-recuperación
-
-## 10. Integración
-
-### APIs Disponibles
-1. Consulta
-   - Docentes
-   - Asignaciones
-   - Permisos
-
-2. Gestión
-   - Registro
-   - Actualización
-   - Eliminación
-
-### Formatos
-- JSON
-- XML
-- CSV
-
-## Notas de Implementación
-
-1. Seguridad
-   - Autenticación robusta
-   - Autorización por roles
-   - Registro de actividades
-
-2. Rendimiento
-   - Cache de consultas
-   - Optimización queries
-   - Índices efectivos
-
-3. Mantenibilidad
-   - Código documentado
-   - Pruebas unitarias
-   - Control versiones
+1. **Disparo de la Acción**:
+   - Directamente desde la tabla de docentes ("Emitir Constancia"), desde un permiso aprobado ("Emitir Memo") o desde el formulario de reportes.
+2. **Generación Criptográfica de Código**:
+   - El modelo `Report` asigna un `verification_code` único e indexado (`UNERG-REP-YYYY-XXXX`) y marca el estado como `issued`.
+3. **Renderizado Oficial UNERG**:
+   - Se inyecta la plantilla Blade institucional con membrete nacional, logo oficial de alta resolución, código de validación, fechado formal y bloques para firmas y sellos reglamentarios.
+4. **Disponibilidad en el Expediente 360°**:
+   - El documento queda registrado en el historial del docente (`ReportsRelationManager`) y en el widget de últimos reportes del Dashboard.

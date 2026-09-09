@@ -21,9 +21,12 @@ class ReportPublicResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'verification_code' => $this->verification_code,
             'memoNumber' => $this->memoNumber,
             'typeReport' => $this->typeReport,
+            'status' => $this->status,
             'report' => $this->report,
+            'created_by' => $this->created_by,
             'created_at' => $this->created_at?->toIso8601String(),
             'teacher' => new TeacherPublicResource($this->whenLoaded('teacher')),
             'sede' => $this->whenLoaded('sede', function () {

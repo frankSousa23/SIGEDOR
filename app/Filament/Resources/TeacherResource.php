@@ -28,6 +28,12 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * Recurso Filament para Expediente y Gestión Integral del Docente.
+ *
+ * Características arquitecturales:
+ * - Asistente de captura por etapas (Wizard en 3 pasos: Personales, Adscripción, Cátedra/Escalafón).
+ * - Expediente 360° unificado mediante 4 RelationManagers (Permisos, Categoría, Dedicación, Reportes).
+ * - Multi-tenant Query Scoping: Aislamiento por Sede territorial para Jefes de Área y visión global para Admin.
+ * - Emisión rápida de Constancias de Trabajo oficiales UNERG en PDF con código de autenticidad.
  */
 class TeacherResource extends Resource
 {

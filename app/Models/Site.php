@@ -9,10 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Modelo de Asignación de Carga / Sede del Docente.
+ * Modelo de Asignación de Cátedra y Carga Horaria Docente.
  *
- * Registra la distribución de horas semanales, secciones, unidades de crédito (UC)
- * y ubicación académica del docente.
+ * NOTA DE DOMINIO: En la arquitectura de SIGEDOR, este modelo ('Site') representa
+ * la asignación curricular y docente de horas lectivas semanales, secciones,
+ * unidades de crédito (UC) y carga de cátedra, mientras que el modelo 'Sede'
+ * representa el recinto territorial físico universitario (San Juan, Calabozo, etc.).
  *
  * @property int $id
  * @property string $teacher_cdi

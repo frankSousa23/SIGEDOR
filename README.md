@@ -60,6 +60,11 @@
    - Panel de administración interactivo potenciado por **Filament v3**.
    - Registro de auditoría y trazabilidad con `spatie/laravel-activitylog`.
 
+7. **Expediente Integral 360° y Sincronización Automática:**
+   - Expediente unificado en `TeacherResource` con 4 gestores de relaciones integrados (*Permisos, Escalafón, Carga Horaria y Reportes emitidos*).
+   - Sincronización atómica y bidireccional mediante hooks de ciclo de vida Eloquent (`category_id`, `dedication_id`, `site_id`).
+   - Códigos de verificación y autenticidad documental institucional (`UNERG-REP-YYYY-XXXX`) embebidos en constancias de trabajo y memorandos oficiales.
+
 ---
 
 ## 📊 Ingesta de Datos y Carga por CSV
@@ -276,9 +281,9 @@ SIGEDOR/
 │   └── Providers/         # Proveedores de servicios (Filament Panel, Auth, etc.)
 ├── database/
 │   ├── factories/         # Factorías sintéticas con Faker para generación de datos
-│   ├── migrations/        # 20 migraciones estructuradas
+│   ├── migrations/        # 24 migraciones estructuradas
 │   └── seeders/           # Semillas con catálogo institucional y datos anonimizados
-├── docs/                  # 12 guías de documentación técnica y de arquitectura
+├── docs/                  # 15 guías de documentación técnica y de arquitectura
 ├── resources/
 │   ├── css/ & js/         # Estilos TailwindCSS y scripts frontend
 │   └── views/             # Vistas Blade y plantillas de reportes en PDF

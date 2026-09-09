@@ -1,369 +1,62 @@
-# Interfaz de Usuario
+# Interfaz de Usuario y Experiencia (UI/UX) en SIGEDOR
 
-## 1. Panel Administrativo
+La interfaz de usuario de SIGEDOR está construida con **Filament v3**, aprovechando **Livewire 3**, **Tailwind CSS** y **Alpine.js** para brindar una experiencia de usuario ágil, reactiva, accesible y adaptada al ámbito universitario.
 
-### Diseño General
-- Diseño responsivo
-- Tema oscuro/claro
-- Navegación intuitiva
-- Breadcrumbs
+---
 
-### Estructura
-```
-Dashboard
-├── Sidebar
-│   ├── Navegación principal
-│   ├── Accesos rápidos
-│   └── Configuración
-├── Header
-│   ├── Búsqueda global
-│   ├── Notificaciones
-│   └── Perfil usuario
-└── Contenido principal
-    ├── Widgets
-    ├── Tablas
-    └── Formularios
-```
+## 1. Estructura General del Panel Administrativo (`/admin`)
 
-## 2. Componentes Filament
+- **Barra de Navegación Lateral (Sidebar)**:
+  - Agrupación lógica de recursos: *Gestión Docente* (Docentes, Categorías, Dedicaciones, Sedes), *Trámites Académicos* (Permisos, Reportes) y *Sistema* (Usuarios, Roles).
+  - Enlace rápido de retorno a la página de bienvenida / landing page.
+- **Cabecera y Perfil**:
+  - Selector de tema (Modo Claro / Modo Oscuro automático).
+  - Menú de perfil de usuario con opción segura de cierre de sesión.
+- **Diseño Responsivo**:
+  - Optimizado para pantallas de escritorio, portátiles, tabletas y teléfonos móviles mediante grids adaptativos de Tailwind CSS.
 
-### Forms
-```php
-class TeacherResource extends Resource
-{
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Card::make()
-                    ->schema([
-                        Grid::make(['default' => 12])
-                            ->schema([
-                                TextInput::make('cdi')
-                                    ->required()
-                                    ->unique()
-                                    ->columnSpan([
-                                        'default' => 12,
-                                        'md' => 6,
-                                    ]),
-                                
-                                TextInput::make('email')
-                                    ->email()
-                                    ->required()
-                                    ->unique()
-                                    ->columnSpan([
-                                        'default' => 12,
-                                        'md' => 6,
-                                    ]),
-                                
-                                Select::make('site_id')
-                                    ->relationship('site', 'name')
-                                    ->searchable()
-                                    ->columnSpan(12),
-                            ]),
-                    ])
-            ]);
-    }
-}
-```
+---
 
-### Tables
-```php
-public static function table(Table $table): Table
-{
-    return $table
-        ->columns([
-            TextColumn::make('cdi')
-                ->searchable()
-                ->sortable(),
-            
-            TextColumn::make('full_name')
-                ->searchable()
-                ->sortable(),
-            
-            BadgeColumn::make('status')
-                ->colors([
-                    'success' => 'active',
-                    'danger' => 'inactive',
-                ]),
-        ])
-        ->filters([
-            SelectFilter::make('site')
-                ->relationship('site', 'name'),
-            
-            Filter::make('active')
-                ->query(fn ($query) => $query->where('active', true))
-        ])
-        ->actions([
-            EditAction::make(),
-            DeleteAction::make(),
-        ])
-        ->bulkActions([
-            DeleteBulkAction::make(),
-        ]);
-}
-```
+## 2. Dashboard y Widgets del Escritorio
 
-## 3. Widgets Personalizados
+El panel principal (`App\Filament\Pages\Dashboard`) presenta 5 widgets complementarios:
 
-### Stats Card
-```php
-class TeacherStatsWidget extends Widget
-{
-    protected static string $view = 'filament.widgets.teacher-stats';
-    
-    protected function getViewData(): array
-    {
-        return [
-            'totalTeachers' => Teacher::count(),
-            'activeTeachers' => Teacher::active()->count(),
-            'inactiveTeachers' => Teacher::inactive()->count(),
-        ];
-    }
-}
-```
+1. **`StatsOverview`**:
+   - Tarjetas informativas con micro-gráficos (*sparklines*) que resumen el total de docentes, profesores activos, solicitudes de permisos pendientes y reportes generados.
+2. **`TeacherDistributionChart`**:
+   - Gráfico tipo dona (*doughnut chart*) con la distribución del personal docente según su escalafón académico (Instructor, Asistente, Agregado, Asociado, Titular).
+3. **`SedeStatsChart`**:
+   - Gráfico de barras que compara la cantidad de profesores adscritos por cada núcleo territorial de la universidad.
+4. **`TasksOverview`**:
+   - Resumen visual de la carga de revisión de solicitudes y trámites pendientes por resolver.
+5. **`LatestReportsWidget`**:
+   - Tabla interactiva con los reportes más recientes, badges de estado, indicación de código de verificación y botón de descarga directa de PDF.
 
-### Chart Widget
-```php
-class TeacherChartWidget extends LineChartWidget
-{
-    protected function getData(): array
-    {
-        return [
-            'datasets' => [
-                [
-                    'label' => 'Docentes por Mes',
-                    'data' => $this->getMonthlyData(),
-                ],
-            ],
-            'labels' => $this->getMonthLabels(),
-        ];
-    }
-}
-```
+---
 
-## 4. Formularios Reactivos
+## 3. Componentes Interactivos y Formularios Inteligentes
 
-### Validación en Tiempo Real
-```php
-class TeacherForm extends Component
-{
-    public $cdi;
-    public $email;
-    
-    protected $rules = [
-        'cdi' => 'required|unique:teachers',
-        'email' => 'required|email|unique:teachers',
-    ];
-    
-    public function updated($propertyName)
-    {
-        $this->validateOnly($propertyName);
-    }
-}
-```
+- **Wizard de Creación en 3 Pasos**:
+  - En `TeacherResource`, la carga del expediente se divide en pasos claros con validación por etapas: Datos Personales -> Adscripción Institucional -> Cátedra y Escalafón.
+- **Selectores Dependientes en Cascada**:
+  - La selección de una Sede filtra automáticamente las Áreas disponibles, y la elección del Área actualiza los Programas correspondientes en tiempo real sin recargar la página.
+- **Auto-llenado Inteligente**:
+  - Al seleccionar una cuenta de usuario en el formulario docente, se rellenan automáticamente nombres, apellidos, correo institucional y sede.
+- **Badges Semánticos en Tablas**:
+  - Uso de colores armónicos para identificar estados de permisos (`pending` en amarillo, `approved` en verde, `rejected` en rojo), géneros y categorías académicas.
 
-### Dependencias Dinámicas
-```php
-public static function form(Form $form): Form
-{
-    return $form->schema([
-        Select::make('category_id')
-            ->relationship('category', 'name')
-            ->reactive()
-            ->afterStateUpdated(fn ($state, callable $set) => 
-                $set('dedication_id', null)
-            ),
-        
-        Select::make('dedication_id')
-            ->relationship('dedication', 'type')
-            ->options(function (callable $get) {
-                $categoryId = $get('category_id');
-                
-                if (!$categoryId) {
-                    return [];
-                }
-                
-                return Dedication::where('category_id', $categoryId)
-                    ->pluck('type', 'id');
-            }),
-    ]);
-}
-```
+---
 
-## 5. Notificaciones UI
+## 4. Expediente Integral 360° en Pestañas (Tabs)
 
-### Toast Notifications
-```php
-Notification::make()
-    ->title('Docente Creado')
-    ->success()
-    ->send();
-```
+Al consultar o editar un docente en `TeacherResource`, el panel despliega 4 pestañas interactivas sin necesidad de navegar a módulos separados:
+1. **Pestaña Permisos**: Historial de solicitudes, fechas y resoluciones.
+2. **Pestaña Categoría**: Títulos y fechas de ascenso en el escalafón.
+3. **Pestaña Dedicación**: Modalidad de contratación y horas semanales.
+4. **Pestaña Reportes**: Constancias emitidas con previsualización y descarga inmediata.
 
-### Modal Alerts
-```php
-$this->dialog()
-    ->success()
-    ->title('Operación Exitosa')
-    ->description('El docente ha sido registrado correctamente.')
-    ->show();
-```
+---
 
-## 6. Temas y Estilos
+## 5. Acciones en Modal Deslizante (SlideOver)
 
-### Configuración
-```php
-class FilamentServiceProvider extends ServiceProvider
-{
-    public function boot()
-    {
-        Filament::serving(function () {
-            Filament::registerTheme(
-                mix('css/filament.css')
-            );
-        });
-    }
-}
-```
-
-### Variables CSS
-```css
-:root {
-    --primary: rgb(var(--primary-rgb));
-    --primary-rgb: 79, 70, 229;
-    
-    --secondary: rgb(var(--secondary-rgb));
-    --secondary-rgb: 161, 161, 170;
-}
-```
-
-## 7. Responsive Design
-
-### Breakpoints
-```php
-protected function getTableRecordsPerPageSelectOptions(): array
-{
-    return [
-        10,
-        25,
-        50,
-        100,
-    ];
-}
-
-protected function getDefaultTableRecordsPerPageSelectOption(): int
-{
-    return config('filament.default_per_page', 10);
-}
-```
-
-### Mobile Navigation
-```php
-protected function getNavigation(): array
-{
-    return [
-        'dashboard' => [
-            'label' => 'Dashboard',
-            'icon' => 'heroicon-o-home',
-            'activeIcon' => 'heroicon-s-home',
-        ],
-    ];
-}
-```
-
-## 8. Accesibilidad
-
-### ARIA Labels
-```html
-<button
-    type="button"
-    aria-label="Crear nuevo docente"
-    class="filament-button"
->
-    Nuevo Docente
-</button>
-```
-
-### Keyboard Navigation
-```js
-document.addEventListener('keydown', function(e) {
-    if (e.ctrlKey && e.key === 'k') {
-        // Abrir búsqueda global
-        e.preventDefault();
-        openGlobalSearch();
-    }
-});
-```
-
-## 9. Performance UI
-
-### Lazy Loading
-```php
-public static function getRelations(): array
-{
-    return [
-        RelationManagers\PermissionsRelationManager::class,
-    ];
-}
-```
-
-### Debounce Search
-```php
-protected function getTableSearchDebounce(): int
-{
-    return 500;
-}
-```
-
-## 10. Personalización
-
-### Custom Views
-```php
-class TeacherResource extends Resource
-{
-    protected static ?string $recordTitleAttribute = 'full_name';
-    
-    public static function getGloballySearchableAttributes(): array
-    {
-        return ['cdi', 'first_name', 'last_name', 'email'];
-    }
-}
-```
-
-### Actions Personalizadas
-```php
-class ApprovePermissionAction extends Action
-{
-    public static function make(): static
-    {
-        return parent::make()
-            ->label('Aprobar')
-            ->icon('heroicon-o-check')
-            ->color('success')
-            ->requiresConfirmation();
-    }
-}
-```
-
-## Mejores Prácticas
-
-1. Diseño
-   - Mobile-first
-   - Consistencia visual
-   - Feedback claro
-
-2. Performance
-   - Lazy loading
-   - Optimización imágenes
-   - Cache client-side
-
-3. Accesibilidad
-   - ARIA labels
-   - Contraste adecuado
-   - Navegación teclado
-
-4. UX
-   - Mensajes claros
-   - Validación inmediata
-   - Retroalimentación visual
+- Los reportes y constancias pueden inspeccionarse directamente dentro de la interfaz mediante modales laterales deslizantes (`slideOver`), permitiendo leer el contenido del informe antes de descargarlo o imprimirlo.

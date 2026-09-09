@@ -1,322 +1,70 @@
-# Características de Seguridad
+# Arquitectura de Seguridad y Control de Acceso (RBAC) en SIGEDOR
 
-## 1. Autenticación
+SIGEDOR implementa un modelo de seguridad por capas diseñado para entornos universitarios multi-sede. Combina autenticación estricta bajo dominio institucional, autorización granular basada en roles con **Spatie Laravel-Permission**, políticas de modelo (*Policies*), aislamiento multi-inquilino por consultas Eloquent (*Multi-Tenant Query Scoping*) y blindaje de interfaces en Filament v3.
 
-### Sistema de Login
-```php
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+---
 
-class LoginController extends Controller
-{
-    use AuthenticatesUsers;
+## 1. Autenticación Institucional Estricta
 
-    protected $maxAttempts = 5;
-    protected $decayMinutes = 10;
+- **Restricción de Dominio**: El acceso al panel administrativo está limitado estrictamente a cuentas con correos electrónicos bajo el dominio institucional oficial `@sigedor.com` (validado mediante middleware y reglas de autenticación).
+- **Flujo de Aprobación (`is_approved`)**: Las cuentas registradas requieren aprobación explícita de un Administrador antes de que se les permita iniciar sesión.
+- **Suspensión de Cuentas (`is_active`)**: Permite desactivar inmediatamente el acceso al sistema sin eliminar los registros curriculares del usuario.
+- **Protección contra Fuerza Bruta**: Límite de intentos (*Rate Limiting*) en rutas web y API (`throttle:60,1`).
 
-    protected function authenticated(Request $request, $user)
-    {
-        activity()
-            ->causedBy($user)
-            ->log('login');
-    }
-}
-```
+---
 
-### Características
-- Límite de intentos
-- Bloqueo temporal
-- Registro de actividad
-- Tokens seguros
-- Sesiones cifradas
+## 2. Roles del Sistema (Spatie Laravel-Permission)
 
-### Protección de Rutas
-```php
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', DashboardController::class);
-    Route::resource('teachers', TeacherController::class);
-});
-```
+El sistema opera con tres roles principales claramente definidos:
 
-## 2. Autorización
+### 2.1 Super Administrador (`admin`)
+- Visión y alcance global sobre todos los núcleos territoriales y áreas académicas.
+- Único rol con autorización para asignar roles de sistema y conmutar el estado de activación (`is_active`) o aprobación (`is_approved`) de usuarios.
+- Creación, modificación y eliminación en todos los recursos institucionales.
+- Acceso a registros de auditoría y telemetría del sistema.
 
-### Spatie Laravel-Permission
-```php
-class User extends Authenticatable
-{
-    use HasRoles;
-}
-```
+### 2.2 Jefe de Área (`area_manager`)
+- Alcance multi-inquilino circunscrito a su Sede (`sede_id`) y Área de Conocimiento (`area_id`) asignadas.
+- Supervisión del claustro docente adscrito a su sede.
+- Aprobación y resolución de solicitudes de permisos de sus profesores.
+- Emisión de memorandos administrativos oficiales.
+- Bloqueo estricto para modificar roles o autoaprobar usuarios.
 
-### Roles Predefinidos
-1. Super Admin
-   - Acceso total
-   - Gestión de roles
-   - Configuración sistema
+### 2.3 Docente Académico (`teacher`)
+- Acceso de solo lectura a su expediente personal, escalafón docente y carga horaria asignada.
+- Registro de solicitudes de permisos y licencias (forzando estado inicial `pending`).
+- Consulta y descarga exclusiva de sus propios reportes y constancias emitidas (sin permisos para editar o eliminar documentos).
 
-2. Admin
-   - Gestión usuarios
-   - Reportes completos
-   - Aprobaciones
+---
 
-3. Supervisor
-   - Aprobación permisos
-   - Reportes limitados
-   - Seguimiento
+## 3. Políticas de Autorización por Modelo (Policies)
 
-4. Operador
-   - Registro básico
-   - Consultas
-   - Reportes básicos
+Cada recurso clave cuenta con una política dedicada registrada en el proveedor de autorización de Laravel:
 
-### Permisos
-```php
-return [
-    'view_teachers',
-    'create_teachers',
-    'edit_teachers',
-    'delete_teachers',
-    'approve_permissions',
-    'view_reports',
-    'manage_users',
-    'manage_roles'
-];
-```
+| Política | Modelo | Regla Principal de Aislamiento |
+|---|---|---|
+| **`TeacherPolicy`** | `Teacher` | Docentes solo ven su propio expediente (`$user->teacher?->cdi === $teacher->cdi`). Jefes de área solo ven docentes de su misma sede y área. Administrador tiene acceso global. |
+| **`ReportPolicy`** | `Report` | Docentes solo ven sus reportes y no pueden modificarlos ni eliminarlos. Jefes de área solo ven reportes de docentes de su sede. |
+| **`CategoryPolicy`** | `Category` | Operaciones protegidas con operadores nullsafe. Jefes de área autorizados para registrar ascensos en su sede. |
+| **`DedicationPolicy`** | `Dedication` | Validación de horas reglamentarias y asignación multi-sede. |
+| **`PermissionTeacherPolicy`** | `PermissionTeacher` | Docentes no pueden cambiar el estado a `approved` ni modificar el campo remunerado (`is_paid`). |
+| **`UserPolicy`** | `User` | Solo `admin` puede alterar roles o estados de aprobación de cuentas. |
 
-### Implementación
-```php
-class TeacherPolicy
-{
-    public function view(User $user, Teacher $teacher)
-    {
-        return $user->hasPermissionTo('view_teachers');
-    }
+---
 
-    public function create(User $user)
-    {
-        return $user->hasPermissionTo('create_teachers');
-    }
-}
-```
+## 4. Blindaje contra Escalada de Privilegios en Filament
 
-## 3. Validación de Datos
+- **Protección de ToggleColumn**: En `UserResource`, los conmutadores AJAX `is_approved` e `is_active` implementan:
+  ```php
+  ToggleColumn::make('is_approved')
+      ->disabled(fn () => ! auth()->user()?->isAdmin())
+  ```
+  Esto bloquea cualquier intento de manipulación del DOM o llamadas asíncronas desde cuentas no autorizadas.
+- **Campos Ocultos o Bloqueados**: En formularios de permisos y reportes, la cédula del docente solicitante se autocompleta con su perfil de sesión y se deshabilita para impedir la suplantación de identidad entre docentes.
 
-### Reglas de Validación
-```php
-class TeacherRequest extends FormRequest
-{
-    public function rules()
-    {
-        return [
-            'cdi' => 'required|unique:teachers,cdi,'.$this->id,
-            'email' => 'required|email|unique:teachers,email,'.$this->id,
-            'password' => [
-                'required',
-                'min:8',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
-            ]
-        ];
-    }
-}
-```
+---
 
-### Sanitización
-```php
-class Teacher extends Model
-{
-    protected $casts = [
-        'email' => 'string',
-        'phone' => 'string',
-        'address' => 'string'
-    ];
+## 5. Auditoría y Trazabilidad
 
-    public function setEmailAttribute($value)
-    {
-        $this->attributes['email'] = strtolower($value);
-    }
-}
-```
-
-## 4. Protección CSRF
-
-### Middleware
-```php
-protected $middleware = [
-    \App\Http\Middleware\VerifyCsrfToken::class,
-];
-```
-
-### Implementación en Formularios
-```html
-<form method="POST" action="/teacher">
-    @csrf
-    <!-- campos del formulario -->
-</form>
-```
-
-## 5. Protección XSS
-
-### Escape Automático
-```php
-{{ $variable }}  // Escapado automático
-{!! $variable !!}  // Sin escapar (usar con precaución)
-```
-
-### Middleware de Seguridad
-```php
-protected $middleware = [
-    \App\Http\Middleware\TrimStrings::class,
-    \App\Http\Middleware\ConvertEmptyStringsToNull::class,
-];
-```
-
-## 6. Auditoría
-
-### Registro de Actividad
-```php
-class Teacher extends Model
-{
-    use \Spatie\Activitylog\Traits\LogsActivity;
-
-    protected static $logAttributes = [
-        'cdi',
-        'email',
-        'first_name',
-        'last_name'
-    ];
-
-    protected static $logOnlyDirty = true;
-}
-```
-
-### Eventos Registrados
-- Accesos al sistema
-- Cambios en registros
-- Operaciones críticas
-- Errores de seguridad
-
-## 7. Encriptación
-
-### Configuración
-```php
-config([
-    'app.cipher' => 'AES-256-CBC',
-    'app.key' => env('APP_KEY')
-]);
-```
-
-### Campos Sensibles
-```php
-class Teacher extends Model
-{
-    protected $encrypted = [
-        'cdi',
-        'address'
-    ];
-}
-```
-
-## 8. Seguridad en Base de Datos
-
-### Migraciones Seguras
-```php
-Schema::create('teachers', function (Blueprint $table) {
-    $table->id();
-    $table->string('cdi')->unique();
-    $table->string('email')->unique();
-    $table->string('password');
-    $table->timestamps();
-    $table->softDeletes();
-});
-```
-
-### Índices y Constraints
-```php
-Schema::table('teachers', function (Blueprint $table) {
-    $table->index(['email', 'cdi']);
-    $table->foreign('site_id')
-          ->references('id')
-          ->on('sites')
-          ->onDelete('restrict');
-});
-```
-
-## 9. API Security
-
-### Autenticación API
-```php
-Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('teachers', TeacherApiController::class);
-});
-```
-
-### Rate Limiting
-```php
-Route::middleware(['throttle:api'])->group(function () {
-    Route::get('/api/teachers', [TeacherApiController::class, 'index']);
-});
-```
-
-## 10. Configuración del Servidor
-
-### Headers de Seguridad
-```php
-Header set X-Frame-Options "SAMEORIGIN"
-Header set X-XSS-Protection "1; mode=block"
-Header set X-Content-Type-Options "nosniff"
-```
-
-### SSL/TLS
-- Certificados válidos
-- Forzar HTTPS
-- Configuración segura
-
-## 11. Backup y Recuperación
-
-### Configuración
-```php
-return [
-    'backup' => [
-        'name' => 'SIGEDOR',
-        'source' => [
-            'files' => [
-                base_path(),
-            ],
-            'databases' => [
-                'mysql',
-            ],
-        ],
-    ],
-];
-```
-
-### Programación
-- Backups diarios
-- Retención 30 días
-- Verificación integridad
-
-## Mejores Prácticas
-
-1. Autenticación
-   - Contraseñas fuertes
-   - Doble factor (2FA)
-   - Sesiones seguras
-
-2. Autorización
-   - Principio de mínimo privilegio
-   - Roles granulares
-   - Validación constante
-
-3. Datos
-   - Validación estricta
-   - Sanitización input
-   - Encriptación sensible
-
-4. Monitoreo
-   - Logs detallados
-   - Alertas seguridad
-   - Auditoría regular
-
-5. Mantenimiento
-   - Actualizaciones regulares
-   - Parches seguridad
-   - Pruebas periódicas
+- **`spatie/laravel-activitylog`**: Registra accesos, creación de reportes y cambios en expedientes docentes.
+- **Códigos de Autenticidad Documental**: Cada reporte oficial incluye un identificador `verification_code` (`UNERG-REP-YYYY-XXXX`) único e indexado, permitiendo validar la legitimidad física o digital de constancias y memorandos emitidos.

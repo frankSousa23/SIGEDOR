@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\HealthApiController;
 use App\Http\Controllers\Api\ReportApiController;
 use App\Http\Controllers\Api\TeacherApiController;
 use Illuminate\Http\Request;
@@ -11,13 +12,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/ping', function () {
-    return response()->json([
-        'status' => 'pong',
-        'timestamp' => now()->toIso8601String(),
-        'version' => '1.0.0',
-    ]);
-})->middleware('throttle:60,1');
+Route::get('/ping', [HealthApiController::class, 'ping'])->middleware('throttle:60,1');
 
 Route::get('/user', function (Request $request) {
     return $request->user();

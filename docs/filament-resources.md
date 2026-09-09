@@ -1,329 +1,99 @@
-# Recursos de Filament
+# Arquitectura de Recursos y Widgets de Filament v3 en SIGEDOR
 
-## TeacherResource
+SIGEDOR utiliza **Filament v3** sobre **Livewire 3** para su panel administrativo (`/admin`). La interfaz implementa control de acceso multi-inquilino (*multi-tenant* por sede), formularios inteligentes con selectores dependientes reactivos y un expediente docente unificado 360°.
 
-Recurso principal para la gestión de docentes.
+---
 
-### Estructura
-```php
-class TeacherResource extends Resource
-{
-    protected static ?string $model = Teacher::class;
-    protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?int $navigationSort = 1;
+## 1. TeacherResource (`app/Filament/Resources/TeacherResource.php`)
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                // Sección de Información Personal
-                Section::make('Información Personal')
-                    ->schema([
-                        TextInput::make('cdi')
-                            ->required()
-                            ->unique(),
-                        TextInput::make('email')
-                            ->email()
-                            ->required()
-                            ->unique(),
-                        TextInput::make('first_name')
-                            ->required(),
-                        TextInput::make('last_name')
-                            ->required(),
-                        TextInput::make('phone'),
-                        Textarea::make('address')
-                    ]),
+Recurso principal del expediente docente.
 
-                // Sección de Asignaciones
-                Section::make('Asignaciones')
-                    ->schema([
-                        Select::make('site_id')
-                            ->relationship('site', 'name'),
-                        Select::make('category_id')
-                            ->relationship('category', 'name'),
-                        Select::make('dedication_id')
-                            ->relationship('dedication', 'type')
-                    ])
-            ]);
-    }
+### 1.1 Formulario Wizard en 3 Pasos
+Para agilizar el registro y evitar formularios extensos, la creación y edición se organiza en un asistente por pasos:
+1. **Paso 1: Información del Docente**:
+   - Cédula de Identidad (`cdi`), Nombres (`name`), Apellidos (`surName`), Género (`genre`), Teléfono (`phone`), Correo institucional (`email`) y Fecha de nacimiento (`birthDate`).
+   - Selección de Cuenta de Usuario (`user_id`): Al seleccionar un usuario, autocompleta reactivamente el nombre, apellido, correo, sede y área.
+2. **Paso 2: Adscripción Institucional**:
+   - Selectores jerárquicos dependientes en cascada: `sede_id` -> `area_id` -> `programa_id`.
+   - Si el usuario en sesión es `area_manager`, el selector de sede queda fijado a su propia sede asignada.
+3. **Paso 3: Asignación Cátedra y Escalafón**:
+   - Fecha de último concurso de ascenso (`datePromotion`) y asignatura (`asignaturePromotion`).
+   - Claves de vinculación inmediata con escalafón (`category_id`), dedicación (`dedication_id`) y cátedra (`site_id`).
 
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                TextColumn::make('cdi'),
-                TextColumn::make('full_name'),
-                TextColumn::make('email'),
-                TextColumn::make('site.name'),
-                TextColumn::make('category.name'),
-                TextColumn::make('dedication.type')
-            ])
-            ->filters([
-                SelectFilter::make('site'),
-                SelectFilter::make('category'),
-                SelectFilter::make('dedication')
-            ])
-            ->actions([
-                EditAction::make(),
-                DeleteAction::make()
-            ]);
-    }
-}
-```
+### 1.2 Tabla Administrativa
+- Columnas con formato Badge para categoría y dedicación.
+- Badges de color para género y sede territorial.
+- **Acción Rápida "Emitir Constancia"**: Acción directa por fila que registra un reporte oficial y descarga de inmediato la Constancia de Trabajo en formato PDF oficial UNERG.
+- **Filtros**: Por Sede, Área y Dedicación.
+
+### 1.3 Expediente Integral 360° (RelationManagers)
+El recurso dispone de 4 gestores de relaciones en pestañas integradas:
+1. **`PermissionsRelationManager`**: Historial de solicitudes de permisos, tipo de duración, período de vigencia y estado (`pending`, `approved`, `rejected`).
+2. **`CategoryRelationManager`**: Registro cronológico de ascensos docentes, títulos de pregrado/posgrado y categoría vigente calculada.
+3. **`DedicationRelationManager`**: Modalidad contractual (TCV, MT, TC, EX), horas lectivas semanales y responsabilidades directivas.
+4. **`ReportsRelationManager`**: Historial de constancias y memorandos emitidos para el docente con botón de descarga en PDF.
+
+---
+
+## 2. ReportResource (`app/Filament/Resources/ReportResource.php`)
+
+Gestión y emisión de documentos universitarios oficiales.
 
 ### Características Principales
-- Formulario dividido en secciones
-- Validaciones automáticas
-- Relaciones interactivas
-- Filtros avanzados
-- Acciones personalizadas
+- **Aislamiento Multi-Inquilino**:
+  - `admin`: Visualiza y gestiona todos los reportes de todas las sedes.
+  - `area_manager`: Solo visualiza los reportes pertenecientes a docentes de su misma sede.
+  - `teacher`: Solo consulta sus propios reportes (con permisos de solo lectura, sin opción a modificar o eliminar).
+- **Formulario Inteligente**: Precarga y bloquea la cédula del docente para roles docentes.
+- **Acciones en Tabla**:
+  - Descarga directa de PDF oficial UNERG (`downloadPdf`).
+  - Previsualización en modal lateral (`slideOver`) con visor PDF embebido.
+- **Badges Semánticos**:
+  - Estado: `emitido` (success), `borrador` (warning), `archivado` (gray).
+  - Tipología: Constancia de Trabajo, Memorando Administrativo, Informe de Escalafón.
 
-## SiteResource
+---
 
-Gestión de sedes institucionales.
+## 3. UserResource (`app/Filament/Resources/UserResource.php`)
 
-### Estructura
-```php
-class SiteResource extends Resource
-{
-    protected static ?string $model = Site::class;
-    protected static ?string $navigationIcon = 'heroicon-o-building';
+Administración de cuentas de acceso al sistema.
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                TextInput::make('name')
-                    ->required()
-                    ->unique(),
-                Textarea::make('description'),
-                Textarea::make('address')
-            ]);
-    }
+### Seguridad y Control de Elevación
+- **Blindaje de Columnas Interactivas**: Los conmutadores `ToggleColumn::make('is_approved')` y `ToggleColumn::make('is_active')` están estrictamente deshabilitados para cualquier rol que no sea `admin`.
+- **Asignación de Roles Spatie**: Solo administradores pueden conceder roles de sistema (`admin`, `area_manager`, `teacher`).
+- **Aislamiento Territorial**: Jefes de área solo pueden visualizar y editar usuarios que compartan su misma sede y área.
 
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                TextColumn::make('name'),
-                TextColumn::make('teachers_count')
-                    ->counts('teachers'),
-                TextColumn::make('created_at')
-                    ->dateTime()
-            ]);
-    }
-}
-```
+---
 
-### Características
-- Validación de unicidad
-- Conteo de relaciones
-- Timestamps formateados
+## 4. PermissionTeacherResource (`app/Filament/Resources/PermissionTeacherResource.php`)
 
-## CategoryResource
+Trámite de licencias, permisos médicos, años sabáticos y comisiones de servicio.
 
-Gestión de categorías docentes.
+### Características Principales
+- **Identificador Obligatorio (`name`)**: Menú contextual con opciones reglamentarias predefinidas.
+- **Cálculo Reactivo de Fechas**: Al seleccionar la fecha de inicio (`start_date`) y la modalidad (`duration_type`), calcula reactivamente la fecha final (`end_date`).
+- **Segregación de Funciones**: Los docentes solo pueden solicitar permisos en estado `pending`. La aprobación y el cambio de estado a `approved` o `rejected` está reservada para administradores y jefes de área.
+- **Acción Rápida "Emitir Memo"**: Permite generar automáticamente el memorando oficial en PDF para cualquier permiso que haya sido aprobado.
 
-### Estructura
-```php
-class CategoryResource extends Resource
-{
-    protected static ?string $model = Category::class;
-    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+---
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                TextInput::make('name')
-                    ->required(),
-                Textarea::make('description'),
-                TextInput::make('level')
-                    ->numeric()
-                    ->required(),
-                Textarea::make('requirements')
-            ]);
-    }
+## 5. DedicationResource y CategoryResource
 
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                TextColumn::make('name'),
-                TextColumn::make('level'),
-                TextColumn::make('teachers_count')
-                    ->counts('teachers')
-            ])
-            ->defaultSort('level', 'asc');
-    }
-}
-```
+- **`DedicationResource`**: Valida la carga horaria semanal estricta conforme al reglamento UNERG:
+  - Tiempo Convencional: 1 a 17h.
+  - Medio Tiempo: 18h.
+  - Tiempo Completo: 30 a 35h.
+  - Exclusiva: 36 a 40h.
+- **`CategoryResource`**: Calcula retroactivamente fechas de escalafón previas ante ingresos con títulos de maestría o doctorado (ascenso directo).
 
-### Características
-- Ordenamiento por nivel
-- Validación numérica
-- Conteo de docentes
-- **Hooks (`mutateFormDataBeforeCreate` / `mutateFormDataBeforeSave`):** Implementa lógica de Ascenso Directo. Si el docente ingresa con Especialización/Maestría, asciende directamente a Asistente. Si ingresa con Doctorado, asciende directamente a Agregado, calculando retroactivamente las fechas de los escalafones previos.
+---
 
-## DedicationResource
+## 6. Widgets del Dashboard Activo (`app/Filament/Widgets/`)
 
-Gestión de dedicaciones docentes.
+El escritorio principal de SIGEDOR (`/admin`) integra 5 widgets dinámicos e interactivos:
 
-### Estructura
-```php
-class DedicationResource extends Resource
-{
-    protected static ?string $model = Dedication::class;
-    protected static ?string $navigationIcon = 'heroicon-o-clock';
-
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Select::make('type')
-                    ->options([
-                        'TCV' => 'Tiempo Convencional',
-                        'MT' => 'Medio Tiempo',
-                        'TC' => 'Tiempo Completo',
-                        'EX' => 'Exclusiva'
-                    ])
-                    ->required(),
-                TextInput::make('hours')
-                    ->numeric()
-                    ->required(),
-                Textarea::make('description')
-            ]);
-    }
-}
-```
-
-### Características
-- Opciones predefinidas
-- Validación de horas
-- Descripción opcional
-
-## PermissionTeacherResource
-
-Gestión de permisos docentes.
-
-### Estructura
-```php
-class PermissionTeacherResource extends Resource
-{
-    protected static ?string $model = PermissionTeacher::class;
-    protected static ?string $navigationIcon = 'heroicon-o-document-check';
-
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Select::make('teacher_id')
-                    ->relationship('teacher', 'full_name')
-                    ->required(),
-                DatePicker::make('start_date')
-                    ->required(),
-                DatePicker::make('end_date')
-                    ->required(),
-                Textarea::make('reason')
-                    ->required(),
-                Select::make('status')
-                    ->options([
-                        'pending' => 'Pendiente',
-                        'approved' => 'Aprobado',
-                        'rejected' => 'Rechazado'
-                    ])
-                    ->required()
-            ]);
-    }
-}
-```
-
-### Características
-- Selección de docente
-- Rango de fechas
-- Estados predefinidos
-
-## Widgets y Dashboards
-
-### TeacherStatsWidget
-```php
-class TeacherStatsWidget extends Widget
-{
-    protected static string $view = 'filament.widgets.teacher-stats';
-
-    public function getStats(): array
-    {
-        return [
-            'total' => Teacher::count(),
-            'active' => Teacher::active()->count(),
-            'with_permissions' => Teacher::has('permissions')->count()
-        ];
-    }
-}
-```
-
-### SiteOverviewWidget
-```php
-class SiteOverviewWidget extends Widget
-{
-    protected static string $view = 'filament.widgets.site-overview';
-
-    public function getSiteData(): Collection
-    {
-        return Site::withCount('teachers')->get();
-    }
-}
-```
-
-## Acciones Personalizadas
-
-### ApprovePermissionAction
-```php
-class ApprovePermissionAction extends Action
-{
-    public static function make(): static
-    {
-        return parent::make()
-            ->label('Aprobar')
-            ->color('success')
-            ->icon('heroicon-o-check')
-            ->requiresConfirmation();
-    }
-}
-```
-
-## Políticas de Acceso
-
-### Implementación
-```php
-class TeacherPolicy
-{
-    public function viewAny(User $user): bool
-    {
-        return $user->can('view_teachers');
-    }
-
-    public function create(User $user): bool
-    {
-        return $user->can('create_teachers');
-    }
-}
-```
-
-## Notas de Implementación
-
-1. Todos los recursos implementan:
-   - Navegación personalizada
-   - Iconos descriptivos
-   - Ordenamiento lógico
-   - Filtros relevantes
-
-2. Validaciones:
-   - A nivel de modelo
-   - A nivel de formulario
-   - Mensajes personalizados
-
-3. Optimización:
-   - Eager loading de relaciones
-   - Caché de consultas frecuentes
-   - Paginación eficiente
+1. **`StatsOverview`**: Tarjetas de métricas globales (Total de Docentes, Cuentas Activas, Solicitudes Pendientes y Reportes Emitidos).
+2. **`TeacherDistributionChart`**: Gráfico de distribución de docentes por categoría académica.
+3. **`SedeStatsChart`**: Gráfico de distribución territorial de docentes por sede universitaria.
+4. **`TasksOverview`**: Indicadores de carga horaria y tareas de revisión académica.
+5. **`LatestReportsWidget`**: Listado de los últimos reportes generados con botón de descarga rápida en PDF y respeto estricto de las políticas de acceso del usuario autenticado.

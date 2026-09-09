@@ -109,6 +109,9 @@ it('returns a successful response for the reports API endpoint', function () {
                 'data' => [
                     '*' => [
                         'id',
+                        'verification_code',
+                        'status',
+                        'created_by',
                         'teacher' => [
                             'id',
                             'cdi',
@@ -119,7 +122,11 @@ it('returns a successful response for the reports API endpoint', function () {
             ],
         ]);
 
-    $firstReportTeacher = $response->json('data.data.0.teacher');
+    $firstReport = $response->json('data.data.0');
+    expect($firstReport['verification_code'])->toStartWith('UNERG-REP-');
+    expect($firstReport['status'])->toBe('issued');
+
+    $firstReportTeacher = $firstReport['teacher'];
     expect($firstReportTeacher)->not->toHaveKeys(['phone', 'birthDate', 'user_id']);
 });
 

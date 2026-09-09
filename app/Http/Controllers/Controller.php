@@ -22,21 +22,5 @@ namespace App\Http\Controllers;
  *      url=L5_SWAGGER_CONST_HOST,
  *      description="Servidor Principal de API"
  * )
- *
- * @OA\Get(
- *     path="/api/ping",
- *     summary="Verificar estado de la API",
- *     tags={"Health"},
- *
- *     @OA\Response(
- *         response=200,
- *         description="API funcionando correctamente",
- *
- *         @OA\JsonContent(
- *
- *             @OA\Property(property="status", type="string", example="ok")
- *         )
- *     )
- * )
  */
 abstract class Controller {}

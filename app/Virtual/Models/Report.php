@@ -28,6 +28,41 @@ class Report
 
     /**
      * @OA\Property(
+     *      title="Verification Code",
+     *      description="Código único de verificación y autenticidad documental institucional",
+     *      example="UNERG-REP-2026-ABCD"
+     * )
+     *
+     * @var string
+     */
+    public $verification_code;
+
+    /**
+     * @OA\Property(
+     *      title="Status",
+     *      description="Estado del reporte (draft, issued, archived)",
+     *      example="issued",
+     *      enum={"draft", "issued", "archived"}
+     * )
+     *
+     * @var string
+     */
+    public $status;
+
+    /**
+     * @OA\Property(
+     *      title="Created By",
+     *      description="ID del usuario emisor del documento",
+     *      format="int64",
+     *      example=1
+     * )
+     *
+     * @var int
+     */
+    public $created_by;
+
+    /**
+     * @OA\Property(
      *      title="Teacher CDI",
      *      description="Cédula del docente asociado",
      *      example="V-12345678"
