@@ -1,61 +1,52 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        @page { size: landscape; margin: 20px; }
-        .header { text-align: center; margin-bottom: 20px; }
-        .footer { text-align: center; margin-top: 20px; font-size: 12px; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        th, td { border: 1px solid #000; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .title { font-size: 18px; font-weight: bold; }
-        .subtitle { font-size: 14px; margin-top: 5px; }
-        .footer-text { font-size: 12px; margin-top: 10px; }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="title">Universidad Nacional Experimental "Rómulo Gallegos"</div>
-        <div class="subtitle">Control Académico - Reporte General - {{ now()->format('d/m/Y H:i') }}</div>
-    </div>
+@extends('pdf.base')
 
-    <table>
-        <thead>
+@section('page_size', 'A4 landscape')
+@section('title', 'Reporte Consolidado de Memorandos y Dictámenes - SIGEDOR UNERG')
+
+@section('content')
+<h3 class="doc-title" style="margin-bottom: 2mm;">LISTADO CONSOLIDADO DE REPORTES Y MEMORANDOS ACADÉMICOS</h3>
+<p class="doc-subtitle" style="margin-bottom: 5mm;">
+    Registro Oficial de Documentos Emitidos &bull; Total de Registros: <strong>{{ $reports->count() }}</strong>
+</p>
+
+<table class="data-table" style="font-size: 8pt;">
+    <thead>
+        <tr>
+            <th style="width: 10%;">Nº Memo</th>
+            <th style="width: 16%;">Tipo de Informe</th>
+            <th style="width: 22%;">Docente (Nombre y C.I.)</th>
+            <th style="width: 14%;">Sede</th>
+            <th style="width: 14%;">Área</th>
+            <th style="width: 12%;">Categoría</th>
+            <th style="width: 12%;">Fecha Emisión</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse($reports as $rep)
             <tr>
-                <th>ID</th>
-                <th>Docente</th>
-                <th>Categoría</th>
-                <th>Dedicación</th>
-                <th>Sede</th>
-                <th>Reporte</th>
-                <th>Número de Memo</th>
-                <th>Tipo de Reporte</th>
-                <th>Correo Electrónico</th>
-                <th>Información Adicional</th>
+                <td><strong>{{ $rep->memoNumber }}</strong></td>
+                <td>{{ $rep->typeReport }}</td>
+                <td>
+                    {{ $rep->teacher ? $rep->teacher->full_name : 'No Asignado' }}
+                    <br>
+                    <span style="font-size: 7.5pt; color: #64748b;">C.I. {{ $rep->teacher_cdi }}</span>
+                </td>
+                <td>{{ $rep->sede?->nombre ?? 'Sin Asignar' }}</td>
+                <td>{{ $rep->area?->nombre ?? 'Sin Asignar' }}</td>
+                <td>{{ $rep->category?->current_category ?? $rep->teacher?->category?->current_category ?? 'Instructor' }}</td>
+                <td>{{ $rep->created_at ? $rep->created_at->format('d/m/Y') : 'N/A' }}</td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach($reports as $report)
-                <tr>
-                    <td>{{ $report->id }}</td>
-                    <td>{{ $report->teacher ? ($report->teacher->name . ' ' . $report->teacher->surName) : ($report->teacher_cdi ?? 'Sin Docente') }}</td>
-                    <td>{{ $report->category?->current_category ?? $report->teacher?->category?->current_category ?? 'Sin Categoría' }}</td>
-                    <td>{{ $report->dedication?->name ?? $report->teacher?->dedication?->name ?? 'Sin Dedicación' }}</td>
-                    <td>{{ $report->sede?->nombre ?? 'Sin Sede' }}</td>
-                    <td>{{ $report->report }}</td>
-                    <td>{{ $report->memoNumber }}</td>
-                    <td>{{ $report->typeReport }}</td>
-                    <td>{{ $report->email }}</td>
-                    <td>{{ $report->info }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+        @empty
+            <tr>
+                <td colspan="7" style="text-align: center; color: #64748b; padding: 10px;">
+                    No se encontraron reportes registrados para los criterios seleccionados.
+                </td>
+            </tr>
+        @endforelse
+    </tbody>
+</table>
 
-    <div class="footer">
-        <div class="footer-text">Total de reportes: {{ $reports->count() }}</div>
-        <div class="footer-text">SIGEDOR - Sistema para Gestión de Docentes Ordinarios</div>
-        <div class="footer-text">Generado automáticamente por el sistema</div>
-    </div>
-</body>
-</html>
+<div style="margin-top: 6mm; text-align: right; font-size: 8pt; color: #475569;">
+    <strong>Resumen:</strong> {{ $reports->count() }} documento(s) procesado(s) e incorporados a la presente relación.
+</div>
+@endsection

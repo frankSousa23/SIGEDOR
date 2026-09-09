@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Widgets\LatestReportsWidget;
 use App\Filament\Widgets\SedeStatsChart;
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\TasksOverview;
@@ -34,6 +35,7 @@ class Dashboard extends BaseDashboard
             TeacherDistributionChart::class,
             SedeStatsChart::class,
             TasksOverview::class,
+            LatestReportsWidget::class,
         ];
     }
 }

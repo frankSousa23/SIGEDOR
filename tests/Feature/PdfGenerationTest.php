@@ -148,4 +148,46 @@ class PdfGenerationTest extends TestCase
         $this->assertNotEmpty($output);
         $this->assertStringStartsWith('%PDF-', $output);
     }
+
+    public function test_work_certificate_pdf_renders_with_unerg_letterhead_and_verification_code(): void
+    {
+        $teacher = Teacher::first();
+
+        $report = Report::create([
+            'teacher_cdi' => $teacher->cdi,
+            'memoNumber' => 'MEMO-CONST-001',
+            'typeReport' => 'Constancia de Trabajo',
+            'report' => 'El docente labora activamente en el Área de Sistemas.',
+            'sede_id' => $teacher->sede_id,
+            'area_id' => $teacher->area_id,
+        ]);
+
+        $pdf = Pdf::loadView('pdf.report', ['report' => $report]);
+        $output = $pdf->output();
+
+        $this->assertNotEmpty($output);
+        $this->assertStringStartsWith('%PDF-', $output);
+        $this->assertNotEmpty($report->verification_code);
+    }
+
+    public function test_administrative_memo_pdf_renders_successfully(): void
+    {
+        $teacher = Teacher::first();
+
+        $report = Report::create([
+            'teacher_cdi' => $teacher->cdi,
+            'memoNumber' => 'MEMO-ADM-002',
+            'typeReport' => 'Memorando Administrativo',
+            'report' => 'Notificación oficial de asignación académica.',
+            'info' => 'Asignación de Cátedra',
+            'sede_id' => $teacher->sede_id,
+            'area_id' => $teacher->area_id,
+        ]);
+
+        $pdf = Pdf::loadView('pdf.report', ['report' => $report]);
+        $output = $pdf->output();
+
+        $this->assertNotEmpty($output);
+        $this->assertStringStartsWith('%PDF-', $output);
+    }
 }

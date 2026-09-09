@@ -3,6 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TeacherResource\Pages;
+use App\Filament\Resources\TeacherResource\RelationManagers;
+use App\Models\Report;
 use App\Models\Teacher;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -279,6 +281,35 @@ class TeacherResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make()->slideOver(),
                 Tables\Actions\EditAction::make(),
+                Action::make('generate_certificate')
+                    ->label('Constancia')
+                    ->icon('heroicon-o-document-check')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->modalHeading('Emitir Constancia de Trabajo Oficial')
+                    ->modalDescription('¿Desea generar y registrar una nueva Constancia de Trabajo oficial para este docente?')
+                    ->modalSubmitActionLabel('Emitir y Descargar PDF')
+                    ->action(function (Teacher $record) {
+                        $memoNumber = 'CONST-'.now()->format('Ymd').'-'.strtoupper(substr($record->cdi, -4));
+                        $report = Report::create([
+                            'teacher_cdi' => $record->cdi,
+                            'memoNumber' => $memoNumber,
+                            'typeReport' => 'Constancia de Trabajo',
+                            'report' => "Se hace constar formalmente que el ciudadano(a) {$record->full_name}, titular de la C.I. {$record->cdi}, presta sus servicios académicos como personal docente ordinario en el área {$record->area?->nombre} adscrito a la sede {$record->sede?->nombre}.",
+                            'sede_id' => $record->sede_id,
+                            'area_id' => $record->area_id,
+                            'category_id' => $record->category_id,
+                            'dedication_id' => $record->dedication_id,
+                            'status' => 'issued',
+                        ]);
+
+                        $pdf = Pdf::loadView('pdf.report', ['report' => $report]);
+
+                        return response()->streamDownload(
+                            fn () => print ($pdf->output()),
+                            "constancia_trabajo_{$record->cdi}.pdf"
+                        );
+                    }),
                 Action::make('pdf_individual')
                     ->label('Expediente PDF')
                     ->icon('heroicon-o-document-arrow-down')
@@ -349,6 +380,13 @@ class TeacherResource extends Resource
                         ->requiresConfirmation(),
                 ]),
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\ReportsRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

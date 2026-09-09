@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PermissionTeacherResource\Pages;
 use App\Models\PermissionTeacher;
+use App\Models\Report;
 use App\Models\Teacher;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms\Components\DatePicker;
@@ -225,6 +226,40 @@ class PermissionTeacherResource extends Resource
                     ->color('success')
                     ->visible(fn (PermissionTeacher $record) => $record->status === 'pending')
                     ->action(fn (PermissionTeacher $record) => $record->update(['status' => 'approved'])),
+                Action::make('generate_memo')
+                    ->label('Emitir Memo')
+                    ->icon('heroicon-o-document-text')
+                    ->color('primary')
+                    ->visible(fn (PermissionTeacher $record) => $record->status === 'approved' && auth()->user()?->hasAnyRole(['admin', 'area_manager']))
+                    ->requiresConfirmation()
+                    ->modalHeading('Emitir Memorando Oficial de Permiso Aprobado')
+                    ->modalDescription('¿Desea registrar y emitir el Memorando Oficial institucional para este permiso académico?')
+                    ->action(function (PermissionTeacher $record) {
+                        $teacher = $record->teacher;
+                        $memoNumber = 'MEMO-PERM-'.($record->memo_number ?: now()->format('Ymd-His'));
+
+                        $report = Report::firstOrCreate(
+                            ['memoNumber' => $memoNumber],
+                            [
+                                'teacher_cdi' => $record->teacher_cdi,
+                                'typeReport' => 'Memorando Administrativo',
+                                'report' => "Por medio del presente se notifica la APROBACIÓN formal de la solicitud de permiso académico ({$record->type}) por modalidad {$record->duration_type} desde el ".($record->start_date ? $record->start_date->format('d/m/Y') : 'inicio acordado').' hasta '.($record->end_date ? $record->end_date->format('d/m/Y') : 'culminación reglamentaria').".\n\nFundamentación: ".($record->description ?: 'Permiso académico conforme al reglamento docente vigente.'),
+                                'info' => "Aprobación de Permiso Académico - {$record->type}",
+                                'sede_id' => $teacher?->sede_id,
+                                'area_id' => $teacher?->area_id,
+                                'category_id' => $teacher?->category_id,
+                                'dedication_id' => $teacher?->dedication_id,
+                                'status' => 'issued',
+                            ]
+                        );
+
+                        $pdf = Pdf::loadView('pdf.report', ['report' => $report]);
+
+                        return response()->streamDownload(
+                            fn () => print ($pdf->output()),
+                            "memorando_permiso_{$record->memo_number}.pdf"
+                        );
+                    }),
                 Action::make('pdf')
                     ->label('PDF')
                     ->icon('heroicon-o-document-arrow-down')

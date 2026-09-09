@@ -9,23 +9,23 @@ class ReportPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'area_manager', 'teacher']); // Todos los roles pueden ver reports
+        return $user->hasAnyRole(['admin', 'area_manager', 'teacher']);
     }
 
     public function view(User $user, Report $report): bool
     {
         if ($user->hasRole('admin')) {
-            return true; // Admin puede ver cualquier report
+            return true;
         }
 
         if ($user->hasRole('area_manager')) {
-            // Area Manager solo puede ver reports de su misma sede y área
-            return $report->sede_id === $user->sede_id && $report->area_id === $user->area_id;
+            return $report->sede_id === $user->sede_id
+                || ($report->teacher && $report->teacher->sede_id === $user->sede_id);
         }
 
         if ($user->hasRole('teacher')) {
-            // Teacher solo puede ver sus propios reports
-            return $report->user_id === $user->id;
+            return $report->teacher_cdi === $user->teacher?->cdi
+                || ($report->teacher && $report->teacher->user_id === $user->id);
         }
 
         return false;
@@ -33,23 +33,18 @@ class ReportPolicy
 
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'area_manager', 'teacher']); // Todos los roles pueden crear reports
+        return $user->hasAnyRole(['admin', 'area_manager', 'teacher']);
     }
 
     public function update(User $user, Report $report): bool
     {
         if ($user->hasRole('admin')) {
-            return true; // Admin puede editar cualquier report
+            return true;
         }
 
         if ($user->hasRole('area_manager')) {
-            // Area Manager solo puede editar reports de su misma sede y área
-            return $report->sede_id === $user->sede_id && $report->area_id === $user->area_id;
-        }
-
-        if ($user->hasRole('teacher')) {
-            // Teacher solo puede editar sus propios reports
-            return $report->user_id === $user->id;
+            return ($report->sede_id === $user->sede_id || ($report->teacher && $report->teacher->sede_id === $user->sede_id))
+                && $report->status !== 'annulled';
         }
 
         return false;
@@ -57,6 +52,6 @@ class ReportPolicy
 
     public function delete(User $user, Report $report): bool
     {
-        return $user->hasRole('admin'); // Solo admin puede eliminar reports
+        return $user->hasRole('admin');
     }
 }

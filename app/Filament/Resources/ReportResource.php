@@ -54,6 +54,9 @@ class ReportResource extends Resource
                                 $user = auth()->user();
 
                                 return Teacher::query()
+                                    ->when($user && $user->hasRole('teacher') && ! $user->hasAnyRole(['admin', 'area_manager']), function ($query) use ($user) {
+                                        $query->where('user_id', $user->id);
+                                    })
                                     ->when($user && $user->hasRole('area_manager') && ! $user->hasRole('admin'), function ($query) use ($user) {
                                         $query->where('sede_id', $user->sede_id);
                                     })
@@ -63,6 +66,9 @@ class ReportResource extends Resource
                                         $teacher->cdi => "{$teacher->cdi} - {$teacher->name} {$teacher->surName}",
                                     ]);
                             })
+                            ->default(fn () => auth()->user()?->hasRole('teacher') ? auth()->user()?->teacher?->cdi : null)
+                            ->disabled(fn () => auth()->user()?->hasRole('teacher') && ! auth()->user()?->hasAnyRole(['admin', 'area_manager']))
+                            ->dehydrated()
                             ->required()
                             ->searchable()
                             ->preload()
@@ -81,7 +87,7 @@ class ReportResource extends Resource
                         Grid::make(3)
                             ->schema([
                                 TextInput::make('memoNumber')
-                                    ->label('Número de Memorando')
+                                    ->label('Número de Memorando / Oficio')
                                     ->required()
                                     ->maxLength(100),
 
@@ -95,14 +101,25 @@ class ReportResource extends Resource
                                     ])
                                     ->required(),
 
+                                Select::make('status')
+                                    ->label('Estado')
+                                    ->options([
+                                        'issued' => 'Emitido Oficialmente',
+                                        'draft' => 'Borrador Preliminar',
+                                        'annulled' => 'Anulado',
+                                    ])
+                                    ->default('issued')
+                                    ->disabled(fn () => auth()->user()?->hasRole('teacher') && ! auth()->user()?->hasRole('admin'))
+                                    ->required(),
+                            ]),
+
+                        Grid::make(3)
+                            ->schema([
                                 TextInput::make('email')
                                     ->label('Correo de Notificación')
                                     ->email()
                                     ->nullable(),
-                            ]),
 
-                        Grid::make(2)
-                            ->schema([
                                 Select::make('sede_id')
                                     ->label('Sede')
                                     ->relationship('sede', 'nombre')
@@ -116,13 +133,20 @@ class ReportResource extends Resource
                                     ->preload(),
                             ]),
 
+                        TextInput::make('verification_code')
+                            ->label('Código Único de Verificación Documental')
+                            ->disabled()
+                            ->dehydrated(false)
+                            ->visibleOn(['edit', 'view'])
+                            ->columnSpanFull(),
+
                         Textarea::make('report')
                             ->label('Contenido del Reporte / Dictamen')
                             ->rows(5)
                             ->columnSpanFull(),
 
                         Textarea::make('info')
-                            ->label('Observaciones Adicionales')
+                            ->label('Observaciones Adicionales / Asunto')
                             ->rows(2)
                             ->columnSpanFull(),
                     ]),
@@ -135,8 +159,18 @@ class ReportResource extends Resource
             ->columns([
                 TextColumn::make('memoNumber')
                     ->label('Nº Memo')
+                    ->copyable()
+                    ->copyMessage('Número de memorando copiado')
                     ->searchable()
                     ->sortable(),
+
+                TextColumn::make('verification_code')
+                    ->label('Código')
+                    ->badge()
+                    ->color('info')
+                    ->searchable()
+                    ->copyable()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('teacher.full_name')
                     ->label('Docente')
@@ -146,8 +180,29 @@ class ReportResource extends Resource
                 TextColumn::make('typeReport')
                     ->label('Tipo')
                     ->badge()
-                    ->color('primary')
+                    ->color(fn (string $state): string => match ($state) {
+                        'Constancia de Trabajo' => 'success',
+                        'Memorando Administrativo' => 'primary',
+                        'Informe de Escalafón' => 'warning',
+                        'Informe de Dedicación' => 'info',
+                        default => 'gray',
+                    })
                     ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('status')
+                    ->label('Estado')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'issued' => 'success',
+                        'annulled' => 'danger',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'issued' => 'Emitido',
+                        'annulled' => 'Anulado',
+                        default => 'Borrador',
+                    })
                     ->sortable(),
 
                 TextColumn::make('sede.nombre')
@@ -174,8 +229,17 @@ class ReportResource extends Resource
                         'Informe de Escalafón' => 'Informe de Escalafón',
                         'Memorando Administrativo' => 'Memorando Administrativo',
                     ]),
+
+                SelectFilter::make('status')
+                    ->label('Estado')
+                    ->options([
+                        'issued' => 'Emitido',
+                        'draft' => 'Borrador',
+                        'annulled' => 'Anulado',
+                    ]),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make()->slideOver(),
                 Tables\Actions\EditAction::make(),
                 Action::make('pdf')
                     ->label('PDF')
@@ -202,7 +266,7 @@ class ReportResource extends Resource
                             return response()->streamDownload(function () use ($records) {
                                 $handle = fopen('php://output', 'w');
                                 fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF)); // UTF-8 BOM
-                                fputcsv($handle, ['N° Memo', 'Tipo', 'Docente CDI', 'Docente Nombre', 'Sede', 'Área', 'Categoría', 'Dedicación', 'Reporte', 'Fecha']);
+                                fputcsv($handle, ['N° Memo', 'Código Verificación', 'Tipo', 'Estado', 'Docente CDI', 'Docente Nombre', 'Sede', 'Área', 'Categoría', 'Dedicación', 'Reporte', 'Fecha']);
                                 $sanitizeCell = static function ($value): string {
                                     $str = (string) ($value ?? '');
                                     if (preg_match('/^[=\+\-@\t\r]/', $str)) {
@@ -215,7 +279,9 @@ class ReportResource extends Resource
                                 foreach ($records as $rep) {
                                     fputcsv($handle, array_map($sanitizeCell, [
                                         $rep->memoNumber,
+                                        $rep->verification_code,
                                         $rep->typeReport,
+                                        $rep->status,
                                         $rep->teacher?->cdi ?? '',
                                         $rep->teacher?->full_name ?? '',
                                         $rep->sede?->nombre ?? '',
@@ -260,13 +326,34 @@ class ReportResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
-
         $user = auth()->user();
 
+        if (! $user) {
+            return $query;
+        }
+
+        if ($user->hasRole('admin')) {
+            return $query;
+        }
+
         // El Jefe de Área solo ve reportes de docentes de su sede
-        if ($user && $user->hasRole('area_manager') && $user->sede_id) {
-            return $query->whereHas('teacher.user', function ($q) use ($user) {
-                $q->where('sede_id', $user->sede_id);
+        if ($user->hasRole('area_manager') && $user->sede_id) {
+            return $query->where(function (Builder $q) use ($user) {
+                $q->where('sede_id', $user->sede_id)
+                    ->orWhereHas('teacher.user', fn ($sub) => $sub->where('sede_id', $user->sede_id))
+                    ->orWhereHas('teacher', fn ($sub) => $sub->where('sede_id', $user->sede_id));
+            });
+        }
+
+        // El Docente solo ve sus propios reportes
+        if ($user->hasRole('teacher')) {
+            $teacherCdi = $user->teacher?->cdi;
+
+            return $query->where(function (Builder $q) use ($user, $teacherCdi) {
+                if ($teacherCdi) {
+                    $q->where('teacher_cdi', $teacherCdi);
+                }
+                $q->orWhereHas('teacher', fn ($sub) => $sub->where('user_id', $user->id));
             });
         }
 
