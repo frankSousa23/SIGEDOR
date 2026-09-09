@@ -45,6 +45,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->font('Outfit')
             ->sidebarCollapsibleOnDesktop()
+            ->spa()
+            ->unsavedChangesAlerts()
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->navigationGroups([
                 NavigationGroup::make()

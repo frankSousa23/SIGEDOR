@@ -343,7 +343,7 @@ class PermissionTeacherResource extends Resource
      */
     public static function getEloquentQuery(): Builder
     {
-        $query = parent::getEloquentQuery();
+        $query = parent::getEloquentQuery()->with(['teacher']);
         $user = auth()->user();
 
         if ($user && $user->hasRole('area_manager') && $user->sede_id) {

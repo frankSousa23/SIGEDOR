@@ -58,7 +58,7 @@ class TeacherResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $query = parent::getEloquentQuery();
+        $query = parent::getEloquentQuery()->with(['sede', 'area', 'category', 'dedication']);
         $user = Auth::user();
 
         if ($user && $user->isAreaManager()) {

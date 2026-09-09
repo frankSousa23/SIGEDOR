@@ -32,13 +32,36 @@ yarn-error.log
 /.zed
 /docs/private/
 
+# Testing & Coverage caches
+.pest/
+.phpunit.cache/
+coverage/
+*.lcov
+.coverage*
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+*~
+*.swp
+*.bak
+
 # Build & Vite artifacts
 vite.config.js.timestamp*
 
 # Database dumps & local databases
 *.sql
-*.sqlite
+*.sqlite*
+*.sqlite-journal
 *.dump
+database/*.sqlite*
 
 # Generated Swagger docs
 /storage/api-docs/

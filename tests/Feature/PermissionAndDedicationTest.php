@@ -11,10 +11,6 @@ use Tests\TestCase;
  *
  * Verifica el cálculo de horas válidas por tipo de dedicación y el cálculo
  * automático de fechas de fin de permisos/licencias según la duración seleccionada.
- *
- * @note Este archivo se llama TeacherCreationTest.php por razones históricas
- *       pero la clase fue renombrada a PermissionAndDedicationTest para reflejar
- *       su contenido actual. Se recomienda renombrar el archivo si es posible.
  */
 class PermissionAndDedicationTest extends TestCase
 {
