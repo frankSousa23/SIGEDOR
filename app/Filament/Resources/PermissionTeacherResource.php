@@ -15,6 +15,8 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
@@ -23,6 +25,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 /**
@@ -73,6 +76,14 @@ class PermissionTeacherResource extends Resource
                             ->preload()
                             ->columnSpanFull(),
 
+                        TextInput::make('name')
+                            ->label('Título o Asunto de la Solicitud')
+                            ->placeholder('Ej: Permiso por Año Sabático - Período Académico')
+                            ->required()
+                            ->default(fn () => 'Solicitud de Permiso Docente - '.now()->format('Y'))
+                            ->maxLength(255)
+                            ->columnSpanFull(),
+
                         Grid::make(3)
                             ->schema([
                                 TextInput::make('memo_number')
@@ -90,14 +101,30 @@ class PermissionTeacherResource extends Resource
                                     ->label('Modalidad de Duración')
                                     ->options(PermissionTeacher::DURATION_TYPES)
                                     ->required()
-                                    ->default('semestral'),
+                                    ->default('semestral')
+                                    ->live()
+                                    ->afterStateUpdated(function ($state, Get $get, Set $set) {
+                                        $startDate = $get('start_date');
+                                        if ($startDate && in_array($state, ['semestral', 'anual'])) {
+                                            $months = $state === 'semestral' ? 6 : 12;
+                                            $set('end_date', Carbon::parse($startDate)->addMonths($months)->format('Y-m-d'));
+                                        }
+                                    }),
                             ]),
 
                         Grid::make(2)
                             ->schema([
                                 DatePicker::make('start_date')
                                     ->label('Fecha de Inicio')
-                                    ->required(),
+                                    ->required()
+                                    ->live()
+                                    ->afterStateUpdated(function ($state, Get $get, Set $set) {
+                                        $duration = $get('duration_type');
+                                        if ($state && in_array($duration, ['semestral', 'anual'])) {
+                                            $months = $duration === 'semestral' ? 6 : 12;
+                                            $set('end_date', Carbon::parse($state)->addMonths($months)->format('Y-m-d'));
+                                        }
+                                    }),
 
                                 DatePicker::make('end_date')
                                     ->label('Fecha de Finalización')
@@ -114,11 +141,16 @@ class PermissionTeacherResource extends Resource
                                         'rejected' => 'Rechazado',
                                     ])
                                     ->default('pending')
+                                    ->disabled(fn () => auth()->user()?->hasRole('teacher') && ! auth()->user()?->hasAnyRole(['admin', 'area_manager']))
+                                    ->dehydrated(fn () => ! (auth()->user()?->hasRole('teacher') && ! auth()->user()?->hasAnyRole(['admin', 'area_manager'])))
+                                    ->helperText(fn () => auth()->user()?->hasRole('teacher') && ! auth()->user()?->hasAnyRole(['admin', 'area_manager']) ? 'El estado es asignado por la jefatura académica o administración.' : null)
                                     ->required(),
 
                                 Toggle::make('is_paid')
                                     ->label('Permiso Remunerado')
-                                    ->default(true),
+                                    ->default(true)
+                                    ->disabled(fn () => auth()->user()?->hasRole('teacher') && ! auth()->user()?->hasAnyRole(['admin', 'area_manager']))
+                                    ->dehydrated(fn () => ! (auth()->user()?->hasRole('teacher') && ! auth()->user()?->hasAnyRole(['admin', 'area_manager']))),
                             ]),
 
                         Textarea::make('description')

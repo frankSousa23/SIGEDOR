@@ -32,11 +32,13 @@ class CategoryPolicy
         }
 
         if ($user->hasRole('area_manager')) {
-            return $category->teacher->user->sede_id === $user->sede_id;
+            $teacherSedeId = $category->teacher?->sede_id ?? $category->teacher?->user?->sede_id;
+
+            return $teacherSedeId === $user->sede_id;
         }
 
         if ($user->hasRole('teacher')) {
-            return $category->teacher_cdi === $user->teacher->cdi;
+            return $category->teacher_cdi === $user->teacher?->cdi;
         }
 
         return false;
@@ -47,7 +49,7 @@ class CategoryPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('admin') || $user->hasRole('area_manager');
     }
 
     /**
@@ -60,7 +62,9 @@ class CategoryPolicy
         }
 
         if ($user->hasRole('area_manager')) {
-            return $category->teacher->user->sede_id === $user->sede_id;
+            $teacherSedeId = $category->teacher?->sede_id ?? $category->teacher?->user?->sede_id;
+
+            return $teacherSedeId === $user->sede_id;
         }
 
         return false;

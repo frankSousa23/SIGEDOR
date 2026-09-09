@@ -105,10 +105,25 @@ class Category extends Model
     }
 
     /**
-     * Registro de auditoría ante cambios en escalafón.
+     * Registro de auditoría ante cambios en escalafón y sincronización automática.
      */
     protected static function booted()
     {
+        static::saved(function ($category) {
+            if (! empty($category->teacher_cdi)) {
+                Teacher::where('cdi', $category->teacher_cdi)
+                    ->update(['category_id' => $category->id]);
+            }
+        });
+
+        static::deleted(function ($category) {
+            if (! empty($category->teacher_cdi)) {
+                Teacher::where('cdi', $category->teacher_cdi)
+                    ->where('category_id', $category->id)
+                    ->update(['category_id' => null]);
+            }
+        });
+
         static::updating(function ($category) {
             if (function_exists('activity') && $category->isDirty(['instructor', 'asistente', 'agregado', 'asociado', 'titular'])) {
                 activity()

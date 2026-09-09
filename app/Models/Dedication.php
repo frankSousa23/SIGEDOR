@@ -56,6 +56,21 @@ class Dedication extends Model
                 };
             }
         });
+
+        static::saved(function (Dedication $dedication) {
+            if (! empty($dedication->teacher_cdi)) {
+                Teacher::where('cdi', $dedication->teacher_cdi)
+                    ->update(['dedication_id' => $dedication->id]);
+            }
+        });
+
+        static::deleted(function (Dedication $dedication) {
+            if (! empty($dedication->teacher_cdi)) {
+                Teacher::where('cdi', $dedication->teacher_cdi)
+                    ->where('dedication_id', $dedication->id)
+                    ->update(['dedication_id' => null]);
+            }
+        });
     }
 
     protected $casts = [

@@ -24,12 +24,21 @@ class TeacherPolicy
                ($user->hasRole('area_manager') && $user->sede_id && $user->area_id);
     }
 
-    public function view(User $user, Teacher $teacher)
+    public function view(User $user, Teacher $teacher): bool
     {
-        return $user->hasRole('admin') ||
-               ($user->hasRole('area_manager') &&
-                $teacher->sede_id == $user->sede_id &&
-                $teacher->area_id == $user->area_id);
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+
+        if ($user->hasRole('area_manager')) {
+            return $teacher->sede_id === $user->sede_id && $teacher->area_id === $user->area_id;
+        }
+
+        if ($user->hasRole('teacher')) {
+            return ($user->teacher?->cdi === $teacher->cdi) || ($teacher->user_id === $user->id);
+        }
+
+        return false;
     }
 
     public function create(User $user): bool
@@ -44,11 +53,11 @@ class TeacherPolicy
         }
 
         if ($user->hasRole('area_manager')) {
-            return $teacher->sede_id === $user->sede_id;
+            return $teacher->sede_id === $user->sede_id && $teacher->area_id === $user->area_id;
         }
 
         if ($user->hasRole('teacher')) {
-            return $teacher->cdi === $user->cdi;
+            return ($user->teacher?->cdi === $teacher->cdi) || ($teacher->user_id === $user->id);
         }
 
         return false;

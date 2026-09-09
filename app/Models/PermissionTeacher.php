@@ -58,6 +58,22 @@ class PermissionTeacher extends Model
 
     public const STATUS_REJECTED = 'rejected';
 
+    protected static function booted(): void
+    {
+        static::saving(function (PermissionTeacher $permission) {
+            if (empty($permission->name)) {
+                $type = $permission->type ?? 'Permiso';
+                $year = $permission->start_date ? Carbon::parse($permission->start_date)->format('Y') : now()->format('Y');
+                $permission->name = "Solicitud de {$type} - {$year}";
+            }
+
+            if (empty($permission->end_date) && ! empty($permission->start_date)) {
+                $calculated = $permission->calculateEndDate();
+                $permission->end_date = $calculated ?? Carbon::parse($permission->start_date)->addMonths(6)->format('Y-m-d');
+            }
+        });
+    }
+
     public const TYPES = [
         'Año Sabático',
         'Comisión de Servicio',

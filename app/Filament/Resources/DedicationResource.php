@@ -94,8 +94,26 @@ class DedicationResource extends Resource
                                     ->label('Horas Semanales')
                                     ->numeric()
                                     ->required()
-                                    ->minValue(1)
-                                    ->maxValue(40),
+                                    ->rules([
+                                        fn (Forms\Get $get) => function (string $attribute, $value, \Closure $fail) use ($get) {
+                                            $dedicationType = $get('name');
+                                            if (! $dedicationType) {
+                                                return;
+                                            }
+                                            $validHours = Dedication::getValidHours($dedicationType);
+                                            if (! empty($validHours) && ! in_array((int) $value, array_keys($validHours))) {
+                                                $validList = implode(', ', array_keys($validHours));
+                                                $fail("Para {$dedicationType}, la normativa universitaria exige {$validList} horas semanales.");
+                                            }
+                                        },
+                                    ])
+                                    ->helperText(fn (Forms\Get $get) => match ($get('name')) {
+                                        'Tiempo Convencional' => 'Rango permitido: 1 a 17 horas semanales.',
+                                        'Medio Tiempo' => 'Carga fija normativa: 18 horas semanales.',
+                                        'Tiempo Completo' => 'Carga fija normativa: 30 horas semanales.',
+                                        'Exclusiva' => 'Carga reglamentaria: 35 o 36 horas semanales.',
+                                        default => null,
+                                    }),
                             ]),
 
                         Grid::make(3)

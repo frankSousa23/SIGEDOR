@@ -386,6 +386,9 @@ class TeacherResource extends Resource
     {
         return [
             RelationManagers\ReportsRelationManager::class,
+            RelationManagers\PermissionsRelationManager::class,
+            RelationManagers\CategoryRelationManager::class,
+            RelationManagers\DedicationRelationManager::class,
         ];
     }
 

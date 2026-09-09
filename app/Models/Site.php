@@ -60,6 +60,34 @@ class Site extends Model
         'programa_id' => 'integer',
     ];
 
+    protected static function booted(): void
+    {
+        static::saved(function (Site $site) {
+            if (! empty($site->teacher_cdi)) {
+                $updates = ['site_id' => $site->id];
+                if ($site->sede_id) {
+                    $updates['sede_id'] = $site->sede_id;
+                }
+                if ($site->area_id) {
+                    $updates['area_id'] = $site->area_id;
+                }
+                if ($site->programa_id) {
+                    $updates['programa_id'] = $site->programa_id;
+                }
+
+                Teacher::where('cdi', $site->teacher_cdi)->update($updates);
+            }
+        });
+
+        static::deleted(function (Site $site) {
+            if (! empty($site->teacher_cdi)) {
+                Teacher::where('cdi', $site->teacher_cdi)
+                    ->where('site_id', $site->id)
+                    ->update(['site_id' => null]);
+            }
+        });
+    }
+
     /**
      * Docente asociado por CDI.
      */

@@ -170,10 +170,12 @@ class UserResource extends Resource
 
                 ToggleColumn::make('is_active')
                     ->label('Activo')
+                    ->disabled(fn () => ! auth()->user()?->isAdmin())
                     ->sortable(),
 
                 ToggleColumn::make('is_approved')
                     ->label('Aprobado')
+                    ->disabled(fn () => ! auth()->user()?->isAdmin())
                     ->sortable(),
             ])
             ->filters([
