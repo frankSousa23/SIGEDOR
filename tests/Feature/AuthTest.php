@@ -53,3 +53,21 @@ it('rechaza login a correos fuera del dominio @sigedor.com', function () {
         ->call('authenticate')
         ->assertHasFormErrors(['email' => 'regex']);
 });
+
+it('permite autorelleno de credenciales de demostracion', function () {
+    Livewire::test(Login::class)
+        ->call('fillDemo', 'admin@sigedor.com', 'password')
+        ->assertFormSet([
+            'email' => 'admin@sigedor.com',
+            'password' => 'password',
+            'remember' => true,
+        ]);
+});
+
+it('muestra los botones de acceso demo y enlace de retorno en la vista de login', function () {
+    $response = $this->get('/admin/login');
+
+    $response->assertStatus(200)
+        ->assertSee('Acceso Rápido Demostrativo')
+        ->assertSee('Volver a la página principal');
+});

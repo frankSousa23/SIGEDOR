@@ -193,7 +193,9 @@ class TeacherResource extends Resource
                 TextColumn::make('cdi')
                     ->label('Cédula')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->copyable()
+                    ->copyMessage('Cédula copiada al portapapeles'),
 
                 TextColumn::make('full_name')
                     ->label('Docente')
@@ -213,7 +215,14 @@ class TeacherResource extends Resource
                 TextColumn::make('category.current_category')
                     ->label('Categoría')
                     ->badge()
-                    ->color('primary')
+                    ->color(fn (?string $state): string => match ($state) {
+                        'Titular' => 'purple',
+                        'Asociado' => 'info',
+                        'Agregado' => 'success',
+                        'Asistente' => 'warning',
+                        'Instructor' => 'gray',
+                        default => 'gray',
+                    })
                     ->placeholder('Sin asignar')
                     ->sortable(),
 
@@ -226,10 +235,14 @@ class TeacherResource extends Resource
 
                 TextColumn::make('email')
                     ->label('Correo')
-                    ->searchable(),
+                    ->searchable()
+                    ->copyable()
+                    ->copyMessage('Correo copiado al portapapeles')
+                    ->toggleable(isToggledHiddenByDefault: false),
 
                 TextColumn::make('phone')
-                    ->label('Teléfono'),
+                    ->label('Teléfono')
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('genre')
@@ -264,6 +277,7 @@ class TeacherResource extends Resource
                     }),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make()->slideOver(),
                 Tables\Actions\EditAction::make(),
                 Action::make('pdf_individual')
                     ->label('Expediente PDF')

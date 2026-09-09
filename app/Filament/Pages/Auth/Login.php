@@ -9,6 +9,8 @@ use Filament\Pages\Auth\Login as BaseAuth;
 
 class Login extends BaseAuth
 {
+    protected static string $view = 'filament.pages.auth.login';
+
     public function form(Form $form): Form
     {
         return $form
@@ -37,5 +39,14 @@ class Login extends BaseAuth
                 'regex' => 'El correo debe pertenecer al dominio @sigedor.com',
             ])
             ->extraInputAttributes(['tabindex' => 1]);
+    }
+
+    public function fillDemo(string $email, string $password = 'password'): void
+    {
+        $this->form->fill([
+            'email' => $email,
+            'password' => $password,
+            'remember' => true,
+        ]);
     }
 }

@@ -138,7 +138,9 @@ class UserResource extends Resource
                 TextColumn::make('email')
                     ->label('Correo')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->copyable()
+                    ->copyMessage('Correo copiado al portapapeles'),
 
                 TextColumn::make('sede.nombre')
                     ->label('Sede')

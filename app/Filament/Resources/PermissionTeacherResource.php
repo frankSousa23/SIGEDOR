@@ -64,6 +64,9 @@ class PermissionTeacherResource extends Resource
                                         $teacher->cdi => "{$teacher->cdi} - {$teacher->name} {$teacher->surName}",
                                     ]);
                             })
+                            ->default(fn () => auth()->user()?->hasRole('teacher') ? auth()->user()?->teacher?->cdi : null)
+                            ->disabled(fn () => auth()->user()?->hasRole('teacher') && ! auth()->user()?->hasAnyRole(['admin', 'area_manager']))
+                            ->dehydrated()
                             ->required()
                             ->searchable()
                             ->preload()

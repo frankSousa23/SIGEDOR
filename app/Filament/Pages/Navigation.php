@@ -11,6 +11,7 @@ use App\Filament\Resources\TeacherResource;
 use App\Filament\Resources\UserResource;
 use Filament\Navigation\NavigationBuilder;
 use Filament\Navigation\NavigationGroup;
+use Filament\Navigation\NavigationItem;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -29,6 +30,15 @@ class Navigation
         if (! $user) {
             return $navigation;
         }
+
+        $navigation->item(
+            NavigationItem::make('Escritorio')
+                ->icon('heroicon-o-home')
+                ->activeIcon('heroicon-s-home')
+                ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.pages.dashboard'))
+                ->sort(-1)
+                ->url(Dashboard::getUrl())
+        );
 
         if ($user->hasRole('admin')) {
             $navigation->groups([

@@ -41,7 +41,10 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('SIGEDOR')
             ->colors([
                 'primary' => Color::Amber,
+                'gray' => Color::Slate,
             ])
+            ->font('Outfit')
+            ->sidebarCollapsibleOnDesktop()
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->navigationGroups([
                 NavigationGroup::make()

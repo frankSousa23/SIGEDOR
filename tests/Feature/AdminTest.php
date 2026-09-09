@@ -40,4 +40,27 @@ class AdminTest extends TestCase
         $response = $this->get('/admin/users');
         $response->assertStatus(200);
     }
+
+    public function test_admin_dashboard_muestra_widgets_graficos_y_acceso_escritorio()
+    {
+        $this->seed(RoleSeeder::class);
+        $sede = Sede::create(['nombre' => 'Sede Central']);
+        $area = Area::create(['nombre' => 'Sistemas']);
+
+        $admin = User::create([
+            'name' => 'Admin Test',
+            'email' => 'admin@test.com',
+            'password' => 'password',
+            'sede_id' => $sede->id,
+            'area_id' => $area->id,
+            'is_active' => true,
+            'is_approved' => true,
+        ]);
+        $admin->assignRole('admin');
+
+        $this->actingAs($admin);
+        $response = $this->get('/admin');
+        $response->assertStatus(200);
+        $response->assertSee('Escritorio');
+    }
 }

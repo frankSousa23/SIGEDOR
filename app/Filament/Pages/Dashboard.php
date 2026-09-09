@@ -2,8 +2,10 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Widgets\SedeStatsChart;
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\TasksOverview;
+use App\Filament\Widgets\TeacherDistributionChart;
 use Filament\Pages\Dashboard as BaseDashboard;
 
 /**
@@ -29,6 +31,8 @@ class Dashboard extends BaseDashboard
     {
         return [
             StatsOverview::class,
+            TeacherDistributionChart::class,
+            SedeStatsChart::class,
             TasksOverview::class,
         ];
     }
