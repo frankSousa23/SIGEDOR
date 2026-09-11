@@ -4,6 +4,8 @@
 [![Filament](https://img.shields.io/badge/Filament-3.x-F59E0B?style=for-the-badge&logo=filament&logoColor=white)](https://filamentphp.com)
 [![PHP](https://img.shields.io/badge/PHP-8.2%20%7C%208.3-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg?style=for-the-badge)](LICENSE)
+[![Release](https://img.shields.io/badge/Release-v2.0.0-blue.svg?style=for-the-badge)](https://github.com/frankSousa23/SIGEDOR/releases)
+[![Tests](https://img.shields.io/badge/Tests-49%20Passed-brightgreen?style=for-the-badge)](https://github.com/frankSousa23/SIGEDOR/actions)
 [![CI](https://github.com/frankSousa23/SIGEDOR/actions/workflows/ci.yml/badge.svg)](https://github.com/frankSousa23/SIGEDOR/actions/workflows/ci.yml)
 
 > **SIGEDOR** es una plataforma web integral desarrollada originalmente como proyecto de tesis universitaria y liberada a la comunidad bajo la **Licencia MIT**. Diseñada para la administración de expedientes académicos, control de escalafón docente universitario, gestión de carga y dedicación horaria, asignación territorial por sedes/áreas, ingesta de datos por CSV y emisión automatizada de reportes oficiales en PDF.
@@ -249,9 +251,13 @@ La base de datos incluye cuentas preconfiguradas con datos sintéticos y anonimi
 
 ## 🧪 Ejecución de Pruebas
 
-El proyecto cuenta con una suite automatizada de pruebas con **Pest / PHPUnit** que valida autenticación, permisos, integridad relacional, reglas de negocio y cálculo de escalafón:
+El proyecto cuenta con una suite integral y automatizada de pruebas con **Pest / PHPUnit** (**49 pruebas pasadas con 372 aserciones al 100%**) que valida autenticación, políticas multi-inquilino por Sede/Área, integridad relacional, reglas de negocio de escalafón UNERG, generación de PDFs oficiales y endpoints de la API v1:
 
 ```bash
+# Ejecutar suite con Pest
+./vendor/bin/pest
+
+# O mediante el comando de Artisan
 php artisan test
 ```
 

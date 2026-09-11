@@ -1,9 +1,19 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "franksousa23/sigedor",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Sistema Integral para Gestión de Docentes Ordinarios, Escalafón Universitario, Carga Horaria y Control Académico de la UNERG.",
+    "keywords": [
+        "laravel",
+        "filament",
+        "sigedor",
+        "unerg",
+        "academic-management",
+        "escalafon-docente",
+        "multi-tenancy",
+        "openapi",
+        "dompdf"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
