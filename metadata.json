@@ -1,0 +1,8 @@
+{
+  "name": "SIGEDOR - Sistema de Gestión Docente y Reportes",
+  "description": "Sistema integral de gestión de expedientes académicos, escalafón docente universitario, carga horaria, sedes y emisión de reportes oficiales de la UNERG.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
