@@ -21,7 +21,8 @@ import {
   SlidersHorizontal,
   MapPin,
   Clock,
-  Award
+  Award,
+  RotateCcw
 } from 'lucide-react';
 
 interface TeacherListProps {
@@ -30,7 +31,18 @@ interface TeacherListProps {
 }
 
 export const TeacherList: React.FC<TeacherListProps> = ({ onOpenTeacher, onGenerateReport }) => {
-  const { filteredTeachers, categories, dedications, addTeacher, deleteTeacher, sedes, areas, programas } = useData();
+  const { 
+    filteredTeachers, 
+    categories, 
+    dedications, 
+    addTeacher, 
+    deleteTeacher, 
+    sedes, 
+    areas, 
+    programas,
+    isDatabaseEmpty,
+    restoreSampleData
+  } = useData();
   const { isSuperAdmin, isAreaManager } = useAuth();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -179,7 +191,42 @@ export const TeacherList: React.FC<TeacherListProps> = ({ onOpenTeacher, onGener
         </div>
       </div>
 
-      {/* Search and Filters Bar */}
+      {/* When the database is completely empty (Integration Mode) */}
+      {filteredTeachers.length === 0 ? (
+        <div className="bg-white rounded-2xl border-2 border-dashed border-slate-300 p-8 sm:p-12 text-center space-y-4 shadow-xs">
+          <div className="w-16 h-16 rounded-2xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center mx-auto shadow-xs">
+            <GraduationCap className="w-8 h-8" />
+          </div>
+          <div className="max-w-md mx-auto space-y-1">
+            <h3 className="text-base sm:text-lg font-bold text-slate-900">
+              Base de Datos en Blanco (Lista para Integración)
+            </h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              No hay expedientes docentes registrados actualmente. Puede comenzar la carga oficial de datos de su institución registrando el primer expediente docente, o restaurar la muestra institucional de prueba.
+            </p>
+          </div>
+          <div className="flex items-center justify-center gap-3 flex-wrap pt-2">
+            {(isSuperAdmin || isAreaManager) && (
+              <button
+                onClick={() => setShowCreateModal(true)}
+                className="px-4 py-2 text-xs font-bold text-white bg-unerg-blue hover:bg-unerg-blue-light rounded-lg shadow-xs flex items-center gap-1.5 transition-all"
+              >
+                <Plus className="w-4 h-4" />
+                Registrar Primer Docente
+              </button>
+            )}
+            <button
+              onClick={restoreSampleData}
+              className="px-4 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-lg shadow-xs flex items-center gap-1.5 transition-colors"
+            >
+              <RotateCcw className="w-4 h-4 text-blue-600" />
+              Cargar Datos de Muestra UNERG
+            </button>
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* Search and Filters Bar */}
       <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
         <div className="flex items-center gap-2">
           <div className="relative flex-1">
@@ -290,8 +337,19 @@ export const TeacherList: React.FC<TeacherListProps> = ({ onOpenTeacher, onGener
       {viewMode === 'cards' ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
           {filtered.length === 0 ? (
-            <div className="col-span-full py-12 text-center text-slate-500 bg-white rounded-xl border border-slate-200">
-              No se encontraron docentes con los criterios seleccionados.
+            <div className="col-span-full py-12 text-center text-slate-500 bg-white rounded-xl border border-slate-200 space-y-2">
+              <p className="text-xs">No se encontraron docentes con los criterios de búsqueda seleccionados.</p>
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedSede('');
+                  setSelectedCategory('');
+                  setSelectedDedication('');
+                }}
+                className="text-xs text-unerg-blue font-semibold hover:underline"
+              >
+                Limpiar todos los filtros
+              </button>
             </div>
           ) : (
             filtered.map(teacher => {
@@ -410,8 +468,19 @@ export const TeacherList: React.FC<TeacherListProps> = ({ onOpenTeacher, onGener
               <tbody className="divide-y divide-slate-100">
                 {filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="py-8 text-center text-slate-500">
-                      No se encontraron docentes con los criterios seleccionados.
+                    <td colSpan={6} className="py-10 text-center text-slate-500">
+                      <p className="text-xs">No se encontraron docentes con los criterios de búsqueda seleccionados.</p>
+                      <button
+                        onClick={() => {
+                          setSearchQuery('');
+                          setSelectedSede('');
+                          setSelectedCategory('');
+                          setSelectedDedication('');
+                        }}
+                        className="text-xs text-unerg-blue font-semibold hover:underline mt-2 inline-block"
+                      >
+                        Limpiar todos los filtros
+                      </button>
                     </td>
                   </tr>
                 ) : (
@@ -506,6 +575,8 @@ export const TeacherList: React.FC<TeacherListProps> = ({ onOpenTeacher, onGener
             </table>
           </div>
         </div>
+      )}
+      </>
       )}
 
       {/* Modal: Crear Nuevo Docente */}

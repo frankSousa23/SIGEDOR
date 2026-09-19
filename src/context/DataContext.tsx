@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useMemo } from 'react';
+import React, { createContext, useContext, useState, useMemo, useEffect } from 'react';
 import {
   Teacher,
   Category,
@@ -23,6 +23,8 @@ import {
 } from '../data/initialData';
 import { useAuth } from './AuthContext';
 
+const STORAGE_KEY = 'sigedor_db_state_v2';
+
 interface DataContextType {
   teachers: Teacher[];
   categories: Category[];
@@ -34,6 +36,10 @@ interface DataContextType {
   sedes: typeof INITIAL_SEDES;
   areas: typeof INITIAL_AREAS;
   programas: typeof INITIAL_PROGRAMAS;
+
+  // State indicators
+  isDatabaseEmpty: boolean;
+  isSampleData: boolean;
 
   // Filtered views by user scope
   filteredTeachers: Teacher[];
@@ -68,6 +74,12 @@ interface DataContextType {
   toggleUserActive: (userId: number) => void;
   toggleUserApproved: (userId: number) => void;
   updateUserRole: (userId: number, roles: User['roles']) => void;
+
+  // Database Management & Integration
+  clearAllTestData: () => void;
+  restoreSampleData: () => void;
+  exportDatabaseBackup: () => void;
+  importDatabaseBackup: (jsonContent: string) => boolean;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -75,13 +87,125 @@ const DataContext = createContext<DataContextType | undefined>(undefined);
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { currentUser, isSuperAdmin, isAreaManager, isTeacher } = useAuth();
 
-  const [teachers, setTeachers] = useState<Teacher[]>(INITIAL_TEACHERS);
-  const [categories, setCategories] = useState<Category[]>(INITIAL_CATEGORIES);
-  const [dedications, setDedications] = useState<Dedication[]>(INITIAL_DEDICATIONS);
-  const [sites, setSites] = useState<Site[]>(INITIAL_SITES);
-  const [permissions, setPermissions] = useState<PermissionTeacher[]>(INITIAL_PERMISSIONS);
-  const [reports, setReports] = useState<Report[]>(INITIAL_REPORTS);
-  const [usersList, setUsersList] = useState<User[]>(INITIAL_USERS);
+  // Load initial state from localStorage if available
+  const loadSavedState = () => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && Array.isArray(parsed.teachers)) {
+          return parsed;
+        }
+      }
+    } catch (e) {
+      console.warn('No se pudo cargar el estado de SIGEDOR desde localStorage', e);
+    }
+    return null;
+  };
+
+  const initialLoaded = loadSavedState();
+
+  const [teachers, setTeachers] = useState<Teacher[]>(initialLoaded ? initialLoaded.teachers : INITIAL_TEACHERS);
+  const [categories, setCategories] = useState<Category[]>(initialLoaded ? initialLoaded.categories : INITIAL_CATEGORIES);
+  const [dedications, setDedications] = useState<Dedication[]>(initialLoaded ? initialLoaded.dedications : INITIAL_DEDICATIONS);
+  const [sites, setSites] = useState<Site[]>(initialLoaded ? initialLoaded.sites : INITIAL_SITES);
+  const [permissions, setPermissions] = useState<PermissionTeacher[]>(initialLoaded ? initialLoaded.permissions : INITIAL_PERMISSIONS);
+  const [reports, setReports] = useState<Report[]>(initialLoaded ? initialLoaded.reports : INITIAL_REPORTS);
+  const [usersList, setUsersList] = useState<User[]>(initialLoaded ? initialLoaded.usersList : INITIAL_USERS);
+
+  // Auto-sync state to localStorage for persistence
+  useEffect(() => {
+    try {
+      const payload = {
+        teachers,
+        categories,
+        dedications,
+        sites,
+        permissions,
+        reports,
+        usersList,
+        timestamp: new Date().toISOString(),
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } catch (e) {
+      console.error('Error guardando en localStorage', e);
+    }
+  }, [teachers, categories, dedications, sites, permissions, reports, usersList]);
+
+  // Derived indicators
+  const isDatabaseEmpty = teachers.length === 0;
+  const isSampleData = useMemo(() => {
+    if (teachers.length !== INITIAL_TEACHERS.length) return false;
+    return teachers[0]?.cdi === INITIAL_TEACHERS[0]?.cdi;
+  }, [teachers]);
+
+  // Clear test data to start from scratch
+  const clearAllTestData = () => {
+    setTeachers([]);
+    setCategories([]);
+    setDedications([]);
+    setSites([]);
+    setPermissions([]);
+    setReports([]);
+    // Preserve default administrator user so user retains access
+    setUsersList([INITIAL_USERS[0]]);
+  };
+
+  // Restore sample demo data
+  const restoreSampleData = () => {
+    setTeachers(INITIAL_TEACHERS);
+    setCategories(INITIAL_CATEGORIES);
+    setDedications(INITIAL_DEDICATIONS);
+    setSites(INITIAL_SITES);
+    setPermissions(INITIAL_PERMISSIONS);
+    setReports(INITIAL_REPORTS);
+    setUsersList(INITIAL_USERS);
+  };
+
+  // Export JSON backup
+  const exportDatabaseBackup = () => {
+    const backup = {
+      system: 'SIGEDOR',
+      institution: 'Universidad Nacional Experimental de los Llanos Centrales Rómulo Gallegos (UNERG)',
+      version: '2.0.0',
+      exportedAt: new Date().toISOString(),
+      teachers,
+      categories,
+      dedications,
+      sites,
+      permissions,
+      reports,
+      usersList,
+    };
+    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `sigedor_unerg_backup_${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  // Import JSON backup
+  const importDatabaseBackup = (jsonContent: string): boolean => {
+    try {
+      const data = JSON.parse(jsonContent);
+      if (!data || typeof data !== 'object') return false;
+      if (Array.isArray(data.teachers)) setTeachers(data.teachers);
+      if (Array.isArray(data.categories)) setCategories(data.categories);
+      if (Array.isArray(data.dedications)) setDedications(data.dedications);
+      if (Array.isArray(data.sites)) setSites(data.sites);
+      if (Array.isArray(data.permissions)) setPermissions(data.permissions);
+      if (Array.isArray(data.reports)) setReports(data.reports);
+      if (Array.isArray(data.usersList)) setUsersList(data.usersList);
+      return true;
+    } catch (err) {
+      console.error('Error importando respaldo JSON', err);
+      return false;
+    }
+  };
 
   // Multi-tenant scope filtering
   const filteredTeachers = useMemo(() => {
@@ -340,6 +464,12 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         toggleUserActive,
         toggleUserApproved,
         updateUserRole,
+        isDatabaseEmpty,
+        isSampleData,
+        clearAllTestData,
+        restoreSampleData,
+        exportDatabaseBackup,
+        importDatabaseBackup,
       }}
     >
       {children}

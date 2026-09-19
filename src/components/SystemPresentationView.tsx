@@ -27,143 +27,140 @@ const SLIDES_DATA: SlideMeta[] = [
   {
     num: 1,
     title: 'SIGEDOR: El Motor Digital del Control Académico Universitario',
-    subtitle: 'Presentación Oficial del Proyecto de Grado / Investigación',
-    category: 'Portada Institucional',
+    subtitle: 'Una arquitectura integral para la gestión de expedientes, escalafón docente y emisión documental con sello criptográfico.',
+    category: 'Portada Oficial',
     keyPoints: [
       'Desarrollado para la Universidad Nacional Experimental de los Llanos Centrales Rómulo Gallegos (UNERG).',
-      'Núcleo técnico: Laravel 11, Filament v3, OpenAPI 3.0 y Licencia de código abierto MIT.',
-      'Autoría: Frank Sousa.'
+      'Stack técnico oficial: Laravel 11, Filament v3, OpenAPI 3.0 y Licencia MIT.',
+      'Autoría de la investigación: Frank Sousa.'
     ]
   },
   {
     num: 2,
-    title: 'Un ecosistema centralizado para la administración académica',
-    subtitle: 'Interconexión modular en torno al núcleo de Laravel 11',
-    category: 'Visión General',
+    title: 'De la Fragmentación Documental a la Inteligencia Institucional',
+    subtitle: 'Centralización del núcleo universitario en un único ecosistema digital automatizado',
+    category: 'Ecosistema & Integridad',
     keyPoints: [
-      'Gestión integral de expedientes docentes con adscripción territorial.',
-      'Motor de Escalafón Universitario y control de horas semanales.',
-      'Aislamiento Multi-Inquilino (Spatie) para sedes y áreas de conocimiento.',
-      'Generador oficial de documentos y memorandos en DomPDF con sello institucional.'
+      'Superación de la fragmentación tradicional: Nómina, RRHH, Control de Estudios y Archivos físicos.',
+      'Integridad 1:1 y 1:N: Modelado de dominio universitario exacto.',
+      'Trazabilidad Forense: Auditoría exhaustiva con spatie/laravel-activitylog.',
+      'Respuesta Inmediata: Flujos digitales en milisegundos.'
     ]
   },
   {
     num: 3,
-    title: 'El Expediente Integral 360° sincroniza la vida académica del docente',
-    subtitle: 'Integración atómica de cuatro dimensiones de gestión',
-    category: 'Expediente Docente',
+    title: 'Anatomía del Expediente Integral 360°',
+    subtitle: 'Sincronización simultánea de 4 gestores de relaciones mediante hooks Eloquent',
+    category: 'Expediente 360°',
     keyPoints: [
-      'Adscripción Institucional: Sede territorial, Área de conocimiento y Programas académicos.',
-      'Escalafón Universitario: Historial cronológico con validación automática de categoría vigente.',
-      'Carga Horaria: Modalidades de contratación, horas semanales y cargos directivos.',
-      'Permisos y Licencias: Historial completo de ausencias aprobadas y reportes oficiales generados.'
+      'Adscripción Institucional: Sedes, Áreas y Programas ($teacher->sites()).',
+      'Escalafón Universitario: Historial cronológico ($teacher->category()).',
+      'Carga Académica: Modalidad horaria y asignaciones ($teacher->dedication()).',
+      'Permisos y Licencias: Ausencias y trámites ($teacher->permissions()).'
     ]
   },
   {
     num: 4,
-    title: 'Automatización de las reglas de negocio para la carrera universitaria',
-    subtitle: 'Matriz bidimensional de Categoría de Escalafón vs. Dedicación Horaria',
+    title: 'Validación Automatizada de Reglas de Negocio Universitarias',
+    subtitle: 'Cruce del escalafón cronológico con modalidades de contratación e impedimento de inconsistencias',
     category: 'Reglas de Negocio',
     keyPoints: [
-      'Categorías de escalafón: Instructor, Asistente, Agregado, Asociado y Titular.',
-      'Dedicaciones horarias: Tiempo Convencional (TCV), Medio Tiempo (MT), Tiempo Completo (TC) y Dedicación Exclusiva (EX).',
-      'Control estricto de UC (Unidades de Crédito) y cupos de atención a estudiantes.',
-      'Requisito obligatorio de títulos de posgrado (Especializaciones, Maestrías y Doctorados) para ascensos superiores.'
+      'Matriz bidimensional: Categorías (Instructor a Titular) vs. Dedicaciones (TCV, MT, TC, EX).',
+      'Validación Bloqueada para Instructor con Dedicación Exclusiva.',
+      'Tope estricto de 40 horas semanales para dedicaciones a Tiempo Completo.',
+      'Requisito obligatorio de Doctorado para ascenso a la categoría de Titular.'
     ]
   },
   {
     num: 5,
-    title: 'Del trámite a la certificación: Flujo de emisión automatizada de documentos',
-    subtitle: 'Canalización digital sin papel con sello criptográfico institucional',
+    title: 'El Ciclo de Vida Documental: Del Dato a la Certificación Oficial',
+    subtitle: 'Generación automatizada de constancias en PDF con sello criptográfico institucional',
     category: 'Documentación Oficial',
     keyPoints: [
-      'Paso 1: Solicitud e ingreso de datos para años sabáticos, comisiones de servicio o permisos.',
-      'Paso 2: Aprobación y fiscalización de vigencias semestrales por roles jerárquicos en panel Filament.',
-      'Paso 3: Generación instantánea de PDF en hojas membretadas oficiales UNERG.',
-      'Embebido de código alfanumérico único de autenticidad para verificación institucional.'
+      '1. Evento: Disparado por la interfaz Filament / Web.',
+      '2. Sincronización: Eloquent Hook actualiza de forma atómica las tablas del perfil.',
+      '3. Certificación: Hoja membretada oficial UNERG con motor barryvdh/laravel-dompdf.',
+      'Sello de seguridad criptográfico con código único: UNERG-REP-YYYY-XXXX.'
     ]
   },
   {
     num: 6,
-    title: 'Arquitectura Multi-Inquilino para un control de acceso estrictamente territorial',
-    subtitle: 'Seguridad perimetral y particionado lógico de datos con Spatie',
-    category: 'Seguridad y Tenancy',
+    title: 'Arquitectura Multi-Inquilino: Aislamiento Territorial Dinámico',
+    subtitle: 'Dynamic Eloquent Scopes para filtrado perimetral estricto a nivel de base de datos',
+    category: 'Seguridad Territorial',
     keyPoints: [
-      'Acceso restringido a correos institucionales autorizados (@sigedor.com y @unerg.edu.ve).',
-      'Super Administrador: Gestión centralizada de todas las sedes, docentes, áreas y auditoría global.',
-      'Jefe de Área: Scopes de Eloquent aplicados automáticamente; solo visualiza registros de su propia sede.',
-      'Soporte multi-rol: Capacidad para que un usuario sea docente activo y directivo de área simultáneamente.'
+      'Visibilidad Contextual: El panel adapta sus consultas SQL en milisegundos según el rol.',
+      'Barrera de Sede: Un Jefe de Área visualiza exclusivamente los expedientes de su recinto geográfico.',
+      'Prevención de Fugas: Filtrado estructural a nivel de ORM, imposible de evadir desde el frontend.'
     ]
   },
   {
     num: 7,
-    title: 'Pipeline de ingesta masiva: De archivos planos a persistencia relacional',
-    subtitle: 'Data Factory y Seeders para inicialización atómica de catálogos',
-    category: 'Ingesta de Datos',
+    title: 'Matriz de Control de Acceso Basado en Roles (RBAC)',
+    subtitle: 'Gestión fluida y segura de múltiples roles concurrentes con spatie/laravel-permission',
+    category: 'Control de Acceso',
     keyPoints: [
-      'Fuentes CSV: users.csv, teachers.csv, categories.csv, dedications.csv y sites.csv.',
-      'Normalización y transacciones DB seguras con foreign keys garantizadas.',
-      'Requisito de aprobación explícita (is_approved) para activación de credenciales importadas.',
-      'Soporte para comando CLI de anonimización de datos de prueba docentes.'
+      'Super Administrador: Alcance global, edición total, gestión de usuarios con toggle is_active y reportes masivos.',
+      'Jefe de Área: Alcance restringido por sede/área, aprobación/edición parcial y reportes de su jurisdicción.',
+      'Docente Académico: Alcance exclusivo a su expediente personal, solo lectura y descarga de constancias propias.',
+      'Soporte multi-rol para usuarios con doble función (docente y directivo).'
     ]
   },
   {
     num: 8,
-    title: 'Arquitectura de software en tres capas para rendimiento y mantenibilidad',
-    subtitle: 'Separación estricta de responsabilidades (Presentación, Lógica y Persistencia)',
-    category: 'Arquitectura de Software',
+    title: 'Interfaz Universal: Experiencia Multidispositivo (v2.0.0)',
+    subtitle: 'Capa ergonómica y responsiva con Filament v3 y React/Tailwind',
+    category: 'Experiencia de Usuario',
     keyPoints: [
-      'Capa 1 (Presentación): Filament v3, Vistas Blade responsive y motor de documentos DomPDF.',
-      'Capa 2 (Lógica y Seguridad): Laravel 11 MVC, Spatie Permissions y auditoría ActivityLog.',
-      'Capa 3 (Persistencia): Modelos relacionales Eloquent, MySQL 8.0+ / MariaDB con integridad referencial.'
+      'Modo Tabla (Auditoría): Diseñado para monitores 4K y administradores que requieren alta densidad de datos.',
+      'Modo Cuadrícula (Táctil): Optimizado para smartphones (hasta 320px) con barra inferior fija y cajones contextuales.',
+      'Accesibilidad: Interfaz rápida diseñada para reducir la fatiga visual administrativa.'
     ]
   },
   {
     num: 9,
-    title: 'Modelo relacional: La integridad estructural del dominio universitario',
-    subtitle: 'Diagrama de Entidad-Relación institucional',
-    category: 'Base de Datos',
+    title: 'Ingesta de Datos: Desde Archivos Planos a Integridad Relacional',
+    subtitle: 'Pipeline de inyección estructurado mediante Data Factory y Seeders',
+    category: 'Ingesta de Datos',
     keyPoints: [
-      'Relación 1:N entre Sedes, Áreas, Programas y la entidad central Docentes (TEACHERS).',
-      'Relación 1:1 entre Docente y su Escalafón (CATEGORIES) y Carga Horaria (DEDICATIONS).',
-      'Relación 1:1 entre Usuario del sistema (USERS) y el perfil docente (TEACHERS).',
-      'Relación 1:N para Cátedras/Asignaturas asignadas (SITES), Licencias (PERMISSIONS) y Documentos (REPORTS).'
+      'users.csv: Hasheo de contraseñas y asignación perimetral de roles.',
+      'teachers.csv & categories.csv: Expedientes demográficos e histórico de ascensos.',
+      'dedications.csv & sites.csv: Asignaciones de carga horaria y adscripción territorial.',
+      'Garantía de integridad referencial y claves foráneas en bases de datos relacionales.'
     ]
   },
   {
     num: 10,
-    title: 'Interoperabilidad nativa: API RESTful bajo el estándar OpenAPI 3.0',
-    subtitle: 'Integración fluida con sistemas de nómina, control de estudios y tableros',
+    title: 'Interoperabilidad Estándar: API RESTful OpenAPI 3.0',
+    subtitle: 'Fuente de la Verdad académica para integración con nómina y control de estudios',
     category: 'Interoperabilidad & API',
     keyPoints: [
-      'Especificación OpenAPI 3.0 / Swagger disponible en api-docs.json.',
-      'Endpoints CRUD estandarizados para Docentes, Evaluaciones, Sedes y Cargas.',
-      'Healthchecks de estado para monitoreo en producción (Docker, Kubernetes).',
-      'Autenticación vía Token Bearer y serialización JSON estricta.'
+      'Endpoints oficiales v1: Catálogo paginado en GET /api/v1/teachers y verificación en GET /api/v1/reports.',
+      'Protección estricta de PII: Sanitización de datos sensibles previa a la serialización JSON.',
+      'Swagger UI interactivo integrado, generado dinámicamente mediante anotaciones @OA.'
     ]
   },
   {
     num: 11,
-    title: 'Fiabilidad de grado empresarial: Pruebas automatizadas y auditoría',
-    subtitle: 'QA Mission Control Dashboard y Trazabilidad Forense de Acciones',
-    category: 'Calidad & Auditoría',
+    title: 'Arquitectura en Tres Capas: Separación Estricta de Responsabilidades',
+    subtitle: 'Diseño desacoplado para alta mantenibilidad y escalabilidad a largo plazo',
+    category: 'Arquitectura de Software',
     keyPoints: [
-      '49 Pruebas Pasadas y 372 Aserciones (100% éxito en Pest / PHPUnit).',
-      'Validación exhaustiva de políticas multi-inquilino, reglas de ascenso UNERG y endpoints REST.',
-      'Trazabilidad total con ActivityLog: registro inmutable de IP, usuario y modificaciones.',
-      'Protección contra inyección CSV, contraseñas Argon2id y cabeceras OWASP.'
+      'Capa de Presentación: Panel Filament v3, vistas Blade y motor DomPDF.',
+      'Lógica de Negocio y Seguridad: Núcleo Laravel 11, Spatie Roles & Permisos y Modelos Eloquent.',
+      'Persistencia de Datos: MySQL / MariaDB con relaciones 1:1 y 1:N.',
+      'Ventaja: Facilita incorporación de futuros módulos sin alterar el código base existente.'
     ]
   },
   {
     num: 12,
-    title: 'Nacido como investigación, diseñado para escalar globalmente',
-    subtitle: 'Código abierto bajo Licencia MIT para cualquier institución de educación superior',
-    category: 'Impacto & Escalabilidad',
+    title: 'Fiabilidad Demostrada y Código Abierto',
+    subtitle: 'Validación por pruebas automatizadas exhaustivas y liberación bajo Licencia MIT',
+    category: 'Calidad & Comunidad',
     keyPoints: [
-      'Bifurcación y personalización amparada por la Licencia de software libre MIT.',
-      'Estructura desacoplada que permite expandir módulos hacia evaluación estudiantil o posgrados.',
-      'Adaptación ágil de membretes oficiales y catálogos de sedes mediante Seeders.',
-      'Investigación rigurosa convertida en software listo para despliegue en servidores de producción.'
+      '100% de éxito: 49 pruebas de integración y 372 aserciones validadas con Pest / PHPUnit.',
+      'Verificación de autenticación, políticas multi-inquilino y generación de documentos PDF.',
+      'Código Abierto bajo Licencia MIT: Desacoplado y listo para adopción en otras universidades.'
     ]
   }
 ];
@@ -248,7 +245,7 @@ export const SystemPresentationView: React.FC = () => {
               </div>
               <div className="flex items-center gap-2">
                 <a
-                  href="/images/vision_integral_sigedor.svg"
+                  href="/images/Gestion_docente_universitaria_SIGEDOR.svg"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
@@ -260,10 +257,10 @@ export const SystemPresentationView: React.FC = () => {
             </div>
 
             {/* High-res embedded SVG */}
-            <div className="relative rounded-xl border border-slate-200 bg-slate-50 overflow-hidden shadow-inner flex justify-center">
+            <div className="relative rounded-xl border border-slate-200 bg-slate-900 overflow-hidden shadow-inner flex justify-center">
               <img
-                src="/images/vision_integral_sigedor.svg"
-                alt="SIGEDOR - Visión Integral del Sistema"
+                src="/images/Gestion_docente_universitaria_SIGEDOR.svg"
+                alt="SIGEDOR - El Motor Digital de la Gestión Docente Universitaria"
                 className="w-full h-auto max-h-[800px] object-contain"
                 loading="lazy"
               />

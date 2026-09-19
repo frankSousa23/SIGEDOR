@@ -12,18 +12,21 @@ import {
   User as UserIcon,
   CheckCircle2,
   Menu,
-  X
+  X,
+  Database
 } from 'lucide-react';
 import { UserRole } from '../types';
 
 interface HeaderProps {
   onOpenApiDocs: () => void;
+  onOpenDataManagement?: () => void;
   onToggleMobileMenu?: () => void;
   isMobileMenuOpen?: boolean;
 }
 
 export const Header: React.FC<HeaderProps> = ({ 
   onOpenApiDocs, 
+  onOpenDataManagement,
   onToggleMobileMenu,
   isMobileMenuOpen = false 
 }) => {
@@ -99,6 +102,18 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Controls & User Profile */}
           <div className="flex items-center gap-2 sm:gap-3">
+            {onOpenDataManagement && (
+              <button
+                id="data-management-button"
+                onClick={onOpenDataManagement}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-md border border-slate-300 transition-colors"
+                title="Control de Base de Datos, Limpieza y Despliegue"
+              >
+                <Database className="w-3.5 h-3.5 text-amber-600" />
+                <span className="hidden sm:inline">Base de Datos</span>
+              </button>
+            )}
+
             <button
               id="api-docs-button"
               onClick={onOpenApiDocs}

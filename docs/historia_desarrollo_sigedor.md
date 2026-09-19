@@ -389,7 +389,7 @@ A pesar de que en su momento el sistema no estaba "terminado" bajo estándares c
 Todo lo descrito en este histórico (los errores de Filament, la falla de los PDFs, los Null Pointers de los administradores, las caídas de la base de datos, las ramas perdidas) **ha sido superado y resuelto definitivamente**. 
 
 Hoy, en su versión **v2.0.0 (Production Stable)**, SIGEDOR es un sistema:
-* **100% Estable** y libre de errores críticos o modos efímeros/invitado/sandbox heredados.
+* **100% Estable** y con persistencia integral de grado de producción institucional.
 * **Completamente integrado** con su panel analítico, formularios inteligentes, visor oficial institucional A4 e interoperabilidad API RESTful (OpenAPI 3.0).
 * **Seguro**, con políticas de acceso multi-inquilino y roles estrictos (`admin`, `area_manager`, `teacher` con soporte multi-rol).
 * **Probado**, con una suite de pruebas automatizadas (Pest) pasando en verde absoluto (49 pruebas, 372 aserciones al 100%).

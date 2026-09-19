@@ -1,49 +1,74 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
   <defs>
     <linearGradient id="s1Bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#FAF8F5" />
-      <stop offset="100%" stop-color="#F2ECE4" />
+      <stop offset="0%" stop-color="#F8F9FB"/>
+      <stop offset="100%" stop-color="#EFF2F6"/>
     </linearGradient>
-    <filter id="s1CardShadow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#0F172A" flood-opacity="0.08" />
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#0F172A" flood-opacity="0.08"/>
     </filter>
   </defs>
-  <rect width="1920" height="1080" fill="url(#s1Bg)" />
+  <rect width="1920" height="1080" fill="url(#s1Bg)"/>
+  <pattern id="s1Grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E2E8F0" stroke-width="0.8" opacity="0.7"/>
+  </pattern>
+  <rect width="1920" height="1080" fill="url(#s1Grid)"/>
 
-  <!-- Isometric Server Graphic Background -->
-  <g opacity="0.3" transform="translate(100, 100)">
-    <path d="M 200 400 L 400 300 L 600 400 L 400 500 Z" fill="none" stroke="#CBD5E1" stroke-width="2"/>
-    <path d="M 1200 300 L 1400 200 L 1600 300 L 1400 400 Z" fill="none" stroke="#CBD5E1" stroke-width="2"/>
+  <!-- Column Monument / Pillar graphic in Center -->
+  <g transform="translate(960, 310)">
+    <circle cx="0" cy="0" r="190" fill="none" stroke="#93C5FD" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.6"/>
+    <circle cx="0" cy="0" r="140" fill="none" stroke="#60A5FA" stroke-width="2" opacity="0.7"/>
+    <circle cx="0" cy="0" r="80" fill="none" stroke="#2563EB" stroke-width="2.5"/>
+    
+    <rect x="-120" y="160" width="240" height="24" rx="4" fill="#0F172A"/>
+    <rect x="-90" y="140" width="180" height="20" rx="3" fill="#1E3A8A"/>
+    <rect x="-60" y="-120" width="120" height="260" rx="6" fill="#1E40AF"/>
+    <rect x="-80" y="-140" width="160" height="20" rx="3" fill="#1E3A8A"/>
+    <rect x="-120" y="-160" width="240" height="20" rx="4" fill="#0F172A"/>
+
+    <circle cx="0" cy="0" r="45" fill="#EFF6FF" stroke="#3B82F6" stroke-width="6"/>
+    <circle cx="0" cy="0" r="20" fill="#1E3A8A"/>
+    
+    <circle cx="-135" cy="-95" r="8" fill="#38BDF8"/>
+    <circle cx="135" cy="-95" r="8" fill="#38BDF8"/>
+    <circle cx="-135" cy="95" r="8" fill="#38BDF8"/>
+    <circle cx="135" cy="95" r="8" fill="#38BDF8"/>
   </g>
 
-  <!-- Center Card -->
-  <g transform="translate(420, 220)">
-    <rect width="1080" height="620" rx="32" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#s1CardShadow)" />
-    
-    <text x="540" y="220" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="110" font-weight="900" fill="#003366" letter-spacing="-2">
-      SIGEDOR
-    </text>
-    
-    <text x="540" y="320" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="34" font-weight="800" fill="#1E293B">
-      El Motor Digital del Control Académico Universitario
-    </text>
+  <!-- Title and subtitle -->
+  <text x="960" y="610" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="52" font-weight="900" fill="#0F172A" letter-spacing="-0.5">
+    SIGEDOR: El Motor Digital del
+  </text>
+  <text x="960" y="680" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="52" font-weight="900" fill="#003366" letter-spacing="-0.5">
+    Control Académico Universitario
+  </text>
+  <text x="960" y="745" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" font-weight="500" fill="#475569">
+    Una arquitectura integral para la gestión de expedientes, escalafón docente y emisión documental con sello criptográfico.
+  </text>
 
-    <!-- Badges pill -->
-    <g transform="translate(190, 420)">
-      <rect width="700" height="64" rx="32" fill="#FFF1F2" stroke="#FDA4AF" stroke-width="2"/>
-      <text x="350" y="41" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="22" font-weight="700" fill="#9F1239">
-        Laravel 11 &bull; Filament v3 &bull; OpenAPI 3.0 &bull; Licencia MIT
-      </text>
+  <!-- Badges -->
+  <g transform="translate(960, 830)">
+    <g transform="translate(-360, 0)">
+      <rect x="0" y="0" width="160" height="46" rx="23" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="80" y="29" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1E293B">[Laravel 11]</text>
     </g>
-
-    <text x="540" y="550" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="600" fill="#64748B">
-      Universidad Nacional Experimental de los Llanos Centrales Rómulo Gallegos (UNERG)
-    </text>
+    <g transform="translate(-180, 0)">
+      <rect x="0" y="0" width="160" height="46" rx="23" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="80" y="29" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1E293B">[Filament v3]</text>
+    </g>
+    <g transform="translate(10, 0)">
+      <rect x="0" y="0" width="170" height="46" rx="23" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="85" y="29" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1E293B">[OpenAPI 3.0]</text>
+    </g>
+    <g transform="translate(200, 0)">
+      <rect x="0" y="0" width="170" height="46" rx="23" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="85" y="29" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1E293B">[Licencia MIT]</text>
+    </g>
   </g>
 
-  <g transform="translate(100, 1030)">
-    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#94A3B8">
-      Autoría: Frank Sousa &bull; 1 / 12
+  <g transform="translate(80, 1045)">
+    <text x="1760" y="0" text-anchor="end" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#64748B">
+      ✦ Gemini Notebook
     </text>
   </g>
 </svg>

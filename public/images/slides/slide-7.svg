@@ -1,121 +1,90 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
   <defs>
-    <linearGradient id="slideBg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#FDFBF7" />
-      <stop offset="100%" stop-color="#F4EFE6" />
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F8F9FB"/>
+      <stop offset="100%" stop-color="#EFF2F6"/>
     </linearGradient>
     <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="110%">
-      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.06" />
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#0F172A" flood-opacity="0.06"/>
     </filter>
   </defs>
-  <rect width="1920" height="1080" fill="url(#slideBg)" />
 
-  <!-- Isometric grid decorative lines -->
-  <g opacity="0.15" stroke="#94A3B8" stroke-width="1">
-    <line x1="0" y1="200" x2="1920" y2="200"/>
-    <line x1="0" y1="960" x2="1920" y2="960"/>
-    <line x1="160" y1="0" x2="160" y2="1080"/>
-    <line x1="1760" y1="0" x2="1760" y2="1080"/>
-  </g>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E2E8F0" stroke-width="0.8" opacity="0.7"/>
+  </pattern>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
 
-  <!-- Slide Header -->
-  <g transform="translate(100, 80)">
+  <!-- Header -->
+  <g transform="translate(80, 80)">
     <text x="0" y="45" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="44" font-weight="900" fill="#0F172A" letter-spacing="-0.5">
-      Pipeline de ingesta masiva: De archivos planos a persistencia relacional
+      Matriz de Control de Acceso Basado en Roles (RBAC)
     </text>
-    <text x="0" y="85" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="22" font-weight="600" fill="#64748B">
-      Data Factory y Seeders para inicialización atómica de catálogos institucionales
+    <text x="0" y="85" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="20" font-weight="500" fill="#475569">
+      Implementado sobre spatie/laravel-permission, el sistema soporta Múltiples Roles (e.g., un Jefe de Área que también ejerce como Docente), gestionando la superposición de permisos de forma fluida y segura.
     </text>
   </g>
 
-  <!-- Content -->
-  <g transform="translate(100, 240)">
-    <!-- 5 CSV Tank representations -->
-    
-      <g transform="translate(80, 40)">
-        <rect width="170" height="260" rx="20" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" filter="url(#cardShadow)"/>
-        <circle cx="85" cy="50" r="30" fill="#EFF6FF"/>
-        <text x="85" y="56" text-anchor="middle" font-family="monospace" font-size="14" font-weight="800" fill="#1D4ED8">CSV</text>
-        <text x="85" y="115" text-anchor="middle" font-family="monospace" font-size="16" font-weight="800" fill="#0F172A">users.csv</text>
-        <text x="85" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#64748B" width="140">
-          <tspan x="85" dy="0">Cuentas, correos</tspan>
-          <tspan x="85" dy="18">y roles (contraseñas hasheadas).</tspan>
-        </text>
-      </g>
-    
-      <g transform="translate(280, 40)">
-        <rect width="170" height="260" rx="20" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" filter="url(#cardShadow)"/>
-        <circle cx="85" cy="50" r="30" fill="#EFF6FF"/>
-        <text x="85" y="56" text-anchor="middle" font-family="monospace" font-size="14" font-weight="800" fill="#1D4ED8">CSV</text>
-        <text x="85" y="115" text-anchor="middle" font-family="monospace" font-size="16" font-weight="800" fill="#0F172A">teachers.csv</text>
-        <text x="85" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#64748B" width="140">
-          <tspan x="85" dy="0">Expedientes y</tspan>
-          <tspan x="85" dy="18">datos demográficos.</tspan>
-        </text>
-      </g>
-    
-      <g transform="translate(480, 40)">
-        <rect width="170" height="260" rx="20" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" filter="url(#cardShadow)"/>
-        <circle cx="85" cy="50" r="30" fill="#EFF6FF"/>
-        <text x="85" y="56" text-anchor="middle" font-family="monospace" font-size="14" font-weight="800" fill="#1D4ED8">CSV</text>
-        <text x="85" y="115" text-anchor="middle" font-family="monospace" font-size="16" font-weight="800" fill="#0F172A">categories.csv</text>
-        <text x="85" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#64748B" width="140">
-          <tspan x="85" dy="0">Histórico de</tspan>
-          <tspan x="85" dy="18">escalafón.</tspan>
-        </text>
-      </g>
-    
-      <g transform="translate(680, 40)">
-        <rect width="170" height="260" rx="20" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" filter="url(#cardShadow)"/>
-        <circle cx="85" cy="50" r="30" fill="#EFF6FF"/>
-        <text x="85" y="56" text-anchor="middle" font-family="monospace" font-size="14" font-weight="800" fill="#1D4ED8">CSV</text>
-        <text x="85" y="115" text-anchor="middle" font-family="monospace" font-size="16" font-weight="800" fill="#0F172A">dedications.csv</text>
-        <text x="85" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#64748B" width="140">
-          <tspan x="85" dy="0">Horas y</tspan>
-          <tspan x="85" dy="18">directivas.</tspan>
-        </text>
-      </g>
-    
-      <g transform="translate(880, 40)">
-        <rect width="170" height="260" rx="20" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" filter="url(#cardShadow)"/>
-        <circle cx="85" cy="50" r="30" fill="#EFF6FF"/>
-        <text x="85" y="56" text-anchor="middle" font-family="monospace" font-size="14" font-weight="800" fill="#1D4ED8">CSV</text>
-        <text x="85" y="115" text-anchor="middle" font-family="monospace" font-size="16" font-weight="800" fill="#0F172A">sites.csv</text>
-        <text x="85" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#64748B" width="140">
-          <tspan x="85" dy="0">Adscripción por</tspan>
-          <tspan x="85" dy="18">sedes y facultades.</tspan>
-        </text>
-      </g>
-    
+  <!-- Body Content -->
+  <g transform="translate(80, 220)">
+    <!-- RBAC Matrix Table -->
+    <rect width="1760" height="520" rx="16" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" filter="url(#cardShadow)"/>
 
-    <!-- Conveyor belt into Laravel Seeders -->
-    <g transform="translate(1140, 80)">
-      <rect width="480" height="220" rx="24" fill="#FFFFFF" stroke="#003366" stroke-width="3" filter="url(#cardShadow)"/>
-      <circle cx="100" cy="110" r="45" fill="#003366"/>
-      <text x="100" y="120" text-anchor="middle" font-family="system-ui, sans-serif" font-size="34" fill="#FFFFFF">&gear;</text>
-      <text x="180" y="100" font-family="system-ui, sans-serif" font-size="32" font-weight="900" fill="#0F172A">Laravel Seeders</text>
-      <text x="180" y="135" font-family="system-ui, sans-serif" font-size="16" fill="#64748B">Validación atómica y relaciones de FK</text>
+    <!-- Headers -->
+    <rect x="0" y="0" width="1760" height="90" rx="16" fill="#F8FAFC"/>
+    <text x="490" y="55" text-anchor="middle" font-family="system-ui" font-size="22" font-weight="900" fill="#0F172A">Super Administrador</text>
+    <text x="980" y="55" text-anchor="middle" font-family="system-ui" font-size="22" font-weight="900" fill="#0284C7">Jefe de Área</text>
+    <text x="1460" y="55" text-anchor="middle" font-family="system-ui" font-size="22" font-weight="900" fill="#64748B">Docente Académico</text>
+
+    <!-- Grid lines -->
+    <g stroke="#E2E8F0" stroke-width="1.5">
+      <line x1="0" y1="90" x2="1760" y2="90"/>
+      <line x1="0" y1="195" x2="1760" y2="195"/>
+      <line x1="0" y1="300" x2="1760" y2="300"/>
+      <line x1="0" y1="405" x2="1760" y2="405"/>
+
+      <line x1="320" y1="0" x2="320" y2="520"/>
+      <line x1="780" y1="0" x2="780" y2="520"/>
+      <line x1="1240" y1="0" x2="1240" y2="520"/>
     </g>
 
-    <!-- Bottom Notification Card -->
-    <g transform="translate(300, 440)">
-      <rect width="1120" height="120" rx="16" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
-      <circle cx="60" cy="60" r="28" fill="#F59E0B"/>
-      <text x="60" y="68" text-anchor="middle" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#FFFFFF">!</text>
-      <text x="110" y="48" font-family="system-ui, sans-serif" font-size="20" font-weight="900" fill="#92400E">Importación estructurada y segura</text>
-      <text x="110" y="80" font-family="system-ui, sans-serif" font-size="16" fill="#78350F">
-        Las cuentas creadas requieren aprobación explícita del Administrador (is_approved) para ser activadas en el sistema.
-      </text>
-    </g>
+    <!-- Row 1: Alcance de Visibilidad -->
+    <text x="30" y="150" font-family="system-ui" font-size="18" font-weight="800" fill="#0F172A">Alcance de Visibilidad</text>
+    <text x="490" y="150" text-anchor="middle" font-family="system-ui" font-size="17" fill="#334155">Global Institucional</text>
+    <text x="980" y="140" text-anchor="middle" font-family="system-ui" font-size="16" fill="#334155">Restringido por</text>
+    <text x="980" y="165" text-anchor="middle" font-family="system-ui" font-size="16" fill="#334155">Sede/Área</text>
+    <text x="1460" y="150" text-anchor="middle" font-family="system-ui" font-size="17" fill="#334155">Exclusivo Personal</text>
+
+    <!-- Row 2: Edición de Expedientes -->
+    <text x="30" y="255" font-family="system-ui" font-size="18" font-weight="800" fill="#0F172A">Edición de Expedientes</text>
+    <text x="490" y="245" text-anchor="middle" font-family="system-ui" font-size="17" font-weight="700" fill="#334155">Total</text>
+    <text x="490" y="270" text-anchor="middle" font-family="system-ui" font-size="15" fill="#64748B">(Lectura/Escritura)</text>
+    <text x="980" y="245" text-anchor="middle" font-family="system-ui" font-size="17" font-weight="700" fill="#334155">Parcial</text>
+    <text x="980" y="270" text-anchor="middle" font-family="system-ui" font-size="15" fill="#64748B">(Aprobación/Lectura)</text>
+    <text x="1460" y="255" text-anchor="middle" font-family="system-ui" font-size="17" fill="#334155">Solo Lectura</text>
+
+    <!-- Row 3: Gestión de Usuarios y Roles -->
+    <text x="30" y="360" font-family="system-ui" font-size="18" font-weight="800" fill="#0F172A">Gestión de Usuarios y Roles</text>
+    <text x="490" y="360" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="700" fill="#059669">✅ <tspan fill="#475569" font-size="15">(con toggle is_active)</tspan></text>
+    <text x="980" y="360" text-anchor="middle" font-size="22" fill="#DC2626">❌</text>
+    <text x="1460" y="360" text-anchor="middle" font-size="22" fill="#DC2626">❌</text>
+
+    <!-- Row 4: Generación de Reportes -->
+    <text x="30" y="470" font-family="system-ui" font-size="18" font-weight="800" fill="#0F172A">Generación de Reportes</text>
+    <text x="490" y="470" text-anchor="middle" font-family="system-ui" font-size="17" fill="#334155">Masivo e Individual</text>
+    <text x="980" y="460" text-anchor="middle" font-family="system-ui" font-size="16" fill="#334155">Individual</text>
+    <text x="980" y="485" text-anchor="middle" font-family="system-ui" font-size="14" fill="#64748B">(Solo su Sede)</text>
+    <text x="1460" y="460" text-anchor="middle" font-family="system-ui" font-size="16" fill="#334155">Personal</text>
+    <text x="1460" y="485" text-anchor="middle" font-family="system-ui" font-size="14" fill="#64748B">(Solo sus Constancias)</text>
   </g>
 
-  <!-- Slide Footer -->
-  <g transform="translate(100, 1030)">
-    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#94A3B8">
-      SIGEDOR &bull; Proyecto de Investigación &bull; Frank Sousa
+  <!-- Footer -->
+  <g transform="translate(80, 1045)">
+    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#94A3B8">
+      SIGEDOR &bull; Proyecto de Investigación &bull; UNERG &bull; Frank Sousa &bull; Lámina 7 de 12
     </text>
-    <text x="1720" y="0" text-anchor="end" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#64748B">
-      7 / 12
+    <text x="1760" y="0" text-anchor="end" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#64748B">
+      ✦ Gemini Notebook
     </text>
   </g>
 </svg>

@@ -1,109 +1,84 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
   <defs>
-    <linearGradient id="slideBg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#FDFBF7" />
-      <stop offset="100%" stop-color="#F4EFE6" />
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F8F9FB"/>
+      <stop offset="100%" stop-color="#EFF2F6"/>
     </linearGradient>
     <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="110%">
-      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.06" />
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#0F172A" flood-opacity="0.06"/>
     </filter>
   </defs>
-  <rect width="1920" height="1080" fill="url(#slideBg)" />
 
-  <!-- Isometric grid decorative lines -->
-  <g opacity="0.15" stroke="#94A3B8" stroke-width="1">
-    <line x1="0" y1="200" x2="1920" y2="200"/>
-    <line x1="0" y1="960" x2="1920" y2="960"/>
-    <line x1="160" y1="0" x2="160" y2="1080"/>
-    <line x1="1760" y1="0" x2="1760" y2="1080"/>
-  </g>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E2E8F0" stroke-width="0.8" opacity="0.7"/>
+  </pattern>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
 
-  <!-- Slide Header -->
-  <g transform="translate(100, 80)">
+  <!-- Header -->
+  <g transform="translate(80, 80)">
     <text x="0" y="45" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="44" font-weight="900" fill="#0F172A" letter-spacing="-0.5">
-      Fiabilidad de grado empresarial: Pruebas automatizadas y auditoría
+      Arquitectura en Tres Capas: Separación Estricta de Responsabilidades
     </text>
-    <text x="0" y="85" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="22" font-weight="600" fill="#64748B">
-      QA Mission Control Dashboard y Trazabilidad Forense de Acciones
+    <text x="0" y="85" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="20" font-weight="500" fill="#475569">
+      Un diseño de software desacoplado que garantiza mantenibilidad a largo plazo y rendimiento excepcional. El núcleo de Laravel 11 orquesta la lógica, mientras Filament renderiza y Spatie protege el perímetro.
     </text>
   </g>
 
-  <!-- Content -->
-  <g transform="translate(100, 220)">
-    <!-- 3 Big Cards -->
-    <g transform="translate(60, 40)">
-      <!-- Card 1: Pest / PHPUnit -->
-      <rect width="480" height="460" rx="20" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
-      <text x="40" y="60" font-family="system-ui, sans-serif" font-size="20" font-weight="800" fill="#475569">Cobertura de Pruebas (Pest / PHPUnit)</text>
-
-      <text x="40" y="160" font-family="system-ui, sans-serif" font-size="52" font-weight="900" fill="#EF4444">
-        49 Pruebas
+  <!-- Body Content -->
+  <g transform="translate(80, 220)">
+    <!-- 3 Layer Stack Diagram (Left) -->
+    <g transform="translate(40, 20)">
+      <!-- Layer 1: Presentación -->
+      <polygon points="120,40 880,40 800,140 40,140" fill="#38BDF8" filter="url(#cardShadow)"/>
+      <text x="460" y="80" text-anchor="middle" font-family="system-ui" font-size="24" font-weight="900" fill="#0F172A">Capa de Presentación</text>
+      <text x="460" y="115" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="700" fill="#1E293B">
+        Filament v3 Panel &bull; Vistas Blade &bull; DomPDF Engine
       </text>
-      <text x="40" y="220" font-family="system-ui, sans-serif" font-size="52" font-weight="900" fill="#10B981">
-        372 Aserciones
+
+      <!-- Down Arrow -->
+      <path d="M 460 140 L 460 170" stroke="#003366" stroke-width="4"/>
+
+      <!-- Layer 2: Lógica de Negocio -->
+      <polygon points="120,180 880,180 800,280 40,280" fill="#F59E0B" filter="url(#cardShadow)"/>
+      <text x="460" y="220" text-anchor="middle" font-family="system-ui" font-size="24" font-weight="900" fill="#0F172A">Lógica de Negocio y Seguridad</text>
+      <text x="460" y="255" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="700" fill="#78350F">
+        Núcleo Laravel 11 &bull; Spatie Roles &amp; Permisos &bull; Modelos Eloquent
       </text>
-      <text x="40" y="260" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#059669">100% Pasadas con éxito</text>
 
-      <line x1="40" y1="300" x2="440" y2="300" stroke="#E2E8F0" stroke-width="1.5"/>
-      <text x="40" y="340" font-family="system-ui, sans-serif" font-size="16" fill="#334155">
-        <tspan x="40" dy="0">Validación de políticas multi-inquilino,</tspan>
-        <tspan x="40" dy="24">reglas de escalafón UNERG y</tspan>
-        <tspan x="40" dy="24">endpoints de la API v1.</tspan>
-      </text>
-    </g>
+      <!-- Down Arrow -->
+      <path d="M 460 280 L 460 310" stroke="#003366" stroke-width="4"/>
 
-    <!-- Card 2: Trazabilidad ActivityLog -->
-    <g transform="translate(580, 40)">
-      <rect width="480" height="460" rx="20" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
-      <text x="40" y="60" font-family="system-ui, sans-serif" font-size="20" font-weight="800" fill="#475569">Trazabilidad (ActivityLog)</text>
-
-      <!-- Timeline graphic -->
-      <g transform="translate(40, 120)">
-        <line x1="30" y1="30" x2="370" y2="30" stroke="#F59E0B" stroke-width="4"/>
-        <circle cx="30" cy="30" r="10" fill="#F59E0B"/>
-        <text x="30" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#0F172A">Expediente Modificado</text>
-
-        <circle cx="200" cy="30" r="10" fill="#F59E0B"/>
-        <text x="200" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#0F172A">Ascenso Aprobado</text>
-
-        <circle cx="370" cy="30" r="10" fill="#F59E0B"/>
-        <text x="370" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#0F172A">Permiso Otorgado</text>
-      </g>
-
-      <text x="40" y="270" font-family="system-ui, sans-serif" font-size="18" font-weight="800" fill="#0F172A">Registro inmutable de auditoría</text>
-      <text x="40" y="310" font-family="system-ui, sans-serif" font-size="16" fill="#334155">
-        <tspan x="40" dy="0">Cada modificación de expediente,</tspan>
-        <tspan x="40" dy="24">ascenso de categoría o permiso otorgado</tspan>
-        <tspan x="40" dy="24">queda registrado con IP, usuario y timestamp.</tspan>
+      <!-- Layer 3: Persistencia -->
+      <polygon points="120,320 880,320 800,420 40,420" fill="#60A5FA" filter="url(#cardShadow)"/>
+      <text x="460" y="360" text-anchor="middle" font-family="system-ui" font-size="24" font-weight="900" fill="#0F172A">Persistencia de Datos</text>
+      <text x="460" y="395" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="700" fill="#1E3A8A">
+        MySQL / MariaDB &bull; Relaciones 1:1, 1:N
       </text>
     </g>
 
-    <!-- Card 3: Seguridad Perimetral -->
-    <g transform="translate(1100, 40)">
-      <rect width="480" height="460" rx="20" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
-      <text x="40" y="60" font-family="system-ui, sans-serif" font-size="20" font-weight="800" fill="#475569">Seguridad Perimetral</text>
-
-      <circle cx="240" cy="160" r="55" fill="#EFF6FF"/>
-      <text x="240" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="44" fill="#1D4ED8">&#128274;</text>
-
-      <g transform="translate(40, 260)">
-        <text x="0" y="0" font-family="system-ui, sans-serif" font-size="16" fill="#334155">
-          <tspan x="0" dy="0">&bull; Cabeceras de seguridad OWASP estrictas.</tspan>
-          <tspan x="0" dy="28">&bull; Sanitización y protección de inyección CSV.</tspan>
-          <tspan x="0" dy="28">&bull; Protección de rutas por roles e inquilino.</tspan>
-          <tspan x="0" dy="28">&bull; Hasheo seguro de credenciales con Argon2id.</tspan>
-        </text>
+    <!-- Right Side Callout Card: Ventaja Arquitectónica -->
+    <g transform="translate(1050, 40)">
+      <line x1="0" y1="0" x2="0" y2="400" stroke="#0F172A" stroke-width="4"/>
+      <g transform="translate(30, 20)">
+        <text x="0" y="40" font-family="system-ui" font-size="28" font-weight="900" fill="#0F172A">Ventaja Arquitectónica</text>
+        <text x="0" y="90" font-family="system-ui" font-size="20" fill="#475569">El diseño modular facilita la</text>
+        <text x="0" y="125" font-family="system-ui" font-size="20" fill="#475569">incorporación futura de nuevos</text>
+        <text x="0" y="160" font-family="system-ui" font-size="20" fill="#475569">módulos (ej. concursos de</text>
+        <text x="0" y="195" font-family="system-ui" font-size="20" fill="#475569">oposición, evaluaciones docentes)</text>
+        <text x="0" y="230" font-family="system-ui" font-size="20" fill="#475569">sin alterar el código base existente,</text>
+        <text x="0" y="265" font-family="system-ui" font-size="20" fill="#475569">asegurando escalabilidad técnica.</text>
       </g>
     </g>
   </g>
 
-  <!-- Slide Footer -->
-  <g transform="translate(100, 1030)">
-    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#94A3B8">
-      SIGEDOR &bull; Proyecto de Investigación &bull; Frank Sousa
+  <!-- Footer -->
+  <g transform="translate(80, 1045)">
+    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#94A3B8">
+      SIGEDOR &bull; Proyecto de Investigación &bull; UNERG &bull; Frank Sousa &bull; Lámina 11 de 12
     </text>
-    <text x="1720" y="0" text-anchor="end" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#64748B">
-      11 / 12
+    <text x="1760" y="0" text-anchor="end" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#64748B">
+      ✦ Gemini Notebook
     </text>
   </g>
 </svg>

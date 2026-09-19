@@ -14,6 +14,7 @@ import { ReportManagement } from './components/ReportManagement';
 import { UserManagement } from './components/UserManagement';
 import { OfficialDocumentView } from './components/OfficialDocumentView';
 import { ApiDocsModal } from './components/ApiDocsModal';
+import { DataManagementModal } from './components/DataManagementModal';
 import { SystemPresentationView } from './components/SystemPresentationView';
 import { Teacher, Report } from './types';
 import { 
@@ -44,6 +45,7 @@ const MainApp: React.FC = () => {
   const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
   const [viewingReport, setViewingReport] = useState<Report | null>(null);
   const [showApiDocs, setShowApiDocs] = useState(false);
+  const [showDataManagement, setShowDataManagement] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
@@ -68,6 +70,7 @@ const MainApp: React.FC = () => {
       {/* Top Navbar */}
       <Header 
         onOpenApiDocs={() => setShowApiDocs(true)}
+        onOpenDataManagement={() => setShowDataManagement(true)}
         onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         isMobileMenuOpen={isMobileMenuOpen}
       />
@@ -217,6 +220,14 @@ const MainApp: React.FC = () => {
 
       {/* Swagger / OpenAPI Interactive Explorer Modal */}
       {showApiDocs && <ApiDocsModal onClose={() => setShowApiDocs(false)} />}
+
+      {/* Data Management & Integration Modal */}
+      {showDataManagement && (
+        <DataManagementModal
+          isOpen={showDataManagement}
+          onClose={() => setShowDataManagement(false)}
+        />
+      )}
     </div>
   );
 };

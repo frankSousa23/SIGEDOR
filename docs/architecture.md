@@ -65,3 +65,17 @@ graph TD
    - `TeacherPublicResource` y `ReportPublicResource` garantizan que ningún dato personal sensible (teléfonos, fechas de nacimiento, claves de usuario) sea expuesto a consumidores externos no autorizados.
 4. **Segregación de Interfaces (ISP)**:
    - Los formularios extensos se estructuran en asistentes por pasos (*Wizards*) y gestores de relaciones modulares (*RelationManagers*), dividiendo la responsabilidad de cada vista.
+
+---
+
+## 4. Activos Visuales y Compendio de Láminas de Arquitectura
+
+El sistema dispone de documentación gráfica de alta fidelidad integrada tanto en la interfaz web como en los repositorios de documentación:
+
+- **Infografía de Visión Integral del Sistema**:
+  - Archivo: `public/images/Gestion_docente_universitaria_SIGEDOR.svg`
+  - Propósito: Resumen holístico de capacidades, ecosistema tecnológico Laravel 11 y modelo perimetral de seguridad multi-inquilino.
+- **Compendio de 12 Láminas Técnicas de Presentación**:
+  - Directorio: `public/images/slides/` (`slide-1.svg` a `slide-12.svg`)
+  - Alcance: Portada oficial, centralización de ecosistema, expediente 360°, reglas de negocio de escalafón, ciclo documental y sellos criptográficos, aislamiento multi-sede, matriz RBAC, interfaz multidispositivo, pipeline de ingesta CSV, interoperabilidad OpenAPI 3.0, arquitectura en 3 capas, y fiabilidad demostrada (49 tests al 100%).
+

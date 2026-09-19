@@ -104,6 +104,31 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTeacher, onViewRep
         </div>
       </div>
 
+      {/* Integration Notice when database is empty */}
+      {totalTeachers === 0 && (
+        <div className="bg-amber-50 border border-amber-300 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+          <div className="flex items-start gap-3">
+            <div className="w-9 h-9 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Building2 className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-amber-950 uppercase tracking-wide">
+                Base de Datos Lista para Integración Institucional
+              </h4>
+              <p className="text-xs text-amber-800 mt-0.5">
+                La base de datos se encuentra completamente limpia. Puede comenzar a cargar la información oficial de su facultad registrando el primer expediente docente.
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => onNavigate('teachers')}
+            className="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs rounded-lg transition-colors flex-shrink-0 self-start sm:self-auto"
+          >
+            Registrar Primer Docente
+          </button>
+        </div>
+      )}
+
       {/* KPI Stats Widgets (StatsOverview) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Docentes */}
@@ -308,34 +333,40 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTeacher, onViewRep
           </div>
 
           <div className="space-y-2.5">
-            {filteredReports.slice(0, 3).map(report => (
-              <div
-                key={report.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-3 rounded-lg border border-slate-100 bg-slate-50 hover:bg-slate-100/80 transition-colors"
-              >
-                <div className="space-y-0.5 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs font-bold text-slate-900">{report.typeReport}</span>
-                    <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-blue-100 text-blue-800">
-                      {report.verification_code}
-                    </span>
-                  </div>
-                  <div className="text-xs text-slate-600 truncate">
-                    Docente: <strong className="text-slate-800">{report.teacher_name}</strong> • Memo: {report.memoNumber}
-                  </div>
-                  <div className="text-[11px] text-slate-400">
-                    Emitido por {report.created_by} el {report.created_at}
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => onViewReport(report)}
-                  className="self-start sm:self-auto px-3 py-1.5 text-xs font-semibold text-unerg-blue bg-white hover:bg-blue-50 border border-blue-200 rounded-md shadow-xs transition-colors flex-shrink-0"
-                >
-                  Ver PDF Oficial
-                </button>
+            {filteredReports.length === 0 ? (
+              <div className="text-center py-6 text-slate-500 text-xs bg-slate-50 rounded-lg border border-slate-100">
+                No hay reportes ni constancias emitidas aún.
               </div>
-            ))}
+            ) : (
+              filteredReports.slice(0, 3).map(report => (
+                <div
+                  key={report.id}
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-3 rounded-lg border border-slate-100 bg-slate-50 hover:bg-slate-100/80 transition-colors"
+                >
+                  <div className="space-y-0.5 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-xs font-bold text-slate-900">{report.typeReport}</span>
+                      <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-blue-100 text-blue-800">
+                        {report.verification_code}
+                      </span>
+                    </div>
+                    <div className="text-xs text-slate-600 truncate">
+                      Docente: <strong className="text-slate-800">{report.teacher_name}</strong> • Memo: {report.memoNumber}
+                    </div>
+                    <div className="text-[11px] text-slate-400">
+                      Emitido por {report.created_by} el {report.created_at}
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => onViewReport(report)}
+                    className="self-start sm:self-auto px-3 py-1.5 text-xs font-semibold text-unerg-blue bg-white hover:bg-blue-50 border border-blue-200 rounded-md shadow-xs transition-colors flex-shrink-0"
+                  >
+                    Ver PDF Oficial
+                  </button>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

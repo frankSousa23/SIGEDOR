@@ -14,7 +14,7 @@
 
 ## 🏛️ Visión Integral del Sistema
 
-![SIGEDOR - Visión Integral del Sistema](public/images/vision_integral_sigedor.svg)
+![SIGEDOR: El Motor Digital de la Gestión Docente Universitaria](public/images/Gestion_docente_universitaria_SIGEDOR.svg)
 
 ---
 
@@ -88,18 +88,18 @@ El proyecto cuenta con un compendio visual de 12 láminas de arquitectura y defe
 
 | N° | Lámina / Tema | Descripción Técnica y Alcance | Vista Previa Vectorial |
 | :---: | :--- | :--- | :---: |
-| **01** | **SIGEDOR: Portada Oficial** | Motor Digital del Control Académico Universitario. Laravel 11, Filament v3, OpenAPI 3.0 y Licencia MIT. | [Ver Lámina 1](public/images/slides/slide-1.svg) |
-| **02** | **Ecosistema Centralizado** | Arquitectura modular alrededor del núcleo Laravel 11: Expedientes, Escalafón, Spatie Multi-Tenant y DomPDF. | [Ver Lámina 2](public/images/slides/slide-2.svg) |
-| **03** | **Expediente Integral 360°** | Sincronización atómica garantizada con hooks Eloquent: Adscripción, Escalafón, Carga Horaria y Permisos. | [Ver Lámina 3](public/images/slides/slide-3.svg) |
-| **04** | **Reglas de Negocio & Escalafón** | Matriz bidimensional de Categorías (Instructor a Titular) vs. Dedicación (TCV, MT, TC, EX) y validación de posgrados. | [Ver Lámina 4](public/images/slides/slide-4.svg) |
-| **05** | **Flujo de Emisión Documental** | Del trámite a la certificación: Solicitud, Aprobación en panel Filament y Generación DomPDF con sello institucional. | [Ver Lámina 5](public/images/slides/slide-5.svg) |
-| **06** | **Arquitectura Multi-Inquilino** | Aislamiento territorial con Spatie: Scopes dinámicos por Sede y Área para restringir la visibilidad de expedientes. | [Ver Lámina 6](public/images/slides/slide-6.svg) |
-| **07** | **Pipeline de Ingesta Masiva** | Data Factory y Seeders desde archivos planos (`users.csv`, `teachers.csv`, etc.) a persistencia relacional íntegra. | [Ver Lámina 7](public/images/slides/slide-7.svg) |
-| **08** | **Arquitectura en Tres Capas** | Separación estricta de responsabilidades: Presentación (Filament/Blade), Lógica (Laravel 11/Spatie) y Datos (MySQL/MariaDB). | [Ver Lámina 8](public/images/slides/slide-8.svg) |
-| **09** | **Modelo Relacional (ER)** | Integridad estructural del dominio universitario: Diagrama Entidad-Relación con relaciones 1:1 y 1:N. | [Ver Lámina 9](public/images/slides/slide-9.svg) |
-| **10** | **Interoperabilidad & API REST** | Estándar OpenAPI 3.0 con Swagger interactivo para integración con nómina, control de estudios y tableros. | [Ver Lámina 10](public/images/slides/slide-10.svg) |
-| **11** | **Fiabilidad y Pruebas Automatizadas** | 49 Pruebas Pasadas y 372 Aserciones al 100% en Pest/PHPUnit, más trazabilidad forense de acciones con ActivityLog. | [Ver Lámina 11](public/images/slides/slide-11.svg) |
-| **12** | **Escalabilidad & Código Abierto** | Proyecto nacido como investigación universitaria, desacoplado y liberado bajo Licencia MIT para escalar globalmente. | [Ver Lámina 12](public/images/slides/slide-12.svg) |
+| **01** | **SIGEDOR: Motor Digital del Control Académico** | Arquitectura integral para gestión de expedientes, escalafón docente y emisión documental con sello criptográfico. Laravel 11, Filament v3, OpenAPI 3.0 y Licencia MIT. | [Ver Lámina 1](public/images/slides/slide-1.svg) |
+| **02** | **De la Fragmentación Documental a la Inteligencia Institucional** | Centralización de silos aislados (Nómina, RRHH, Control de Estudios) en un ecosistema automatizado con integridad 1:1 y 1:N y auditoría forense con Spatie. | [Ver Lámina 2](public/images/slides/slide-2.svg) |
+| **03** | **Anatomía del Expediente Integral 360°** | Sincronización atómica simultánea mediante hooks Eloquent: Adscripción Institucional, Escalafón, Carga Académica y Permisos/Licencias. | [Ver Lámina 3](public/images/slides/slide-3.svg) |
+| **04** | **Validación Automatizada de Reglas de Negocio** | Matriz bidimensional de Categorías vs. Dedicaciones: Bloqueo de combinaciones inválidas (Instructor + EX), tope de 40 horas y requisito de Doctorado para Titular. | [Ver Lámina 4](public/images/slides/slide-4.svg) |
+| **05** | **El Ciclo de Vida Documental: Del Dato a la Certificación** | Flujo en 3 fases: Evento en interfaz Filament, Sincronización en base de datos y Certificación en hoja membretada A4 con sello criptográfico `UNERG-REP-YYYY-XXXX`. | [Ver Lámina 5](public/images/slides/slide-5.svg) |
+| **06** | **Arquitectura Multi-Inquilino: Aislamiento Territorial** | Dynamic Eloquent Scopes para filtrado perimetral estricto a nivel de base de datos; los Jefes de Área solo acceden a registros de su jurisdicción geográfica. | [Ver Lámina 6](public/images/slides/slide-6.svg) |
+| **07** | **Matriz de Control de Acceso Basado en Roles (RBAC)** | Soporte para Múltiples Roles (ej. Jefe de Área y Docente simultáneamente) con alcances de visibilidad, edición, gestión de cuentas activas y reportes. | [Ver Lámina 7](public/images/slides/slide-7.svg) |
+| **08** | **Interfaz Universal: Experiencia Multidispositivo (v2.0.0)** | Modo Tabla de alta densidad para auditoría en monitores 4K y Modo Cuadrícula táctil optimizado para smartphones con barra inferior y navegación contextual. | [Ver Lámina 8](public/images/slides/slide-8.svg) |
+| **09** | **Ingesta de Datos: Archivos Planos a Integridad Relacional** | Pipeline de inyección estructurado mediante Data Factory y Seeders desde `users.csv`, `teachers.csv`, `categories.csv`, `dedications.csv` y `sites.csv`. | [Ver Lámina 9](public/images/slides/slide-9.svg) |
+| **10** | **Interoperabilidad Estándar: API RESTful OpenAPI 3.0** | Fuente de la Verdad académica para integración con nómina y control de estudios, protección estricta de PII y documentación viva Swagger UI integrada. | [Ver Lámina 10](public/images/slides/slide-10.svg) |
+| **11** | **Arquitectura en Tres Capas: Separación de Responsabilidades** | Capa de Presentación (Filament/Blade/DomPDF), Capa de Lógica y Seguridad (Laravel 11/Spatie) y Capa de Datos (MySQL/MariaDB) para máxima mantenibilidad. | [Ver Lámina 11](public/images/slides/slide-11.svg) |
+| **12** | **Fiabilidad Demostrada y Código Abierto** | 49 Pruebas Pasadas y 372 Aserciones al 100% en Pest/PHPUnit. Validación de autenticación, políticas multi-inquilino y liberación global bajo Licencia MIT. | [Ver Lámina 12](public/images/slides/slide-12.svg) |
 
 ---
 

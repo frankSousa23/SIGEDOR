@@ -107,7 +107,14 @@ export const ReportManagement: React.FC<ReportManagementProps> = ({ onViewReport
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {filtered.map(report => (
+              {filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="py-10 text-center text-slate-500 text-xs">
+                    No se han emitido reportes ni constancias oficiales aún.
+                  </td>
+                </tr>
+              ) : (
+                filtered.map(report => (
                 <tr key={report.id} className="hover:bg-slate-50/80 transition-colors">
                   <td className="py-3 px-4">
                     <div className="font-bold text-slate-900">{report.typeReport}</div>
@@ -144,7 +151,8 @@ export const ReportManagement: React.FC<ReportManagementProps> = ({ onViewReport
                     </button>
                   </td>
                 </tr>
-              ))}
+              ))
+            )}
             </tbody>
           </table>
         </div>

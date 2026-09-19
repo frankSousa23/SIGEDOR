@@ -1,107 +1,118 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
   <defs>
-    <linearGradient id="slideBg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#FDFBF7" />
-      <stop offset="100%" stop-color="#F4EFE6" />
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F8F9FB"/>
+      <stop offset="100%" stop-color="#EFF2F6"/>
     </linearGradient>
     <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="110%">
-      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.06" />
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#0F172A" flood-opacity="0.06"/>
     </filter>
   </defs>
-  <rect width="1920" height="1080" fill="url(#slideBg)" />
 
-  <!-- Isometric grid decorative lines -->
-  <g opacity="0.15" stroke="#94A3B8" stroke-width="1">
-    <line x1="0" y1="200" x2="1920" y2="200"/>
-    <line x1="0" y1="960" x2="1920" y2="960"/>
-    <line x1="160" y1="0" x2="160" y2="1080"/>
-    <line x1="1760" y1="0" x2="1760" y2="1080"/>
-  </g>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E2E8F0" stroke-width="0.8" opacity="0.7"/>
+  </pattern>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
 
-  <!-- Slide Header -->
-  <g transform="translate(100, 80)">
+  <!-- Header -->
+  <g transform="translate(80, 80)">
     <text x="0" y="45" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="44" font-weight="900" fill="#0F172A" letter-spacing="-0.5">
-      Del trámite a la certificación: Flujo de emisión automatizada de documentos
+      El Ciclo de Vida Documental: Del Dato a la Certificación Oficial
     </text>
-    <text x="0" y="85" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="22" font-weight="600" fill="#64748B">
-      Canalización transparente desde la solicitud hasta la firma con sello criptográfico
+    <text x="0" y="85" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="20" font-weight="500" fill="#475569">
+      La verdadera potencia de SIGEDOR radica en materializar datos digitales en documentos con validez legal instantánea. Un cambio en el expediente desencadena la generación automatizada de constancias en PDF.
     </text>
   </g>
 
-  <!-- Content -->
-  <g transform="translate(100, 240)">
-    <!-- Step 1 -->
-    <g transform="translate(80, 80)">
-      <rect width="380" height="260" rx="20" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
-      <circle cx="50" cy="50" r="25" fill="#EFF6FF"/>
-      <text x="50" y="58" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="900" fill="#1D4ED8">1</text>
-      <text x="90" y="45" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Solicitud</text>
-      <text x="90" y="68" font-family="system-ui, sans-serif" font-size="15" font-weight="600" fill="#64748B">(Ingreso de Datos)</text>
-      
-      <text x="30" y="130" font-family="system-ui, sans-serif" font-size="16" fill="#334155">
-        <tspan x="30" dy="0">Tramitación de años</tspan>
-        <tspan x="30" dy="24">sabáticos, comisiones de</tspan>
-        <tspan x="30" dy="24">servicio, prórrogas o</tspan>
-        <tspan x="30" dy="24">incapacidades.</tspan>
-      </text>
+  <!-- Body Content -->
+  <g transform="translate(80, 240)">
+    <!-- 3 Step Containers -->
+    <!-- 1. Evento -->
+    <g transform="translate(20, 0)">
+      <rect width="460" height="340" rx="16" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5" filter="url(#cardShadow)"/>
+      <rect x="0" y="0" width="460" height="48" rx="16" fill="#003366"/>
+      <text x="25" y="32" font-family="system-ui" font-size="16" font-weight="700" fill="#FFFFFF">Panel de Control</text>
+
+      <!-- Toggle Switch & Button -->
+      <rect x="40" y="90" width="70" height="36" rx="18" fill="#0284C7"/>
+      <circle cx="85" cy="108" r="14" fill="#FFFFFF"/>
+
+      <line x1="140" y1="108" x2="400" y2="108" stroke="#E2E8F0" stroke-width="6" stroke-linecap="round"/>
+
+      <rect x="230" y="190" width="190" height="48" rx="10" fill="#059669"/>
+      <text x="325" y="220" text-anchor="middle" font-family="system-ui" font-size="15" font-weight="800" fill="#FFFFFF">Guardar y Procesar ✓</text>
+
+      <text x="230" y="390" text-anchor="middle" font-family="system-ui" font-size="26" font-weight="900" fill="#0F172A">1. Evento</text>
+      <text x="230" y="420" text-anchor="middle" font-family="system-ui" font-size="16" fill="#475569">Disparado por la interfaz</text>
+      <text x="230" y="445" text-anchor="middle" font-family="system-ui" font-size="16" fill="#475569">de usuario Filament / Web.</text>
     </g>
 
     <!-- Arrow 1 -->
-    <path d="M 490 210 L 580 210" stroke="#F59E0B" stroke-width="5" stroke-linecap="round" marker-end="url(#arrow)"/>
-    <polygon points="580,200 600,210 580,220" fill="#F59E0B" />
+    <path d="M 520 170 L 590 170 L 590 150 L 630 170 L 590 190 L 590 170" fill="#0284C7"/>
 
-    <!-- Step 2 -->
-    <g transform="translate(620, 80)">
-      <rect width="380" height="260" rx="20" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
-      <circle cx="50" cy="50" r="25" fill="#FEF3C7"/>
-      <text x="50" y="58" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="900" fill="#D97706">2</text>
-      <text x="90" y="45" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Aprobación</text>
-      <text x="90" y="68" font-family="system-ui, sans-serif" font-size="15" font-weight="600" fill="#64748B">(Panel Filament)</text>
+    <!-- 2. Sincronización -->
+    <g transform="translate(670, 0)">
+      <g transform="translate(230, 150)">
+        <circle cx="-50" cy="0" r="45" fill="#F59E0B"/>
+        <text x="-50" y="12" text-anchor="middle" font-size="34">⚙️</text>
+        
+        <rect x="20" y="-45" width="90" height="90" rx="12" fill="#1E293B"/>
+        <text x="65" y="12" text-anchor="middle" font-size="34">🗄️</text>
+      </g>
 
-      <text x="30" y="130" font-family="system-ui, sans-serif" font-size="16" fill="#334155">
-        <tspan x="30" dy="0">Control de vigencias</tspan>
-        <tspan x="30" dy="24">semestrales/anuales</tspan>
-        <tspan x="30" dy="24">mediante autorización de</tspan>
-        <tspan x="30" dy="24">roles superiores.</tspan>
-      </text>
+      <text x="230" y="390" text-anchor="middle" font-family="system-ui" font-size="26" font-weight="900" fill="#0F172A">2. Sincronización</text>
+      <text x="230" y="420" text-anchor="middle" font-family="system-ui" font-size="16" fill="#475569">Eloquent Hook actualiza al instante</text>
+      <text x="230" y="445" text-anchor="middle" font-family="system-ui" font-size="16" fill="#475569">las tablas del perfil.</text>
     </g>
 
     <!-- Arrow 2 -->
-    <path d="M 1030 210 L 1120 210" stroke="#F59E0B" stroke-width="5" stroke-linecap="round"/>
-    <polygon points="1120,200 1140,210 1120,220" fill="#F59E0B" />
+    <path d="M 1170 170 L 1240 170 L 1240 150 L 1280 170 L 1240 190 L 1240 170" fill="#0284C7"/>
 
-    <!-- Step 3 -->
-    <g transform="translate(1160, 80)">
-      <rect width="460" height="260" rx="20" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
-      <circle cx="50" cy="50" r="25" fill="#DCFCE7"/>
-      <text x="50" y="58" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="900" fill="#15803D">3</text>
-      <text x="90" y="45" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Generación</text>
-      <text x="90" y="68" font-family="system-ui, sans-serif" font-size="15" font-weight="600" fill="#64748B">(Motor DomPDF)</text>
+    <!-- 3. Certificación -->
+    <g transform="translate(1320, 0)">
+      <!-- A4 Sheet Paper Mockup -->
+      <g transform="translate(120, 10)">
+        <rect width="220" height="280" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" filter="url(#cardShadow)"/>
+        <!-- Header logo / lines -->
+        <rect x="20" y="20" width="40" height="20" fill="#003366"/>
+        <text x="70" y="35" font-family="system-ui" font-size="10" font-weight="800" fill="#003366">UNERG</text>
+        <line x1="20" y1="50" x2="200" y2="50" stroke="#CBD5E1" stroke-width="2"/>
+        
+        <line x1="20" y1="75" x2="200" y2="75" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round"/>
+        <line x1="20" y1="95" x2="180" y2="95" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round"/>
+        <line x1="20" y1="115" x2="190" y2="115" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round"/>
+        <line x1="20" y1="135" x2="160" y2="135" stroke="#E2E8F0" stroke-width="4" stroke-linecap="round"/>
 
-      <text x="30" y="130" font-family="system-ui, sans-serif" font-size="16" fill="#334155">
-        <tspan x="30" dy="0">Exportación masiva o individual</tspan>
-        <tspan x="30" dy="24">(formato apaisado o vertical).</tspan>
-        <tspan x="30" dy="24">Diseño oficial UNERG.</tspan>
-      </text>
-    </g>
+        <!-- QR Code & Badge -->
+        <rect x="150" y="200" width="50" height="50" fill="#0F172A"/>
+        <circle cx="55" cy="225" r="22" fill="#D97706"/>
+        <text x="55" y="232" text-anchor="middle" font-size="16">✓</text>
+        <text x="110" y="268" text-anchor="middle" font-family="monospace" font-size="8" fill="#64748B">UNERG-REP-YYYY-XXXX</text>
+      </g>
 
-    <!-- Document graphic and verification stamp -->
-    <g transform="translate(700, 420)">
-      <rect width="400" height="150" rx="16" fill="#FFFBEB" stroke="#D97706" stroke-width="2"/>
-      <circle cx="60" cy="75" r="32" fill="#F59E0B"/>
-      <text x="60" y="82" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#FFFFFF">&check;</text>
-      <text x="120" y="60" font-family="monospace" font-size="17" font-weight="800" fill="#B45309">UNERG-REP-YYYY-XXXX</text>
-      <text x="120" y="90" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#78350F">Código de Autenticidad Institucional embebido</text>
+      <text x="230" y="390" text-anchor="middle" font-family="system-ui" font-size="26" font-weight="900" fill="#0F172A">3. Certificación</text>
+      
+      <!-- Sub-card info -->
+      <g transform="translate(0, 415)">
+        <rect width="460" height="90" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+        <text x="20" y="32" font-family="system-ui" font-size="14" fill="#1E293B">
+          &bull; <tspan font-weight="bold">Motor:</tspan> barryvdh/laravel-dompdf (Soporte A4, Membrete Oficial)
+        </text>
+        <text x="20" y="62" font-family="system-ui" font-size="14" fill="#1E293B">
+          &bull; <tspan font-weight="bold">Seguridad:</tspan> Sello criptográfico y código de verificación: UNERG-REP-YYYY-XXXX
+        </text>
+      </g>
     </g>
   </g>
 
-  <!-- Slide Footer -->
-  <g transform="translate(100, 1030)">
-    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#94A3B8">
-      SIGEDOR &bull; Proyecto de Investigación &bull; Frank Sousa
+  <!-- Footer -->
+  <g transform="translate(80, 1045)">
+    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#94A3B8">
+      SIGEDOR &bull; Proyecto de Investigación &bull; UNERG &bull; Frank Sousa &bull; Lámina 5 de 12
     </text>
-    <text x="1720" y="0" text-anchor="end" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#64748B">
-      5 / 12
+    <text x="1760" y="0" text-anchor="end" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#64748B">
+      ✦ Gemini Notebook
     </text>
   </g>
 </svg>

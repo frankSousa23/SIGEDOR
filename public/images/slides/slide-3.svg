@@ -1,91 +1,118 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
   <defs>
-    <linearGradient id="slideBg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#FDFBF7" />
-      <stop offset="100%" stop-color="#F4EFE6" />
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F8F9FB"/>
+      <stop offset="100%" stop-color="#EFF2F6"/>
     </linearGradient>
     <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="110%">
-      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.06" />
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#0F172A" flood-opacity="0.06"/>
     </filter>
   </defs>
-  <rect width="1920" height="1080" fill="url(#slideBg)" />
 
-  <!-- Isometric grid decorative lines -->
-  <g opacity="0.15" stroke="#94A3B8" stroke-width="1">
-    <line x1="0" y1="200" x2="1920" y2="200"/>
-    <line x1="0" y1="960" x2="1920" y2="960"/>
-    <line x1="160" y1="0" x2="160" y2="1080"/>
-    <line x1="1760" y1="0" x2="1760" y2="1080"/>
-  </g>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E2E8F0" stroke-width="0.8" opacity="0.7"/>
+  </pattern>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
 
-  <!-- Slide Header -->
-  <g transform="translate(100, 80)">
+  <!-- Header -->
+  <g transform="translate(80, 80)">
     <text x="0" y="45" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="44" font-weight="900" fill="#0F172A" letter-spacing="-0.5">
-      El Expediente Integral 360° sincroniza la vida académica del docente
+      Anatomía del Expediente Integral 360°
     </text>
-    <text x="0" y="85" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="22" font-weight="600" fill="#64748B">
-      Sincronización atómica garantizada mediante hooks de ciclo de vida de Eloquent
+    <text x="0" y="85" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="20" font-weight="500" fill="#475569">
+      Un expediente unificado donde 4 gestores de relaciones operan simultáneamente mediante hooks de ciclo de vida Eloquent.
     </text>
   </g>
 
-  <!-- Content -->
-  <g transform="translate(100, 220)">
-    <!-- Central Node -->
-    <circle cx="860" cy="400" r="160" fill="#F8FAFC" stroke="#003366" stroke-width="4" filter="url(#cardShadow)"/>
-    <text x="860" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="34" font-weight="900" fill="#003366">Perfil</text>
-    <text x="860" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="34" font-weight="900" fill="#003366">Docente</text>
-    <text x="860" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#D97706">Unificado</text>
-
-    <!-- Node 1: Top Right: Adscripción Institucional -->
-    <g transform="translate(1180, 100)">
-      <rect width="480" height="140" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
-      <circle cx="-30" cy="70" r="16" fill="#F59E0B"/>
-      <text x="30" y="50" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Adscripción Institucional</text>
-      <text x="30" y="85" font-family="system-ui, sans-serif" font-size="17" fill="#475569">Sede territorial, Área de conocimiento y Programas.</text>
+  <!-- Body Content -->
+  <g transform="translate(80, 220)">
+    <!-- Center Graphic: ID Card and Radar -->
+    <g transform="translate(880, 310)">
+      <circle cx="0" cy="0" r="240" fill="none" stroke="#E2E8F0" stroke-width="2"/>
+      <circle cx="0" cy="0" r="170" fill="none" stroke="#D97706" stroke-width="1.5" stroke-dasharray="6 6"/>
+      
+      <!-- Card Icon -->
+      <rect x="-100" y="-130" width="200" height="260" rx="16" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" filter="url(#cardShadow)"/>
+      <circle cx="0" cy="-40" r="36" fill="#94A3B8"/>
+      <rect x="-45" y="15" width="90" height="12" rx="6" fill="#003366"/>
+      <rect x="-65" y="40" width="130" height="8" rx="4" fill="#CBD5E1"/>
+      <rect x="-65" y="58" width="100" height="8" rx="4" fill="#CBD5E1"/>
     </g>
 
-    <!-- Node 2: Mid Right: Escalafón Universitario -->
-    <g transform="translate(1180, 420)">
-      <rect width="480" height="140" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
-      <circle cx="-30" cy="70" r="16" fill="#F59E0B"/>
-      <text x="30" y="50" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Escalafón Universitario</text>
-      <text x="30" y="85" font-family="system-ui, sans-serif" font-size="17" fill="#475569">Historial cronológico y validación automática de categoría vigente.</text>
+    <!-- Top Left: Adscripción Institucional -->
+    <g transform="translate(100, 40)">
+      <text x="0" y="30" font-family="system-ui" font-size="24" font-weight="900" fill="#0F172A">Adscripción Institucional</text>
+      <g transform="translate(0, 50)">
+        <rect x="0" y="0" width="14" height="14" rx="2" fill="#64748B"/>
+        <text x="28" y="13" font-family="system-ui" font-size="18" fill="#334155">Sedes</text>
+      </g>
+      <g transform="translate(0, 85)">
+        <rect x="0" y="0" width="14" height="14" rx="2" fill="#64748B"/>
+        <text x="28" y="13" font-family="system-ui" font-size="18" fill="#334155">Áreas</text>
+      </g>
+      <g transform="translate(0, 120)">
+        <rect x="0" y="0" width="14" height="14" rx="2" fill="#64748B"/>
+        <text x="28" y="13" font-family="system-ui" font-size="18" fill="#334155">Programas</text>
+      </g>
+      <rect x="0" y="160" width="220" height="36" rx="18" fill="#0284C7"/>
+      <text x="110" y="184" text-anchor="middle" font-family="monospace" font-size="15" font-weight="700" fill="#FFFFFF">$teacher-&gt;sites()</text>
     </g>
 
-    <!-- Node 3: Bottom Left: Carga Horaria -->
-    <g transform="translate(80, 560)">
-      <rect width="480" height="140" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
-      <circle cx="510" cy="70" r="16" fill="#F59E0B"/>
-      <text x="30" y="50" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Carga Horaria</text>
-      <text x="30" y="85" font-family="system-ui, sans-serif" font-size="17" fill="#475569">Modalidad de contratación, horas semanales y cargos directivos.</text>
+    <!-- Top Right: Escalafón Universitario -->
+    <g transform="translate(1250, 40)">
+      <text x="0" y="30" font-family="system-ui" font-size="24" font-weight="900" fill="#0F172A">Escalafón Universitario</text>
+      <!-- Bar Chart Icon -->
+      <g transform="translate(20, 50)">
+        <rect x="0" y="50" width="18" height="50" rx="2" fill="#0284C7"/>
+        <rect x="25" y="30" width="18" height="70" rx="2" fill="#0284C7"/>
+        <rect x="50" y="0" width="18" height="100" rx="2" fill="#0284C7"/>
+      </g>
+      <rect x="0" y="160" width="250" height="36" rx="18" fill="#0284C7"/>
+      <text x="125" y="184" text-anchor="middle" font-family="monospace" font-size="15" font-weight="700" fill="#FFFFFF">$teacher-&gt;category()</text>
     </g>
 
-    <!-- Node 4: Top Left: Permisos y Reportes -->
-    <g transform="translate(80, 200)">
-      <rect width="480" height="140" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
-      <circle cx="510" cy="70" r="16" fill="#F59E0B"/>
-      <text x="30" y="50" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Permisos y Reportes</text>
-      <text x="30" y="85" font-family="system-ui, sans-serif" font-size="17" fill="#475569">Historial de licencias e informes emitidos.</text>
+    <!-- Bottom Left: Carga Académica -->
+    <g transform="translate(100, 440)">
+      <text x="0" y="30" font-family="system-ui" font-size="24" font-weight="900" fill="#0F172A">Carga Académica</text>
+      <!-- Clock Icon -->
+      <circle cx="50" cy="90" r="35" fill="none" stroke="#003366" stroke-width="4"/>
+      <line x1="50" y1="90" x2="50" y2="70" stroke="#003366" stroke-width="4" stroke-linecap="round"/>
+      <line x1="50" y1="90" x2="68" y2="90" stroke="#003366" stroke-width="4" stroke-linecap="round"/>
+      <rect x="0" y="150" width="260" height="36" rx="18" fill="#0284C7"/>
+      <text x="130" y="174" text-anchor="middle" font-family="monospace" font-size="15" font-weight="700" fill="#FFFFFF">$teacher-&gt;dedication()</text>
     </g>
 
-    <!-- Orbit rings -->
-    <circle cx="860" cy="400" r="280" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="8,8"/>
-
-    <!-- Bottom Tech Pill -->
-    <g transform="translate(1220, 680)">
-      <rect width="440" height="80" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
-      <text x="30" y="35" font-family="system-ui, sans-serif" font-size="15" font-weight="800" fill="#1D4ED8">Sincronización atómica (technica)</text>
-      <text x="30" y="58" font-family="system-ui, sans-serif" font-size="13" fill="#1E40AF">Garantizada mediante hooks de ciclo de vida de Eloquent.</text>
+    <!-- Bottom Right: Permisos y Licencias -->
+    <g transform="translate(1250, 440)">
+      <text x="0" y="30" font-family="system-ui" font-size="24" font-weight="900" fill="#0F172A">Permisos y Licencias</text>
+      <!-- Calendar Icon -->
+      <rect x="20" y="55" width="70" height="65" rx="8" fill="none" stroke="#003366" stroke-width="4"/>
+      <line x1="20" y1="75" x2="90" y2="75" stroke="#003366" stroke-width="3"/>
+      <circle cx="38" cy="90" r="3" fill="#003366"/>
+      <circle cx="55" cy="90" r="3" fill="#003366"/>
+      <circle cx="72" cy="90" r="3" fill="#003366"/>
+      <circle cx="38" cy="105" r="3" fill="#003366"/>
+      <circle cx="55" cy="105" r="3" fill="#003366"/>
+      <circle cx="72" cy="105" r="3" fill="#003366"/>
+      <rect x="0" y="150" width="280" height="36" rx="18" fill="#0284C7"/>
+      <text x="140" y="174" text-anchor="middle" font-family="monospace" font-size="15" font-weight="700" fill="#FFFFFF">$teacher-&gt;permissions()</text>
     </g>
+
+    <!-- Connecting Gold Lines -->
+    <path d="M 320 130 L 680 280" fill="none" stroke="#D97706" stroke-width="2"/>
+    <path d="M 1250 130 L 1080 280" fill="none" stroke="#D97706" stroke-width="2"/>
+    <path d="M 320 520 L 680 340" fill="none" stroke="#D97706" stroke-width="2"/>
+    <path d="M 1250 520 L 1080 340" fill="none" stroke="#D97706" stroke-width="2"/>
   </g>
 
-  <!-- Slide Footer -->
-  <g transform="translate(100, 1030)">
-    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#94A3B8">
-      SIGEDOR &bull; Proyecto de Investigación &bull; Frank Sousa
+  <!-- Footer -->
+  <g transform="translate(80, 1045)">
+    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#94A3B8">
+      SIGEDOR &bull; Proyecto de Investigación &bull; UNERG &bull; Frank Sousa &bull; Lámina 3 de 12
     </text>
-    <text x="1720" y="0" text-anchor="end" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#64748B">
-      3 / 12
+    <text x="1760" y="0" text-anchor="end" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#64748B">
+      ✦ Gemini Notebook
     </text>
   </g>
 </svg>

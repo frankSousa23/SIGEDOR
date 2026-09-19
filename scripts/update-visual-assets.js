@@ -1,4 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+import fs from 'fs';
+import path from 'path';
+
+const outDir = path.resolve('public/images');
+const slidesDir = path.resolve('public/images/slides');
+if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
+if (!fs.existsSync(slidesDir)) fs.mkdirSync(slidesDir, { recursive: true });
+
+// 1. Generate the Modern Dark Navy Infographic matching "Gestión_docente_universitaria_SIGEDOR.png"
+const infographicSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
   <defs>
     <linearGradient id="infBg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#0A1128"/>
@@ -273,4 +282,16 @@
   <text x="1860" y="1065" text-anchor="end" font-family="system-ui" font-size="14" font-weight="600" fill="#64748B">
     Gemini Notebook
   </text>
-</svg>
+</svg>`;
+
+// Write the new infographic to both primary and backwards-compatible locations
+fs.writeFileSync(path.join(outDir, 'Gestion_docente_universitaria_SIGEDOR.svg'), infographicSvg);
+fs.writeFileSync(path.join(outDir, 'vision_integral_sigedor.svg'), infographicSvg);
+
+// Remove outdated legacy files if they exist
+const oldFile = path.join(outDir, 'Gestión_digital_docente_universitaria_SIGEDOR.svg');
+if (fs.existsSync(oldFile)) {
+  fs.unlinkSync(oldFile);
+}
+
+console.log('Infographic generated successfully!');

@@ -68,7 +68,14 @@ export const DedicationManagement: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {filtered.map(ded => {
+              {filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="py-10 text-center text-slate-500 text-xs">
+                    No hay registros de dedicación académica disponibles.
+                  </td>
+                </tr>
+              ) : (
+                filtered.map(ded => {
                 const teacher = teachers.find(t => t.cdi === ded.teacher_cdi);
                 const isEditing = editingCdi === ded.teacher_cdi;
 
@@ -153,7 +160,8 @@ export const DedicationManagement: React.FC = () => {
                     </td>
                   </tr>
                 );
-              })}
+              })
+            )}
             </tbody>
           </table>
         </div>

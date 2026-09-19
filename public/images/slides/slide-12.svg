@@ -1,94 +1,91 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
   <defs>
-    <linearGradient id="slideBg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#FDFBF7" />
-      <stop offset="100%" stop-color="#F4EFE6" />
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F8F9FB"/>
+      <stop offset="100%" stop-color="#EFF2F6"/>
     </linearGradient>
     <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="110%">
-      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.06" />
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#0F172A" flood-opacity="0.06"/>
     </filter>
   </defs>
-  <rect width="1920" height="1080" fill="url(#slideBg)" />
 
-  <!-- Isometric grid decorative lines -->
-  <g opacity="0.15" stroke="#94A3B8" stroke-width="1">
-    <line x1="0" y1="200" x2="1920" y2="200"/>
-    <line x1="0" y1="960" x2="1920" y2="960"/>
-    <line x1="160" y1="0" x2="160" y2="1080"/>
-    <line x1="1760" y1="0" x2="1760" y2="1080"/>
-  </g>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E2E8F0" stroke-width="0.8" opacity="0.7"/>
+  </pattern>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
 
-  <!-- Slide Header -->
-  <g transform="translate(100, 80)">
+  <!-- Header -->
+  <g transform="translate(80, 80)">
     <text x="0" y="45" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="44" font-weight="900" fill="#0F172A" letter-spacing="-0.5">
-      Nacido como investigación, diseñado para escalar globalmente
+      Fiabilidad Demostrada y Código Abierto
     </text>
-    <text x="0" y="85" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="22" font-weight="600" fill="#64748B">
-      Liberado bajo Licencia MIT &bull; Autoría: Frank Sousa &bull; UNERG
+    <text x="0" y="85" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="20" font-weight="500" fill="#475569">
+      Nacido como investigación universitaria y diseñado para escalar, SIGEDOR está validado por pruebas automatizadas exhaustivas y liberado a la comunidad para su adopción global.
     </text>
   </g>
 
-  <!-- Content -->
-  <g transform="translate(100, 220)">
-    <!-- Top Callout -->
-    <rect x="60" y="20" width="1600" height="80" rx="16" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
-    <text x="860" y="68" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#1E40AF">
-      Liberado bajo Licencia MIT, el código fuente está desacoplado siguiendo principios SOLID, permitiendo su bifurcación e implementación en nuevos ecosistemas académicos.
-    </text>
-
-    <!-- Center: Fork & Adapt Conceptual Map -->
-    <g transform="translate(160, 160)">
-      <!-- Origin: Repositorio Core -->
-      <rect x="0" y="100" width="340" height="150" rx="20" fill="#0F172A" stroke="#38BDF8" stroke-width="3" filter="url(#cardShadow)"/>
-      <text x="170" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="26" font-weight="900" fill="#FFFFFF">Repositorio Core</text>
-      <text x="170" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="26" font-weight="900" fill="#38BDF8">SIGEDOR</text>
-
-      <rect x="80" y="275" width="180" height="40" rx="10" fill="#FEF3C7"/>
-      <text x="170" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="800" fill="#92400E">Licencia MIT</text>
-
-      <!-- Branches -->
-      <path d="M 340 175 C 480 175, 480 50, 600 50" fill="none" stroke="#F59E0B" stroke-width="4"/>
-      <path d="M 340 175 L 600 175" fill="none" stroke="#F59E0B" stroke-width="4"/>
-      <path d="M 340 175 C 480 175, 480 300, 600 300" fill="none" stroke="#F59E0B" stroke-width="4"/>
-
-      <!-- Branch 1: Estructura Modular -->
-      <g transform="translate(600, 0)">
-        <rect width="640" height="100" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
-        <text x="35" y="40" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Estructura Modular</text>
-        <text x="35" y="70" font-family="system-ui, sans-serif" font-size="16" fill="#475569">Expansión fácil hacia evaluación docente o control de posgrados.</text>
+  <!-- Body Content -->
+  <g transform="translate(80, 240)">
+    <!-- Left Card: 100% Tests -->
+    <g transform="translate(80, 0)">
+      <rect width="760" height="520" rx="20" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5" filter="url(#cardShadow)"/>
+      
+      <!-- Big 100% Circle -->
+      <g transform="translate(380, 160)">
+        <circle cx="0" cy="0" r="110" fill="none" stroke="#E2E8F0" stroke-width="12"/>
+        <circle cx="0" cy="0" r="110" fill="none" stroke="#0284C7" stroke-width="12" stroke-dasharray="691 691"/>
+        <text x="0" y="25" text-anchor="middle" font-family="system-ui" font-size="64" font-weight="900" fill="#0F172A">100%</text>
       </g>
 
-      <!-- Branch 2: Datos Base -->
-      <g transform="translate(600, 125)">
-        <rect width="640" height="100" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
-        <text x="35" y="40" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Datos Base</text>
-        <text x="35" y="70" font-family="system-ui, sans-serif" font-size="16" fill="#475569">Modificación de catálogos mediante Seeders y CSVs institucionales propios.</text>
-      </g>
-
-      <!-- Branch 3: Identidad Visual -->
-      <g transform="translate(600, 250)">
-        <rect width="640" height="100" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
-        <text x="35" y="40" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Identidad Visual</text>
-        <text x="35" y="70" font-family="system-ui, sans-serif" font-size="16" fill="#475569">Personalización absoluta de vistas Blade, estilos y membretes PDF oficiales.</text>
-      </g>
+      <text x="380" y="340" text-anchor="middle" font-family="system-ui" font-size="22" font-weight="900" fill="#0F172A">
+        Pruebas Automatizadas (Pest/PHPUnit):
+      </text>
+      <text x="380" y="380" text-anchor="middle" font-family="system-ui" font-size="18" fill="#475569">
+        49 Pruebas de integración y 372 Aserciones al
+      </text>
+      <text x="380" y="410" text-anchor="middle" font-family="system-ui" font-size="18" fill="#475569">
+        100%. Validación de autenticación, políticas
+      </text>
+      <text x="380" y="440" text-anchor="middle" font-family="system-ui" font-size="18" fill="#475569">
+        multi-inquilino y generación de PDF.
+      </text>
     </g>
 
-    <!-- Bottom Banner -->
-    <g transform="translate(500, 520)">
-      <rect width="720" height="50" rx="25" fill="#F1F5F9"/>
-      <text x="360" y="32" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#475569">
-        Un proyecto de código abierto construido sobre el rigor académico.
+    <!-- Right Card: Licencia MIT -->
+    <g transform="translate(920, 0)">
+      <rect width="760" height="520" rx="20" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5" filter="url(#cardShadow)"/>
+
+      <!-- Shield with Global Grid -->
+      <g transform="translate(380, 160)">
+        <circle cx="0" cy="0" r="110" fill="none" stroke="#D97706" stroke-width="2"/>
+        <line x1="-110" y1="0" x2="110" y2="0" stroke="#D97706" stroke-width="1.5"/>
+        <ellipse cx="0" cy="0" rx="60" ry="110" fill="none" stroke="#D97706" stroke-width="1.5"/>
+        <path d="M 0 -70 L 60 -40 L 60 40 Q 0 90 0 90 Q -60 40 -60 40 L -60 -40 Z" fill="#003366"/>
+      </g>
+
+      <text x="380" y="340" text-anchor="middle" font-family="system-ui" font-size="22" font-weight="900" fill="#0F172A">
+        Código Abierto bajo Licencia MIT:
+      </text>
+      <text x="380" y="380" text-anchor="middle" font-family="system-ui" font-size="18" fill="#475569">
+        Desacoplado y listo para ser personalizado e
+      </text>
+      <text x="380" y="410" text-anchor="middle" font-family="system-ui" font-size="18" fill="#475569">
+        implementado en otras instituciones universitarias de
+      </text>
+      <text x="380" y="440" text-anchor="middle" font-family="system-ui" font-size="18" fill="#475569">
+        educación superior. Liberado para la comunidad.
       </text>
     </g>
   </g>
 
-  <!-- Slide Footer -->
-  <g transform="translate(100, 1030)">
-    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#94A3B8">
-      SIGEDOR &bull; Proyecto de Investigación &bull; Frank Sousa
+  <!-- Footer -->
+  <g transform="translate(80, 1045)">
+    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#94A3B8">
+      SIGEDOR &bull; Proyecto de Investigación &bull; UNERG &bull; Frank Sousa &bull; Lámina 12 de 12
     </text>
-    <text x="1720" y="0" text-anchor="end" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#64748B">
-      12 / 12
+    <text x="1760" y="0" text-anchor="end" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#64748B">
+      ✦ Gemini Notebook
     </text>
   </g>
 </svg>

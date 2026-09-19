@@ -111,7 +111,14 @@ export const SiteManagement: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {filtered.map(site => {
+              {filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="py-10 text-center text-slate-500 text-xs">
+                    No hay cátedras asignadas para los criterios seleccionados.
+                  </td>
+                </tr>
+              ) : (
+                filtered.map(site => {
                 const teacher = teachers.find(t => t.cdi === site.teacher_cdi);
 
                 return (
@@ -160,7 +167,8 @@ export const SiteManagement: React.FC = () => {
                     </td>
                   </tr>
                 );
-              })}
+              })
+            )}
             </tbody>
           </table>
         </div>

@@ -72,7 +72,14 @@ export const CategoryManagement: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {filtered.map(cat => {
+              {filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="py-10 text-center text-slate-500 text-xs">
+                    No hay registros de escalafón docente disponibles.
+                  </td>
+                </tr>
+              ) : (
+                filtered.map(cat => {
                 const teacher = teachers.find(t => t.cdi === cat.teacher_cdi);
                 const currentIdx = categoryOrder.indexOf(cat.current_category);
                 const canPromote = currentIdx < categoryOrder.length - 1;
@@ -136,7 +143,8 @@ export const CategoryManagement: React.FC = () => {
                     </td>
                   </tr>
                 );
-              })}
+              })
+            )}
             </tbody>
           </table>
         </div>
