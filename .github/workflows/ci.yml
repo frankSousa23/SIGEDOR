@@ -25,15 +25,17 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
 
       - name: Install Composer Dependencies
-        run: composer install --prefer-dist --no-progress --no-interaction
+        run: |
+          (test -f composer.lock && composer install --prefer-dist --no-progress --no-interaction --no-audit) || composer update --prefer-dist --no-progress --no-interaction --no-audit
 
       - name: Install NPM Dependencies & Build Assets
         run: |
-          npm ci
+          npm ci || npm install
           npm run build
 
       - name: Prepare Environment
@@ -67,7 +69,8 @@ jobs:
           coverage: none
 
       - name: Install Dependencies
-        run: composer install --prefer-dist --no-progress --no-interaction
+        run: |
+          (test -f composer.lock && composer install --prefer-dist --no-progress --no-interaction --no-audit) || composer update --prefer-dist --no-progress --no-interaction --no-audit
 
       - name: Check Style
         run: vendor/bin/pint --test
