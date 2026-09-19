@@ -56,41 +56,42 @@ export const TeacherDetailModal: React.FC<TeacherDetailModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4">
+      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
         {/* Header */}
-        <div className="bg-gradient-to-r from-unerg-blue to-slate-900 text-white p-6 flex items-start justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center text-xl font-black shadow-lg">
+        <div className="bg-gradient-to-r from-unerg-blue to-slate-900 text-white p-4 sm:p-6 flex items-start justify-between gap-3">
+          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center text-base sm:text-xl font-black shadow-lg flex-shrink-0">
               {teacher.name[0]}{teacher.surName[0]}
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-xl font-bold tracking-tight">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="text-base sm:text-xl font-bold tracking-tight truncate">
                   {teacher.name} {teacher.surName}
                 </h2>
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-300 text-slate-900">
+                <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-300 text-slate-900">
                   {category?.current_category || 'Docente'}
                 </span>
               </div>
-              <p className="text-xs text-slate-300 mt-1">
-                Cédula: <strong className="text-white">{teacher.cdi}</strong> • Correo: {teacher.email}
+              <p className="text-xs text-slate-300 mt-0.5 truncate">
+                Cédula: <strong className="text-white">{teacher.cdi}</strong> • {teacher.email}
               </p>
-              <p className="text-xs text-amber-200 mt-0.5">
+              <p className="text-xs text-amber-200 mt-0.5 truncate">
                 {teacher.sede_nombre} — {teacher.area_nombre}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors flex-shrink-0"
+            aria-label="Cerrar modal"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Tabs Bar */}
-        <div className="border-b border-slate-200 px-6 bg-slate-50 flex space-x-1 overflow-x-auto text-xs font-semibold">
+        <div className="border-b border-slate-200 px-3 sm:px-6 bg-slate-50 flex space-x-1 overflow-x-auto text-xs font-semibold">
           <button
             onClick={() => setActiveTab('info')}
             className={`py-3 px-3.5 border-b-2 transition-all flex items-center gap-1.5 whitespace-nowrap ${

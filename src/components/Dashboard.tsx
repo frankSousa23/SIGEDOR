@@ -67,10 +67,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTeacher, onViewRep
   return (
     <div className="space-y-6">
       {/* Welcome Banner */}
-      <div className="bg-gradient-to-r from-unerg-blue via-unerg-blue-dark to-slate-900 rounded-xl p-6 text-white shadow-sm border border-slate-700/50">
+      <div className="bg-gradient-to-r from-unerg-blue via-unerg-blue-dark to-slate-900 rounded-xl p-4 sm:p-6 text-white shadow-xs border border-slate-700/50">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-1">
+            <div className="flex items-center gap-2 mb-1 flex-wrap">
               <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-400 text-slate-950 uppercase tracking-wide">
                 Panel Institucional
               </span>
@@ -78,27 +78,27 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTeacher, onViewRep
                 {isSuperAdmin ? 'Ámbito Global' : `Sede: ${currentUser.sede_nombre}`}
               </span>
             </div>
-            <h1 className="text-2xl font-bold tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
               Bienvenido, {currentUser.name}
             </h1>
-            <p className="text-slate-300 text-sm mt-1">
+            <p className="text-slate-300 text-xs sm:text-sm mt-1">
               Sistema de Gestión Docente y Expedientes Académicos de la UNERG.
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap sm:flex-nowrap gap-2">
             <button
               onClick={() => onNavigate('teachers')}
-              className="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold rounded-lg shadow transition-all flex items-center gap-1.5"
+              className="flex-1 sm:flex-initial px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold rounded-lg shadow-xs transition-all flex items-center justify-center gap-1.5"
             >
               <Users className="w-4 h-4" />
-              Ver Expedientes
+              <span>Ver Expedientes</span>
             </button>
             <button
-              onClick={() => onNavigate('reports')}
-              className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-lg border border-white/20 transition-all flex items-center gap-1.5"
+              onClick={() => onNavigate('architecture')}
+              className="flex-1 sm:flex-initial px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-lg border border-white/20 transition-all flex items-center justify-center gap-1.5"
             >
-              <FileText className="w-4 h-4" />
-              Emitir Reporte
+              <FileText className="w-4 h-4 text-amber-300" />
+              <span className="truncate">Visión y Láminas (PDF)</span>
             </button>
           </div>
         </div>
@@ -311,16 +311,16 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTeacher, onViewRep
             {filteredReports.slice(0, 3).map(report => (
               <div
                 key={report.id}
-                className="flex items-center justify-between p-3 rounded-lg border border-slate-100 bg-slate-50 hover:bg-slate-100/80 transition-colors"
+                className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-3 rounded-lg border border-slate-100 bg-slate-50 hover:bg-slate-100/80 transition-colors"
               >
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
+                <div className="space-y-0.5 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-xs font-bold text-slate-900">{report.typeReport}</span>
                     <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-blue-100 text-blue-800">
                       {report.verification_code}
                     </span>
                   </div>
-                  <div className="text-xs text-slate-600">
+                  <div className="text-xs text-slate-600 truncate">
                     Docente: <strong className="text-slate-800">{report.teacher_name}</strong> • Memo: {report.memoNumber}
                   </div>
                   <div className="text-[11px] text-slate-400">
@@ -330,7 +330,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTeacher, onViewRep
 
                 <button
                   onClick={() => onViewReport(report)}
-                  className="px-3 py-1.5 text-xs font-semibold text-unerg-blue bg-white hover:bg-blue-50 border border-blue-200 rounded-md shadow-xs transition-colors"
+                  className="self-start sm:self-auto px-3 py-1.5 text-xs font-semibold text-unerg-blue bg-white hover:bg-blue-50 border border-blue-200 rounded-md shadow-xs transition-colors flex-shrink-0"
                 >
                   Ver PDF Oficial
                 </button>

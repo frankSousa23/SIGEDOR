@@ -29,7 +29,7 @@ export const OfficialDocumentView: React.FC<OfficialDocumentViewProps> = ({ repo
   return (
     <div className="space-y-4">
       {/* Control Action Bar */}
-      <div className="no-print flex items-center justify-between bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+      <div className="no-print flex flex-wrap items-center justify-between gap-3 bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-xs">
         <button
           onClick={onBack}
           className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
@@ -38,24 +38,24 @@ export const OfficialDocumentView: React.FC<OfficialDocumentViewProps> = ({ repo
         </button>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-500 hidden sm:inline">
-            Código de Verificación: <strong className="font-mono text-slate-800">{report.verification_code}</strong>
+          <span className="text-xs text-slate-500 hidden md:inline">
+            Código: <strong className="font-mono text-slate-800">{report.verification_code}</strong>
           </span>
           <button
             onClick={handlePrint}
-            className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-unerg-blue hover:bg-unerg-blue-light rounded-lg shadow-sm transition-all"
+            className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 text-xs font-bold text-white bg-unerg-blue hover:bg-unerg-blue-light rounded-lg shadow-xs transition-all"
           >
-            <Printer className="w-4 h-4" /> Imprimir / Guardar como PDF
+            <Printer className="w-4 h-4" /> Imprimir / PDF
           </button>
         </div>
       </div>
 
       {/* Printable Sheet (Simulated A4 Official Paper) */}
-      <div className="bg-white mx-auto max-w-4xl p-8 sm:p-12 rounded-xl border border-slate-300 shadow-lg text-slate-900 print:border-none print:shadow-none print:p-0">
+      <div className="bg-white mx-auto max-w-4xl p-4 sm:p-8 md:p-12 rounded-xl border border-slate-300 shadow-lg text-slate-900 print:border-none print:shadow-none print:p-0">
         {/* Official Header */}
         <div className="border-b-2 border-unerg-blue pb-4 mb-6">
-          <div className="flex items-center justify-between gap-4">
-            <div className="w-20 h-20 flex-shrink-0 flex items-center justify-center">
+          <div className="flex items-center justify-between gap-2 sm:gap-4">
+            <div className="w-12 h-12 sm:w-20 sm:h-20 flex-shrink-0 flex items-center justify-center">
               <img
                 src="/images/LogoUnerg.png"
                 alt="Logo UNERG"
@@ -65,37 +65,37 @@ export const OfficialDocumentView: React.FC<OfficialDocumentViewProps> = ({ repo
                 }}
               />
             </div>
-            <div className="text-center flex-1">
-              <h4 className="text-[10px] sm:text-[11px] font-bold tracking-wider text-slate-800 uppercase leading-tight">
+            <div className="text-center flex-1 min-w-0">
+              <h4 className="text-[9px] sm:text-[11px] font-bold tracking-wider text-slate-800 uppercase leading-tight">
                 REPÚBLICA BOLIVARIANA DE VENEZUELA
               </h4>
-              <h5 className="text-[9px] sm:text-[10px] font-semibold text-slate-700 uppercase leading-tight">
+              <h5 className="text-[8px] sm:text-[10px] font-semibold text-slate-700 uppercase leading-tight">
                 MINISTERIO DEL PODER POPULAR PARA LA EDUCACIÓN UNIVERSITARIA
               </h5>
-              <h3 className="text-xs sm:text-sm font-extrabold text-unerg-blue uppercase tracking-tight leading-snug mt-0.5">
+              <h3 className="text-[11px] sm:text-sm font-extrabold text-unerg-blue uppercase tracking-tight leading-snug mt-0.5">
                 UNIVERSIDAD NACIONAL EXPERIMENTAL DE LOS LLANOS CENTRALES "RÓMULO GALLEGOS"
               </h3>
-              <p className="text-[9px] text-slate-500 italic">
-                Área de Conocimiento: {report.area_nombre || teacher?.area_nombre || 'Vicerrectorado Académico'} • Sede: {report.sede_nombre || teacher?.sede_nombre}
+              <p className="text-[8px] sm:text-[9px] text-slate-500 italic truncate">
+                Área: {report.area_nombre || teacher?.area_nombre || 'Vicerrectorado Académico'} • Sede: {report.sede_nombre || teacher?.sede_nombre}
               </p>
             </div>
-            <div className="w-20 h-20 flex-shrink-0 flex flex-col items-center justify-center p-1 border border-slate-200 rounded bg-slate-50 text-center">
-              <QrCode className="w-10 h-10 text-slate-800" />
-              <span className="text-[8px] font-mono text-slate-600 mt-0.5 font-bold">VERIF-VALID</span>
+            <div className="w-12 h-12 sm:w-20 sm:h-20 flex-shrink-0 flex flex-col items-center justify-center p-1 border border-slate-200 rounded bg-slate-50 text-center">
+              <QrCode className="w-6 h-6 sm:w-10 sm:h-10 text-slate-800" />
+              <span className="text-[7px] sm:text-[8px] font-mono text-slate-600 mt-0.5 font-bold">VERIF</span>
             </div>
           </div>
         </div>
 
         {/* Verification Metadata Bar */}
-        <div className="flex items-center justify-between bg-slate-50 p-2.5 rounded-md border border-slate-200 text-[10px] font-mono mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 bg-slate-50 p-2.5 rounded-md border border-slate-200 text-[10px] font-mono mb-6">
           <div>
-            Nº DE MEMORANDO / REGISTRO: <strong className="text-slate-900">{report.memoNumber}</strong>
+            MEMORANDO: <strong className="text-slate-900">{report.memoNumber}</strong>
           </div>
           <div>
-            CÓDIGO DE AUTENTICIDAD: <strong className="text-unerg-blue">{report.verification_code}</strong>
+            CÓDIGO: <strong className="text-unerg-blue">{report.verification_code}</strong>
           </div>
           <div>
-            FECHA DE EMISIÓN: <strong className="text-slate-900">{report.created_at.split(' ')[0]}</strong>
+            FECHA: <strong className="text-slate-900">{report.created_at.split(' ')[0]}</strong>
           </div>
         </div>
 

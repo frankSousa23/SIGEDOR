@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="slideBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FDFBF7" />
+      <stop offset="100%" stop-color="#F4EFE6" />
+    </linearGradient>
+    <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.06" />
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#slideBg)" />
+
+  <!-- Isometric grid decorative lines -->
+  <g opacity="0.15" stroke="#94A3B8" stroke-width="1">
+    <line x1="0" y1="200" x2="1920" y2="200"/>
+    <line x1="0" y1="960" x2="1920" y2="960"/>
+    <line x1="160" y1="0" x2="160" y2="1080"/>
+    <line x1="1760" y1="0" x2="1760" y2="1080"/>
+  </g>
+
+  <!-- Slide Header -->
+  <g transform="translate(100, 80)">
+    <text x="0" y="45" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="44" font-weight="900" fill="#0F172A" letter-spacing="-0.5">
+      El Expediente Integral 360° sincroniza la vida académica del docente
+    </text>
+    <text x="0" y="85" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="22" font-weight="600" fill="#64748B">
+      Sincronización atómica garantizada mediante hooks de ciclo de vida de Eloquent
+    </text>
+  </g>
+
+  <!-- Content -->
+  <g transform="translate(100, 220)">
+    <!-- Central Node -->
+    <circle cx="860" cy="400" r="160" fill="#F8FAFC" stroke="#003366" stroke-width="4" filter="url(#cardShadow)"/>
+    <text x="860" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="34" font-weight="900" fill="#003366">Perfil</text>
+    <text x="860" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="34" font-weight="900" fill="#003366">Docente</text>
+    <text x="860" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#D97706">Unificado</text>
+
+    <!-- Node 1: Top Right: Adscripción Institucional -->
+    <g transform="translate(1180, 100)">
+      <rect width="480" height="140" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
+      <circle cx="-30" cy="70" r="16" fill="#F59E0B"/>
+      <text x="30" y="50" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Adscripción Institucional</text>
+      <text x="30" y="85" font-family="system-ui, sans-serif" font-size="17" fill="#475569">Sede territorial, Área de conocimiento y Programas.</text>
+    </g>
+
+    <!-- Node 2: Mid Right: Escalafón Universitario -->
+    <g transform="translate(1180, 420)">
+      <rect width="480" height="140" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
+      <circle cx="-30" cy="70" r="16" fill="#F59E0B"/>
+      <text x="30" y="50" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Escalafón Universitario</text>
+      <text x="30" y="85" font-family="system-ui, sans-serif" font-size="17" fill="#475569">Historial cronológico y validación automática de categoría vigente.</text>
+    </g>
+
+    <!-- Node 3: Bottom Left: Carga Horaria -->
+    <g transform="translate(80, 560)">
+      <rect width="480" height="140" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
+      <circle cx="510" cy="70" r="16" fill="#F59E0B"/>
+      <text x="30" y="50" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Carga Horaria</text>
+      <text x="30" y="85" font-family="system-ui, sans-serif" font-size="17" fill="#475569">Modalidad de contratación, horas semanales y cargos directivos.</text>
+    </g>
+
+    <!-- Node 4: Top Left: Permisos y Reportes -->
+    <g transform="translate(80, 200)">
+      <rect width="480" height="140" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
+      <circle cx="510" cy="70" r="16" fill="#F59E0B"/>
+      <text x="30" y="50" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Permisos y Reportes</text>
+      <text x="30" y="85" font-family="system-ui, sans-serif" font-size="17" fill="#475569">Historial de licencias e informes emitidos.</text>
+    </g>
+
+    <!-- Orbit rings -->
+    <circle cx="860" cy="400" r="280" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="8,8"/>
+
+    <!-- Bottom Tech Pill -->
+    <g transform="translate(1220, 680)">
+      <rect width="440" height="80" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
+      <text x="30" y="35" font-family="system-ui, sans-serif" font-size="15" font-weight="800" fill="#1D4ED8">Sincronización atómica (technica)</text>
+      <text x="30" y="58" font-family="system-ui, sans-serif" font-size="13" fill="#1E40AF">Garantizada mediante hooks de ciclo de vida de Eloquent.</text>
+    </g>
+  </g>
+
+  <!-- Slide Footer -->
+  <g transform="translate(100, 1030)">
+    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#94A3B8">
+      SIGEDOR &bull; Proyecto de Investigación &bull; Frank Sousa
+    </text>
+    <text x="1720" y="0" text-anchor="end" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#64748B">
+      3 / 12
+    </text>
+  </g>
+</svg>

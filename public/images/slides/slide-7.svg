@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="slideBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FDFBF7" />
+      <stop offset="100%" stop-color="#F4EFE6" />
+    </linearGradient>
+    <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.06" />
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#slideBg)" />
+
+  <!-- Isometric grid decorative lines -->
+  <g opacity="0.15" stroke="#94A3B8" stroke-width="1">
+    <line x1="0" y1="200" x2="1920" y2="200"/>
+    <line x1="0" y1="960" x2="1920" y2="960"/>
+    <line x1="160" y1="0" x2="160" y2="1080"/>
+    <line x1="1760" y1="0" x2="1760" y2="1080"/>
+  </g>
+
+  <!-- Slide Header -->
+  <g transform="translate(100, 80)">
+    <text x="0" y="45" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="44" font-weight="900" fill="#0F172A" letter-spacing="-0.5">
+      Pipeline de ingesta masiva: De archivos planos a persistencia relacional
+    </text>
+    <text x="0" y="85" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="22" font-weight="600" fill="#64748B">
+      Data Factory y Seeders para inicialización atómica de catálogos institucionales
+    </text>
+  </g>
+
+  <!-- Content -->
+  <g transform="translate(100, 240)">
+    <!-- 5 CSV Tank representations -->
+    
+      <g transform="translate(80, 40)">
+        <rect width="170" height="260" rx="20" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" filter="url(#cardShadow)"/>
+        <circle cx="85" cy="50" r="30" fill="#EFF6FF"/>
+        <text x="85" y="56" text-anchor="middle" font-family="monospace" font-size="14" font-weight="800" fill="#1D4ED8">CSV</text>
+        <text x="85" y="115" text-anchor="middle" font-family="monospace" font-size="16" font-weight="800" fill="#0F172A">users.csv</text>
+        <text x="85" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#64748B" width="140">
+          <tspan x="85" dy="0">Cuentas, correos</tspan>
+          <tspan x="85" dy="18">y roles (contraseñas hasheadas).</tspan>
+        </text>
+      </g>
+    
+      <g transform="translate(280, 40)">
+        <rect width="170" height="260" rx="20" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" filter="url(#cardShadow)"/>
+        <circle cx="85" cy="50" r="30" fill="#EFF6FF"/>
+        <text x="85" y="56" text-anchor="middle" font-family="monospace" font-size="14" font-weight="800" fill="#1D4ED8">CSV</text>
+        <text x="85" y="115" text-anchor="middle" font-family="monospace" font-size="16" font-weight="800" fill="#0F172A">teachers.csv</text>
+        <text x="85" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#64748B" width="140">
+          <tspan x="85" dy="0">Expedientes y</tspan>
+          <tspan x="85" dy="18">datos demográficos.</tspan>
+        </text>
+      </g>
+    
+      <g transform="translate(480, 40)">
+        <rect width="170" height="260" rx="20" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" filter="url(#cardShadow)"/>
+        <circle cx="85" cy="50" r="30" fill="#EFF6FF"/>
+        <text x="85" y="56" text-anchor="middle" font-family="monospace" font-size="14" font-weight="800" fill="#1D4ED8">CSV</text>
+        <text x="85" y="115" text-anchor="middle" font-family="monospace" font-size="16" font-weight="800" fill="#0F172A">categories.csv</text>
+        <text x="85" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#64748B" width="140">
+          <tspan x="85" dy="0">Histórico de</tspan>
+          <tspan x="85" dy="18">escalafón.</tspan>
+        </text>
+      </g>
+    
+      <g transform="translate(680, 40)">
+        <rect width="170" height="260" rx="20" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" filter="url(#cardShadow)"/>
+        <circle cx="85" cy="50" r="30" fill="#EFF6FF"/>
+        <text x="85" y="56" text-anchor="middle" font-family="monospace" font-size="14" font-weight="800" fill="#1D4ED8">CSV</text>
+        <text x="85" y="115" text-anchor="middle" font-family="monospace" font-size="16" font-weight="800" fill="#0F172A">dedications.csv</text>
+        <text x="85" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#64748B" width="140">
+          <tspan x="85" dy="0">Horas y</tspan>
+          <tspan x="85" dy="18">directivas.</tspan>
+        </text>
+      </g>
+    
+      <g transform="translate(880, 40)">
+        <rect width="170" height="260" rx="20" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" filter="url(#cardShadow)"/>
+        <circle cx="85" cy="50" r="30" fill="#EFF6FF"/>
+        <text x="85" y="56" text-anchor="middle" font-family="monospace" font-size="14" font-weight="800" fill="#1D4ED8">CSV</text>
+        <text x="85" y="115" text-anchor="middle" font-family="monospace" font-size="16" font-weight="800" fill="#0F172A">sites.csv</text>
+        <text x="85" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#64748B" width="140">
+          <tspan x="85" dy="0">Adscripción por</tspan>
+          <tspan x="85" dy="18">sedes y facultades.</tspan>
+        </text>
+      </g>
+    
+
+    <!-- Conveyor belt into Laravel Seeders -->
+    <g transform="translate(1140, 80)">
+      <rect width="480" height="220" rx="24" fill="#FFFFFF" stroke="#003366" stroke-width="3" filter="url(#cardShadow)"/>
+      <circle cx="100" cy="110" r="45" fill="#003366"/>
+      <text x="100" y="120" text-anchor="middle" font-family="system-ui, sans-serif" font-size="34" fill="#FFFFFF">&gear;</text>
+      <text x="180" y="100" font-family="system-ui, sans-serif" font-size="32" font-weight="900" fill="#0F172A">Laravel Seeders</text>
+      <text x="180" y="135" font-family="system-ui, sans-serif" font-size="16" fill="#64748B">Validación atómica y relaciones de FK</text>
+    </g>
+
+    <!-- Bottom Notification Card -->
+    <g transform="translate(300, 440)">
+      <rect width="1120" height="120" rx="16" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+      <circle cx="60" cy="60" r="28" fill="#F59E0B"/>
+      <text x="60" y="68" text-anchor="middle" font-family="system-ui, sans-serif" font-size="24" font-weight="900" fill="#FFFFFF">!</text>
+      <text x="110" y="48" font-family="system-ui, sans-serif" font-size="20" font-weight="900" fill="#92400E">Importación estructurada y segura</text>
+      <text x="110" y="80" font-family="system-ui, sans-serif" font-size="16" fill="#78350F">
+        Las cuentas creadas requieren aprobación explícita del Administrador (is_approved) para ser activadas en el sistema.
+      </text>
+    </g>
+  </g>
+
+  <!-- Slide Footer -->
+  <g transform="translate(100, 1030)">
+    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#94A3B8">
+      SIGEDOR &bull; Proyecto de Investigación &bull; Frank Sousa
+    </text>
+    <text x="1720" y="0" text-anchor="end" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#64748B">
+      7 / 12
+    </text>
+  </g>
+</svg>

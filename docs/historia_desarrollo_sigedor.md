@@ -3,15 +3,15 @@
 
 **Autor:** Frank Sousa  
 **Repositorio:** frankSousa23/SIGEDOR  
-**Fecha del documento:** Agosto 2026  
-**Versión del sistema:** v1.0.0
+**Fecha del documento:** Septiembre 2026  
+**Versión del sistema:** v2.0.0 (Producción y Despliegue Estable)
 
 ---
 
 ## Introducción
 
 Este documento es el registro histórico y técnico completo del ciclo de vida del proyecto SIGEDOR,
-desde su creación hasta el estado actual. Está pensado como complemento de tesis y como guía
+desde su creación hasta el estado actual en producción. Está pensado como complemento de tesis y como guía
 de mantenimiento futura.
 
 El proyecto atravesó múltiples ciclos de desarrollo, refactorización y recuperación. En cada ciclo,
@@ -23,12 +23,12 @@ Este documento explica **qué se intentó, por qué falló, y cómo se resolvió
 ## Línea Temporal del Proyecto
 
 ```
-2024 (Nov)      2025 (Ene)       2025 (Feb)       2026 (Ago)
-│               │                │                │
-▼               ▼                ▼                ▼
-1% ──► Avance ──► Correcciones ──► upgrade-L12 ──► main v1.0
-CRUD            Roles+PDFs        Refactor         Estable +
-Básico          intentados        fallida          Integración
+2024 (Nov)      2025 (Ene)       2025 (Feb)       2026 (Ago)       2026 (Sep)
+│               │                │                │                │
+▼               ▼                ▼                ▼                ▼
+1% ──► Avance ──► Correcciones ──► upgrade-L12 ──► main v1.0 ──────► Release v2.0
+CRUD            Roles+PDFs        Refactor         Estable +        UI/UX Universal +
+Básico          intentados        fallida          Integración      Producción Estable
 ```
 
 ---
@@ -385,22 +385,24 @@ Un momento crítico ocurrió justo antes de la presentación final: al intentar 
 
 A pesar de que en su momento el sistema no estaba "terminado" bajo estándares corporativos, fue lo suficientemente funcional, robusto y automatizado (gracias a los *Seeders* de CSV) para superar con éxito la defensa y demostrar la validez del modelo.
 
-### 2026: Triunfo Técnico y Estabilidad Total
+### 2026: Triunfo Técnico, Estabilidad Total y Release v2.0.0
 Todo lo descrito en este histórico (los errores de Filament, la falla de los PDFs, los Null Pointers de los administradores, las caídas de la base de datos, las ramas perdidas) **ha sido superado y resuelto definitivamente**. 
 
-Hoy, en su versión **v1.0.0**, SIGEDOR es un sistema:
-* **100% Estable** y libre de errores críticos.
-* **Completamente integrado** con su panel analítico, formularios inteligentes, y API RESTful.
-* **Seguro**, con políticas de acceso y roles estrictos.
-* **Probado**, con una suite de pruebas automatizadas (Pest) pasando en verde absoluto.
+Hoy, en su versión **v2.0.0 (Production Stable)**, SIGEDOR es un sistema:
+* **100% Estable** y libre de errores críticos o modos efímeros/invitado/sandbox heredados.
+* **Completamente integrado** con su panel analítico, formularios inteligentes, visor oficial institucional A4 e interoperabilidad API RESTful (OpenAPI 3.0).
+* **Seguro**, con políticas de acceso multi-inquilino y roles estrictos (`admin`, `area_manager`, `teacher` con soporte multi-rol).
+* **Probado**, con una suite de pruebas automatizadas (Pest) pasando en verde absoluto (49 pruebas, 372 aserciones al 100%).
+* **Universalmente Responsivo**, con navegación móvil ergonómica (bottom bar y drawer táctil), barra lateral colapsable de escritorio y alternancia inteligente de vista tabla/tarjetas.
 
-El esfuerzo de esas largas madrugadas se tradujo en una arquitectura sólida que ahora sirve de base inquebrantable para futuras mejoras, módulos y reparaciones estéticas.
+El esfuerzo de esas largas madrugadas se tradujo en una arquitectura sólida que ahora sirve de base inquebrantable para futuras mejoras, módulos y aplicaciones institucionales.
 
-### Refinamientos Finales de la Interfaz y Lógica (Post-v1.0)
-Tras consolidar la estabilidad del sistema, se ejecutó una ronda final de modernización de UI/UX (Glassmorphism, temas oscuros y landing pages) y la limpieza técnica de deuda acumulada:
+### Refinamientos Finales de la Interfaz y Lógica (Consolidación v2.0.0)
+Tras consolidar la estabilidad del sistema, se ejecutó una ronda final de modernización de UI/UX y la limpieza técnica de deuda acumulada:
 1. **Lógica de Ascensos Directos:** Se eliminó la ineficiente y burocrática regla `disable_assistant_rule` del Modelo/Observer. Ahora, el ascenso de Instructor a Asistente (por Especialización/Maestría) o a Agregado (por Doctorado) ocurre de forma limpia e instantánea al registrar la categoría, usando los *hooks* de Filament (`mutateFormDataBeforeCreate`).
 2. **Sistema Seguro de Pruebas (Anonimización):** Se implementó un comando nativo `php artisan app:anonymize-teachers-csv` mediante `FakerPHP`. Este ofusca instantáneamente cualquier dato personal, permitiendo que la base de datos y los repositorios CSV puedan ser compartidos, evaluados y probados sin vulnerar el resguardo de información de la institución académica.
+3. **Universalidad Multidispositivo y Documentación Oficial:** Se incorporó el soporte responsive total (Mobile Bottom Bar, Drawer, Desktop Collapsible Sidebar, Breadcrumbs interactivos), el visualizador de 12 láminas de arquitectura y defensa de tesis, y el Visor Oficial Institucional con verificación QR para emisión e impresión A4 de documentos oficiales UNERG.
 
 ---
 
-*Documento generado y consolidado como parte de la sesión de cierre del proyecto SIGEDOR — Agosto 2026.*
+*Documento generado y consolidado como parte de la sesión de cierre y entrega del proyecto SIGEDOR — Septiembre 2026.*

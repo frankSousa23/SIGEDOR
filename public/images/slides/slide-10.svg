@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="slideBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FDFBF7" />
+      <stop offset="100%" stop-color="#F4EFE6" />
+    </linearGradient>
+    <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.06" />
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#slideBg)" />
+
+  <!-- Isometric grid decorative lines -->
+  <g opacity="0.15" stroke="#94A3B8" stroke-width="1">
+    <line x1="0" y1="200" x2="1920" y2="200"/>
+    <line x1="0" y1="960" x2="1920" y2="960"/>
+    <line x1="160" y1="0" x2="160" y2="1080"/>
+    <line x1="1760" y1="0" x2="1760" y2="1080"/>
+  </g>
+
+  <!-- Slide Header -->
+  <g transform="translate(100, 80)">
+    <text x="0" y="45" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="44" font-weight="900" fill="#0F172A" letter-spacing="-0.5">
+      Interoperabilidad nativa: API RESTful bajo el estándar OpenAPI 3.0
+    </text>
+    <text x="0" y="85" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="22" font-weight="600" fill="#64748B">
+      Integración con nómina, portales estudiantiles y tableros de rectorado
+    </text>
+  </g>
+
+  <!-- Content -->
+  <g transform="translate(100, 220)">
+    <!-- Top Banner -->
+    <rect x="60" y="20" width="1600" height="80" rx="16" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+    <text x="860" y="68" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#1E40AF">
+      SIGEDOR no es un silo de datos. Expone una API moderna para integrarse con sistemas de nómina, portales estudiantiles y tableros de rectorado.
+    </text>
+
+    <!-- Left: Swagger UI Mockup -->
+    <g transform="translate(60, 140)">
+      <rect width="840" height="380" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
+      <rect x="0" y="0" width="840" height="45" rx="16" fill="#1E293B"/>
+      <!-- Dots -->
+      <circle cx="25" cy="22" r="6" fill="#EF4444"/>
+      <circle cx="45" cy="22" r="6" fill="#F59E0B"/>
+      <circle cx="65" cy="22" r="6" fill="#10B981"/>
+      <text x="420" y="28" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#94A3B8">Swagger UI - SIGEDOR API Documentation</text>
+
+      <g transform="translate(40, 70)">
+        <text x="0" y="30" font-family="system-ui, sans-serif" font-size="28" font-weight="900" fill="#0F172A">SIGEDOR API</text>
+        <rect x="220" y="8" width="140" height="28" rx="6" fill="#DCFCE7"/>
+        <text x="290" y="27" text-anchor="middle" font-family="monospace" font-size="12" font-weight="800" fill="#166534">v1.0.0 (OpenAPI 3.0)</text>
+
+        <!-- Endpoint Rows -->
+        <g transform="translate(0, 70)">
+          <rect width="760" height="46" rx="8" fill="#F0FDF4" stroke="#86EFAC"/>
+          <rect x="10" y="8" width="60" height="30" rx="4" fill="#16A34A"/>
+          <text x="40" y="28" text-anchor="middle" font-family="monospace" font-size="14" font-weight="900" fill="#FFFFFF">GET</text>
+          <text x="90" y="28" font-family="monospace" font-size="15" font-weight="700" fill="#0F172A">/api/v1/teachers</text>
+          <text x="730" y="28" text-anchor="end" font-family="system-ui, sans-serif" font-size="13" fill="#64748B">Retrieve teachers</text>
+        </g>
+
+        <g transform="translate(0, 126)">
+          <rect width="760" height="46" rx="8" fill="#EFF6FF" stroke="#93C5FD"/>
+          <rect x="10" y="8" width="60" height="30" rx="4" fill="#2563EB"/>
+          <text x="40" y="28" text-anchor="middle" font-family="monospace" font-size="14" font-weight="900" fill="#FFFFFF">POST</text>
+          <text x="90" y="28" font-family="monospace" font-size="15" font-weight="700" fill="#0F172A">/api/v1/evaluations</text>
+          <text x="730" y="28" text-anchor="end" font-family="system-ui, sans-serif" font-size="13" fill="#64748B">Submit evaluation</text>
+        </g>
+
+        <g transform="translate(0, 182)">
+          <rect width="760" height="46" rx="8" fill="#F0FDF4" stroke="#86EFAC"/>
+          <rect x="10" y="8" width="60" height="30" rx="4" fill="#16A34A"/>
+          <text x="40" y="28" text-anchor="middle" font-family="monospace" font-size="14" font-weight="900" fill="#FFFFFF">GET</text>
+          <text x="90" y="28" font-family="monospace" font-size="15" font-weight="700" fill="#0F172A">/api/v1/health</text>
+          <text x="730" y="28" text-anchor="end" font-family="system-ui, sans-serif" font-size="13" fill="#64748B">System health status</text>
+        </g>
+      </g>
+    </g>
+
+    <!-- Right: Spec Highlights -->
+    <g transform="translate(940, 140)">
+      <g transform="translate(0, 0)">
+        <rect width="720" height="110" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
+        <text x="40" y="45" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Especificación Swagger</text>
+        <text x="40" y="75" font-family="system-ui, sans-serif" font-size="16" fill="#475569">Autogenerada bajo el estándar OpenAPI (api-docs.json).</text>
+      </g>
+      <g transform="translate(0, 135)">
+        <rect width="720" height="110" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
+        <text x="40" y="45" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Endpoints de Estado de Salud</text>
+        <text x="40" y="75" font-family="system-ui, sans-serif" font-size="16" fill="#475569">Healthchecks integrados para Kubernetes, Docker y CI/CD.</text>
+      </g>
+      <g transform="translate(0, 270)">
+        <rect width="720" height="110" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
+        <text x="40" y="45" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Consumo Seguro y Estandarizado</text>
+        <text x="40" y="75" font-family="system-ui, sans-serif" font-size="16" fill="#475569">Token Bearer, control de throttling y serialización JSON estricta.</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Slide Footer -->
+  <g transform="translate(100, 1030)">
+    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#94A3B8">
+      SIGEDOR &bull; Proyecto de Investigación &bull; Frank Sousa
+    </text>
+    <text x="1720" y="0" text-anchor="end" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#64748B">
+      10 / 12
+    </text>
+  </g>
+</svg>

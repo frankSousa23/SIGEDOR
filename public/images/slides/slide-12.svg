@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="slideBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FDFBF7" />
+      <stop offset="100%" stop-color="#F4EFE6" />
+    </linearGradient>
+    <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.06" />
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#slideBg)" />
+
+  <!-- Isometric grid decorative lines -->
+  <g opacity="0.15" stroke="#94A3B8" stroke-width="1">
+    <line x1="0" y1="200" x2="1920" y2="200"/>
+    <line x1="0" y1="960" x2="1920" y2="960"/>
+    <line x1="160" y1="0" x2="160" y2="1080"/>
+    <line x1="1760" y1="0" x2="1760" y2="1080"/>
+  </g>
+
+  <!-- Slide Header -->
+  <g transform="translate(100, 80)">
+    <text x="0" y="45" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="44" font-weight="900" fill="#0F172A" letter-spacing="-0.5">
+      Nacido como investigación, diseñado para escalar globalmente
+    </text>
+    <text x="0" y="85" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="22" font-weight="600" fill="#64748B">
+      Liberado bajo Licencia MIT &bull; Autoría: Frank Sousa &bull; UNERG
+    </text>
+  </g>
+
+  <!-- Content -->
+  <g transform="translate(100, 220)">
+    <!-- Top Callout -->
+    <rect x="60" y="20" width="1600" height="80" rx="16" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+    <text x="860" y="68" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#1E40AF">
+      Liberado bajo Licencia MIT, el código fuente está desacoplado siguiendo principios SOLID, permitiendo su bifurcación e implementación en nuevos ecosistemas académicos.
+    </text>
+
+    <!-- Center: Fork & Adapt Conceptual Map -->
+    <g transform="translate(160, 160)">
+      <!-- Origin: Repositorio Core -->
+      <rect x="0" y="100" width="340" height="150" rx="20" fill="#0F172A" stroke="#38BDF8" stroke-width="3" filter="url(#cardShadow)"/>
+      <text x="170" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="26" font-weight="900" fill="#FFFFFF">Repositorio Core</text>
+      <text x="170" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="26" font-weight="900" fill="#38BDF8">SIGEDOR</text>
+
+      <rect x="80" y="275" width="180" height="40" rx="10" fill="#FEF3C7"/>
+      <text x="170" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="800" fill="#92400E">Licencia MIT</text>
+
+      <!-- Branches -->
+      <path d="M 340 175 C 480 175, 480 50, 600 50" fill="none" stroke="#F59E0B" stroke-width="4"/>
+      <path d="M 340 175 L 600 175" fill="none" stroke="#F59E0B" stroke-width="4"/>
+      <path d="M 340 175 C 480 175, 480 300, 600 300" fill="none" stroke="#F59E0B" stroke-width="4"/>
+
+      <!-- Branch 1: Estructura Modular -->
+      <g transform="translate(600, 0)">
+        <rect width="640" height="100" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
+        <text x="35" y="40" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Estructura Modular</text>
+        <text x="35" y="70" font-family="system-ui, sans-serif" font-size="16" fill="#475569">Expansión fácil hacia evaluación docente o control de posgrados.</text>
+      </g>
+
+      <!-- Branch 2: Datos Base -->
+      <g transform="translate(600, 125)">
+        <rect width="640" height="100" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
+        <text x="35" y="40" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Datos Base</text>
+        <text x="35" y="70" font-family="system-ui, sans-serif" font-size="16" fill="#475569">Modificación de catálogos mediante Seeders y CSVs institucionales propios.</text>
+      </g>
+
+      <!-- Branch 3: Identidad Visual -->
+      <g transform="translate(600, 250)">
+        <rect width="640" height="100" rx="16" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
+        <text x="35" y="40" font-family="system-ui, sans-serif" font-size="22" font-weight="900" fill="#0F172A">Identidad Visual</text>
+        <text x="35" y="70" font-family="system-ui, sans-serif" font-size="16" fill="#475569">Personalización absoluta de vistas Blade, estilos y membretes PDF oficiales.</text>
+      </g>
+    </g>
+
+    <!-- Bottom Banner -->
+    <g transform="translate(500, 520)">
+      <rect width="720" height="50" rx="25" fill="#F1F5F9"/>
+      <text x="360" y="32" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#475569">
+        Un proyecto de código abierto construido sobre el rigor académico.
+      </text>
+    </g>
+  </g>
+
+  <!-- Slide Footer -->
+  <g transform="translate(100, 1030)">
+    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#94A3B8">
+      SIGEDOR &bull; Proyecto de Investigación &bull; Frank Sousa
+    </text>
+    <text x="1720" y="0" text-anchor="end" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#64748B">
+      12 / 12
+    </text>
+  </g>
+</svg>

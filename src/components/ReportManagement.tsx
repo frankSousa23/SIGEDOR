@@ -47,11 +47,11 @@ export const ReportManagement: React.FC<ReportManagementProps> = ({ onViewReport
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
         <div>
-          <h2 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-            <FileText className="w-5 h-5 text-indigo-600" />
-            Reportes Oficiales y Certificaciones UNERG
+          <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+            <FileText className="w-5 h-5 text-indigo-600 flex-shrink-0" />
+            <span>Reportes Oficiales y Certificaciones</span>
           </h2>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-500 mt-0.5">
             Generador institucional de constancias de trabajo, expedientes curriculares y memorandos oficiales
           </p>
         </div>
@@ -59,7 +59,7 @@ export const ReportManagement: React.FC<ReportManagementProps> = ({ onViewReport
         {(isSuperAdmin || isAreaManager) && (
           <button
             onClick={() => setShowGenerateModal(true)}
-            className="px-4 py-2 text-xs font-bold text-white bg-unerg-blue hover:bg-unerg-blue-light rounded-lg shadow-sm flex items-center gap-1.5 transition-all"
+            className="w-full sm:w-auto px-4 py-2 text-xs font-bold text-white bg-unerg-blue hover:bg-unerg-blue-light rounded-lg shadow-xs flex items-center justify-center gap-1.5 transition-all flex-shrink-0"
           >
             <Plus className="w-4 h-4" /> Emitir Nuevo Documento
           </button>
@@ -67,22 +67,22 @@ export const ReportManagement: React.FC<ReportManagementProps> = ({ onViewReport
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-wrap gap-2.5 items-center">
-        <div className="relative flex-1 min-w-[240px]">
+      <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center">
+        <div className="relative flex-1 min-w-[200px]">
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Buscar por código de verificación, docente o memorando..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-unerg-blue"
+            className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-unerg-blue"
           />
         </div>
 
         <select
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
-          className="text-xs p-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-700 font-medium"
+          className="text-xs p-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-700 font-medium"
         >
           <option value="">Todos los Tipos de Documento</option>
           <option value="Constancia de Trabajo">Constancia de Trabajo</option>

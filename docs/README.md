@@ -16,3 +16,5 @@ Bienvenido a la documentación técnica detallada de **SIGEDOR**. Toda la arquit
 10. [Mantenimiento, Escalabilidad y Despliegue](./maintenance.md)
 11. [Características Técnicas Avanzadas](./technical-features.md)
 12. [Roadmap y Desarrollo Futuro](./roadmap.md)
+13. [Historia Técnica del Desarrollo y Ciclo de Vida](./historia_desarrollo_sigedor.md)
+14. [Informe Técnico de Integración y Resolución de Fallos](./informe_errores_integracion.md)

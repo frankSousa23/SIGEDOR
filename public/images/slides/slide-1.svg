@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="s1Bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FAF8F5" />
+      <stop offset="100%" stop-color="#F2ECE4" />
+    </linearGradient>
+    <filter id="s1CardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#0F172A" flood-opacity="0.08" />
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#s1Bg)" />
+
+  <!-- Isometric Server Graphic Background -->
+  <g opacity="0.3" transform="translate(100, 100)">
+    <path d="M 200 400 L 400 300 L 600 400 L 400 500 Z" fill="none" stroke="#CBD5E1" stroke-width="2"/>
+    <path d="M 1200 300 L 1400 200 L 1600 300 L 1400 400 Z" fill="none" stroke="#CBD5E1" stroke-width="2"/>
+  </g>
+
+  <!-- Center Card -->
+  <g transform="translate(420, 220)">
+    <rect width="1080" height="620" rx="32" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#s1CardShadow)" />
+    
+    <text x="540" y="220" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="110" font-weight="900" fill="#003366" letter-spacing="-2">
+      SIGEDOR
+    </text>
+    
+    <text x="540" y="320" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="34" font-weight="800" fill="#1E293B">
+      El Motor Digital del Control Académico Universitario
+    </text>
+
+    <!-- Badges pill -->
+    <g transform="translate(190, 420)">
+      <rect width="700" height="64" rx="32" fill="#FFF1F2" stroke="#FDA4AF" stroke-width="2"/>
+      <text x="350" y="41" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="22" font-weight="700" fill="#9F1239">
+        Laravel 11 &bull; Filament v3 &bull; OpenAPI 3.0 &bull; Licencia MIT
+      </text>
+    </g>
+
+    <text x="540" y="550" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="600" fill="#64748B">
+      Universidad Nacional Experimental de los Llanos Centrales Rómulo Gallegos (UNERG)
+    </text>
+  </g>
+
+  <g transform="translate(100, 1030)">
+    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#94A3B8">
+      Autoría: Frank Sousa &bull; 1 / 12
+    </text>
+  </g>
+</svg>

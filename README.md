@@ -8,21 +8,28 @@
 [![Tests](https://img.shields.io/badge/Tests-49%20Passed-brightgreen?style=for-the-badge)](https://github.com/frankSousa23/SIGEDOR/actions)
 [![CI](https://github.com/frankSousa23/SIGEDOR/actions/workflows/ci.yml/badge.svg)](https://github.com/frankSousa23/SIGEDOR/actions/workflows/ci.yml)
 
-> **SIGEDOR** es una plataforma web integral desarrollada originalmente como proyecto de tesis universitaria y liberada a la comunidad bajo la **Licencia MIT**. Diseñada para la administración de expedientes académicos, control de escalafón docente universitario, gestión de carga y dedicación horaria, asignación territorial por sedes/áreas, ingesta de datos por CSV y emisión automatizada de reportes oficiales en PDF.
+> **SIGEDOR** es una plataforma web integral desarrollada para la administración digital de expedientes académicos, control de escalafón docente universitario, gestión de carga y dedicación horaria, asignación territorial por sedes/áreas, ingesta de datos por CSV y emisión automatizada de reportes oficiales en PDF con sello criptográfico institucional. Diseñada para la **Universidad Nacional Experimental de los Llanos Centrales Rómulo Gallegos (UNERG)** y liberada a la comunidad bajo la **Licencia MIT**.
+
+---
+
+## 🏛️ Visión Integral del Sistema
+
+![SIGEDOR - Visión Integral del Sistema](public/images/vision_integral_sigedor.svg)
 
 ---
 
 ## 📌 Tabla de Contenidos
 - [Características Principales](#-características-principales)
+- [Láminas de Presentación y Arquitectura](#-láminas-de-presentación-y-arquitectura-12-láminas)
 - [Ingesta de Datos y Carga por CSV](#-ingesta-de-datos-y-carga-por-csv)
-- [Roles, Múltiples Roles y Aprobación de Cuentas](#-roles-múltiples-roles-y-aprobación-de-cuentas)
+- [Roles, Múltiples Roles y Control de Acceso](#-roles-múltiples-roles-y-control-de-acceso)
 - [Arquitectura del Sistema](#-arquitectura-del-sistema)
 - [Modelo Entidad - Relación](#-modelo-entidad---relación)
 - [Requisitos Previos](#-requisitos-previos)
 - [Instalación Rápida](#-instalación-rápida)
 - [Setup Rápido para Colaboradores](#-setup-rápido-para-colaboradores)
 - [Documentación de API y Swagger](#-documentación-de-api-y-swagger)
-- [Credenciales de Demostración](#-credenciales-de-demostración)
+- [Credenciales Institucionales de Acceso](#-credenciales-institucionales-de-acceso)
 - [Ejecución de Pruebas](#-ejecución-de-pruebas)
 - [Estructura del Proyecto](#-estructura-del-proyecto)
 - [Replicación para Tesis y Proyectos Universitarios](#-replicación-para-tesis-y-proyectos-universitarios)
@@ -66,6 +73,33 @@
    - Expediente unificado en `TeacherResource` con 4 gestores de relaciones integrados (*Permisos, Escalafón, Carga Horaria y Reportes emitidos*).
    - Sincronización atómica y bidireccional mediante hooks de ciclo de vida Eloquent (`category_id`, `dedication_id`, `site_id`).
    - Códigos de verificación y autenticidad documental institucional (`UNERG-REP-YYYY-XXXX`) embebidos en constancias de trabajo y memorandos oficiales.
+
+8. **Interfaz de Usuario Universal & Responsiva (v2.0.0):**
+   - Experiencia multidispositivo fluida desde pantallas móviles compactas (320px) hasta monitores 4K.
+   - Navegación optimizada: Barra inferior fija táctil (*Bottom Navigation Bar*) y cajón contextual en móviles; barra lateral colapsable ergonómica en escritorio.
+   - Vista dual de expedientes: Modo tabla detallada para auditoría densa y modo cuadrícula de tarjetas táctiles para lectura cómoda en smartphones.
+   - Visor documental institucional en hoja A4 estandarizada con código QR de verificación, membrete oficial UNERG e impresión optimizada a PDF.
+
+---
+
+## 🖼️ Láminas de Presentación y Arquitectura (12 Láminas)
+
+El proyecto cuenta con un compendio visual de 12 láminas de arquitectura y defensa de investigación integradas en el repositorio y visualizables tanto en la aplicación interactiva como en formato vectorial SVG:
+
+| N° | Lámina / Tema | Descripción Técnica y Alcance | Vista Previa Vectorial |
+| :---: | :--- | :--- | :---: |
+| **01** | **SIGEDOR: Portada Oficial** | Motor Digital del Control Académico Universitario. Laravel 11, Filament v3, OpenAPI 3.0 y Licencia MIT. | [Ver Lámina 1](public/images/slides/slide-1.svg) |
+| **02** | **Ecosistema Centralizado** | Arquitectura modular alrededor del núcleo Laravel 11: Expedientes, Escalafón, Spatie Multi-Tenant y DomPDF. | [Ver Lámina 2](public/images/slides/slide-2.svg) |
+| **03** | **Expediente Integral 360°** | Sincronización atómica garantizada con hooks Eloquent: Adscripción, Escalafón, Carga Horaria y Permisos. | [Ver Lámina 3](public/images/slides/slide-3.svg) |
+| **04** | **Reglas de Negocio & Escalafón** | Matriz bidimensional de Categorías (Instructor a Titular) vs. Dedicación (TCV, MT, TC, EX) y validación de posgrados. | [Ver Lámina 4](public/images/slides/slide-4.svg) |
+| **05** | **Flujo de Emisión Documental** | Del trámite a la certificación: Solicitud, Aprobación en panel Filament y Generación DomPDF con sello institucional. | [Ver Lámina 5](public/images/slides/slide-5.svg) |
+| **06** | **Arquitectura Multi-Inquilino** | Aislamiento territorial con Spatie: Scopes dinámicos por Sede y Área para restringir la visibilidad de expedientes. | [Ver Lámina 6](public/images/slides/slide-6.svg) |
+| **07** | **Pipeline de Ingesta Masiva** | Data Factory y Seeders desde archivos planos (`users.csv`, `teachers.csv`, etc.) a persistencia relacional íntegra. | [Ver Lámina 7](public/images/slides/slide-7.svg) |
+| **08** | **Arquitectura en Tres Capas** | Separación estricta de responsabilidades: Presentación (Filament/Blade), Lógica (Laravel 11/Spatie) y Datos (MySQL/MariaDB). | [Ver Lámina 8](public/images/slides/slide-8.svg) |
+| **09** | **Modelo Relacional (ER)** | Integridad estructural del dominio universitario: Diagrama Entidad-Relación con relaciones 1:1 y 1:N. | [Ver Lámina 9](public/images/slides/slide-9.svg) |
+| **10** | **Interoperabilidad & API REST** | Estándar OpenAPI 3.0 con Swagger interactivo para integración con nómina, control de estudios y tableros. | [Ver Lámina 10](public/images/slides/slide-10.svg) |
+| **11** | **Fiabilidad y Pruebas Automatizadas** | 49 Pruebas Pasadas y 372 Aserciones al 100% en Pest/PHPUnit, más trazabilidad forense de acciones con ActivityLog. | [Ver Lámina 11](public/images/slides/slide-11.svg) |
+| **12** | **Escalabilidad & Código Abierto** | Proyecto nacido como investigación universitaria, desacoplado y liberado bajo Licencia MIT para escalar globalmente. | [Ver Lámina 12](public/images/slides/slide-12.svg) |
 
 ---
 
@@ -225,14 +259,21 @@ vendor/bin/pest
 
 ## 📚 Documentación de API y Swagger
 
-SIGEDOR cuenta con una API RESTful documentada bajo la especificación OpenAPI / Swagger:
+SIGEDOR cuenta con una API RESTful documentada bajo la especificación **OpenAPI 3.0 / Swagger** (L5-Swagger) para interoperabilidad con sistemas universitarios (nómina, control de estudios y aplicaciones móviles):
 
-- **Interfaz Swagger UI:** `http://localhost/api/documentation` (o `http://127.0.0.1:8000/api/documentation`)
-- **Regeneración de esquema:**
+### Endpoints Oficiales (API v1)
+- **`GET /api/ping`**: Healthcheck y prueba de disponibilidad operativa. Retorna estado `pong`, marca de tiempo ISO 8601 y versión de especificación `1.0.0`.
+- **`GET /api/v1/teachers`**: Catálogo paginado de docentes con relaciones institucionales (sede, área, programa, categoría, dedicación). Admite parámetros opcionales `sede_id` y `page`. Protege la privacidad eliminando datos sensibles (PII) en la capa pública.
+- **`GET /api/v1/reports`**: Listado paginado de constancias de trabajo y memorandos oficiales emitidos con su código institucional de verificación criptográfica (`UNERG-REP-YYYY-XXXX`). Admite parámetro opcional `page`.
+
+### Acceso a la Documentación
+- **Explorador Interactivo Integrado:** Disponible directamente en la barra superior de la aplicación web haciendo clic en **"API Docs"** (permite probar endpoints en vivo con respuestas HTTP reales).
+- **Interfaz Swagger UI (Backend Laravel):** Accesible en `http://localhost:8000/api/documentation` o `/api/documentation`.
+- **Regeneración del esquema OpenAPI:**
   ```bash
   php artisan l5-swagger:generate
   ```
-> ℹ️ **Nota:** El archivo `storage/api-docs/api-docs.json` es un artefacto autogenerado excluido de Git para evitar conflictos entre ramas. Cada desarrollador o entorno de CI/CD lo regenera localmente con el comando anterior.
+> ℹ️ **Nota:** El esquema OpenAPI se genera automáticamente a partir de las anotaciones `@OA` ubicadas en los controladores API (`app/Http/Controllers/Api/`). El archivo `storage/api-docs/api-docs.json` se mantiene versionado y regenerable sin conflictos.
 
 ---
 

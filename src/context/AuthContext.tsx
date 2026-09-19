@@ -43,8 +43,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
-    // Revert to demo teacher or prompt
-    switchUserById(1);
+    // Reset session to default institutional user
+    if (INITIAL_USERS.length > 0) {
+      setCurrentUser(INITIAL_USERS[0]);
+      setActiveRole(INITIAL_USERS[0].roles[0]);
+    }
   };
 
   const isSuperAdmin = activeRole === 'admin';

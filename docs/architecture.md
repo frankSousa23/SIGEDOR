@@ -7,10 +7,11 @@ SIGEDOR está diseñado bajo una arquitectura modular y orientada a dominios aca
 ## 1. Stack Tecnológico
 
 - **Framework Núcleo**: Laravel 11.x (PHP 8.2+ / 8.3+)
-- **Panel Administrativo**: Filament v3 (Livewire 3, Alpine.js, Tailwind CSS)
+- **Panel Administrativo Backend**: Filament v3 (Livewire 3, Alpine.js, Tailwind CSS)
+- **Plataforma Web Interactiva & Móvil**: React 19, TypeScript, Vite, Tailwind CSS y Lucide Icons
 - **Gestión de Identidad y Roles**: Spatie Laravel-Permission v6
-- **Motor de Renderizado Documental**: DomPDF (`barryvdh/laravel-dompdf`)
-- **Documentación de API**: L5-Swagger (OpenAPI 3.0 / Swagger UI)
+- **Motor de Renderizado Documental**: DomPDF (`barryvdh/laravel-dompdf`) y Visor Oficial A4 Web
+- **Documentación de API**: L5-Swagger (OpenAPI 3.0 / Swagger UI) y Explorador Swagger React integrado
 - **Base de Datos**: MySQL 8.0+ / MariaDB 10.4+ (SQLite para testing en memoria)
 - **Auditoría y Trazabilidad**: Spatie Laravel-Activitylog
 
@@ -20,21 +21,21 @@ SIGEDOR está diseñado bajo una arquitectura modular y orientada a dominios aca
 
 ```mermaid
 graph TD
-    Client([Navegador / Cliente HTTP / API]) -->|HTTPS / REST| AppRouter[Enrutador Web / API]
+    Client([Navegador / Dispositivo Móvil / Cliente HTTP]) -->|HTTPS / REST| AppRouter[Enrutador Web / API]
     
-    subgraph Capa de Presentación
+    subgraph Capa de Presentación y Experiencia de Usuario
+        AppRouter -->|/| ReactApp[Plataforma Web Interactiva v2.0 - Responsive / Drawer / BottomBar]
         AppRouter -->|/admin| FilamentPanel[Panel Administrativo Filament v3]
-        AppRouter -->|/| Landing[Landing Page Pública]
-        AppRouter -->|/api/v1| RestApi[Controladores API Públicos]
-        AppRouter -->|/api/documentation| SwaggerUi[Swagger UI]
+        AppRouter -->|/api/v1| RestApi[Controladores API Públicos OpenAPI 3.0]
+        AppRouter -->|/api/documentation| SwaggerUi[Swagger UI & Explorador React]
     end
 
     subgraph Capa de Negocio y Seguridad
         FilamentPanel --> Policies[Políticas de Seguridad Spatie]
         FilamentPanel --> FormWizards[Formularios Wizard y Smart Selects]
         FilamentPanel --> Dossier360[Expediente 360 - RelationManagers]
-        RestApi --> ResourcesDto[API Resources DTOs]
-        Policies --> EloquentQueryScope[Multi-Tenant Query Scoping]
+        RestApi --> ResourcesDto[API Resources DTOs - Protección PII]
+        Policies --> EloquentQueryScope[Multi-Tenant Query Scoping por Sede]
     end
 
     subgraph Capa de Dominio y Servicios

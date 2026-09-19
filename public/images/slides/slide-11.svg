@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="slideBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FDFBF7" />
+      <stop offset="100%" stop-color="#F4EFE6" />
+    </linearGradient>
+    <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.06" />
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#slideBg)" />
+
+  <!-- Isometric grid decorative lines -->
+  <g opacity="0.15" stroke="#94A3B8" stroke-width="1">
+    <line x1="0" y1="200" x2="1920" y2="200"/>
+    <line x1="0" y1="960" x2="1920" y2="960"/>
+    <line x1="160" y1="0" x2="160" y2="1080"/>
+    <line x1="1760" y1="0" x2="1760" y2="1080"/>
+  </g>
+
+  <!-- Slide Header -->
+  <g transform="translate(100, 80)">
+    <text x="0" y="45" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="44" font-weight="900" fill="#0F172A" letter-spacing="-0.5">
+      Fiabilidad de grado empresarial: Pruebas automatizadas y auditoría
+    </text>
+    <text x="0" y="85" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="22" font-weight="600" fill="#64748B">
+      QA Mission Control Dashboard y Trazabilidad Forense de Acciones
+    </text>
+  </g>
+
+  <!-- Content -->
+  <g transform="translate(100, 220)">
+    <!-- 3 Big Cards -->
+    <g transform="translate(60, 40)">
+      <!-- Card 1: Pest / PHPUnit -->
+      <rect width="480" height="460" rx="20" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
+      <text x="40" y="60" font-family="system-ui, sans-serif" font-size="20" font-weight="800" fill="#475569">Cobertura de Pruebas (Pest / PHPUnit)</text>
+
+      <text x="40" y="160" font-family="system-ui, sans-serif" font-size="52" font-weight="900" fill="#EF4444">
+        49 Pruebas
+      </text>
+      <text x="40" y="220" font-family="system-ui, sans-serif" font-size="52" font-weight="900" fill="#10B981">
+        372 Aserciones
+      </text>
+      <text x="40" y="260" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#059669">100% Pasadas con éxito</text>
+
+      <line x1="40" y1="300" x2="440" y2="300" stroke="#E2E8F0" stroke-width="1.5"/>
+      <text x="40" y="340" font-family="system-ui, sans-serif" font-size="16" fill="#334155">
+        <tspan x="40" dy="0">Validación de políticas multi-inquilino,</tspan>
+        <tspan x="40" dy="24">reglas de escalafón UNERG y</tspan>
+        <tspan x="40" dy="24">endpoints de la API v1.</tspan>
+      </text>
+    </g>
+
+    <!-- Card 2: Trazabilidad ActivityLog -->
+    <g transform="translate(580, 40)">
+      <rect width="480" height="460" rx="20" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
+      <text x="40" y="60" font-family="system-ui, sans-serif" font-size="20" font-weight="800" fill="#475569">Trazabilidad (ActivityLog)</text>
+
+      <!-- Timeline graphic -->
+      <g transform="translate(40, 120)">
+        <line x1="30" y1="30" x2="370" y2="30" stroke="#F59E0B" stroke-width="4"/>
+        <circle cx="30" cy="30" r="10" fill="#F59E0B"/>
+        <text x="30" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#0F172A">Expediente Modificado</text>
+
+        <circle cx="200" cy="30" r="10" fill="#F59E0B"/>
+        <text x="200" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#0F172A">Ascenso Aprobado</text>
+
+        <circle cx="370" cy="30" r="10" fill="#F59E0B"/>
+        <text x="370" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#0F172A">Permiso Otorgado</text>
+      </g>
+
+      <text x="40" y="270" font-family="system-ui, sans-serif" font-size="18" font-weight="800" fill="#0F172A">Registro inmutable de auditoría</text>
+      <text x="40" y="310" font-family="system-ui, sans-serif" font-size="16" fill="#334155">
+        <tspan x="40" dy="0">Cada modificación de expediente,</tspan>
+        <tspan x="40" dy="24">ascenso de categoría o permiso otorgado</tspan>
+        <tspan x="40" dy="24">queda registrado con IP, usuario y timestamp.</tspan>
+      </text>
+    </g>
+
+    <!-- Card 3: Seguridad Perimetral -->
+    <g transform="translate(1100, 40)">
+      <rect width="480" height="460" rx="20" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2" filter="url(#cardShadow)"/>
+      <text x="40" y="60" font-family="system-ui, sans-serif" font-size="20" font-weight="800" fill="#475569">Seguridad Perimetral</text>
+
+      <circle cx="240" cy="160" r="55" fill="#EFF6FF"/>
+      <text x="240" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="44" fill="#1D4ED8">&#128274;</text>
+
+      <g transform="translate(40, 260)">
+        <text x="0" y="0" font-family="system-ui, sans-serif" font-size="16" fill="#334155">
+          <tspan x="0" dy="0">&bull; Cabeceras de seguridad OWASP estrictas.</tspan>
+          <tspan x="0" dy="28">&bull; Sanitización y protección de inyección CSV.</tspan>
+          <tspan x="0" dy="28">&bull; Protección de rutas por roles e inquilino.</tspan>
+          <tspan x="0" dy="28">&bull; Hasheo seguro de credenciales con Argon2id.</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Slide Footer -->
+  <g transform="translate(100, 1030)">
+    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#94A3B8">
+      SIGEDOR &bull; Proyecto de Investigación &bull; Frank Sousa
+    </text>
+    <text x="1720" y="0" text-anchor="end" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#64748B">
+      11 / 12
+    </text>
+  </g>
+</svg>

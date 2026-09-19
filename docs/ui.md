@@ -60,3 +60,29 @@ Al consultar o editar un docente en `TeacherResource`, el panel despliega 4 pest
 ## 5. Acciones en Modal Deslizante (SlideOver)
 
 - Los reportes y constancias pueden inspeccionarse directamente dentro de la interfaz mediante modales laterales deslizantes (`slideOver`), permitiendo leer el contenido del informe antes de descargarlo o imprimirlo.
+
+---
+
+## 6. Arquitectura Responsiva Universal y Experiencia Móvil (v2.0.0)
+
+SIGEDOR incorpora un sistema de diseño adaptativo ergonómico pensado para usabilidad completa en smartphones, tablets y pantallas de alta resolución:
+
+### 6.1 Navegación Móvil Ergonómica
+- **Barra Inferior Fija (*Mobile Bottom Navigation Bar*):** Ubicada al alcance del pulgar (`fixed bottom-0 left-0 right-0 z-40`), permite alternar instantáneamente entre Inicio, Docentes, Reportes y el menú expandido sin estirar la mano.
+- **Cajón Contextual Táctil (*Drawer Navigation*):** Menú lateral deslizante con desenfoque de fondo (*backdrop blur*) que brinda acceso a todas las secciones (Estadísticas, Permisos, Láminas, Documentación API y cierre de sesión).
+
+### 6.2 Barra Lateral Colapsable de Escritorio
+- Los usuarios en monitores estándar y panorámicos pueden contraer o expandir la barra lateral con un solo clic, maximizando el espacio de visualización para tablas de datos densas e informes analíticos.
+
+### 6.3 Alternancia Dual: Vista de Tabla y Vista de Tarjetas
+- En el catálogo de docentes, la interfaz ofrece un conmutador de vista:
+  - **Modo Tabla:** Densidad de datos óptima para revisión rápida de cédula, correo, sede, área, categoría y dedicación con paginación fluida.
+  - **Modo Tarjetas:** Bloques individuales enriquecidos con avatar, insignias semánticas de escalafón, dedicación y botones de acción rápida, ideal para interacción táctil en dispositivos móviles.
+
+### 6.4 Visor Documental Oficial A4 con Verificación QR
+- Módulo `OfficialDocumentView` que simula en pantalla una hoja membretada de formato institucional A4 UNERG.
+- Incorpora sello criptográfico de verificación, código QR validable y reglas de impresión `@media print` que ocultan la interfaz de usuario al imprimir o exportar a PDF desde el navegador.
+
+### 6.5 Compendio de Láminas de Tesis y Explorador Swagger
+- Visualizador interactivo de 12 láminas vectoriales de arquitectura con previsualización en pantalla completa y navegación paso a paso.
+- Modal de documentación OpenAPI 3.0 con cliente de pruebas interactivo (*Try it out*) integrado en la interfaz.
