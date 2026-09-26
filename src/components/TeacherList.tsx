@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useData } from '../context/DataContext';
 import { useAuth } from '../context/AuthContext';
 import { Teacher, Report } from '../types';
+import { getDedicationRule } from '../utils/dedicationRules';
 import { 
   Search, 
   Plus, 
@@ -43,7 +44,7 @@ export const TeacherList: React.FC<TeacherListProps> = ({ onOpenTeacher, onGener
     isDatabaseEmpty,
     restoreSampleData
   } = useData();
-  const { isSuperAdmin, isAreaManager } = useAuth();
+  const { isSuperAdmin, isAreaManager, isTeacher } = useAuth();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSede, setSelectedSede] = useState('');
@@ -139,10 +140,12 @@ export const TeacherList: React.FC<TeacherListProps> = ({ onOpenTeacher, onGener
         <div>
           <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
             <GraduationCap className="w-5 h-5 text-unerg-blue flex-shrink-0" />
-            <span>Expedientes Docentes</span>
+            <span>{isTeacher ? 'Mi Expediente Académico Digital' : 'Expedientes Docentes'}</span>
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
-            Personal académico UNERG ({filtered.length} {filtered.length === 1 ? 'docente' : 'docentes'} filtrados)
+            {isTeacher 
+              ? 'Hoja de vida académica, adscripción, escalafón y emisión directa de documentos oficiales'
+              : `Personal académico UNERG (${filtered.length} ${filtered.length === 1 ? 'docente' : 'docentes'} filtrados)`}
           </p>
         </div>
 
@@ -310,10 +313,10 @@ export const TeacherList: React.FC<TeacherListProps> = ({ onOpenTeacher, onGener
               className="w-full sm:w-auto text-xs p-2 sm:p-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-700 font-medium"
             >
               <option value="">Toda Dedicación</option>
-              <option value="Tiempo Convencional">Tiempo Convencional (12h)</option>
-              <option value="Medio Tiempo">Medio Tiempo (18h)</option>
-              <option value="Tiempo Completo">Tiempo Completo (30h)</option>
-              <option value="Exclusiva">Exclusiva (36h)</option>
+              <option value="Tiempo Convencional">2-7 TCV (Tiempo Convencional)</option>
+              <option value="Medio Tiempo">18 MT (Medio Tiempo)</option>
+              <option value="Tiempo Completo">30 TC (Tiempo Completo)</option>
+              <option value="Exclusiva">35-36 DE (Dedicación Exclusiva)</option>
             </select>
           </div>
 
@@ -407,10 +410,15 @@ export const TeacherList: React.FC<TeacherListProps> = ({ onOpenTeacher, onGener
                         {cat?.current_category || 'Instructor'}
                       </span>
 
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-                        <Clock className="w-3 h-3 text-slate-400" />
-                        {ded?.hours || 12}h / sem
-                      </span>
+                      {ded && (() => {
+                        const rule = getDedicationRule(ded.name);
+                        return (
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold border ${rule.badgeBg} ${rule.badgeText} ${rule.badgeBorder}`}>
+                            <Clock className="w-3 h-3" />
+                            {ded.hours}h ({rule.code})
+                          </span>
+                        );
+                      })()}
                     </div>
                   </div>
 
@@ -532,8 +540,22 @@ export const TeacherList: React.FC<TeacherListProps> = ({ onOpenTeacher, onGener
                         </td>
 
                         <td className="py-3 px-4">
-                          <div className="font-semibold text-slate-800">{ded?.name || 'Tiempo Convencional'}</div>
-                          <div className="text-[11px] text-slate-500">{ded?.hours || 12} horas semanales</div>
+                          {ded ? (() => {
+                            const rule = getDedicationRule(ded.name);
+                            return (
+                              <div>
+                                <div className="flex items-center gap-1.5">
+                                  <span className={`font-mono font-bold text-[10px] px-1.5 py-0.5 rounded border ${rule.badgeBg} ${rule.badgeText} ${rule.badgeBorder}`}>
+                                    {rule.denotation}
+                                  </span>
+                                  <span className="font-semibold text-slate-800 text-xs">{ded.name}</span>
+                                </div>
+                                <div className="text-[11px] text-slate-500 mt-0.5 font-mono">{ded.hours} hrs/sem</div>
+                              </div>
+                            );
+                          })() : (
+                            <span className="text-slate-400 italic text-xs">Sin asignar</span>
+                          )}
                         </td>
 
                         <td className="py-3 px-4 text-right">

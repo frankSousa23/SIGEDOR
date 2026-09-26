@@ -80,6 +80,12 @@
    - Vista dual de expedientes: Modo tabla detallada para auditoría densa y modo cuadrícula de tarjetas táctiles para lectura cómoda en smartphones.
    - Visor documental institucional en hoja A4 estandarizada con código QR de verificación, membrete oficial UNERG e impresión optimizada a PDF.
 
+9. **Barra de Auditoría y Simulación Multi-Rol (Para el Super Administrador):**
+   - Permite al Super Administrador simular en 1 clic la vista de cualquier usuario y rol del sistema (Super Admin, Jefes de Área de cada facultad y Docentes individuales) para auditar permisos, restricciones y aislamiento de datos sin perder su sesión principal.
+
+10. **Documentación Swagger y OpenAPI 3.0 Integrada:**
+   - Consola interactiva de pruebas para todos los endpoints (`/api/ping`, `/api/v1/teachers`, `/api/v1/categories`, `/api/v1/dedications`, `/api/v1/sites`, `/api/v1/permissions`, `/api/v1/reports`, `/openapi.json`), exportación de especificación formal y guías de integración con sistemas externos de nómina y control de estudios.
+
 ---
 
 ## 🖼️ Láminas de Presentación y Arquitectura (12 Láminas)
@@ -292,10 +298,24 @@ La base de datos incluye cuentas preconfiguradas con datos sintéticos y anonimi
 
 ## 🧪 Ejecución de Pruebas
 
-El proyecto cuenta con una suite integral y automatizada de pruebas con **Pest / PHPUnit** (**49 pruebas pasadas con 372 aserciones al 100%**) que valida autenticación, políticas multi-inquilino por Sede/Área, integridad relacional, reglas de negocio de escalafón UNERG, generación de PDFs oficiales y endpoints de la API v1:
+El proyecto cuenta con una suite integral y automatizada de pruebas unitarias y de integración tanto en el entorno de aplicación web moderna con **Vitest / TypeScript** (16 pruebas ejecutadas en 16ms al 100%) como en el backend con **Pest / PHPUnit** (49 pruebas con 372 aserciones al 100%), validando autenticación, políticas multi-inquilino por Sede/Área, integridad relacional, reglas de negocio de escalafón UNERG, régimen de dedicación horaria (`2-7 TCV`, `18 MT`, `30 TC`, `35-36 DE`), generación de PDFs oficiales y endpoints de la API v1:
 
 ```bash
-# Ejecutar suite con Pest
+# Ejecutar suite de pruebas unitarias y de integración (Vitest)
+npm test
+
+# Ejecutar pruebas en modo observador (watch)
+npm run test:watch
+
+# Validar tipado TypeScript estricto
+npm run lint
+
+# Compilar para producción
+npm run build
+```
+
+```bash
+# Ejecutar suite de backend con Pest
 ./vendor/bin/pest
 
 # O mediante el comando de Artisan

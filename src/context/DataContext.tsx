@@ -23,7 +23,7 @@ import {
 } from '../data/initialData';
 import { useAuth } from './AuthContext';
 
-const STORAGE_KEY = 'sigedor_db_state_v2';
+const STORAGE_KEY = 'sigedor_db_state_v3';
 
 interface DataContextType {
   teachers: Teacher[];
@@ -93,7 +93,15 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed && Array.isArray(parsed.teachers)) {
+        if (parsed && Array.isArray(parsed.teachers) && parsed.teachers.length >= 25) {
+          if (Array.isArray(parsed.dedications)) {
+            parsed.dedications = parsed.dedications.map((d: any) => {
+              if (d.name === 'Tiempo Convencional' && (d.hours > 7 || d.hours < 2)) {
+                return { ...d, hours: 6 };
+              }
+              return d;
+            });
+          }
           return parsed;
         }
       }
@@ -288,7 +296,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       id: dedId,
       teacher_cdi: teacher.cdi,
       name: 'Tiempo Convencional',
-      hours: 12,
+      hours: 6,
       studentNumber: 25,
       studentHours: 2,
       info: 'Carga horaria inicial',

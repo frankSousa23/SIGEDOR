@@ -59,7 +59,7 @@ export const DataManagementModal: React.FC<DataManagementModalProps> = ({ isOpen
     restoreSampleData();
     setNotification({
       type: 'success',
-      message: 'Datos de prueba UNERG restaurados correctamente con 10 expedientes docentes.',
+      message: 'Datos de prueba UNERG restaurados correctamente con más de 30 expedientes docentes interconectados.',
     });
     setTimeout(() => setNotification(null), 5000);
   };

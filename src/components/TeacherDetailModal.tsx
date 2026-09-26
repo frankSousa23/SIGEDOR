@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Teacher, Category, Dedication, Site, PermissionTeacher, Report, CategoryLevel } from '../types';
+import { getDedicationRule } from '../utils/dedicationRules';
 import { useData } from '../context/DataContext';
 import { useAuth } from '../context/AuthContext';
 import { 
@@ -348,49 +349,63 @@ export const TeacherDetailModal: React.FC<TeacherDetailModalProps> = ({
           )}
 
           {/* TAB 3: CARGA HORARIA */}
-          {activeTab === 'dedication' && dedication && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                  <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                    Modalidad
-                  </span>
-                  <div className="text-lg font-bold text-unerg-blue mt-1">
-                    {dedication.name}
+          {activeTab === 'dedication' && dedication && (() => {
+            const rule = getDedicationRule(dedication.name);
+            return (
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                      Régimen y Modalidad
+                    </span>
+                    <div className="flex items-center gap-1.5 mt-1">
+                      <span className={`font-mono font-bold text-xs px-2 py-0.5 rounded border ${rule.badgeBg} ${rule.badgeText} ${rule.badgeBorder}`}>
+                        {rule.denotation}
+                      </span>
+                      <span className="text-base font-bold text-slate-900">{dedication.name}</span>
+                    </div>
+                    <span className="text-xs text-slate-500 block mt-1">
+                      <strong className="text-slate-800 font-mono">{dedication.hours} horas</strong> semanales ({rule.hoursRangeText} reglamentarias)
+                    </span>
                   </div>
-                  <span className="text-xs text-slate-500">{dedication.hours} horas semanales</span>
+
+                  <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                      Cargo Directivo / Coordinación
+                    </span>
+                    <div className="text-base font-bold text-slate-800 mt-1">
+                      {dedication.director || 'Docente Regular'}
+                    </div>
+                    <span className="text-xs text-slate-500 block mt-1">
+                      {dedication.director ? 'Responsabilidad institucional asignada' : 'Carga lectiva ordinaria de aula'}
+                    </span>
+                  </div>
+
+                  <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                      Atención Estudiantil y Tutoría
+                    </span>
+                    <div className="text-base font-bold text-slate-800 mt-1">
+                      {dedication.studentNumber} estudiantes
+                    </div>
+                    <span className="text-xs text-slate-500 block mt-1">{dedication.studentHours} horas/semana de asesoría</span>
+                  </div>
                 </div>
 
-                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                  <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                    Cargo Directivo / Coordinación
+                <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
+                    Observaciones y Régimen Académico
                   </span>
-                  <div className="text-lg font-bold text-slate-800 mt-1">
-                    {dedication.director || 'Docente Regular'}
-                  </div>
-                </div>
-
-                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                  <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                    Atención Estudiantil y Tutoría
-                  </span>
-                  <div className="text-lg font-bold text-slate-800 mt-1">
-                    {dedication.studentNumber} estudiantes
-                  </div>
-                  <span className="text-xs text-slate-500">{dedication.studentHours} horas/semana de asesoría</span>
+                  <p className="text-xs text-slate-700">
+                    {dedication.info || 'Cumplimiento regular de labores docentes, de investigación y asesorías.'}
+                  </p>
+                  <p className="text-[11px] text-slate-400 pt-1">
+                    Base reglamentaria: {rule.legalBase}
+                  </p>
                 </div>
               </div>
-
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">
-                  Observaciones Académicas
-                </span>
-                <p className="text-xs text-slate-700">
-                  {dedication.info || 'Cumplimiento regular de labores docentes y de investigación.'}
-                </p>
-              </div>
-            </div>
-          )}
+            );
+          })()}
 
           {/* TAB 4: CÁTEDRAS Y SEDES */}
           {activeTab === 'sites' && (

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { useData } from '../context/DataContext';
 import { useAuth } from '../context/AuthContext';
-import { CalendarDays, Plus, CheckCircle2, XCircle, Clock, AlertCircle, X } from 'lucide-react';
+import { CalendarDays, Plus, CheckCircle2, XCircle, Clock, AlertCircle, X, Search } from 'lucide-react';
 import { PermissionTeacher } from '../types';
 
 export const PermissionManagement: React.FC = () => {
   const { filteredPermissions, addPermission, updatePermissionStatus, teachers } = useData();
   const { currentUser, isSuperAdmin, isAreaManager, isTeacher } = useAuth();
 
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState<'TODOS' | 'Pendiente' | 'Aprobado' | 'Rechazado'>('TODOS');
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [formTeacherCdi, setFormTeacherCdi] = useState(teachers[0]?.cdi || '');
   const [formType, setFormType] = useState<PermissionTeacher['type']>('Permiso Académico');
@@ -63,14 +65,85 @@ export const PermissionManagement: React.FC = () => {
         </button>
       </div>
 
+      {/* Filter and Search Bar */}
+      <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center justify-between">
+        <div className="relative flex-1 max-w-md">
+          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Buscar por docente, cédula, tipo de permiso o motivo..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-unerg-blue"
+          />
+        </div>
+
+        <div className="flex items-center gap-1.5 overflow-x-auto text-xs">
+          <button
+            onClick={() => setStatusFilter('TODOS')}
+            className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${
+              statusFilter === 'TODOS'
+                ? 'bg-slate-800 text-white'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            Todos ({filteredPermissions.length})
+          </button>
+          <button
+            onClick={() => setStatusFilter('Pendiente')}
+            className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${
+              statusFilter === 'Pendiente'
+                ? 'bg-amber-600 text-white'
+                : 'bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200'
+            }`}
+          >
+            Pendientes ({filteredPermissions.filter(p => p.status === 'Pendiente').length})
+          </button>
+          <button
+            onClick={() => setStatusFilter('Aprobado')}
+            className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${
+              statusFilter === 'Aprobado'
+                ? 'bg-emerald-600 text-white'
+                : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200'
+            }`}
+          >
+            Aprobados ({filteredPermissions.filter(p => p.status === 'Aprobado').length})
+          </button>
+          <button
+            onClick={() => setStatusFilter('Rechazado')}
+            className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${
+              statusFilter === 'Rechazado'
+                ? 'bg-red-600 text-white'
+                : 'bg-red-50 text-red-700 hover:bg-red-100 border border-red-200'
+            }`}
+          >
+            Rechazados ({filteredPermissions.filter(p => p.status === 'Rechazado').length})
+          </button>
+        </div>
+      </div>
+
       {/* Permissions Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {filteredPermissions.length === 0 ? (
-          <div className="col-span-2 bg-white rounded-xl p-8 border border-slate-200 text-center text-slate-500">
-            No hay solicitudes de permisos en el ámbito seleccionado.
-          </div>
-        ) : (
-          filteredPermissions.map(p => {
+      {(() => {
+        const displayed = filteredPermissions.filter(p => {
+          const teacher = teachers.find(t => t.cdi === p.teacher_cdi);
+          const teacherName = teacher ? `${teacher.name} ${teacher.surName}`.toLowerCase() : (p.teacher_name || '').toLowerCase();
+          const matchesSearch = 
+            teacherName.includes(search.toLowerCase()) ||
+            p.teacher_cdi.includes(search) ||
+            p.type.toLowerCase().includes(search.toLowerCase()) ||
+            p.reason.toLowerCase().includes(search.toLowerCase());
+          const matchesStatus = statusFilter === 'TODOS' || p.status === statusFilter;
+          return matchesSearch && matchesStatus;
+        });
+
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {displayed.length === 0 ? (
+              <div className="col-span-2 bg-white rounded-xl p-8 border border-slate-200 text-center text-slate-500">
+                No se encontraron solicitudes de permisos con los filtros seleccionados.
+              </div>
+            ) : (
+              displayed.map(p => {
             const teacher = teachers.find(t => t.cdi === p.teacher_cdi);
 
             return (
@@ -132,6 +205,8 @@ export const PermissionManagement: React.FC = () => {
           })
         )}
       </div>
+    );
+  })()}
 
       {/* Modal: Solicitar Permiso */}
       {showRequestModal && (
@@ -176,6 +251,10 @@ export const PermissionManagement: React.FC = () => {
                   <option value="Año Sabático">Año Sabático</option>
                   <option value="Comisión de Servicio">Comisión de Servicio</option>
                   <option value="Licencia Médica">Licencia Médica</option>
+                  <option value="Incapacidad Médica">Incapacidad Médica</option>
+                  <option value="Prórroga de Estudios">Prórroga de Estudios</option>
+                  <option value="Permiso por Cuido">Permiso por Cuido</option>
+                  <option value="Permiso Especial">Permiso Especial</option>
                   <option value="Permiso No Remunerado">Permiso No Remunerado</option>
                 </select>
               </div>

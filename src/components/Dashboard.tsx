@@ -12,7 +12,8 @@ import {
   AlertCircle,
   Building2
 } from 'lucide-react';
-import { Report } from '../types';
+import { Report, DedicationType } from '../types';
+import { DEDICATION_RULES } from '../utils/dedicationRules';
 
 interface DashboardProps {
   onSelectTeacher?: (cdi: string) => void;
@@ -22,7 +23,7 @@ interface DashboardProps {
 
 export const Dashboard: React.FC<DashboardProps> = ({ onSelectTeacher, onViewReport, onNavigate }) => {
   const { filteredTeachers, categories, dedications, sites, filteredReports, filteredPermissions } = useData();
-  const { currentUser, isSuperAdmin, isAreaManager } = useAuth();
+  const { currentUser, isSuperAdmin, isAreaManager, isTeacher } = useAuth();
 
   // Compute metrics
   const totalTeachers = filteredTeachers.length;
@@ -72,17 +73,23 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTeacher, onViewRep
           <div>
             <div className="flex items-center gap-2 mb-1 flex-wrap">
               <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-400 text-slate-950 uppercase tracking-wide">
-                Panel Institucional
+                {isSuperAdmin ? 'Panel Institucional Global' : isAreaManager ? 'Jefatura de Área' : 'Portal Docente'}
               </span>
               <span className="text-xs text-slate-300">
-                {isSuperAdmin ? 'Ámbito Global' : `Sede: ${currentUser.sede_nombre}`}
+                {isSuperAdmin 
+                  ? '7 Sedes • 9 Áreas Académicas' 
+                  : `${currentUser.area_nombre} (${currentUser.sede_nombre.split('/')[0]})`}
               </span>
             </div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
               Bienvenido, {currentUser.name}
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm mt-1">
-              Sistema de Gestión Docente y Expedientes Académicos de la UNERG.
+              {isTeacher 
+                ? 'Expediente académico digital, carga horaria y estado de solicitudes en la UNERG.' 
+                : isAreaManager
+                ? `Gestión descentralizada de ${totalTeachers} docentes adscritos a su jurisdicción académica.`
+                : 'Sistema de Gestión Docente, Escalafón y Reportes Oficiales de la UNERG.'}
             </p>
           </div>
           <div className="flex flex-wrap sm:flex-nowrap gap-2">
@@ -91,7 +98,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTeacher, onViewRep
               className="flex-1 sm:flex-initial px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold rounded-lg shadow-xs transition-all flex items-center justify-center gap-1.5"
             >
               <Users className="w-4 h-4" />
-              <span>Ver Expedientes</span>
+              <span>{isTeacher ? 'Ver Mi Expediente' : 'Ver Expedientes'}</span>
             </button>
             <button
               onClick={() => onNavigate('architecture')}
@@ -292,25 +299,46 @@ export const Dashboard: React.FC<DashboardProps> = ({ onSelectTeacher, onViewRep
         {/* Dedication summary */}
         <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-amber-600" />
-              Modalidades de Carga Horaria
-            </h3>
+            <div>
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <Clock className="w-4 h-4 text-amber-600" />
+                Modalidades de Carga Horaria
+              </h3>
+              <p className="text-[11px] text-slate-500">2-7 TCV • 18 MT • 30 TC • 35-36 DE</p>
+            </div>
+            <button
+              onClick={() => onNavigate('dedications')}
+              className="text-xs font-semibold text-unerg-blue hover:underline"
+            >
+              Gestionar
+            </button>
           </div>
           <div className="space-y-2.5">
-            {Object.entries(dedicationCounts).map(([ded, count]) => (
-              <div key={ded} className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-100">
-                <div>
-                  <div className="text-xs font-semibold text-slate-800">{ded}</div>
-                  <div className="text-[11px] text-slate-500">
-                    {ded === 'Exclusiva' ? '36 hrs/sem' : ded === 'Tiempo Completo' ? '30 hrs/sem' : ded === 'Medio Tiempo' ? '18 hrs/sem' : '12 hrs/sem'}
+            {Object.entries(dedicationCounts).map(([ded, count]) => {
+              const rule = DEDICATION_RULES[ded as DedicationType];
+              return (
+                <div 
+                  key={ded} 
+                  onClick={() => onNavigate('dedications')}
+                  className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-100 hover:bg-slate-100/70 cursor-pointer transition-colors"
+                >
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      <span className={`font-mono font-bold text-[10px] px-1.5 py-0.5 rounded border ${rule?.badgeBg || 'bg-slate-100'} ${rule?.badgeText || 'text-slate-800'} ${rule?.badgeBorder || 'border-slate-200'}`}>
+                        {rule?.denotation || ded}
+                      </span>
+                      <span className="text-xs font-semibold text-slate-800">{ded}</span>
+                    </div>
+                    <div className="text-[11px] text-slate-500 mt-0.5">
+                      {rule?.hoursRangeText ? `${rule.hoursRangeText} reglamentarias` : ''}
+                    </div>
                   </div>
+                  <span className="text-sm font-bold text-slate-900 bg-white px-2.5 py-1 rounded border border-slate-200 shadow-xs font-mono">
+                    {count}
+                  </span>
                 </div>
-                <span className="text-sm font-bold text-slate-900 bg-white px-2.5 py-1 rounded border border-slate-200 shadow-xs">
-                  {count}
-                </span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 

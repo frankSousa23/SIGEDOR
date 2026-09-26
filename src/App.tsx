@@ -16,6 +16,7 @@ import { OfficialDocumentView } from './components/OfficialDocumentView';
 import { ApiDocsModal } from './components/ApiDocsModal';
 import { DataManagementModal } from './components/DataManagementModal';
 import { SystemPresentationView } from './components/SystemPresentationView';
+import { RoleAuditorBar } from './components/RoleAuditorBar';
 import { Teacher, Report } from './types';
 import { 
   LayoutDashboard, 
@@ -49,6 +50,7 @@ const MainApp: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
+  const { isSuperAdmin, isTeacher } = useAuth();
   const { generateReport } = useData();
 
   const handleGenerateAndOpenReport = (teacher: Teacher, type: Report['typeReport']) => {
@@ -74,6 +76,9 @@ const MainApp: React.FC = () => {
         onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         isMobileMenuOpen={isMobileMenuOpen}
       />
+
+      {/* Role Simulation and Audit Bar */}
+      <RoleAuditorBar />
 
       {/* Main Body */}
       <div className="flex-1 flex overflow-hidden">
@@ -101,7 +106,17 @@ const MainApp: React.FC = () => {
                 </span>
                 <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
                 <span className="font-semibold text-slate-800">
-                  {viewingReport ? `Documento: ${viewingReport.typeReport}` : sectionLabels[currentSection]}
+                  {viewingReport 
+                    ? `Documento: ${viewingReport.typeReport}` 
+                    : isTeacher && currentSection === 'teachers'
+                    ? 'Mi Expediente Docente 360°'
+                    : isTeacher && currentSection === 'sites'
+                    ? 'Mis Cátedras Asignadas'
+                    : isTeacher && currentSection === 'permissions'
+                    ? 'Mis Permisos y Licencias'
+                    : isTeacher && currentSection === 'reports'
+                    ? 'Mis Documentos Oficiales'
+                    : sectionLabels[currentSection]}
                 </span>
               </div>
               <span className="hidden sm:inline text-[11px] text-slate-400 bg-slate-200/60 px-2 py-0.5 rounded-md font-mono">
@@ -147,7 +162,21 @@ const MainApp: React.FC = () => {
 
                   {currentSection === 'architecture' && <SystemPresentationView />}
 
-                  {currentSection === 'users' && <UserManagement />}
+                  {currentSection === 'users' && (
+                    isSuperAdmin ? (
+                      <UserManagement />
+                    ) : (
+                      <div className="bg-white rounded-2xl p-8 border border-slate-200 text-center max-w-lg mx-auto shadow-sm space-y-3">
+                        <div className="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto">
+                          <ShieldCheck className="w-6 h-6" />
+                        </div>
+                        <h3 className="font-bold text-slate-800 text-sm">Módulo Reservado a Administradores Globales</h3>
+                        <p className="text-xs text-slate-500 leading-relaxed">
+                          La administración de cuentas de usuario, aprobación de accesos y asignación de roles RBAC está restringida exclusivamente a usuarios con credenciales de Super Administrador institucional.
+                        </p>
+                      </div>
+                    )
+                  )}
                 </>
               )}
             </div>

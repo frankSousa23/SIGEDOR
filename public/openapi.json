@@ -1,0 +1,313 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "SIGEDOR - API de Gestión Docente y Reportes Oficiales UNERG",
+    "version": "2.0.0",
+    "description": "Especificación formal OpenAPI 3.0 para la interoperabilidad del Sistema de Gestión Docente, Escalafón y Reportes Oficiales de la Universidad Nacional Experimental Rómulo Gallegos (UNERG). Permite la integración fluida con sistemas de nómina universitaria, control de estudios y certificación de títulos.",
+    "contact": {
+      "name": "Dirección de Tecnologías de Información y Comunicación - UNERG",
+      "email": "soporte@sigedor.com",
+      "url": "https://github.com/frankSousa23/SIGEDOR"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Servidor Activo SIGEDOR"
+    }
+  ],
+  "tags": [
+    { "name": "Salud del Sistema", "description": "Endpoints de verificación y telemetría" },
+    { "name": "Expedientes Docentes", "description": "Gestión del cuerpo docente universitario" },
+    { "name": "Escalafón Universitario", "description": "Niveles de ascenso y títulos académicos" },
+    { "name": "Régimen de Dedicación", "description": "Carga horaria reglamentaria (2-7 TCV, 18 MT, 30 TC, 35-36 DE)" },
+    { "name": "Sedes y Cátedras", "description": "Asignación territorial de unidades curriculares" },
+    { "name": "Permisos y Licencias", "description": "Años sabáticos, comisiones de servicio e incapacidades" },
+    { "name": "Reportes y Certificaciones", "description": "Documentos oficiales con código de autenticidad" }
+  ],
+  "paths": {
+    "/api/ping": {
+      "get": {
+        "tags": ["Salud del Sistema"],
+        "summary": "Verificar salud operativa de la API",
+        "operationId": "ping",
+        "responses": {
+          "200": {
+            "description": "API operativa y respondiendo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "pong" },
+                    "timestamp": { "type": "string", "format": "date-time" },
+                    "version": { "type": "string", "example": "2.0.0" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/teachers": {
+      "get": {
+        "tags": ["Expedientes Docentes"],
+        "summary": "Listar catálogo de docentes de la UNERG",
+        "operationId": "getTeachers",
+        "parameters": [
+          { "name": "sede_id", "in": "query", "description": "Filtrar por ID de la sede universitaria", "schema": { "type": "integer" } },
+          { "name": "area_id", "in": "query", "description": "Filtrar por ID del área de conocimiento", "schema": { "type": "integer" } },
+          { "name": "category", "in": "query", "description": "Filtrar por nivel de escalafón (Instructor, Asistente, Agregado, Asociado, Titular)", "schema": { "type": "string" } },
+          { "name": "page", "in": "query", "description": "Número de página a consultar", "schema": { "type": "integer", "default": 1 } },
+          { "name": "per_page", "in": "query", "description": "Registros por página", "schema": { "type": "integer", "default": 15 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista paginada de docentes con relaciones institucionales",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "success" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "current_page": { "type": "integer" },
+                        "data": { "type": "array", "items": { "$ref": "#/components/schemas/Teacher" } },
+                        "total": { "type": "integer" },
+                        "per_page": { "type": "integer" },
+                        "last_page": { "type": "integer" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/categories": {
+      "get": {
+        "tags": ["Escalafón Universitario"],
+        "summary": "Listar historial y categorías del cuerpo docente",
+        "operationId": "getCategories",
+        "responses": {
+          "200": {
+            "description": "Registros de escalafón",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "success" },
+                    "data": { "type": "array", "items": { "$ref": "#/components/schemas/Category" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/dedications": {
+      "get": {
+        "tags": ["Régimen de Dedicación"],
+        "summary": "Consultar dedicaciones horarias (2-7 TCV, 18 MT, 30 TC, 35-36 DE)",
+        "operationId": "getDedications",
+        "responses": {
+          "200": {
+            "description": "Cargas horarias registradas y verificadas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "success" },
+                    "data": { "type": "array", "items": { "$ref": "#/components/schemas/Dedication" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sites": {
+      "get": {
+        "tags": ["Sedes y Cátedras"],
+        "summary": "Listar asignaciones de cátedras por sede y docente",
+        "operationId": "getSites",
+        "responses": {
+          "200": {
+            "description": "Unidades curriculares asignadas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "success" },
+                    "data": { "type": "array", "items": { "$ref": "#/components/schemas/Site" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/permissions": {
+      "get": {
+        "tags": ["Permisos y Licencias"],
+        "summary": "Listar solicitudes de licencias, reposos y años sabáticos",
+        "operationId": "getPermissions",
+        "responses": {
+          "200": {
+            "description": "Permisos y licencias registrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "success" },
+                    "data": { "type": "array", "items": { "$ref": "#/components/schemas/Permission" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reports": {
+      "get": {
+        "tags": ["Reportes y Certificaciones"],
+        "summary": "Listar reportes oficiales y constancias con código de autenticidad",
+        "operationId": "getReports",
+        "parameters": [
+          { "name": "typeReport", "in": "query", "description": "Filtrar por tipo de reporte", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Documentos emitidos con código de verificación institucional",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "success" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "current_page": { "type": "integer" },
+                        "data": { "type": "array", "items": { "$ref": "#/components/schemas/Report" } },
+                        "total": { "type": "integer" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Teacher": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "cdi": { "type": "string", "example": "10101001" },
+          "name": { "type": "string", "example": "Oliver" },
+          "surName": { "type": "string", "example": "Peña" },
+          "genre": { "type": "string", "enum": ["M", "F"], "example": "M" },
+          "email": { "type": "string", "format": "email", "example": "oliver.pena@sigedor.com" },
+          "phone": { "type": "string", "example": "+58 412-6778130" },
+          "birthDate": { "type": "string", "format": "date", "example": "1982-04-12" },
+          "datePromotion": { "type": "string", "format": "date", "example": "2010-06-15" },
+          "asignaturePromotion": { "type": "string", "example": "Estructuras de Datos y Algoritmos" },
+          "sede_nombre": { "type": "string", "example": "Sede Central/San Juan de los Morros" },
+          "area_nombre": { "type": "string", "example": "Ingeniería de sistemas" },
+          "programa_nombre": { "type": "string", "example": "Ingeniería en Informática" }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "teacher_cdi": { "type": "string", "example": "10101001" },
+          "current_category": { "type": "string", "enum": ["Instructor", "Asistente", "Agregado", "Asociado", "Titular"], "example": "Asociado" },
+          "preTitle": { "type": "string", "example": "Ingeniero en Informática" },
+          "lastTitle": { "type": "string", "example": "MSc. en Ciencias de la Computación" },
+          "instructor": { "type": "string", "format": "date" },
+          "asistente": { "type": "string", "format": "date" },
+          "agregado": { "type": "string", "format": "date" },
+          "asociado": { "type": "string", "format": "date" },
+          "titular": { "type": "string", "format": "date" }
+        }
+      },
+      "Dedication": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "teacher_cdi": { "type": "string", "example": "10101001" },
+          "name": { "type": "string", "enum": ["Tiempo Convencional", "Medio Tiempo", "Tiempo Completo", "Exclusiva"] },
+          "hours": { "type": "integer", "example": 30 },
+          "director": { "type": "string", "example": "Coordinador" },
+          "studentNumber": { "type": "integer", "example": 45 },
+          "studentHours": { "type": "integer", "example": 6 },
+          "info": { "type": "string" }
+        }
+      },
+      "Site": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "teacher_cdi": { "type": "string" },
+          "sede_nombre": { "type": "string" },
+          "area_nombre": { "type": "string" },
+          "programa_nombre": { "type": "string" },
+          "uc": { "type": "integer", "example": 4 },
+          "weekHours": { "type": "integer", "example": 6 },
+          "sections": { "type": "integer", "example": 2 },
+          "info": { "type": "string", "example": "Cátedra de Algoritmos y Estructuras de Datos" },
+          "is_active": { "type": "boolean", "example": true }
+        }
+      },
+      "Permission": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "teacher_cdi": { "type": "string" },
+          "teacher_name": { "type": "string" },
+          "type": { "type": "string", "example": "Año Sabático" },
+          "reason": { "type": "string" },
+          "status": { "type": "string", "enum": ["Pendiente", "Aprobado", "Rechazado"], "example": "Aprobado" },
+          "start_date": { "type": "string", "format": "date" },
+          "end_date": { "type": "string", "format": "date" }
+        }
+      },
+      "Report": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "verification_code": { "type": "string", "example": "UNERG-REP-2026-0001" },
+          "teacher_cdi": { "type": "string", "example": "10101001" },
+          "teacher_name": { "type": "string", "example": "Oliver Peña" },
+          "memoNumber": { "type": "string", "example": "MEMO-ING-2026-001" },
+          "typeReport": { "type": "string", "example": "Constancia de Trabajo" },
+          "status": { "type": "string", "example": "Verificado" },
+          "created_at": { "type": "string" }
+        }
+      }
+    }
+  }
+}

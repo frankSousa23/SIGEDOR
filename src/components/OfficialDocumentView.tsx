@@ -2,6 +2,7 @@ import React from 'react';
 import { Report, Teacher } from '../types';
 import { useData } from '../context/DataContext';
 import { Printer, Download, ArrowLeft, ShieldCheck, QrCode } from 'lucide-react';
+import { getDedicationCode } from '../utils/dedicationRules';
 
 interface OfficialDocumentViewProps {
   report: Report;
@@ -123,7 +124,7 @@ export const OfficialDocumentView: React.FC<OfficialDocumentViewProps> = ({ repo
                 <div className="text-xs text-slate-600 mt-1 grid grid-cols-1 sm:grid-cols-2 gap-1 font-sans">
                   <div>Cédula de Identidad: <strong className="font-mono text-slate-800">V-{report.teacher_cdi}</strong></div>
                   <div>Categoría en Escalafón: <strong className="text-unerg-blue">{category?.current_category || 'Instructor'}</strong></div>
-                  <div>Dedicación Horaria: <strong>{dedication?.name || 'Tiempo Completo'} ({dedication?.hours || 30} horas semanales)</strong></div>
+                  <div>Dedicación Horaria: <strong>{dedication ? `${dedication.name} (${getDedicationCode(dedication.name)}) — ${dedication.hours} horas semanales` : 'Tiempo Completo (TC) — 30 horas semanales'}</strong></div>
                   <div>Adscripción: <strong>{teacher?.sede_nombre}</strong></div>
                   <div>Área Académica: <strong>{teacher?.area_nombre}</strong></div>
                   <div>Programa Académico: <strong>{teacher?.programa_nombre}</strong></div>
@@ -152,7 +153,7 @@ export const OfficialDocumentView: React.FC<OfficialDocumentViewProps> = ({ repo
                   <div>Pregrado: <strong>{category?.preTitle || 'Licenciado'}</strong></div>
                   <div>Posgrado / Doctorado: <strong>{category?.lastTitle || 'Ninguno'}</strong></div>
                   <div>Escalafón Vigente: <strong>{category?.current_category}</strong></div>
-                  <div>Carga Horaria: <strong>{dedication?.name} ({dedication?.hours}h)</strong></div>
+                  <div>Carga Horaria: <strong>{dedication ? `${dedication.name} [${getDedicationCode(dedication.name)}] (${dedication.hours}h/sem)` : 'N/A'}</strong></div>
                   <div>Cargo Administrativo: <strong>{dedication?.director || 'Ninguno'}</strong></div>
                   <div>Estudiantes Tutorados: <strong>{dedication?.studentNumber} alumnos</strong></div>
                 </div>
@@ -195,7 +196,7 @@ export const OfficialDocumentView: React.FC<OfficialDocumentViewProps> = ({ repo
               </p>
               <div className="bg-amber-50/70 border border-amber-200 p-4 rounded-lg text-amber-950 space-y-1">
                 <div><strong>Docente:</strong> {teacher?.name} {teacher?.surName} (V-{teacher?.cdi})</div>
-                <div><strong>Modalidad de Dedicación:</strong> {dedication?.name} — {dedication?.hours} Horas Semanales</div>
+                <div><strong>Modalidad de Dedicación:</strong> {dedication ? `${dedication.name} [${getDedicationCode(dedication.name)}] — ${dedication.hours} Horas Semanales` : 'Tiempo Completo [TC] — 30 Horas Semanales'}</div>
                 <div><strong>Cátedra Titular:</strong> {teacher?.asignaturePromotion}</div>
                 <div><strong>Responsabilidad Especial:</strong> {dedication?.director || 'Carga docente regular de aula'}</div>
                 <div><strong>Atención a Alumnos:</strong> {dedication?.studentHours} horas semanales dedicadas a {dedication?.studentNumber} estudiantes</div>

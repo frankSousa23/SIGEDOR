@@ -1,0 +1,49 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "SIGEDOR - API de Gestión Docente y Reportes Oficiales UNERG",
+    "version": "2.0.0",
+    "description": "Especificación formal OpenAPI 3.0 para la interoperabilidad del Sistema de Gestión Docente, Escalafón y Reportes Oficiales de la Universidad Nacional Experimental Rómulo Gallegos (UNERG).",
+    "contact": {
+      "name": "Dirección de Tecnologías de Información y Comunicación - UNERG",
+      "email": "soporte@sigedor.com",
+      "url": "https://github.com/frankSousa23/SIGEDOR"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Servidor Activo SIGEDOR"
+    }
+  ],
+  "paths": {
+    "/api/ping": {
+      "get": {
+        "summary": "Verificar salud operativa de la API",
+        "responses": {
+          "200": { "description": "API operativa" }
+        }
+      }
+    },
+    "/api/v1/teachers": {
+      "get": {
+        "summary": "Listar catálogo de docentes de la UNERG",
+        "responses": {
+          "200": { "description": "Lista de docentes" }
+        }
+      }
+    },
+    "/api/v1/reports": {
+      "get": {
+        "summary": "Listar reportes oficiales y constancias",
+        "responses": {
+          "200": { "description": "Lista de reportes" }
+        }
+      }
+    }
+  }
+}

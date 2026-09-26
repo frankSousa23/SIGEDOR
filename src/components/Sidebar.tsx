@@ -44,7 +44,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isCollapsed = false,
   onToggleCollapse
 }) => {
-  const { isSuperAdmin, isAreaManager } = useAuth();
+  const { isSuperAdmin, isAreaManager, isTeacher } = useAuth();
   const { filteredTeachers, filteredPermissions, filteredReports } = useData();
 
   const pendingPermissionsCount = filteredPermissions.filter(p => p.status === 'Pendiente').length;
@@ -58,39 +58,39 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
     {
       id: 'teachers',
-      label: 'Expedientes Docentes',
+      label: isTeacher ? 'Mi Expediente 360°' : 'Expedientes Docentes',
       icon: Users,
       show: true,
       countBadge: filteredTeachers.length,
     },
     {
       id: 'categories',
-      label: 'Escalafón Universitario',
+      label: isTeacher ? 'Mi Escalafón' : 'Escalafón Universitario',
       icon: Award,
       show: true,
     },
     {
       id: 'dedications',
-      label: 'Dedicación y Horas',
+      label: isTeacher ? 'Mi Dedicación y Horas' : 'Dedicación y Horas',
       icon: Clock,
       show: true,
     },
     {
       id: 'sites',
-      label: 'Sedes y Cátedras',
+      label: isTeacher ? 'Mis Cátedras' : 'Sedes y Cátedras',
       icon: MapPin,
       show: true,
     },
     {
       id: 'permissions',
-      label: 'Permisos y Licencias',
+      label: isTeacher ? 'Mis Solicitudes' : 'Permisos y Licencias',
       icon: CalendarDays,
       show: true,
       countBadge: pendingPermissionsCount > 0 ? `${pendingPermissionsCount} pend.` : undefined,
     },
     {
       id: 'reports',
-      label: 'Reportes y PDF Oficial',
+      label: isTeacher ? 'Mis Documentos Oficiales' : 'Reportes y PDF Oficial',
       icon: FileText,
       show: true,
       countBadge: filteredReports.length,
